@@ -21,7 +21,15 @@ import { execFileSync } from "child_process";
 
 const ROOT = process.cwd();
 const DIR = path.join(ROOT, "lib/demo/db/curriculum");
-const TMP = path.join(ROOT, ".curriculum-check");
+/**
+ * Per-process scratch directory.
+ *
+ * Deliberately not a fixed path. Nineteen courses are authored in parallel and each
+ * author runs this gate for their own course id, so a shared directory means one run
+ * deletes the compiled output another is halfway through importing. The failure looked
+ * like a random "does not compile" on content that was fine.
+ */
+const TMP = path.join(ROOT, `.curriculum-check-${process.pid}`);
 
 const wanted = process.argv.slice(2).filter((a) => /^\d+$/.test(a));
 
@@ -47,7 +55,11 @@ fs.mkdirSync(TMP, { recursive: true });
 try {
   execFileSync(
     "npx",
-    ["esbuild", ...files.map((f) => path.join(DIR, f)), "--outdir=" + TMP, "--format=esm", "--platform=node", "--log-level=error"],
+    // --bundle, because a course file is assembled from per-module parts under
+    // curriculum/parts/. Transform-only compilation leaves those imports pointing at
+    // files that do not exist in the scratch directory, so every course would fail to
+    // load with a module-not-found that looks nothing like the real problem.
+    ["esbuild", ...files.map((f) => path.join(DIR, f)), "--bundle", "--outdir=" + TMP, "--format=esm", "--platform=node", "--log-level=error", "--external:@/*"],
     { cwd: ROOT, stdio: "inherit" },
   );
 } catch {

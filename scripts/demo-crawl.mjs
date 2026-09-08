@@ -22,11 +22,13 @@ import { chromium } from "playwright";
 import fs from "fs";
 
 const BASE = process.env.DEMO_BASE ?? "http://localhost:4000";
-const PASSWORD = "AiLinc@2026";
+const PASSWORD = "Telangana@2026";
+// Kept in step with DEMO_PERSONAS in lib/demo/config.ts by hand: this script runs
+// outside the bundler and cannot import a TypeScript module.
 const PERSONAS = {
-  student: "student@ailinc.com",
-  instructor: "instructor@ailinc.com",
-  admin: "admin@ailinc.com",
+  student: "aspirant@tsem.gov.in",
+  instructor: "faculty@tsem.gov.in",
+  admin: "admin@tsem.gov.in",
 };
 
 function arg(name, fallback = null) {
