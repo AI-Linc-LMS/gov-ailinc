@@ -32,7 +32,15 @@ import { seededInt } from "../../random";
 
 const MODULE = "journey";
 
-/** Points a topic is worth, by the heaviest kind of work it contains. */
+/**
+ * Points a topic is worth, by the heaviest kind of work it contains.
+ *
+ * The `coding` branch is dead for this tenant, because no course in
+ * `db/courses.ts` declares that kind (see the header of `db/coding-bank.ts` for
+ * the decision). It stays because this function is the product's rule about what
+ * a topic is worth, not this catalogue's, and a rule with a hole in it is the
+ * thing that breaks the day someone adds the kind back.
+ */
 function basePointsFor(topic: DemoTopic): number {
   if (topic.kinds.includes("assignment")) return 150;
   if (topic.kinds.includes("coding")) return 90;
@@ -210,8 +218,12 @@ function wallet(course: DemoCourse): PointsWallet {
     .map((t, i) => {
       const base = basePointsFor(t);
       return {
-        activity_type: t.kinds.includes("coding") ? "coding" : t.kinds.includes("quiz") ? "quiz" : "article",
-        difficulty: t.kinds.includes("coding") ? "hard" : "medium",
+        activity_type: t.kinds.includes("assignment")
+          ? "assignment"
+          : t.kinds.includes("quiz")
+            ? "quiz"
+            : "article",
+        difficulty: t.kinds.includes("assignment") ? "hard" : "medium",
         base,
         after_decay: base,
         correctness_factor: seededInt(`cf:${t.id}`, 70, 100) / 100,
@@ -230,11 +242,15 @@ function wallet(course: DemoCourse): PointsWallet {
     next_tier_threshold: next,
     progress_pct: next ? Math.round((total / next) * 100) : 100,
     by_week: byWeek,
+    // The split follows what this catalogue actually contains: articles and
+    // quizzes on every topic, an assignment on a few. The shares were previously
+    // 34 per cent coding and 8 per cent video, which would have credited an
+    // aspirant with points from two kinds of work that do not exist anywhere in
+    // the nineteen courses.
     by_activity_type: {
-      article: Math.round(total * 0.3),
-      quiz: Math.round(total * 0.28),
-      coding: Math.round(total * 0.34),
-      video: Math.round(total * 0.08),
+      article: Math.round(total * 0.42),
+      quiz: Math.round(total * 0.4),
+      assignment: Math.round(total * 0.18),
     },
     on_time_rate: 0.92,
     recent_events: recent,
@@ -242,6 +258,10 @@ function wallet(course: DemoCourse): PointsWallet {
       expression: "base x difficulty x correctness x on-time, decayed after the due date",
       difficulty_mult: { easy: 1, medium: 1.25, hard: 1.6 },
     },
+    // `quiz_easy` and `coding_hard` are required keys on `PointsWallet` in
+    // lib/types/adaptive-journey.ts, which this module does not own, so the names
+    // stay. The second curve now carries the ASSIGNMENT, the heaviest item this
+    // catalogue really has, rather than a coding problem no course sets.
     decay_curves: {
       quiz_easy: {
         base: 60,
@@ -288,7 +308,7 @@ defineRoutes(MODULE, {
         ? {
             target_rank: Math.max(1, me.rank - 1),
             points_gap: 498,
-            text: "Two coding problems this week would take the next rank.",
+            text: "Clearing the steps left in this week would take the next rank.",
           }
         : null,
     };
@@ -382,12 +402,16 @@ defineRoutes(MODULE, {
         level_label: "Intermediate",
         field_tier: "intermediate",
         ability_index: ability,
-        headline: "You explain your reasoning clearly and recover well when challenged.",
+        headline: "You answer to the point and hold your position when the panel pushes back.",
         summary:
-          "You talked through trade-offs rather than jumping to an answer, and corrected yourself once " +
-          "without prompting. Depth on system design is the area with most room left.",
-        strengths: [{ area: "Communicating trade-offs" }, { area: "Recovering from a wrong turn" }],
-        growth_areas: [{ area: "System design depth" }, { area: "Estimating complexity aloud" }],
+          "You gave the reason before the conclusion rather than reciting a prepared line, and you " +
+          "corrected one wrong date without being prompted. The second follow-up is where answers " +
+          "thin out, which is the area with most room left.",
+        strengths: [{ area: "Answering to the point" }, { area: "Correcting yourself without prompting" }],
+        growth_areas: [
+          { area: "Depth on the second follow-up" },
+          { area: "Grounding an answer in a Telangana example" },
+        ],
         how_ai_helps: [
           "Follow-up questions target the areas you were least certain on.",
           "Sessions get harder as your answers get more complete.",

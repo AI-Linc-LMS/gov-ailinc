@@ -1,14 +1,15 @@
 /**
- * The instructor workspace.
+ * The faculty workspace.
  *
- * An instructor's job is triage: who is falling behind, what needs marking, what
- * is on today. So the seed is built around that — a real at-risk list with real
- * reasons, submissions waiting on review, and a schedule with something live.
- * A dashboard of healthy green numbers shows the layout but not the job.
+ * A faculty member's job is triage: who has stopped turning up, what is waiting
+ * to be marked, what is on today. So the seed is built around that: a real
+ * at-risk list with the reason attached, submissions waiting on review, and a
+ * timetable with a class running now. A screen of healthy green numbers shows
+ * the layout but not the job.
  *
- * Every student here comes from the shared roster, so an instructor looking at
- * "Kabir Deshmukh, 23%, at risk" is looking at the same person the student-side
- * leaderboard ranks.
+ * Every aspirant here comes from the shared roster, so a faculty member looking
+ * at "Srikanth Bandari, 23%, at risk" is looking at the same person the
+ * leaderboard on the aspirant side ranks.
  */
 
 import { defineRoutes } from "../router";
@@ -21,44 +22,66 @@ import {
   type DemoPerson,
 } from "../../db/people";
 import { COURSES } from "../../db/courses";
+import { facultyCode } from "./admin";
 import { nextDemoId } from "../../db/overlay";
+import { DEMO_TENANT } from "../../config";
 import { iso, isoDaysAgo, isoDaysAhead, minutesAgo, nowMs, ymdDaysAgo, ymdDaysAhead } from "../../clock";
 import { seededInt, seededPick } from "../../random";
 
 const MODULE = "instructor";
 
-/** The batch this instructor teaches. */
+/**
+ * The batches this faculty member teaches.
+ *
+ * Named the way the mission names a batch: the notification or trade it
+ * prepares for, the centre that runs it, and the intake it belongs to. An
+ * officer asks for "the Warangal January intake", never for a cohort number,
+ * and a batch whose name does not carry its centre cannot be read on a district
+ * report. Ids 11 to 13 are shared with `admin.ts` and `details.ts`, which
+ * project the same batches for the programme officer, so the three lists must
+ * agree name for name.
+ */
 const COHORTS = [
   {
     id: 11,
-    name: "Autumn 2026 — Full-Stack",
-    courseIds: [201],
+    name: "TGPSC Group-II, Warangal centre, Jan intake",
+    courseIds: [302],
     size: 28,
     status: "active",
   },
   {
     id: 12,
-    name: "Autumn 2026 — Interview Prep",
-    courseIds: [203],
+    name: "TGLPRB Constable, Karimnagar centre, Feb intake",
+    courseIds: [305],
     size: 22,
     status: "active",
   },
   {
     id: 13,
-    name: "Spring 2026 — Full-Stack (graduated)",
-    courseIds: [201],
+    name: "TGPSC Group-II, Warangal centre, Jul intake",
+    courseIds: [302],
     size: 24,
     status: "completed",
   },
 ];
 
-/** Members of a cohort, drawn deterministically from the roster. */
+/**
+ * The courses this faculty member owns, read off the catalogue rather than
+ * counted by hand. The count used to be the literal 2, which stopped being true
+ * the moment the catalogue changed, and a KPI that cannot say what it counted
+ * is the one number on the page nobody can check.
+ */
+function myCourses() {
+  return COURSES.filter((c) => c.instructor.id === INSTRUCTOR_PERSONA.id);
+}
+
+/** Members of a batch, drawn deterministically from the roster. */
 function cohortMembers(cohortId: number, size: number): DemoPerson[] {
   const start = (cohortId - 11) * 20;
   return [...STUDENTS.slice(start, start + size), STUDENT_PERSONA].slice(0, size);
 }
 
-/** Everyone this instructor teaches, deduplicated across their cohorts. */
+/** Everyone this faculty member teaches, deduplicated across their batches. */
 function taughtStudents(): DemoPerson[] {
   const seen = new Map<number, DemoPerson>();
   for (const c of COHORTS) {
@@ -67,10 +90,10 @@ function taughtStudents(): DemoPerson[] {
   return [...seen.values()];
 }
 
-/** Progress for a student, stable per person. */
+/** Syllabus covered, stable per person. */
 function progressOf(p: DemoPerson): number {
   return p.id === STUDENT_PERSONA.id
-    ? COURSES.find((c) => c.id === 201)?.completion ?? 56
+    ? COURSES.find((c) => c.id === 302)?.completion ?? 56
     : seededInt(`iprog:${p.id}`, 8, 96);
 }
 
@@ -92,7 +115,7 @@ function studentRow(p: DemoPerson) {
     avg_score: seededInt(`iscore:${p.id}`, 42, 94),
     points: p.points,
     last_active: isoDaysAgo(seededInt(`ilast:${p.id}`, 0, 9)),
-    cohort: cohort?.name ?? "Unassigned",
+    cohort: cohort?.name ?? "Not in a batch",
     status: statusOf(progress, p.streak),
     courses_count: seededInt(`icc:${p.id}`, 1, 3),
     cohorts_count: 1,
@@ -109,12 +132,12 @@ function statStudent(p: DemoPerson) {
 }
 
 /**
- * The instructor's own schedule.
+ * The faculty member's own timetable.
  *
- * `dayOffset` is signed: negative is the past. Ended sessions matter as much as
- * upcoming ones — they are what fills the Ended tab, the turnout figures and the
- * recording links, and an instructor whose history is empty looks like one who
- * has never taught.
+ * `dayOffset` is signed: negative is the past. Classes that have ended matter as
+ * much as the ones to come. They are what fills the Ended tab, the attendance
+ * figures and the recording links, and a faculty member with no history reads as
+ * one who has never taken a class.
  */
 interface ScheduleRow {
   id: number;
@@ -131,61 +154,61 @@ interface ScheduleRow {
 const SCHEDULE: ScheduleRow[] = [
   {
     id: 501,
-    topic: "Live doubt-clearing: React rendering and effects",
+    topic: "Doubt clearing: the Telangana movement and statehood",
     dayOffset: 0,
     hour: 18,
     status: "live",
-    cohort: "Autumn 2026 — Full-Stack",
+    cohort: "TGPSC Group-II, Warangal centre, Jan intake",
     provider: "meeting",
     recorded: false,
   },
   {
     id: 502,
-    topic: "Workshop: designing a REST API you will not regret",
+    topic: "Revision class: Telangana economy and state schemes",
     dayOffset: 2,
     hour: 19,
     status: "scheduled",
-    cohort: "Autumn 2026 — Full-Stack",
+    cohort: "TGPSC Group-II, Warangal centre, Jan intake",
     provider: "meeting",
     recorded: false,
   },
   {
     id: 504,
-    topic: "Interview prep: talking through a problem out loud",
+    topic: "Written test to physical events: how the constable stages fit together",
     dayOffset: 7,
     hour: 20,
     status: "scheduled",
-    cohort: "Autumn 2026 — Interview Prep",
+    cohort: "TGLPRB Constable, Karimnagar centre, Feb intake",
     provider: "webinar",
     recorded: false,
   },
   {
     id: 497,
-    topic: "State management without a library",
+    topic: "Polity: fundamental rights and the writs",
     dayOffset: -3,
     hour: 18,
     status: "ended",
-    cohort: "Autumn 2026 — Full-Stack",
+    cohort: "TGPSC Group-II, Warangal centre, Jan intake",
     provider: "meeting",
     recorded: true,
   },
   {
     id: 494,
-    topic: "Code review clinic: reading someone else's pull request",
+    topic: "Previous paper walkthrough: general studies, question by question",
     dayOffset: -8,
     hour: 19,
     status: "ended",
-    cohort: "Autumn 2026 — Full-Stack",
+    cohort: "TGPSC Group-II, Warangal centre, Jan intake",
     provider: "meeting",
     recorded: true,
   },
   {
     id: 490,
-    topic: "Mock panel: system design for a URL shortener",
+    topic: "Current affairs revision: state schemes of the last quarter",
     dayOffset: -14,
     hour: 20,
     status: "ended",
-    cohort: "Autumn 2026 — Interview Prep",
+    cohort: "TGLPRB Constable, Karimnagar centre, Feb intake",
     provider: "webinar",
     recorded: false,
   },
@@ -195,14 +218,14 @@ const SCHEDULE: ScheduleRow[] = [
  * A row in the shape `InstructorLiveSession` actually declares.
  *
  * The previous version returned a bare array of loosely-named fields, and the
- * page — which reads `.upcoming` / `.past` / `.past_total` off the response —
+ * page, which reads `.upcoming` / `.past` / `.past_total` off the response,
  * threw and rendered "Couldn't load your live sessions." Same rule as the ticket
  * handler: a wrong shape takes the route down, a missing one only empties it.
  */
 function liveSession(s: ScheduleRow) {
   const ended = s.status === "ended";
   const registered = seededInt(`reg:${s.id}`, 18, 40);
-  // Nobody has "attended" a session that has not happened, so a scheduled row
+  // Nobody has "attended" a class that has not happened, so a scheduled row
   // reports zero and the page hides its turnout block rather than showing 0%.
   const attendance = ended
     ? seededInt(`att:${s.id}`, Math.round(registered * 0.5), Math.round(registered * 0.9))
@@ -230,7 +253,7 @@ function liveSession(s: ScheduleRow) {
     is_google_meet: false,
     cohort_name: s.cohort,
     password: "",
-    // This instructor owns their own schedule, so every row is hostable and
+    // This faculty member owns their own timetable, so every row is hostable and
     // editable. A read-only row would show controls a prospect cannot click.
     hostable: !ended,
     created_by_me: true,
@@ -251,10 +274,13 @@ function dashboard() {
 
   return {
     instructor_name: INSTRUCTOR_PERSONA.full_name,
-    instructor_code: "MIT-VM-04",
+    // The staff code the mission issues, minted in one place (`admin.ts`) so
+    // this dashboard, the staff directory and a batch's staff card cannot print
+    // three different codes for one person.
+    instructor_code: facultyCode(INSTRUCTOR_PERSONA.id),
     is_admin_view: false,
     batches: COHORTS.filter((c) => c.status === "active").length,
-    courses: 2,
+    courses: myCourses().length,
     students: rows.length,
     active_students: rows.filter((r) => r.status !== "at_risk").length,
     avg_progress: avgProgress,
@@ -278,7 +304,7 @@ function dashboard() {
           .map((id) => COURSES.find((x) => x.id === id))
           .filter((x): x is NonNullable<typeof x> => Boolean(x))
           .map((x) => ({ id: x.id, title: x.title })),
-        client_name: "AI Linc",
+        client_name: DEMO_TENANT.name,
         status: c.status,
         end_date: c.status === "completed" ? isoDaysAgo(40) : isoDaysAhead(90),
         student_count: members.length,
@@ -303,9 +329,9 @@ function dashboard() {
         submission_id: 9000 + i,
         student_name: p.full_name,
         assessment_title: seededPick(`sub:${p.id}`, [
-          "Full-Stack Engineering — Mid-Programme Assessment",
-          "Data Structures & Algorithms — Diagnostic",
-          "Python for Data Science — Unit 2 Test",
+          "TGPSC Group-II: mid-programme test",
+          "TGPSC Group-II: foundation diagnostic",
+          "TGLPRB Constable: general studies unit test",
         ]),
         // Two awaiting review, so the gradebook has something to do.
         score: i < 2 ? null : seededInt(`subs:${p.id}`, 48, 96),
@@ -320,8 +346,8 @@ defineRoutes(MODULE, {
   "GET /instructor/api/dashboard/": () => dashboard(),
 
   "GET /instructor/api/overview/": () => ({
-    courses: 2,
-    adaptive_courses: 2,
+    courses: myCourses().length,
+    adaptive_courses: myCourses().length,
     classic_courses: 0,
     cohorts: COHORTS.filter((c) => c.status === "active").length,
     students: taughtStudents().length,
@@ -417,10 +443,10 @@ defineRoutes(MODULE, {
       })),
       recent_activity: Array.from({ length: 5 }, (_, i) => ({
         label: seededPick(`act:${p.id}:${i}`, [
-          "Completed a lesson",
-          "Submitted a coding problem",
-          "Took an adaptive quiz",
-          "Attended a live session",
+          "Read a syllabus topic",
+          "Submitted an assignment",
+          "Took a practice quiz",
+          "Attended a live class",
         ]),
         at: isoDaysAgo(i + 1, 15, 0),
       })),
@@ -428,7 +454,7 @@ defineRoutes(MODULE, {
   },
 
   "POST /instructor/api/students/:studentId/nudge/": () => ({
-    detail: "Nudge sent. The student will see it on their dashboard and by email.",
+    detail: "Reminder sent. The aspirant will see it on their dashboard and by email.",
     sent_at: iso(new Date(nowMs())),
   }),
 
@@ -437,15 +463,15 @@ defineRoutes(MODULE, {
   }),
 
   /**
-   * `InstructorAssessment` — note `duration_minutes` and `pending_grading`.
+   * `InstructorAssessment`, and note `duration_minutes` and `pending_grading`.
    * Both were missing, so the gradebook rendered a bare " min" with no number
    * and reported every paper as "up to date" because `undefined` is falsy.
    */
   "GET /instructor/api/assessments/": () => [
     {
       id: 901,
-      title: "Full-Stack Engineering — Mid-Programme Assessment",
-      slug: "full-stack-mid-programme",
+      title: "TGPSC Group-II: mid-programme test",
+      slug: "tgpsc-group-2-mid-programme",
       is_draft: false,
       duration_minutes: 90,
       submissions: 24,
@@ -455,8 +481,8 @@ defineRoutes(MODULE, {
     },
     {
       id: 903,
-      title: "Python for Data Science — Unit 2 Test",
-      slug: "python-ds-unit-2",
+      title: "TGLPRB Constable: general studies unit test",
+      slug: "tglprb-constable-general-studies-2",
       is_draft: false,
       duration_minutes: 45,
       submissions: 18,
@@ -466,8 +492,8 @@ defineRoutes(MODULE, {
     },
     {
       id: 905,
-      title: "DSA — Weekly problem set 6",
-      slug: "dsa-weekly-6",
+      title: "Current affairs: weekly test 6",
+      slug: "current-affairs-weekly-6",
       is_draft: true,
       duration_minutes: 60,
       submissions: 0,
@@ -477,7 +503,7 @@ defineRoutes(MODULE, {
     },
   ],
 
-  /** `{ upcoming, past, past_total }` — the page destructures all three. */
+  /** `{ upcoming, past, past_total }`: the page destructures all three. */
   "GET /instructor/api/live-sessions/": () => {
     const rows = SCHEDULE.map(liveSession);
     const past = rows
@@ -492,7 +518,7 @@ defineRoutes(MODULE, {
     };
   },
 
-  /** `{ registered, attendance, attendees }` — attendees are `AttendeeRow`. */
+  /** `{ registered, attendance, attendees }`: attendees are `AttendeeRow`. */
   "GET /instructor/api/live-sessions/:sessionId/attendance/": (req) => {
     const id = Number(req.params.sessionId);
     const row = SCHEDULE.find((s) => s.id === id);
@@ -527,7 +553,7 @@ defineRoutes(MODULE, {
     const provider = body.session_type === "webinar" ? ("webinar" as const) : ("meeting" as const);
     const created = liveSession({
       id: nextDemoId("instructor-session"),
-      topic: String(body.topic_name ?? "New session"),
+      topic: String(body.topic_name ?? "New class"),
       dayOffset: 1,
       hour: 18,
       status: "scheduled",
@@ -559,6 +585,6 @@ defineRoutes(MODULE, {
     };
   },
 
-  "DELETE /instructor/api/live-sessions/:sessionId/": () => ({ detail: "Session cancelled" }),
+  "DELETE /instructor/api/live-sessions/:sessionId/": () => ({ detail: "Class cancelled" }),
 
 });

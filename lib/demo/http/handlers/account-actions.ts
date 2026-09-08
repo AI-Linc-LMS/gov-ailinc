@@ -135,136 +135,133 @@ function csvRow(cells: Array<string | number | null>): string {
 // ─────────────────────────── Reference data ────────────────────────────────
 
 /**
- * College master data.
+ * Institution and skill-centre master data.
  *
- * The profile stores the college NAME as free text, so this list is only a
- * source of suggestions. It still has to be long and real: the twelve names the
- * roster already uses are all in here, so a student whose seeded college is
- * "PES University" finds it when they open the picker rather than appearing to
- * have typed something the institution does not recognise.
+ * The profile stores the institution NAME as free text, so this list is only a
+ * source of suggestions. It still has to be long and real: every one of the
+ * twenty-two names `db/people.ts` draws from is in here, spelled identically, so
+ * a trainee whose seeded institution is "Government ITI, Khammam" finds it when
+ * they open the picker rather than appearing to have typed something the mission
+ * does not recognise. If a name is added there, add it here too.
+ *
+ * The field on `DemoPerson` is still called `college`, and this endpoint is still
+ * `/accounts/colleges/`, because both are read in a dozen places and renamed in
+ * none of them. What the list HOLDS is whatever an aspirant is attached to: a
+ * university, a government degree college, a polytechnic, an ITI, a sector
+ * training institute or one of the mission's own district skill centres. A
+ * catalogue of engineering colleges would have quietly told every officer reading
+ * it that this platform is built for a different kind of candidate.
  */
 const COLLEGES: ReadonlyArray<readonly [string, string, string]> = [
-  ["Indian Institute of Technology, Bombay", "Mumbai", "Maharashtra"],
-  ["Indian Institute of Technology, Delhi", "New Delhi", "Delhi"],
-  ["Indian Institute of Technology, Madras", "Chennai", "Tamil Nadu"],
-  ["Indian Institute of Technology, Kanpur", "Kanpur", "Uttar Pradesh"],
-  ["Indian Institute of Technology, Kharagpur", "Kharagpur", "West Bengal"],
-  ["Indian Institute of Technology, Roorkee", "Roorkee", "Uttarakhand"],
-  ["Indian Institute of Technology, Guwahati", "Guwahati", "Assam"],
-  ["Indian Institute of Technology, Hyderabad", "Hyderabad", "Telangana"],
-  ["Indian Institute of Technology, Indore", "Indore", "Madhya Pradesh"],
-  ["Indian Institute of Technology, Gandhinagar", "Gandhinagar", "Gujarat"],
-  ["Indian Institute of Science, Bengaluru", "Bengaluru", "Karnataka"],
-  ["National Institute of Technology, Trichy", "Tiruchirappalli", "Tamil Nadu"],
-  ["National Institute of Technology, Surathkal", "Mangaluru", "Karnataka"],
+  // The twenty-two institutions `db/people.ts` draws from, spelled exactly as it
+  // spells them.
+  ["Osmania University, Hyderabad", "Hyderabad", "Telangana"],
+  ["Kakatiya University, Warangal", "Warangal", "Telangana"],
+  ["Telangana University, Nizamabad", "Nizamabad", "Telangana"],
+  ["Satavahana University, Karimnagar", "Karimnagar", "Telangana"],
+  ["Mahatma Gandhi University, Nalgonda", "Nalgonda", "Telangana"],
+  ["Palamuru University, Mahbubnagar", "Mahbubnagar", "Telangana"],
+  ["Government Polytechnic, Warangal", "Warangal", "Telangana"],
+  ["Government Polytechnic, Karimnagar", "Karimnagar", "Telangana"],
+  ["Government Polytechnic, Mancherial", "Mancherial", "Telangana"],
+  ["Government Polytechnic, Nirmal", "Nirmal", "Telangana"],
+  ["Government ITI, Nizamabad", "Nizamabad", "Telangana"],
+  ["Government ITI, Khammam", "Khammam", "Telangana"],
+  ["Government ITI, Adilabad", "Adilabad", "Telangana"],
+  ["Government Degree College, Siddipet", "Siddipet", "Telangana"],
+  ["Government Degree College, Wanaparthy", "Wanaparthy", "Telangana"],
+  ["Government Degree College for Women, Jagtial", "Jagtial", "Telangana"],
+  ["TSEM Skill Centre, Khammam", "Khammam", "Telangana"],
+  ["TSEM Skill Centre, Suryapet", "Suryapet", "Telangana"],
+  ["TSEM Skill Centre, Vikarabad", "Vikarabad", "Telangana"],
+  ["TSEM Skill Centre, Sangareddy", "Sangareddy", "Telangana"],
+  ["TSEM Skill Centre, Rangareddy", "Rangareddy", "Telangana"],
+  ["TSEM Skill Centre, Bhadradri Kothagudem", "Kothagudem", "Telangana"],
+  // The mission itself, and the centre the faculty persona teaches at.
+  ["Telangana Skills & Employment Mission", "Hyderabad", "Telangana"],
+  ["TSEM Skill Centre, Warangal", "Warangal", "Telangana"],
+  // The rest of the centre network, one per district the mission reports on.
+  ["TSEM Skill Centre, Hyderabad", "Hyderabad", "Telangana"],
+  ["TSEM Skill Centre, Adilabad", "Adilabad", "Telangana"],
+  ["TSEM Skill Centre, Jagtial", "Jagtial", "Telangana"],
+  ["TSEM Skill Centre, Karimnagar", "Karimnagar", "Telangana"],
+  ["TSEM Skill Centre, Mahbubnagar", "Mahbubnagar", "Telangana"],
+  ["TSEM Skill Centre, Mancherial", "Mancherial", "Telangana"],
+  ["TSEM Skill Centre, Nalgonda", "Nalgonda", "Telangana"],
+  ["TSEM Skill Centre, Nirmal", "Nirmal", "Telangana"],
+  ["TSEM Skill Centre, Nizamabad", "Nizamabad", "Telangana"],
+  ["TSEM Skill Centre, Siddipet", "Siddipet", "Telangana"],
+  ["TSEM Skill Centre, Wanaparthy", "Wanaparthy", "Telangana"],
+  // State and open universities, where most aspirants took their degree. The two
+  // open universities matter more than they look: a large share of candidates
+  // sitting a state recruitment graduated through distance education.
+  ["University of Hyderabad", "Hyderabad", "Telangana"],
+  ["Dr. B.R. Ambedkar Open University", "Hyderabad", "Telangana"],
+  ["Indira Gandhi National Open University", "New Delhi", "Delhi"],
+  ["Maulana Azad National Urdu University", "Hyderabad", "Telangana"],
+  ["English and Foreign Languages University", "Hyderabad", "Telangana"],
+  ["Professor Jayashankar Telangana Agricultural University", "Hyderabad", "Telangana"],
+  ["Sri Konda Laxman Telangana Horticultural University", "Hyderabad", "Telangana"],
+  ["Kaloji Narayana Rao University of Health Sciences", "Warangal", "Telangana"],
+  ["Rajiv Gandhi University of Knowledge Technologies, Basar", "Nirmal", "Telangana"],
+  ["Jawaharlal Nehru Technological University, Hyderabad", "Hyderabad", "Telangana"],
+  ["Jawaharlal Nehru Architecture and Fine Arts University", "Hyderabad", "Telangana"],
+  // Government degree colleges across the districts.
+  ["Nizam College, Hyderabad", "Hyderabad", "Telangana"],
+  ["Government City College, Hyderabad", "Hyderabad", "Telangana"],
+  ["University College for Women, Koti", "Hyderabad", "Telangana"],
+  ["Government Degree College, Adilabad", "Adilabad", "Telangana"],
+  ["Government Degree College, Bhadrachalam", "Bhadradri Kothagudem", "Telangana"],
+  ["Government Degree College, Khammam", "Khammam", "Telangana"],
+  ["Government Degree College, Mahbubnagar", "Mahbubnagar", "Telangana"],
+  ["Government Degree College, Nirmal", "Nirmal", "Telangana"],
+  ["Government Degree College, Sangareddy", "Sangareddy", "Telangana"],
+  ["Government Degree College, Suryapet", "Suryapet", "Telangana"],
+  ["Government Degree College, Vikarabad", "Vikarabad", "Telangana"],
+  ["Government Degree College for Women, Karimnagar", "Karimnagar", "Telangana"],
+  ["Government Degree College for Women, Nizamabad", "Nizamabad", "Telangana"],
+  ["Telangana Social Welfare Residential Degree College, Karimnagar", "Karimnagar", "Telangana"],
+  ["Telangana Tribal Welfare Residential Degree College, Bhadrachalam", "Bhadradri Kothagudem", "Telangana"],
+  // Polytechnics and industrial training institutes, which is where the trade
+  // courses recruit from.
+  ["Government Polytechnic, Masab Tank", "Hyderabad", "Telangana"],
+  ["Government Polytechnic, Nalgonda", "Nalgonda", "Telangana"],
+  ["Government Polytechnic, Nizamabad", "Nizamabad", "Telangana"],
+  ["Government Polytechnic, Adilabad", "Adilabad", "Telangana"],
+  ["Government Polytechnic for Women, Hyderabad", "Hyderabad", "Telangana"],
+  ["Government ITI, Hyderabad", "Hyderabad", "Telangana"],
+  ["Government ITI, Warangal", "Warangal", "Telangana"],
+  ["Government ITI, Karimnagar", "Karimnagar", "Telangana"],
+  ["Government ITI, Nalgonda", "Nalgonda", "Telangana"],
+  ["Government ITI, Mahbubnagar", "Mahbubnagar", "Telangana"],
+  ["Government ITI for Women, Hyderabad", "Hyderabad", "Telangana"],
+  // Engineering colleges, for the GATE and PSU track.
   ["National Institute of Technology, Warangal", "Warangal", "Telangana"],
-  ["National Institute of Technology, Calicut", "Kozhikode", "Kerala"],
-  ["National Institute of Technology, Rourkela", "Rourkela", "Odisha"],
-  ["Motilal Nehru National Institute of Technology", "Prayagraj", "Uttar Pradesh"],
-  ["Delhi Technological University", "New Delhi", "Delhi"],
-  ["Netaji Subhas University of Technology", "New Delhi", "Delhi"],
-  ["Indraprastha Institute of Information Technology", "New Delhi", "Delhi"],
-  ["Vellore Institute of Technology", "Vellore", "Tamil Nadu"],
-  ["BITS Pilani", "Pilani", "Rajasthan"],
-  ["BITS Pilani, Hyderabad Campus", "Hyderabad", "Telangana"],
-  ["BITS Pilani, Goa Campus", "Sancoale", "Goa"],
-  ["Manipal Institute of Technology", "Manipal", "Karnataka"],
-  ["PES University", "Bengaluru", "Karnataka"],
-  ["RV College of Engineering", "Bengaluru", "Karnataka"],
-  ["BMS College of Engineering", "Bengaluru", "Karnataka"],
-  ["MS Ramaiah Institute of Technology", "Bengaluru", "Karnataka"],
-  ["Dayananda Sagar College of Engineering", "Bengaluru", "Karnataka"],
-  ["SRM Institute of Science and Technology", "Chennai", "Tamil Nadu"],
-  ["Anna University", "Chennai", "Tamil Nadu"],
-  ["College of Engineering, Guindy", "Chennai", "Tamil Nadu"],
-  ["PSG College of Technology", "Coimbatore", "Tamil Nadu"],
-  ["Thiagarajar College of Engineering", "Madurai", "Tamil Nadu"],
-  ["Amrita Vishwa Vidyapeetham", "Coimbatore", "Tamil Nadu"],
-  ["SSN College of Engineering", "Chennai", "Tamil Nadu"],
-  ["Jadavpur University", "Kolkata", "West Bengal"],
-  ["Institute of Engineering and Management", "Kolkata", "West Bengal"],
-  ["Heritage Institute of Technology", "Kolkata", "West Bengal"],
-  ["College of Engineering, Pune", "Pune", "Maharashtra"],
-  ["Veermata Jijabai Technological Institute", "Mumbai", "Maharashtra"],
-  ["Sardar Patel Institute of Technology", "Mumbai", "Maharashtra"],
-  ["Vishwakarma Institute of Technology", "Pune", "Maharashtra"],
-  ["MIT World Peace University", "Pune", "Maharashtra"],
-  ["Walchand College of Engineering", "Sangli", "Maharashtra"],
-  ["Visvesvaraya National Institute of Technology", "Nagpur", "Maharashtra"],
-  ["Symbiosis Institute of Technology", "Pune", "Maharashtra"],
-  ["Nirma University", "Ahmedabad", "Gujarat"],
-  ["Dharmsinh Desai University", "Nadiad", "Gujarat"],
-  ["Sardar Vallabhbhai National Institute of Technology", "Surat", "Gujarat"],
-  ["Pandit Deendayal Energy University", "Gandhinagar", "Gujarat"],
-  ["Malaviya National Institute of Technology", "Jaipur", "Rajasthan"],
-  ["LNM Institute of Information Technology", "Jaipur", "Rajasthan"],
-  ["Manipal University Jaipur", "Jaipur", "Rajasthan"],
-  ["Thapar Institute of Engineering and Technology", "Patiala", "Punjab"],
-  ["Punjab Engineering College", "Chandigarh", "Chandigarh"],
-  ["Lovely Professional University", "Phagwara", "Punjab"],
-  ["Chandigarh University", "Mohali", "Punjab"],
-  ["Guru Nanak Dev Engineering College", "Ludhiana", "Punjab"],
-  ["Jaypee Institute of Information Technology", "Noida", "Uttar Pradesh"],
-  ["Aligarh Muslim University", "Aligarh", "Uttar Pradesh"],
-  ["Institute of Engineering and Technology, Lucknow", "Lucknow", "Uttar Pradesh"],
-  ["Harcourt Butler Technical University", "Kanpur", "Uttar Pradesh"],
-  ["Banaras Hindu University", "Varanasi", "Uttar Pradesh"],
-  ["Amity University", "Noida", "Uttar Pradesh"],
-  ["Galgotias University", "Greater Noida", "Uttar Pradesh"],
-  ["Bennett University", "Greater Noida", "Uttar Pradesh"],
-  ["Shiv Nadar University", "Greater Noida", "Uttar Pradesh"],
-  ["Jamia Millia Islamia", "New Delhi", "Delhi"],
-  ["Guru Gobind Singh Indraprastha University", "New Delhi", "Delhi"],
+  ["Indian Institute of Technology, Hyderabad", "Sangareddy", "Telangana"],
   ["International Institute of Information Technology, Hyderabad", "Hyderabad", "Telangana"],
-  ["International Institute of Information Technology, Bangalore", "Bengaluru", "Karnataka"],
-  ["Osmania University", "Hyderabad", "Telangana"],
   ["Chaitanya Bharathi Institute of Technology", "Hyderabad", "Telangana"],
   ["Vasavi College of Engineering", "Hyderabad", "Telangana"],
-  ["Jawaharlal Nehru Technological University", "Hyderabad", "Telangana"],
-  ["Vignan's Foundation for Science, Technology and Research", "Guntur", "Andhra Pradesh"],
+  ["Kakatiya Institute of Technology and Science", "Warangal", "Telangana"],
+  ["Osmania University College of Engineering", "Hyderabad", "Telangana"],
+  // Sector training institutes the vocational courses map onto.
+  ["National Institute of Solar Energy", "Gurugram", "Haryana"],
+  ["National Institute of Electronics and Information Technology, Hyderabad", "Hyderabad", "Telangana"],
+  ["Central Institute of Tool Design, Hyderabad", "Hyderabad", "Telangana"],
+  ["National Academy of Construction, Hyderabad", "Hyderabad", "Telangana"],
+  ["National Institute of Fashion Technology, Hyderabad", "Hyderabad", "Telangana"],
+  ["Apparel Training and Design Centre, Hyderabad", "Hyderabad", "Telangana"],
+  ["National Institute of Rural Development and Panchayati Raj", "Hyderabad", "Telangana"],
+  ["Entrepreneurship Development Institute of India", "Ahmedabad", "Gujarat"],
+  ["Rural Self Employment Training Institute, Karimnagar", "Karimnagar", "Telangana"],
+  ["Rural Self Employment Training Institute, Nalgonda", "Nalgonda", "Telangana"],
+  // Neighbouring-state universities that turn up on a Telangana roster.
   ["Andhra University College of Engineering", "Visakhapatnam", "Andhra Pradesh"],
-  ["Koneru Lakshmaiah Education Foundation", "Vijayawada", "Andhra Pradesh"],
-  ["Gandhi Institute of Technology and Management", "Visakhapatnam", "Andhra Pradesh"],
-  ["National Institute of Technology, Andhra Pradesh", "Tadepalligudem", "Andhra Pradesh"],
-  ["Cochin University of Science and Technology", "Kochi", "Kerala"],
-  ["College of Engineering, Trivandrum", "Thiruvananthapuram", "Kerala"],
-  ["Government Engineering College, Thrissur", "Thrissur", "Kerala"],
-  ["Rajagiri School of Engineering and Technology", "Kochi", "Kerala"],
-  ["Birla Institute of Technology, Mesra", "Ranchi", "Jharkhand"],
-  ["Indian Institute of Information Technology, Allahabad", "Prayagraj", "Uttar Pradesh"],
-  ["Indian Institute of Information Technology, Gwalior", "Gwalior", "Madhya Pradesh"],
-  ["Maulana Azad National Institute of Technology", "Bhopal", "Madhya Pradesh"],
-  ["Shri Govindram Seksaria Institute of Technology and Science", "Indore", "Madhya Pradesh"],
-  ["National Institute of Technology, Kurukshetra", "Kurukshetra", "Haryana"],
-  ["Deenbandhu Chhotu Ram University of Science and Technology", "Murthal", "Haryana"],
-  ["The NorthCap University", "Gurugram", "Haryana"],
-  ["Ashoka University", "Sonipat", "Haryana"],
-  ["National Institute of Technology, Silchar", "Silchar", "Assam"],
-  ["Assam Engineering College", "Guwahati", "Assam"],
-  ["National Institute of Technology, Patna", "Patna", "Bihar"],
-  ["Birla Institute of Technology, Patna", "Patna", "Bihar"],
-  ["Indian Institute of Technology, Bhubaneswar", "Bhubaneswar", "Odisha"],
-  ["Kalinga Institute of Industrial Technology", "Bhubaneswar", "Odisha"],
-  ["Silicon Institute of Technology", "Bhubaneswar", "Odisha"],
-  ["National Institute of Technology, Srinagar", "Srinagar", "Jammu and Kashmir"],
-  ["National Institute of Technology, Hamirpur", "Hamirpur", "Himachal Pradesh"],
-  ["AI Linc", "Mumbai", "Maharashtra"],
-  ["Nanyang Technological University", "Singapore", "Singapore"],
-  ["National University of Singapore", "Singapore", "Singapore"],
-  ["University of Melbourne", "Melbourne", "Victoria"],
-  ["University of Toronto", "Toronto", "Ontario"],
-  ["University of Waterloo", "Waterloo", "Ontario"],
-  ["Technical University of Munich", "Munich", "Bavaria"],
-  ["Delft University of Technology", "Delft", "South Holland"],
-  ["University of Manchester", "Manchester", "England"],
-  ["Trinity College Dublin", "Dublin", "Leinster"],
-  ["Khalifa University", "Abu Dhabi", "Abu Dhabi"],
-  ["American University of Sharjah", "Sharjah", "Sharjah"],
-  ["Universiti Teknologi Malaysia", "Johor Bahru", "Johor"],
-  ["University of Nairobi", "Nairobi", "Nairobi"],
-  ["University of Lagos", "Lagos", "Lagos"],
+  ["Acharya Nagarjuna University", "Guntur", "Andhra Pradesh"],
+  ["Sri Venkateswara University", "Tirupati", "Andhra Pradesh"],
+  ["Sri Krishnadevaraya University", "Anantapur", "Andhra Pradesh"],
+  ["Gulbarga University", "Kalaburagi", "Karnataka"],
+  ["Dr. Babasaheb Ambedkar Marathwada University", "Chhatrapati Sambhajinagar", "Maharashtra"],
 ];
-
 /**
  * ISO 3166-1: alpha-2, alpha-3, English short name.
  *
@@ -766,13 +763,22 @@ function resumePdfFor(person: DemoPerson): Blob {
   // Only the three personas have a hand-written profile; everyone else on the
   // roster gets the generated baseline, which carries no skills, experience or
   // projects. Without this the admin resume viewer opened on a nearly blank
-  // page for 44 of the 45 students, which reads as the preview being broken
-  // rather than the student being new.
+  // page for 44 of the 45 people on the roster, which reads as the preview being
+  // broken rather than the aspirant being new.
   if (!p.skills?.length && !p.experience?.length && !p.education?.length) {
+    const institution = person.college || DEMO_TENANT.name;
+
     lines.push({ text: "EDUCATION", bold: true, size: 11, gap: 12 });
-    lines.push({ text: "B.Tech, Computer Science and Engineering", bold: true, size: 10.5, gap: 4 });
+    lines.push({ text: qualificationFor(person, institution), bold: true, size: 10.5, gap: 4 });
+    // Completed in the PAST. The software fork wrote "class of <next year>",
+    // which described a final-year undergraduate; almost nobody on a state
+    // mission roster is one. An aspirant sitting a recruitment exam has already
+    // finished the qualification the notification asks for, and a trade trainee
+    // finished school some years before they walked into a district centre.
     lines.push({
-      text: `${person.college || DEMO_TENANT.name}, class of ${new Date(nowMs()).getUTCFullYear() + 1}`,
+      text: `${institution}, completed ${
+        new Date(nowMs()).getUTCFullYear() - seededInt(`resume:year:${person.id}`, 1, 7)
+      }`,
       size: 10,
     });
 
@@ -797,18 +803,84 @@ function resumePdfFor(person: DemoPerson): Blob {
       lines.push({ text: chunk, size: 10 });
     }
 
-    lines.push({ text: "SELECTED WORK", bold: true, size: 11, gap: 12 });
-    lines.push({
-      text: "Course capstone shipped and reviewed by a AI Linc instructor.",
-      size: 10,
-    });
-    lines.push({
-      text: "Weekly coding practice across arrays, graphs and dynamic programming.",
-      size: 10,
-    });
+    // What the two sections of the catalogue actually produce as evidence. An
+    // exam candidate has a record of timed papers and an error log; a trade
+    // trainee has practical hours signed off at a centre. Printing "course
+    // capstone" and "weekly coding practice" at both, as the software fork did,
+    // described work nobody on this instance has ever done.
+    lines.push({ text: "PREPARATION RECORD", bold: true, size: 11, gap: 12 });
+    if (course.section === "govt-jobs") {
+      lines.push({
+        text: `Sectional tests and full-length papers taken through ${DEMO_TENANT.shortName}, timed to the pattern of the examination.`,
+        size: 10,
+      });
+      lines.push({
+        text: "Previous years' question papers worked through with an error log kept per section.",
+        size: 10,
+      });
+    } else {
+      lines.push({
+        text: `Practical work completed at ${institution} under a mission trainer, with the workshop log signed off.`,
+        size: 10,
+      });
+      lines.push({
+        text: "Assessed on the trade's standard practical tasks at the end of each module.",
+        size: 10,
+      });
+    }
   }
 
   return simplePdf(`${person.full_name} - Resume`, lines);
+}
+
+/**
+ * The qualification line on a generated resume.
+ *
+ * Read off the institution rather than fixed, because this roster is not one
+ * kind of person: a name attached to an ITI did a trade certificate, a name
+ * attached to a polytechnic did a diploma, a name attached to a mission skill
+ * centre most likely finished school and came for the trade, and a name attached
+ * to a university took a degree. Handing all four the same line is what made the
+ * software fork's resumes read as one template with the name swapped.
+ *
+ * Seeded on the person's id, so the same resume prints the same qualification
+ * after a reload.
+ */
+function qualificationFor(person: DemoPerson, institution: string): string {
+  const key = `resume:qual:${person.id}`;
+  if (/\bITI\b/.test(institution)) {
+    return seededPick(key, [
+      "ITI, Electrician trade",
+      "ITI, Fitter trade",
+      "ITI, Electronics Mechanic trade",
+      "ITI, Sewing Technology trade",
+    ]);
+  }
+  if (/Polytechnic/.test(institution)) {
+    return seededPick(key, [
+      "Diploma, Electrical and Electronics Engineering",
+      "Diploma, Mechanical Engineering",
+      "Diploma, Civil Engineering",
+      "Diploma, Electronics and Communication Engineering",
+    ]);
+  }
+  if (/Skill Centre/.test(institution)) {
+    return seededPick(key, [
+      "Intermediate, Commerce",
+      "Intermediate, Maths, Physics and Chemistry",
+      "Tenth standard",
+      "Intermediate, Arts",
+    ]);
+  }
+  return seededPick(key, [
+    "B.A., Political Science",
+    "B.A., History",
+    "B.Com",
+    "B.Sc., Mathematics",
+    "B.Tech, Electrical and Electronics Engineering",
+    "B.Tech, Civil Engineering",
+    "B.Sc., Agriculture",
+  ]);
 }
 
 /** Greedy word wrap. Helvetica is proportional, so this is approximate on purpose. */
@@ -880,7 +952,11 @@ function resetCounts(p: DemoPerson, adaptive: boolean, assessments: boolean) {
     counts.points_wallets = 1;
     counts.ability_models = seededInt(`rst:am:${p.id}`, 2, 9);
     counts.quiz_sessions = seededInt(`rst:qs:${p.id}`, 3, 26);
-    counts.coding_sessions = seededInt(`rst:cs:${p.id}`, 1, 18);
+    // No `coding_sessions` row. `ResetProgressCard` has a label for it, and the
+    // software fork sent one, but this tenant's catalogue has no coding topic at
+    // all (see the header of `db/coding-bank.ts`), so the dialog would have been
+    // promising to delete work that cannot exist. A confirmation dialog is the
+    // last screen that may exaggerate.
     counts.certificates = seededInt(`rst:ct:${p.id}`, 0, 2);
     counts.streaks = p.streak > 0 ? 1 : 0;
     counts.activity_log = seededInt(`rst:al:${p.id}`, 20, 240);
@@ -1003,11 +1079,21 @@ interface BadgeSeed {
  * Criteria are real: each `criteria_json` uses a `type` the badges page knows
  * how to summarise, with the parameter fields that type declares. A badge whose
  * criteria the page cannot read renders as a bare "-" in the Criteria column,
- * which makes the whole table look unconfigured.
+ * which makes the whole table look unconfigured. The seven usable types are
+ * listed in `CRITERIA_TYPES` in app/admin/scorecard/badges/page.tsx.
+ *
+ * Two of them point at other seeds and must be kept in step by hand. The
+ * `skill_score` badge names `skill_id: 701`, which is the first row of
+ * `SKILL_SEEDS` below, and the `course_complete` badge names `course_id: 302`,
+ * which is TGPSC Group-II and Group-III Foundation in `db/courses.ts`. Both were
+ * pointed at rows that no longer exist after the re-content (skill 701 was React
+ * and course 201 was Full-Stack Web Development), and a criteria row aimed at a
+ * missing id is invisible: the page prints the raw JSON and no learner can ever
+ * earn it.
  *
  * `reach` descends deliberately. The first-submission badge is near-universal
  * and the 30-day streak is rare, which is what an award distribution looks like
- * in an institution that has been running for a term.
+ * in a mission that has been running batches for a couple of terms.
  */
 const BADGE_SEEDS: BadgeSeed[] = [
   {
@@ -1036,8 +1122,8 @@ const BADGE_SEEDS: BadgeSeed[] = [
   },
   {
     id: 603,
-    name: "Consistent Five",
-    slug: "consistent-five",
+    name: "Five Papers In",
+    slug: "five-papers-in",
     description: "Completed five assessments across any courses.",
     icon_slug: "mdi:clipboard-check-outline",
     criteria_json: { type: "assessments_completed", count: 5 },
@@ -1060,10 +1146,10 @@ const BADGE_SEEDS: BadgeSeed[] = [
   },
   {
     id: 605,
-    name: "React Practitioner",
-    slug: "react-practitioner",
-    description: "Reached 75% proficiency on the React skill.",
-    icon_slug: "mdi:react",
+    name: "Grounded in General Studies",
+    slug: "grounded-in-general-studies",
+    description: "Reached 75% proficiency on the General Studies skill.",
+    icon_slug: "mdi:book-open-variant",
     criteria_json: { type: "skill_score", skill_id: 701, min: 75 },
     points: 60,
     is_active: true,
@@ -1072,11 +1158,11 @@ const BADGE_SEEDS: BadgeSeed[] = [
   },
   {
     id: 606,
-    name: "Full-Stack Graduate",
-    slug: "full-stack-graduate",
-    description: "Completed every item in Full-Stack Web Development.",
+    name: "Group-II Foundation Complete",
+    slug: "group-2-foundation-complete",
+    description: "Completed every item in TGPSC Group-II and Group-III Foundation.",
     icon_slug: "mdi:school-outline",
-    criteria_json: { type: "course_complete", course_id: 201 },
+    criteria_json: { type: "course_complete", course_id: 302 },
     points: 150,
     is_active: true,
     reach: 0.11,
@@ -1084,8 +1170,8 @@ const BADGE_SEEDS: BadgeSeed[] = [
   },
   {
     id: 607,
-    name: "Top of the Class",
-    slug: "top-of-the-class",
+    name: "Top of the Batch",
+    slug: "top-of-the-batch",
     description: "Overall performance score of 85% or better.",
     icon_slug: "mdi:trophy-outline",
     criteria_json: { type: "overall_score", min: 85 },
@@ -1108,9 +1194,9 @@ const BADGE_SEEDS: BadgeSeed[] = [
   },
   {
     id: 609,
-    name: "Pilot Badge",
-    slug: "pilot-badge",
-    description: "Retired after the pilot cohort. Kept for the learners who hold it.",
+    name: "Pilot Batch",
+    slug: "pilot-batch",
+    description: "Retired after the pilot batch. Kept for the trainees who hold it.",
     icon_slug: "mdi:archive-outline",
     criteria_json: { type: "first_submission" },
     points: 5,
@@ -1928,7 +2014,7 @@ defineRoutes(MODULE, {
       csvRow([
         "Items completed",
         seededInt("pulse:items", 640, 980),
-        "Lessons, quizzes and coding problems marked complete in the range.",
+        "Lessons, quizzes and assignments marked complete in the range.",
       ]),
     );
     rows.push(
@@ -1993,7 +2079,7 @@ defineRoutes(MODULE, {
 
       { text: "SUMMARY", bold: true, size: 11, gap: 14 },
       { text: `Total points: ${me.points.toLocaleString()}`, size: 10.5 },
-      { text: `Cohort rank: ${rank} of ${rankedLearners().length}`, size: 10.5 },
+      { text: `Leaderboard rank: ${rank} of ${rankedLearners().length}`, size: 10.5 },
       { text: `Current streak: ${me.streak} days`, size: 10.5 },
       { text: `Courses enrolled: ${enrolled.length}`, size: 10.5 },
 

@@ -3,19 +3,29 @@
  *
  * Written against the real `Ticket` shape rather than an approximation of it.
  * The earlier version returned a bare array of loosely-shaped objects, and the
- * student ticket page read `data.results` off it and took the page down. Worth
+ * aspirant ticket page read `data.results` off it and took the page down. Worth
  * stating as a rule: for this demo a handler with the WRONG shape is worse than
- * no handler at all — a missing one degrades to an empty state, a wrong one
- * crashes the route.
+ * no handler at all, because a missing one degrades to an empty state and a
+ * wrong one crashes the route.
  *
  * Statuses are the API's uppercase enum (OPEN / IN_PROGRESS / RESOLVED), and the
- * queue carries a genuine spread so the triage columns are not all one colour.
+ * queue carries a genuine spread (three of each) so the triage columns are not
+ * all one colour.
+ *
+ * WHAT THE QUEUE CONTAINS. This is a state skilling and employment mission, so
+ * the tickets are the ones a mission help desk actually receives: a recording
+ * that will not play on a low-end handset, a name misspelt on a certificate, a
+ * category certificate that will not upload, a trainee who cannot reach her
+ * centre on practical day, a bank that returned a loan file, a mock test that
+ * froze mid-paper, and an aspirant asking to change the exam track she enrolled
+ * in. Nothing here is a bootcamp support ticket about a code editor.
  */
 
 import { defineRoutes } from "../router";
 import { notFound } from "../types";
 import {
   ADMIN_PERSONA,
+  FACULTY,
   INSTRUCTOR_PERSONA,
   STUDENTS,
   STUDENT_PERSONA,
@@ -24,6 +34,7 @@ import {
 import { overlay, nextDemoId } from "../../db/overlay";
 import { iso, isoDaysAgo, nowMs } from "../../clock";
 import type {
+  ResolutionHistoryEntry,
   Ticket,
   TicketCategory,
   TicketStatus,
@@ -36,13 +47,42 @@ const MODULE = "tickets";
 type Status = TicketStatus;
 type Category = TicketCategory;
 
+/**
+ * The mission's own six categories, laid over the six category SLUGS the API
+ * ships with.
+ *
+ * `TicketCategory` is a fixed union exported by `lib/services/ticket.service.ts`,
+ * and `TICKET_CATEGORY_OPTIONS` in that same file is what fills the category
+ * dropdown in the Report Issue dialog and the admin filter. Neither is ours to
+ * edit, and the transport contract says exported symbols do not move, so the
+ * slugs stay as they are and only what a ticket DISPLAYS changes:
+ *
+ *   slug          mission category
+ *   technical  →  Technical
+ *   content    →  Course content
+ *   video      →  Certificate
+ *   quiz       →  Enrolment
+ *   navigation →  Skill centre
+ *   other      →  Scheme and other requests
+ *
+ * Three of those pairings (video, quiz, navigation) are arbitrary: there is no
+ * mission meaning to "video" or "navigation", so the leftover categories were
+ * placed on the leftover slugs. `other` deliberately keeps a catch-all reading
+ * in its label, because it is also the fallback the POST route uses when a
+ * ticket arrives with no category at all.
+ *
+ * Until someone re-contents `TICKET_CATEGORY_OPTIONS`, the two dropdowns still
+ * read "Video Help", "Quiz/Assessment Help" and "Navigation Help" while the
+ * rows they filter read "Certificate", "Enrolment" and "Skill centre". That is
+ * the one visible seam, and it closes in that file, not this one.
+ */
 const CATEGORY_LABEL: Record<Category, string> = {
   technical: "Technical",
   content: "Course content",
-  video: "Video playback",
-  quiz: "Quiz",
-  navigation: "Navigation",
-  other: "Other",
+  video: "Certificate",
+  quiz: "Enrolment",
+  navigation: "Skill centre",
+  other: "Scheme and other requests",
 };
 
 export const STATUS_LABEL: Record<Status, string> = {
@@ -61,6 +101,24 @@ export function userMini(p: DemoPerson) {
   };
 }
 
+/**
+ * The batches a ticket can belong to.
+ *
+ * `cohort_name` is a column in the admin queue and a chip on the ticket detail
+ * page, so it is per-seed rather than one constant on every row: a solar trainee
+ * at Nizamabad filed under a Group-II batch is the kind of detail an evaluator
+ * notices. A candidate who has not been placed in a batch yet carries `null`,
+ * which the `Ticket` type documents and the queue renders as a dash.
+ *
+ * The ids match the cohort ids the admin, instructor and cohort-detail handlers
+ * use, so a ticket and a batch page never disagree about which batch id 11 is.
+ */
+const BATCHES: Record<number, string> = {
+  11: "Group-II Foundation 2026, Warangal centre",
+  12: "Solar PV Installer Batch 7, Nizamabad centre",
+  13: "Micro-Enterprise Batch 4, Khammam centre",
+};
+
 interface Seed {
   id: number;
   category: Category;
@@ -69,99 +127,192 @@ interface Seed {
   status: Status;
   by: DemoPerson;
   assigned?: DemoPerson;
+  /** Batch id from `BATCHES`, or omitted for someone not yet in a batch. */
+  cohort?: number;
+  /** Days before today the ticket was raised. Also drives every other stamp. */
   daysAgo: number;
+  /** The resolution showing now. Only read when `status` is RESOLVED. */
   resolution?: string;
-  /** Was reopened at least once — the `reopened` filter selects on this. */
-  reopened?: boolean;
+  /**
+   * A resolution the raiser did not accept, and what they said when they
+   * reopened. Present only on a ticket that has been round the loop once, and
+   * it is what the `reopened` filter and the reopened chip select on.
+   */
+  reopen?: { priorResolution: string; details: string };
 }
 
+/**
+ * Ids descend with age, so the newest ticket carries the highest number. Nothing
+ * reads them, but a queue where the ordering of the id column contradicts the
+ * ordering of the date column looks like two unrelated datasets.
+ */
 const SEEDS: Seed[] = [
+  {
+    id: 4840,
+    category: "quiz",
+    subject: "Request to move from the Group-II track to SSC CGL",
+    description:
+      "I enrolled on the Group-II and Group-III foundation track when this batch started and I have kept up with it. I now want to prepare for SSC CGL alongside it, and the two timetables clash on Tuesday and Thursday. Can my enrolment be moved to the SSC track without losing the progress I already have?",
+    status: "OPEN",
+    by: STUDENT_PERSONA,
+    cohort: 11,
+    daysAgo: 0,
+  },
   {
     id: 4831,
     category: "content",
-    subject: "Cannot submit the module 3 coding problem",
+    subject: "Answer key marks two different options in the Telangana movement set",
     description:
-      "Run passes all the visible cases but Submit reports two hidden cases failing, and I cannot see which ones. Is that expected?",
+      "In the practice set on the Telangana movement, question 14 accepts only the second option, but the explanation printed under it argues for the fourth. One of the two is wrong and I would like to know which before I revise from these notes.",
     status: "OPEN",
     by: STUDENTS[3],
     assigned: INSTRUCTOR_PERSONA,
+    cohort: 11,
     daysAgo: 1,
   },
   {
-    id: 4821,
+    id: 4826,
     category: "video",
-    subject: "Lesson video buffers constantly on college wifi",
+    subject: "Category certificate upload fails every time",
     description:
-      "The React module video pauses every few seconds on campus. It is fine at home, so it may be our network, but flagging it in case others hit it.",
-    status: "IN_PROGRESS",
-    by: STUDENT_PERSONA,
-    assigned: ADMIN_PERSONA,
-    daysAgo: 3,
-  },
-  {
-    id: 4805,
-    category: "quiz",
-    subject: "Quiz timer kept running after I submitted",
-    description:
-      "I submitted with about 40 seconds left and the timer carried on counting down on the results screen.",
-    status: "RESOLVED",
-    by: STUDENTS[11],
-    assigned: ADMIN_PERSONA,
-    daysAgo: 7,
-    resolution:
-      "Reproduced and fixed. The countdown was not being cleared on submit; it now stops the moment the paper is handed in. Your score was recorded correctly.",
-  },
-  {
-    id: 4788,
-    category: "other",
-    subject: "Certificate shows my name without the middle initial",
-    description: "Can that be corrected before I share it on LinkedIn?",
-    status: "RESOLVED",
-    by: STUDENT_PERSONA,
-    assigned: ADMIN_PERSONA,
-    daysAgo: 12,
-    resolution:
-      "Updated your profile name and reissued the certificate. The share link is unchanged, so anything you have already posted now shows the corrected name.",
-  },
-  {
-    id: 4776,
-    category: "navigation",
-    subject: "Resume button on the dashboard opens the wrong lesson",
-    description: "It takes me to the first lesson of the module rather than the one I stopped at.",
+      "I have tried uploading my category certificate six times, twice from the centre computer and four times from my phone. The page shows the file name, then comes back to the same screen with no message, and the document list stays empty. The scan is two pages and a little under 3 MB.",
     status: "OPEN",
     by: STUDENTS[19],
     daysAgo: 2,
   },
-  // The signed-in student needs a ticket in EVERY status, or the status tabs on
-  // their own page look identical no matter which one is selected.
   {
-    id: 4840,
+    id: 4821,
     category: "technical",
-    subject: "Coding editor loses my work when I switch language",
+    subject: "Recorded class will not play on my phone",
     description:
-      "I had a working solution in Python, switched the dropdown to JavaScript to compare, and switching back gave me the empty template again.",
-    status: "OPEN",
+      "The recording of last week's polity class plays for a few seconds and then stops on a black screen. It plays properly on the centre computer, so it may be my handset, which is an older Android with 2 GB of memory. Is there a lower quality option, or a download I can watch offline?",
+    status: "IN_PROGRESS",
     by: STUDENT_PERSONA,
-    daysAgo: 0,
+    assigned: ADMIN_PERSONA,
+    cohort: 11,
+    daysAgo: 3,
+  },
+  {
+    id: 4818,
+    category: "navigation",
+    subject: "Cannot reach the Nizamabad centre on practical day, asking for a batch transfer",
+    description:
+      "The practicals are on Wednesday and the first bus from my mandal reaches Nizamabad after eleven, so I miss the first hour every week. If there is a Saturday batch at the same centre, or any batch at Armoor, please move me to it. I do not want to lose the practical hours before the assessment.",
+    status: "IN_PROGRESS",
+    by: STUDENTS[4],
+    assigned: ADMIN_PERSONA,
+    cohort: 12,
+    daysAgo: 4,
   },
   {
     id: 4812,
-    category: "quiz",
-    subject: "Hint counter did not go down after I used one",
+    category: "other",
+    subject: "Bank returned my MUDRA file, the project report was not accepted",
     description:
-      "Spent a hint on the sliding-window quiz and it still showed 3 left afterwards. Not a problem, just looked wrong.",
+      "The branch has sent my application back saying the project report does not show working capital separately from the machinery cost, and that the repayment schedule does not match the production plan. I used the template from the finance module. Can the trainer go through the report with me before I submit it again?",
+    status: "IN_PROGRESS",
+    by: STUDENTS[25],
+    assigned: FACULTY[3],
+    cohort: 13,
+    daysAgo: 5,
+  },
+  {
+    id: 4805,
+    category: "technical",
+    subject: "Mock test froze at question 40 and the timer kept running",
+    description:
+      "The paper stopped responding at question 40 of the Group-II prelims mock. The clock carried on and I lost about eleven minutes before the screen came back. The attempt is on the board but the score is not what I would have finished with.",
+    status: "RESOLVED",
+    by: STUDENTS[11],
+    assigned: ADMIN_PERSONA,
+    cohort: 11,
+    daysAgo: 7,
+    resolution:
+      "Reproduced on a slow connection. The paper fetches questions in blocks of twenty and gave no sign that it was waiting for the next block, while the clock kept counting. The clock now pauses while a block loads and the paper shows that it is fetching. Your attempt has been reset so you can take the paper again, and the earlier score has been removed from the board.",
+  },
+  {
+    id: 4795,
+    category: "content",
+    subject: "Two Paper-III topics are missing from the Group-II plan",
+    description:
+      "The Group-II syllabus puts both the Telangana economy and the state's development programmes under Paper-III, but the plan only covers the economy topics. Nothing on the development programmes appears anywhere in the module list.",
     status: "RESOLVED",
     by: STUDENT_PERSONA,
     assigned: INSTRUCTOR_PERSONA,
+    cohort: 11,
     daysAgo: 9,
+    reopen: {
+      priorResolution:
+        "You are right, the development programmes unit was written but never attached to the module. It is now the last unit of Paper-III and is unlocked for everyone already on the plan.",
+      details:
+        "The unit is listed now and the four articles open, but the quiz at the end of it loads with no questions in it.",
+    },
     resolution:
-      "Good catch. The counter was reading the value from before the spend; it now updates in the same response that returns the hint.",
-    reopened: true,
+      "The unit was attached without its question set, which is why the quiz opened empty. Thirty questions are now loaded against it and the quiz has been checked end to end. Nothing you have already completed on Paper-III was affected.",
+  },
+  {
+    id: 4788,
+    category: "video",
+    subject: "Surname spelt Machela on my certificate instead of Macherla",
+    description:
+      "The certificate issued at the end of the foundation course at the Warangal centre reads Sandhya Machela. My name is spelt Macherla on my identity documents and on my application. Can it be corrected before I attach it to a recruitment application?",
+    status: "RESOLVED",
+    by: STUDENT_PERSONA,
+    assigned: ADMIN_PERSONA,
+    cohort: 11,
+    daysAgo: 12,
+    resolution:
+      "Corrected on your profile and the certificate has been reissued against the same verification number, so any link you have already shared now opens the corrected copy. The certificate takes the name from your profile, so please check the spelling there once before your next course completes.",
   },
 ];
 
+/**
+ * Every timestamp on a ticket, derived from the single `daysAgo` the seed
+ * carries so the whole queue ages together and never goes stale.
+ *
+ * A reopened ticket needs four points in order (raised, resolved, reopened,
+ * resolved again). They used to be computed inline as `daysAgo - 2` and
+ * `daysAgo - 4`, which put the current resolution two days BEFORE the reopen it
+ * was written in answer to, so the thread told its story backwards.
+ */
+function timeline(s: Seed) {
+  const back = (days: number, hour: number, minute: number) =>
+    isoDaysAgo(Math.max(0, days), hour, minute);
+  const created = back(s.daysAgo, 9, 15);
+  const assigned = s.assigned ? back(s.daysAgo, 10, 0) : null;
+  const priorResolved = s.reopen ? back(s.daysAgo - 2, 16, 30) : null;
+  const reopened = s.reopen ? back(s.daysAgo - 4, 11, 0) : null;
+  const resolved =
+    s.status === "RESOLVED" ? back(s.daysAgo - (s.reopen ? 6 : 2), 16, 30) : null;
+  // Whatever happened last. Read as "last updated" in the aspirant's own list,
+  // which used to show a ticket updated a day BEFORE it was resolved.
+  const updated = resolved ?? reopened ?? assigned ?? created;
+  return { created, assigned, priorResolved, reopened, resolved, updated };
+}
+
 function toTicket(s: Seed): Ticket {
+  const t = timeline(s);
   const resolved = s.status === "RESOLVED";
+  /**
+   * PAST resolutions only, which is what the field's type says and what
+   * `TicketThread` assumes: it renders every history entry as "Response #n" and
+   * then renders `admin_resolution_notes` again underneath as "Latest response".
+   * The seed used to put the current resolution in both, so every resolved
+   * ticket printed the same paragraph twice with a gap between the copies.
+   */
+  const history: ResolutionHistoryEntry[] = s.reopen
+    ? [
+        {
+          notes: s.reopen.priorResolution,
+          attachments: [],
+          resolved_by_id: s.assigned?.id ?? null,
+          resolved_by_name: s.assigned?.full_name ?? null,
+          resolved_by_email: s.assigned?.email ?? null,
+          resolved_at: t.priorResolved,
+        },
+      ]
+    : [];
+
   return {
     id: s.id,
     category: s.category,
@@ -170,47 +321,41 @@ function toTicket(s: Seed): Ticket {
     description: s.description,
     status: s.status,
     status_display: STATUS_LABEL[s.status],
+    // Attachments stay empty on purpose. The shape is a list of URLs and the
+    // list component fetches image URLs on render and opens everything else in a
+    // new tab, so a made-up file path would either show a broken thumbnail or
+    // send an evaluator to a 404. There is no bundled placeholder file to point
+    // at, and the demo has to run offline.
     user_attachments: [],
-    admin_resolution_notes: s.resolution ?? "",
+    admin_resolution_notes: resolved ? (s.resolution ?? "") : "",
     admin_attachments: [],
     course_id: null,
     content_id: null,
     page_url: "/dashboard",
     raised_by: userMini(s.by),
     resolved_by_user: resolved && s.assigned ? userMini(s.assigned) : null,
-    cohort: 11,
-    cohort_name: "Autumn 2026: Full-Stack",
+    cohort: s.cohort ?? null,
+    cohort_name: s.cohort ? BATCHES[s.cohort] : null,
     assigned_to_user: s.assigned ? userMini(s.assigned) : null,
     // null assigner with an assignee means the system auto-routed it, which is
     // the real product's convention and worth showing in the triage column.
     assigned_by_user: s.assigned ? userMini(ADMIN_PERSONA) : null,
-    assigned_at: s.assigned ? isoDaysAgo(s.daysAgo, 10, 0) : null,
-    resolved_at: resolved ? isoDaysAgo(Math.max(0, s.daysAgo - 2), 16, 30) : null,
-    reopened_at: s.reopened ? isoDaysAgo(Math.max(0, s.daysAgo - 4), 11, 0) : null,
-    resolution_history: resolved && s.resolution
+    assigned_at: t.assigned,
+    resolved_at: t.resolved,
+    reopened_at: t.reopened,
+    resolution_history: history,
+    reopen_history: s.reopen
       ? [
           {
-            notes: s.resolution,
+            details: s.reopen.details,
             attachments: [],
-            resolved_by_id: s.assigned?.id ?? null,
-            resolved_by_name: s.assigned?.full_name ?? null,
-            resolved_by_email: s.assigned?.email ?? null,
-            resolved_at: isoDaysAgo(Math.max(0, s.daysAgo - 2), 16, 30),
-          },
-        ]
-      : [],
-    reopen_history: s.reopened
-      ? [
-          {
-            details: "Happened again on a different quiz, reopening.",
-            attachments: [],
-            reopened_at: isoDaysAgo(Math.max(0, s.daysAgo - 4), 11, 0),
+            reopened_at: t.reopened as string,
             by: "user" as const,
           },
         ]
       : [],
-    created_at: isoDaysAgo(s.daysAgo, 9, 15),
-    updated_at: isoDaysAgo(Math.max(0, s.daysAgo - 1), 11, 0),
+    created_at: t.created,
+    updated_at: t.updated,
   };
 }
 
@@ -225,9 +370,9 @@ function visitorTickets(): Ticket[] {
  * Kept as a patch rather than a copy of the whole row because the seed is
  * regenerated on every load so its dates stay relative to today (see
  * `lib/demo/clock.ts`). Storing a resolved ticket wholesale would freeze its
- * `created_at` at the moment the salesperson clicked Resolve, and a week later
- * the queue would show a ticket raised "7 days ago" that is really the one they
- * just touched. A patch layers the change over a seed that is still current.
+ * `created_at` at the moment the visitor clicked Resolve, and a week later the
+ * queue would show a ticket raised "7 days ago" that is really the one they just
+ * touched. A patch layers the change over a seed that is still current.
  */
 type TicketPatch = Partial<Ticket>;
 const PATCH_KEY = "tickets:triage";
@@ -279,7 +424,7 @@ type TicketRow = Ticket;
 /**
  * Apply the filters the page sends.
  *
- * These were ignored, so every status tab rendered the same list — the page
+ * These were ignored, so every status tab rendered the same list: the page
  * looked like it had stale data when it was really being handed the same
  * unfiltered rows each time.
  */
@@ -313,10 +458,10 @@ function page(rows: TicketRow[], req: { query: URLSearchParams }) {
 }
 
 defineRoutes(MODULE, {
-  /** `{ count, page, limit, results }` — the page reads `.results`. */
+  /** `{ count, page, limit, results }`: the page reads `.results`. */
   "GET /api/clients/:clientId/tickets/my/": (req) => page(mine(), req),
 
-  /** Instructor queue is a bare array, not an envelope. Deliberately different. */
+  /** Faculty queue is a bare array, not an envelope. Deliberately different. */
   "GET /api/clients/:clientId/tickets/instructor/": (req) =>
     applyFilters(
       allTickets().filter((t) => t.assigned_to_user?.id === INSTRUCTOR_PERSONA.id),
@@ -341,6 +486,8 @@ defineRoutes(MODULE, {
 
   "POST /api/clients/:clientId/tickets/": (req) => {
     const body = (req.body ?? {}) as Record<string, unknown>;
+    // `other` is the fallback rather than a guess at what the aspirant meant.
+    // Its label reads "Scheme and other requests" for exactly this reason.
     const category = (String(body.category ?? "other") as Category) ?? "other";
     const ticket = {
       ...toTicket({
@@ -350,6 +497,7 @@ defineRoutes(MODULE, {
         description: String(body.description ?? ""),
         status: "OPEN",
         by: STUDENT_PERSONA,
+        cohort: 11,
         daysAgo: 0,
       }),
       created_at: iso(new Date(nowMs())),

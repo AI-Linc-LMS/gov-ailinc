@@ -3,17 +3,26 @@
  * a course, plus the learner-facing content routes those edits feed.
  *
  * The organising idea is a single OVERLAY-BACKED TREE laid over the seeded
- * catalogue. Nothing here keeps a second copy of the five courses in
+ * catalogue. Nothing here keeps a second copy of the nineteen courses in
  * `lib/demo/db/courses.ts`; instead the seed is projected into editable rows, and
  * the visitor's creations, patches and deletions are layered on top at read time.
- * That is what makes the round trips honest: a module added to the seeded
- * Full-Stack course appears in the builder tree, in the legacy admin module list
- * and on the learner's course page, because all three read the same projection.
+ * That is what makes the round trips honest: a module added to the seeded TGPSC
+ * Group-II course appears in the builder tree, in the legacy admin module list
+ * and on the aspirant's course page, because all three read the same projection.
  *
  * The rule this module exists to satisfy: a create that does not show up in the
  * following GET is a worse lie than an error. So every POST writes to the overlay
  * and every list reads it back, including deletes of SEEDED rows (recorded as
  * tombstones, since the seed itself is immutable and regenerated each load).
+ *
+ * The second half of the file is the COURSE GENERATOR: the screen where a
+ * programme officer describes a course ("a 6 week course for TGPSC Group-II
+ * aspirants on the Telangana movement", "a 40 hour rooftop solar installer
+ * course for an ITI batch in Warangal") and watches weeks, topics, articles and
+ * quizzes assemble before publishing. It plans from a blueprint per track rather
+ * than from a language model, which is what keeps it accurate to the real
+ * syllabus and trade instead of plausible-sounding, and it never emits a coding
+ * exercise. See the TRACKS table for why.
  *
  * Two id conventions matter here.
  *  - Content ids for seeded topics reuse the namespaces `adaptive-courses.ts`
@@ -21,6 +30,8 @@
  *    video + 400k, assignment + 500k). Reusing them rather than inventing a
  *    parallel set is what lets the legacy lesson page and the adaptive lesson
  *    page open the SAME article and agree on whether it is finished.
+ *    No seeded topic in this catalogue declares `coding` or `video`, so those
+ *    two namespaces are reserved and unused rather than removed.
  *  - Everything the visitor creates draws from one `nextDemoId("builder")`
  *    sequence, so a module id can never be mistaken for a submodule id when a
  *    route takes both.
@@ -39,13 +50,12 @@ import {
 } from "../../db/courses";
 import { articleBody } from "../../db/article-content";
 import { QUIZ_BANK, bankForTopic, type DemoMcq } from "../../db/quiz-bank";
-import { CODING_PROBLEMS, problemAt } from "../../db/coding-bank";
 import { INSTRUCTOR_PERSONA, STUDENT_PERSONA, STUDENTS } from "../../db/people";
 import { DEMO_CLIENT_ID, DEMO_TENANT } from "../../config";
 import { clientInfo } from "../../db/tenant";
 import { overlay, nextDemoId } from "../../db/overlay";
 import { iso, isoDaysAgo, nowMs } from "../../clock";
-import { seededInt, seededPick } from "../../random";
+import { seededInt, seededPick, seededSample } from "../../random";
 import { ARTICLE_ID, CODING_ID, QUIZ_ID, VIDEO_ID, conceptsFor } from "./adaptive-courses";
 
 const MODULE = "course-builder";
@@ -280,6 +290,20 @@ function slugify(title: string): string {
   );
 }
 
+/**
+ * The part of a course title a human would say out loud.
+ *
+ * Catalogue titles carry their scope after a colon or an ampersand ("TGPSC
+ * Group-II & Group-III Foundation", "Solar PV Installer & Rooftop Technician"),
+ * which is right on a card and far too long inside a sentence or on a batch
+ * chip. Falls back to the whole title rather than to an empty string, because a
+ * blank chip is worse than a long one.
+ */
+function shortCourseName(title: string): string {
+  const head = title.split(":")[0].split("&")[0].trim();
+  return head.length >= 4 ? head : title.trim();
+}
+
 /* ─────────────────────────────────────────────────────── projecting the seed */
 
 /** Reverse lookups for the seed, built once. Cheap, and it keeps every route O(1). */
@@ -308,12 +332,7 @@ function seedCourseRow(c: DemoCourse): BuilderCourse {
     description: c.description,
     slug: c.slug,
     difficulty_level: c.difficulty,
-    target_audience:
-      c.difficulty === "Beginner"
-        ? "Newcomers with no prior background"
-        : c.difficulty === "Advanced"
-          ? "Engineers preparing for senior or product-company interviews"
-          : "Learners with some programming experience",
+    target_audience: audienceFor(c),
     duration_weeks: c.modules.length * 2,
     duration_in_hours: c.durationHours,
     tags: [...c.tags],
@@ -338,6 +357,32 @@ function seedCourseRow(c: DemoCourse): BuilderCourse {
   };
 }
 
+/**
+ * Who a seeded course is for, in the tenant's own vocabulary.
+ *
+ * Read off the category rather than the difficulty alone. An Advanced course
+ * here is a candidate sitting a recruitment exam for the second time, not an
+ * engineer preparing for a product-company interview, and this string is shown
+ * word for word on the builder's course settings page and on the generated
+ * course's brief.
+ */
+function audienceFor(c: DemoCourse): string {
+  switch (c.category) {
+    case "state-central-psu":
+      return c.difficulty === "Advanced"
+        ? "Aspirants sitting the notification again, working on the marks lost in the mains papers"
+        : "Aspirants preparing for state, central, railway or public undertaking recruitment";
+    case "banking":
+      return c.difficulty === "Advanced"
+        ? "Candidates who have cleared a prelims before and are now working on mains and the interview"
+        : "Candidates preparing for banking and financial sector recruitment";
+    case "rural-employment-vocational":
+      return "Trainees at a district skill centre, and ITI students taking this trade as an add-on";
+    case "rural-entrepreneurship":
+      return "Self help group members and first time entrepreneurs running a unit in their own mandal";
+  }
+}
+
 function seedModuleRow(c: DemoCourse, m: DemoModule, index: number): BuilderModule {
   return { id: m.id, course: c.id, title: m.title, description: m.summary, weekno: index + 1 };
 }
@@ -347,7 +392,10 @@ function seedSubmoduleRow(m: DemoModule, t: DemoTopic, order: number): BuilderSu
     id: t.id,
     module: m.id,
     title: t.title,
-    description: `Work through ${t.title.toLowerCase()} and prove it with practice.`,
+    // The title is NOT lower-cased into the sentence. This catalogue is full of
+    // proper nouns (Mulki rules, Kakatiya, MUDRA, ONDC, Group-II) and lowering
+    // them printed "work through mulki rules" on every topic card.
+    description: `Work through ${t.title}, then answer the practice questions on it.`,
     order,
   };
 }
@@ -390,11 +438,11 @@ function labelForContent(topicTitle: string, type: ContentType): string {
     case "Article":
       return topicTitle;
     case "Quiz":
-      return `${topicTitle}: check your understanding`;
+      return `${topicTitle}: practice questions`;
     case "CodingProblem":
       return `${topicTitle}: practice problem`;
     case "Assignment":
-      return `${topicTitle}: submitted work`;
+      return `${topicTitle}: work to submit`;
     case "VideoTutorial":
       return `${topicTitle}: walkthrough`;
   }
@@ -547,16 +595,17 @@ function seededAttachments(): BuilderAttachment[] {
     if (!firstTopic) return null;
     const contentId = seedContentId(firstTopic, firstTopic.kinds[0]);
     const text = [
-      `${course.title}: how to work through this track`,
+      `${course.title}: how to work through this course`,
       "",
       ...course.modules.map((m, i) => `Week ${i + 1}. ${m.title} - ${m.summary}`),
       "",
-      "Before each session:",
-      "1. Read the lesson article and note the two ideas you are least sure about.",
-      "2. Attempt the practice before reading the worked solution.",
-      "3. Bring one question to the live session. The best ones start with 'why'.",
+      "How to use each week:",
+      "1. Read the article once, then write down the two points you are least sure of.",
+      "2. Attempt the practice questions before you open the explanations.",
+      "3. Read the explanation on every question you got wrong, and on the ones you guessed.",
+      "4. Bring one doubt to the live session, naming the point you got stuck on.",
       "",
-      `Certificate threshold: ${course.certificateThreshold}% across the track.`,
+      `Certificate threshold: ${course.certificateThreshold}% across the course.`,
     ].join("\n");
     return {
       id: 600_000 + course.id,
@@ -661,9 +710,9 @@ function fileOf(body: unknown, key = "file"): File | null {
  * The payload behind one content row.
  *
  * A visitor-created item is stored verbatim; a seeded one is generated from the
- * same sources the adaptive surfaces use (the authored article bodies, the MCQ
- * bank, the runnable coding problems), so the legacy lesson page and the adaptive
- * lesson page show the same lesson rather than two different ones.
+ * same sources the adaptive surfaces use (the authored article bodies and the MCQ
+ * bank), so the legacy lesson page and the adaptive lesson page show the same
+ * lesson rather than two different ones.
  */
 function contentDetails(content: BuilderContent): Record<string, unknown> {
   const stored = state().items[String(content.content_id)];
@@ -706,51 +755,54 @@ function contentDetails(content: BuilderContent): Record<string, unknown> {
         id: content.content_id,
         title: content.title,
         instructions:
-          "One attempt per sitting, no negative marking. Read the explanation on every question you get wrong, including the ones you guessed right.",
+          "Four options, one correct. There is no negative marking in this practice set, so attempt every question. Read the explanation on each one you get wrong, and on each one you guessed right.",
         durating_in_minutes: 15,
         difficulty_level: course.difficulty,
         mcqs: bank.map(publicMcq),
       };
     }
-    case "CodingProblem": {
-      const problem = problemAt(topic.id);
+    case "CodingProblem":
+      // Unreachable for seeded content, and deliberately inert.
+      //
+      // No topic in this catalogue declares a `coding` kind and the generator
+      // refuses to create one, because this product line has no code judge. The
+      // only way to arrive here is a legacy row whose content object was never
+      // written. Answering with a generic algorithm question out of the software
+      // bank would be the single most obvious tell that the catalogue was ported
+      // from a software LMS, so it answers with the truth instead.
       return {
         id: content.content_id,
-        title: problem.title,
-        problem_statement: problem.statement,
-        difficulty_level: problem.difficulty,
-        input_format: problem.inputFormat,
-        output_format: problem.outputFormat,
-        sample_input: problem.sampleInput,
-        sample_output: problem.sampleOutput,
-        constraints: problem.constraints,
-        test_cases: problem.tests
-          .filter((t) => !t.hidden)
-          .map((t) => ({ input: JSON.stringify(t.args), expected_output: JSON.stringify(t.expected) })),
-        template_code: problem.templates,
-        time_limit: 5,
-        memory_limit: 256,
-        tags: problem.skills.join(", "),
+        title: content.title,
+        problem_statement:
+          "<p>This instance does not run a code judge, so there is no programming exercise behind this item.</p>",
+        difficulty_level: course.difficulty,
+        input_format: "",
+        output_format: "",
+        sample_input: "",
+        sample_output: "",
+        constraints: "",
+        test_cases: [],
+        template_code: {},
       };
-    }
     case "Assignment":
       return {
         id: content.content_id,
         title: content.title,
         difficulty_level: course.difficulty,
         question:
-          `Apply ${topic.title.toLowerCase()} to a problem of your own choosing and write it up. ` +
-          "Submit the working code or artefact, plus a short note covering the approach you took, " +
-          "one decision you reversed, and how you know it works. The write-up carries as many marks " +
-          "as the artefact.",
-        description: `Submitted work for ${topic.title.toLowerCase()}.`,
+          `Write about a page on ${topic.title}, in your own words. ` +
+          "State the point in two lines, then set out the reasoning or the procedure behind it, " +
+          "and finish with one example you have seen yourself, in your district or at your centre. " +
+          "Handwritten pages photographed and uploaded are accepted; your faculty marks the " +
+          "reasoning, not the handwriting.",
+        description: `Work to submit for ${topic.title}.`,
       };
     case "VideoTutorial":
       return {
         id: content.content_id,
         title: content.title,
         video_url: "",
-        description: `Walkthrough of ${topic.title.toLowerCase()}.`,
+        description: `Walkthrough of ${topic.title}.`,
         difficulty_level: course.difficulty,
       };
   }
@@ -1144,7 +1196,7 @@ function seededComments(contentId: number): LessonComment[] {
   return [
     {
       id: contentId * 10 + 1,
-      text: "Watched this twice and the second pass was the one that landed. The worked example about halfway through is the part worth slowing down for.",
+      text: "I read this twice and the second pass was the one that landed. The worked example about halfway down is the part worth copying into your own notes.",
       created_at: isoDaysAgo(seededInt(`cmt:a:${contentId}`, 3, 20), 20, 15),
       user_profile: {
         id: asker.id,
@@ -1154,7 +1206,7 @@ function seededComments(contentId: number): LessonComment[] {
     },
     {
       id: contentId * 10 + 2,
-      text: "If you get stuck on the last step, re-read the paragraph on ordering. It answers the question most people ask here.",
+      text: "If you are stuck at the last step, read the paragraph above it again and then attempt the practice set. Bring it to the next doubt session if it still does not sit.",
       created_at: isoDaysAgo(seededInt(`cmt:b:${contentId}`, 1, 6), 9, 40),
       user_profile: {
         id: INSTRUCTOR_PERSONA.id,
@@ -1234,10 +1286,16 @@ function submissionDetail(content: BuilderContent, submissionId: number) {
 
 /* ──────────────────────────────────────────────────── the verified library */
 
-/** Every MCQ in the demo, flattened, for the bank picker. */
+/**
+ * Every MCQ in the demo, flattened, for the bank picker.
+ *
+ * `QUIZ_BANK` is authored per course and a course may legitimately have no bank
+ * yet, so both levels are read defensively: a missing entry costs the picker
+ * some rows, an exception would take the whole authoring dialog down.
+ */
 function mcqBank() {
-  return Object.entries(QUIZ_BANK).flatMap(([courseId, questions]) =>
-    questions.map((q) => ({
+  return Object.entries(QUIZ_BANK ?? {}).flatMap(([courseId, questions]) =>
+    (questions ?? []).map((q) => ({
       id: q.id,
       question_text: q.question,
       options: {
@@ -1256,17 +1314,37 @@ function mcqBank() {
   );
 }
 
-function codingBank() {
-  return CODING_PROBLEMS.map((p, i) => ({
-    id: 800_000 + i,
-    title: p.title,
-    problem_statement: p.statement,
-    difficulty_level: p.difficulty,
-    topic: p.topic,
-    skills: p.skills,
-    test_cases: p.tests.length,
-  }));
+/**
+ * The coding library, which is EMPTY for this tenant, by decision.
+ *
+ * There is no code judge in this product line, and no course in the catalogue
+ * declares a coding topic: a coding card on a tailoring or a police recruitment
+ * course is the single most obvious way to reveal that the content was ported
+ * from a software LMS. `db/coding-bank.ts` still holds runnable problems because
+ * the assessment module's question picker imports them, but nothing in the
+ * course builder may offer them, so this returns nothing rather than reading it.
+ *
+ * The function stays (instead of the callers dropping the concept) because the
+ * bank endpoint, the suggestions rail and the service types all still speak
+ * `kind: "coding"`. An empty list with an explanation is an honest answer to a
+ * question the UI is allowed to ask; a 404 would read as a broken feature.
+ */
+function codingBank(): Array<{
+  id: number;
+  title: string;
+  problem_statement: string;
+  difficulty_level: string;
+  topic: string;
+  skills: string[];
+  test_cases: number;
+}> {
+  return [];
 }
+
+/** Said in one place, so the bank, the rail and the attach route cannot drift. */
+const NO_CODE_JUDGE =
+  "This instance does not run a code judge, so coding practice is not part of any course here. " +
+  "Use an assignment for work an aspirant submits, or a quiz for recall and reasoning.";
 
 /* ─────────────────────────────────────────────────── adaptive builder tree */
 
@@ -1316,7 +1394,10 @@ export function adminAdaptiveCourseDetail(courseId: number) {
       needs_regeneration: false,
       last_job: null,
     },
-    assigned_cohorts: seeded ? [{ id: 11, name: "Autumn 2026 - Full-Stack" }] : [],
+    // The cohort REGISTRY lives with the admin and instructor handlers; only the
+    // id is load-bearing here (the detail page links it), so the label is derived
+    // from the course rather than copied, which is how the two drifted before.
+    assigned_cohorts: seeded ? [{ id: 11, name: `${shortCourseName(course.title)} batch` }] : [],
     enrollment_summary: {
       total: course.enrolled_count,
       by_source: {
@@ -2218,11 +2299,12 @@ defineRoutes(MODULE, {
     return {
       description:
         outline.length > 0
-          ? `${course.title} takes you from first principles to work you can show. ` +
-            `It covers ${outline.join(", ")}${modules.length > 3 ? " and more" : ""}, ` +
-            "with practice at the end of every topic and a project that pulls the whole track together. " +
-            "Written for learners who want to be able to do the thing, not just describe it."
-          : `${course.title} is still a shell. Add a module or two and generate this again, ` +
+          ? `${course.title} runs over ${modules.length} ${modules.length === 1 ? "week" : "weeks"}. ` +
+            `It covers ${outline.join(", ")}${modules.length > 3 ? ", and the weeks after those" : ""}. ` +
+            "Every topic carries something to read and a set of practice questions whose explanations " +
+            "say why the tempting wrong answer is wrong. You finish each week with work your faculty " +
+            "can mark, rather than with time spent."
+          : `${course.title} has no weeks in it yet. Add a module or two and generate this again, ` +
             "and the description will be written from the outline you built.",
     };
   },
@@ -2241,13 +2323,13 @@ defineRoutes(MODULE, {
     const topic =
       pool.length > 0
         ? seededPick(`suggest:${course.id}:${covered.length}`, pool)
-        : `Applying ${course.title.toLowerCase()} to a real project`;
+        : `Revision and a full length practice set for ${shortCourseName(course.title)}`;
 
     return {
       topic,
       rationale:
         scope === "module"
-          ? "Nothing in the outline covers this yet, and it is the usual next step for a learner who has finished the weeks above."
+          ? "Nothing in the outline covers this yet, and it is the usual next step for an aspirant who has finished the weeks above."
           : "This sits inside the week you are adding to and fills the gap between what the previous topic proves and what the next one assumes.",
     };
   },
@@ -2411,86 +2493,18 @@ defineRoutes(MODULE, {
     return { id: item.id, title, questions: questions.length };
   },
 
+  /**
+   * Adding coding practice to a topic. Refused, on purpose.
+   *
+   * The route stays registered because the authoring dialog can still ask for
+   * it, and an unhandled route in this demo answers "No demo handler" straight
+   * onto the page, which reads as a broken product rather than a decision. A 400
+   * carrying the reason is the honest answer: there is no code judge behind this
+   * instance, so a coding card would be a button that grades nothing.
+   */
   "POST /adaptive-quiz/api/admin/submodules/:submoduleId/coding/": (req) => {
-    const submoduleId = Number(req.params.submoduleId);
-    const body = (req.body ?? {}) as Record<string, unknown>;
-    const bankIds = Array.isArray(body.problem_ids) ? body.problem_ids.map(Number) : [];
-    const written = Array.isArray(body.problems) ? (body.problems as Record<string, unknown>[]) : [];
-
-    const bank = codingBank();
-    const picked = bankIds
-      .map((id) => bank.find((p) => p.id === id))
-      .filter((p): p is (typeof bank)[number] => Boolean(p));
-
-    if (picked.length === 0 && written.length === 0) {
-      throw badRequest({ detail: "Pick at least one problem from the library, or write one." });
-    }
-
-    const title = String(body.title ?? "Practice set");
-    let added = 0;
-
-    for (const p of picked) {
-      const source = CODING_PROBLEMS[p.id - 800_000];
-      const item = createItem(
-        "CodingProblem",
-        p.title,
-        {
-          problem_statement: p.problem_statement,
-          input_format: source?.inputFormat ?? "",
-          output_format: source?.outputFormat ?? "",
-          sample_input: source?.sampleInput ?? "",
-          sample_output: source?.sampleOutput ?? "",
-          constraints: source?.constraints ?? "",
-          template_code: source?.templates ?? {},
-          test_cases: (source?.tests ?? [])
-            .filter((t) => !t.hidden)
-            .map((t) => ({
-              input: JSON.stringify(t.args),
-              expected_output: JSON.stringify(t.expected),
-            })),
-          time_limit: 5,
-          memory_limit: 256,
-          tags: p.skills.join(", "),
-        },
-        p.difficulty_level,
-      );
-      attachContent(submoduleId, {
-        title: p.title,
-        content_type: "CodingProblem",
-        content_id: item.id,
-      });
-      added++;
-    }
-
-    for (const p of written) {
-      const problemTitle = String(p.title ?? "Untitled problem");
-      const item = createItem(
-        "CodingProblem",
-        problemTitle,
-        {
-          problem_statement: String(p.problem_statement ?? ""),
-          input_format: String(p.input_format ?? ""),
-          output_format: String(p.output_format ?? ""),
-          sample_input: String(p.sample_input ?? ""),
-          sample_output: String(p.sample_output ?? ""),
-          constraints: String(p.constraints ?? ""),
-          test_cases: Array.isArray(p.test_cases) ? p.test_cases : [],
-          template_code: {},
-          time_limit: 5,
-          memory_limit: 256,
-          tags: "",
-        },
-        String(p.difficulty_level ?? "Easy"),
-      );
-      attachContent(submoduleId, {
-        title: problemTitle,
-        content_type: "CodingProblem",
-        content_id: item.id,
-      });
-      added++;
-    }
-
-    return { id: submoduleId, title, problems: added };
+    if (!builderSubmodule(Number(req.params.submoduleId))) throw notFound("Topic not found");
+    throw badRequest({ detail: NO_CODE_JUDGE });
   },
 
   "POST /adaptive-quiz/api/admin/submodules/:submoduleId/video/": (req) => {
@@ -2672,16 +2686,21 @@ defineRoutes(MODULE, {
 
     const WHY = {
       article: "Every topic needs something to read before the practice makes sense.",
-      quiz: "Without questions this topic cannot contribute to a learner's mastery estimate.",
-      coding: "The idea here is one learners get wrong until they have written it themselves.",
-      video: "A short walkthrough helps on the topics people re-read three times.",
+      quiz: "Without questions this topic cannot contribute to an aspirant's mastery estimate, and the adaptive engine has nothing to raise or lower.",
     } as const;
 
-    const gaps = (["article", "quiz", "coding", "video"] as const)
+    // Only the two kinds this tenant actually ships are ever suggested.
+    //
+    // Coding is out because there is no code judge here. Video is out because the
+    // player is a Vimeo embed and the demo is required to run with no network at
+    // all, so a suggested video could only ever become a dead frame on a lesson.
+    // Suggesting work a faculty member cannot then complete is worse than an
+    // empty rail, which is why this list is not the four the type allows.
+    const gaps = (["article", "quiz"] as const)
       .filter((kind) => !has[kind])
       .map((kind) => ({
         kind,
-        title: `Add ${kind === "coding" ? "a coding problem" : `${kind === "article" ? "an" : "a"} ${kind}`} to ${sub.title.toLowerCase()}`,
+        title: `Add ${kind === "article" ? "an article" : "a quiz"} to ${sub.title}`,
         why: WHY[kind],
       }));
 
@@ -2690,7 +2709,6 @@ defineRoutes(MODULE, {
       rows.filter((r) => needle.includes(r.topic.toLowerCase()) || r.topic.toLowerCase().includes(needle.split(" ")[0]));
 
     const mcqs = mcqBank();
-    const coding = codingBank();
 
     return {
       submodule: { id: sub.id, title: sub.title },
@@ -2703,12 +2721,8 @@ defineRoutes(MODULE, {
           difficulty_level: q.difficulty_level,
           topic: q.topic,
         })),
-        coding: (matches(coding).length ? matches(coding) : coding).slice(0, 5).map((p) => ({
-          id: p.id,
-          title: p.title,
-          difficulty_level: p.difficulty_level,
-          topic: p.topic,
-        })),
+        // Always empty here. The key stays because the dialog reads it.
+        coding: codingBank(),
       },
       matched_on: sub.title,
     };
@@ -2723,6 +2737,8 @@ defineRoutes(MODULE, {
     const limit = Number(req.query.get("limit") ?? 20);
     const offset = Number(req.query.get("offset") ?? 0);
 
+    // A coding search returns nothing and says why, rather than 404ing on a tab
+    // the dialog is entitled to open. See `codingBank`.
     const rows = (kind === "coding" ? codingBank() : mcqBank()).filter((row) => {
       const text = "question_text" in row ? row.question_text : row.title;
       if (q && !text.toLowerCase().includes(q)) return false;
@@ -2738,8 +2754,8 @@ defineRoutes(MODULE, {
       limit,
       note:
         kind === "coding"
-          ? "Problems from the verified library. Adding one references it, it is never copied, so a fix to the problem reaches every course using it."
-          : "Questions from the verified library, already reviewed. Adding them references the originals rather than duplicating them.",
+          ? NO_CODE_JUDGE
+          : "Questions from the verified library, already reviewed by the subject faculty. Adding them references the originals rather than duplicating them, so a correction reaches every course using the question.",
     };
   },
 });

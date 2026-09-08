@@ -1,14 +1,17 @@
 /**
- * The administrator surface.
+ * The programme officer's surface.
  *
- * The insights pages are the ones that decide a sale: an administrator is
- * buying visibility into a cohort they cannot watch directly. So every tile
- * carries its `definition` string, exactly as the real API does — these numbers
- * get quoted in meetings, and a figure whose page cannot say what it counted
- * gets read with whichever meaning is most flattering.
+ * The insights pages are the ones that decide this: an officer is buying
+ * visibility into batches running at centres they cannot visit every week. So
+ * every tile carries its `definition` string, exactly as the real API does.
+ * These numbers end up in a review meeting and in a district report, and a
+ * figure whose page cannot say what it counted gets read with whichever meaning
+ * is most flattering.
  *
- * At-risk students carry the RULES that flagged them, not just a red badge.
- * "At risk" with no reason is a number an administrator cannot act on.
+ * At-risk aspirants carry the RULES that flagged them, not just a red badge.
+ * The rules are written as things an officer can act on the same day: nobody
+ * can act on "at risk", but a centre in-charge can act on "missed the last two
+ * classes" or "documents pending verification".
  */
 
 import { defineRoutes } from "../router";
@@ -32,9 +35,45 @@ import { seededInt, seededPick, seededBool } from "../../random";
 
 const MODULE = "admin";
 
-/** Every learner on the tenant. */
+/** Every aspirant and trainee on the tenant. */
 function allStudents(): DemoPerson[] {
   return [STUDENT_PERSONA, ...STUDENTS];
+}
+
+/**
+ * The teaching staff, in one order, and the staff code the mission issues.
+ *
+ * The code used to be minted here as `MIT-…`, a prefix inherited from the
+ * fictional institute this build was forked from, while the faculty dashboard
+ * printed a hand-written `MIT-VM-04` and a batch's staff card printed a third
+ * variant. Three codes for one person reads as three records. It is derived
+ * from this list, in this file, and every surface that shows a code calls
+ * `facultyCode`.
+ */
+const TEACHING_STAFF: readonly DemoPerson[] = [INSTRUCTOR_PERSONA, ...FACULTY];
+
+export function facultyCode(profileId: number): string {
+  const index = TEACHING_STAFF.findIndex((p) => p.id === profileId);
+  // Someone not on the teaching roster (an applicant, or a person promoted this
+  // session) still needs a stable code, so it falls back to their id.
+  const serial = index >= 0 ? index + 1 : profileId % 1000;
+  return `TSEM/FAC/${String(serial).padStart(3, "0")}`;
+}
+
+/**
+ * The members of a batch, drawn deterministically from the roster.
+ *
+ * The roster is smaller than the batches put together, so batches overlap. What
+ * matters is that a batch that says 24 members really lists 24 people: the
+ * previous version sliced a fixed window and ran off the end of the roster, so
+ * the completed batch claimed 24 members and opened onto a list of five. The
+ * signed-in aspirant sits in batch 11, which is the batch her dashboard names.
+ */
+export function batchMembers(cohortId: number, size: number): DemoPerson[] {
+  const start = Math.abs((cohortId - 11) * 9) % STUDENTS.length;
+  const rotated = [...STUDENTS.slice(start), ...STUDENTS.slice(0, start)];
+  const members = cohortId === 11 ? [STUDENT_PERSONA, ...rotated] : rotated;
+  return members.slice(0, Math.min(size, members.length));
 }
 
 function progressOf(p: DemoPerson): number {
@@ -77,19 +116,33 @@ function deltaTile(value: number, previous: number, definition: string, extra: R
 }
 
 /**
- * Students flagged at risk, with the rule that flagged each one.
+ * Aspirants flagged at risk, with the rule that flagged each one.
  *
  * Severity and rules are derived from the same progress and streak values the
- * instructor workspace reads, so the two never disagree about who is struggling.
+ * faculty workspace reads, so the two never disagree about who is struggling.
+ *
+ * Every rule is one a programme officer can act on the same day: ring the
+ * centre, ask the in-charge to follow up at home, or send the pending papers to
+ * the district office. A rule an officer cannot act on is a badge, not a rule.
  */
+const AT_RISK_RULES = {
+  low_progress: "Under a quarter of the syllabus covered",
+  inactive: "No activity for a week",
+  missed_classes: "Missed the last two classes at the centre",
+  mock_declining: "Mock test score fell across the last three attempts",
+  documents_pending: "Enrolment documents pending verification",
+} as const;
+
 function atRiskRows() {
   return allStudents()
     .map((p) => {
       const progress = progressOf(p);
       const rules: string[] = [];
-      if (progress < 25) rules.push("Below 25% course progress");
-      if (p.streak === 0) rules.push("No activity in 7 days");
-      if (seededBool(`risk:${p.id}`, 0.18)) rules.push("Two consecutive missed live sessions");
+      if (progress < 25) rules.push(AT_RISK_RULES.low_progress);
+      if (p.streak === 0) rules.push(AT_RISK_RULES.inactive);
+      if (seededBool(`risk:missed:${p.id}`, 0.18)) rules.push(AT_RISK_RULES.missed_classes);
+      if (seededBool(`risk:mock:${p.id}`, 0.12)) rules.push(AT_RISK_RULES.mock_declining);
+      if (seededBool(`risk:docs:${p.id}`, 0.08)) rules.push(AT_RISK_RULES.documents_pending);
       if (rules.length === 0) return null;
       return {
         student_id: p.id,
@@ -104,18 +157,30 @@ function atRiskRows() {
     .sort((a, b) => b.severity - a.severity);
 }
 
+/**
+ * Batches, named the way the mission names them: the notification or trade the
+ * batch prepares for, the centre running it, and the intake. A batch called
+ * "Autumn 2026" cannot be placed on a district report; "Solar PV batch 04,
+ * Nizamabad centre" can. `size` is how many people are actually enrolled and
+ * `capacity` how many seats the centre sanctioned, so the fill percentage is a
+ * real division rather than an assertion. Ids match `instructor.ts` (which sees
+ * only the three exam batches its faculty member teaches) and `details.ts`.
+ */
 const COHORTS = [
-  { id: 11, name: "Autumn 2026 — Full-Stack", status: "active", members: 28, capacity: 35 },
-  { id: 12, name: "Autumn 2026 — Interview Prep", status: "active", members: 22, capacity: 30 },
-  { id: 13, name: "Spring 2026 — Full-Stack", status: "completed", members: 24, capacity: 30 },
+  { id: 11, name: "TGPSC Group-II, Warangal centre, Jan intake", status: "active", size: 28, capacity: 35 },
+  { id: 12, name: "TGLPRB Constable, Karimnagar centre, Feb intake", status: "active", size: 22, capacity: 30 },
+  { id: 13, name: "TGPSC Group-II, Warangal centre, Jul intake", status: "completed", size: 24, capacity: 30 },
+  { id: 14, name: "Solar PV batch 04, Nizamabad centre", status: "active", size: 26, capacity: 30 },
+  { id: 15, name: "Tailoring batch 02, Khammam centre", status: "active", size: 28, capacity: 30 },
 ];
 
 /**
- * Everyone in the instructor directory, with the approval state each one is in.
+ * Everyone in the faculty directory, with the approval state each one is in.
  *
- * The teaching staff are approved; the two applicants and one rejection exist so
- * an admin can actually work the queue — approve someone, reject someone, reopen
- * a rejection — instead of looking at three tabs that all say the same thing.
+ * The teaching staff are approved. The two applicants and one rejection exist so
+ * an officer can actually work the queue, approving someone, rejecting someone,
+ * reopening a rejection, instead of looking at three tabs that all say the same
+ * thing.
  */
 type InstructorDecision = { status: "approved" | "rejected" | "pending"; reason: string | null };
 
@@ -132,7 +197,7 @@ function decideInstructor(id: number, decision: InstructorDecision) {
 }
 
 function instructorDirectory() {
-  const approved = [INSTRUCTOR_PERSONA, ...FACULTY].map((p, i) => ({
+  const approved = TEACHING_STAFF.map((p, i) => ({
     person: p,
     pending_status: "approved" as const,
     daysAgo: 200 + i * 90,
@@ -140,8 +205,9 @@ function instructorDirectory() {
     reason: null as string | null,
   }));
 
-  // Applicants are not on the roster: they have signed up but nobody has let them
-  // in yet, so they own no courses and teach no cohorts.
+  // Applicants are not on the teaching roster: they have applied to take
+  // classes at a centre but nobody has cleared them yet, so they own no courses
+  // and teach no batches.
   const applicant = (id: number, fullName: string, email: string) => ({
     id,
     full_name: fullName,
@@ -151,25 +217,26 @@ function instructorDirectory() {
 
   const applicants = [
     {
-      person: applicant(1201, "Nikhil Chatterjee", "nikhil.chatterjee@ailinc.com"),
+      person: applicant(1201, "Ramesh Bathula", "ramesh.bathula@tsem.gov.in"),
       pending_status: "pending" as const,
       daysAgo: 4,
       reviewedDaysAgo: null,
       reason: null as string | null,
     },
     {
-      person: applicant(1202, "Sneha Balakrishnan", "sneha.balakrishnan@ailinc.com"),
+      person: applicant(1202, "Jyothi Peddineni", "jyothi.peddineni@tsem.gov.in"),
       pending_status: "pending" as const,
       daysAgo: 9,
       reviewedDaysAgo: null,
       reason: null as string | null,
     },
     {
-      person: applicant(1203, "Arjun Sethi", "arjun.sethi@ailinc.com"),
+      person: applicant(1203, "Karthik Vasala", "karthik.vasala@tsem.gov.in"),
       pending_status: "rejected" as const,
       daysAgo: 26,
       reviewedDaysAgo: 21,
-      reason: "No verifiable teaching or industry references. Invited to reapply after a term of TA work.",
+      reason:
+        "Trade certificate and centre in-charge endorsement not attached. Invited to reapply with both, and with the ITI experience letter.",
     },
   ];
 
@@ -228,7 +295,7 @@ interface EmailJobSeed {
 const EMAIL_JOBS: EmailJobSeed[] = [
   {
     taskId: "eml-9f21c4",
-    subject: "Your week 7 progress at AI Linc",
+    subject: `Your week 7 progress at ${DEMO_TENANT.shortName}`,
     taskName: "Weekly progress digest",
     status: "completed",
     daysAgo: 6,
@@ -238,27 +305,32 @@ const EMAIL_JOBS: EmailJobSeed[] = [
   },
   {
     taskId: "eml-3b77ea",
-    subject: "Placement drive: Razorpay is on campus next Thursday",
+    subject: "Placement drive: Suryatej Renewables at the Warangal centre on Thursday",
     taskName: "Placement announcement",
     status: "completed",
     daysAgo: 11,
     recipients: 45,
     failed: 0,
-    body: "Razorpay is hiring for Software Engineer I (Backend). Applications close Tuesday; the shortlist is announced the same evening.",
+    body:
+      "Suryatej Renewables is recruiting rooftop solar technicians from the district skill centres. " +
+      "Carry your trade certificate and one photograph. Applications close Tuesday, and the shortlist " +
+      "is put up at the centre the same evening.",
   },
   {
     taskId: "eml-77a0d1",
-    subject: "Reminder: your capstone submission closes Friday",
+    subject: "Reminder: the mid-programme test window closes Friday",
     taskName: "Deadline reminder",
     status: "sending",
     daysAgo: 0,
     recipients: 28,
     failed: 0,
-    body: "Submissions close at 6:00 PM on Friday. Late work is accepted for 48 hours at a 10% penalty.",
+    body:
+      "The window closes at 6:00 PM on Friday. If your connection at home is unreliable, sit the test " +
+      "at your centre: the lab is open from 10:00 AM.",
   },
   {
     taskId: "eml-51c9b8",
-    subject: "Certificate ready: Full-Stack Web Development",
+    subject: "Certificate ready: Solar PV Installer & Rooftop Technician",
     taskName: "Certificate issued",
     status: "failed",
     daysAgo: 19,
@@ -271,39 +343,39 @@ const EMAIL_JOBS: EmailJobSeed[] = [
 const ASSESSMENT_EMAIL_JOBS: EmailJobSeed[] = [
   {
     taskId: "aeml-2d41f7",
-    subject: "Mid-Programme Assessment opens Monday 10:00 AM",
-    taskName: "Assessment invitation",
+    subject: "Mid-programme test opens Monday 10:00 AM",
+    taskName: "Test invitation",
     status: "completed",
     daysAgo: 8,
     recipients: 28,
     failed: 0,
     assessmentId: 901,
-    assessmentTitle: "Full-Stack Engineering — Mid-Programme Assessment",
-    body: "You have 90 minutes and one attempt. Run the device check before you start — it takes about a minute.",
+    assessmentTitle: "TGPSC Group-II: mid-programme test",
+    body: "You have 90 minutes and one attempt. Run the device check before you start, it takes about a minute.",
   },
   {
     taskId: "aeml-8c0e35",
-    subject: "Results published: Unit 2 Test",
+    subject: "Results published: general studies unit test",
     taskName: "Result notification",
     status: "completed",
     daysAgo: 3,
     recipients: 18,
     failed: 0,
     assessmentId: 903,
-    assessmentTitle: "Python for Data Science — Unit 2 Test",
-    body: "Your score and the per-question breakdown are on your assessment page.",
+    assessmentTitle: "TGLPRB Constable: general studies unit test",
+    body: "Your score and the question by question breakdown are on your test page.",
   },
   {
     taskId: "aeml-4a6b19",
-    subject: "You have not started the Mid-Programme Assessment yet",
+    subject: "You have not started the mid-programme test yet",
     taskName: "Non-starter reminder",
     status: "failed",
     daysAgo: 5,
     recipients: 6,
     failed: 2,
     assessmentId: 901,
-    assessmentTitle: "Full-Stack Engineering — Mid-Programme Assessment",
-    body: "The window closes Sunday at midnight. If something is blocking you, reply to this email.",
+    assessmentTitle: "TGPSC Group-II: mid-programme test",
+    body: "The window closes Sunday at midnight. If something is stopping you, reply to this email or tell your centre in-charge.",
   },
 ];
 
@@ -328,7 +400,7 @@ export function emailJobDetail(taskId: string) {
   const people = allStudents().slice(0, s.recipients);
   const recipient = (p: DemoPerson) => ({ name: p.full_name, email: p.email });
   // The failed ones come off the END of the list so they do not overlap the
-  // successful ones — a person appearing in both columns is a visible lie.
+  // successful ones. A person appearing in both columns is a visible lie.
   const failed = s.failed > 0 ? people.slice(-s.failed) : [];
   const succeeded = people.slice(0, people.length - failed.length);
 
@@ -344,11 +416,17 @@ export function emailJobDetail(taskId: string) {
   };
 }
 
+/**
+ * Doubt categories, using the labels `tickets.ts` actually issues. They used to
+ * be a separate set of four ("Content", "Account", "Live session"), so the
+ * insights chart and the doubts queue disagreed about what a doubt can be
+ * about. The four values still sum to the 51 opened below.
+ */
 const TICKET_CATEGORIES = [
-  { label: "Content", value: 14 },
+  { label: "Course content", value: 14 },
   { label: "Technical", value: 21 },
-  { label: "Account", value: 7 },
-  { label: "Live session", value: 9 },
+  { label: "Navigation", value: 7 },
+  { label: "Quiz", value: 9 },
 ];
 
 defineRoutes(MODULE, {
@@ -357,6 +435,11 @@ defineRoutes(MODULE, {
     const range = resolveRange(req.query.get("range"));
     const students = allStudents();
     const active = Math.round(students.length * 0.72);
+    // Held in variables because the per-active-aspirant figure is a division of
+    // the two, and it used to be the literal 14 sitting beside a seeded total
+    // that could never divide to 14.
+    const items = seededInt("pulse:items", 640, 980);
+    const itemsPrevious = seededInt("pulse:itemsprev", 560, 900);
 
     const buckets = Math.min(range.grain === "day" ? range.days : 12, 30);
     return {
@@ -366,23 +449,23 @@ defineRoutes(MODULE, {
         active_students: deltaTile(
           active,
           active - 6,
-          "Distinct students with at least one recorded activity in the range.",
+          "Distinct aspirants with at least one recorded activity in the range.",
           { denominator: students.length },
         ),
         items_completed: deltaTile(
-          seededInt("pulse:items", 640, 980),
-          seededInt("pulse:itemsprev", 560, 900),
-          "Lessons, quizzes and coding problems marked complete in the range.",
-          { per_active_student: 14 },
+          items,
+          itemsPrevious,
+          "Syllabus topics, quizzes and assignments marked complete in the range.",
+          { per_active_student: Math.round(items / Math.max(1, active)) },
         ),
         median_minutes: {
           value: 38,
-          definition: "Median minutes per active student per active day. Median, not mean, so one outlier cannot move it.",
+          definition: "Median minutes per active aspirant per active day. Median, not mean, so one outlier cannot move it.",
           as_of: iso(new Date(nowMs())),
         },
         stale_tickets: {
           value: 3,
-          definition: "Support tickets open for more than 72 hours with no staff reply.",
+          definition: "Doubts open for more than 72 hours with no reply from faculty or the centre.",
           as_of: iso(new Date(nowMs())),
         },
       },
@@ -393,7 +476,7 @@ defineRoutes(MODULE, {
       })),
       freshness: {
         computed_at: iso(new Date(nowMs())),
-        note: "Recomputed hourly. Activity in the last few minutes may not be counted yet.",
+        note: "Recomputed hourly. Activity at a centre in the last few minutes may not be counted yet.",
       },
     };
   },
@@ -401,18 +484,16 @@ defineRoutes(MODULE, {
   /**
    * `results`, not `rows`. The dashboard reads `atRisk?.results.length` with no
    * optional chaining past the first hop, so returning the wrong key does not
-   * degrade — it takes the whole page down with "Cannot read properties of
-   * undefined". `rules` is the legend the table renders beside the flags.
+   * degrade: it takes the whole page down with "Cannot read properties of
+   * undefined". `rules` is the legend the table renders beside the flags, and it
+   * is the same object the rows are built from, so the legend cannot describe a
+   * rule the list is not actually applying.
    */
   "GET /admin-dashboard/api/clients/:clientId/insights/at-risk/": (req) => {
     const limit = Number(req.query.get("limit") ?? 10);
     return {
       results: atRiskRows().slice(0, limit),
-      rules: {
-        low_progress: "Below 25% course progress",
-        inactive: "No activity in 7 days",
-        missed_sessions: "Two consecutive missed live sessions",
-      },
+      rules: AT_RISK_RULES,
     };
   },
 

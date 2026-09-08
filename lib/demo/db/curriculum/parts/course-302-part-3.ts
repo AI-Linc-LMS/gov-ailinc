@@ -1268,3 +1268,6 @@ const PART: Record<number, AuthoredTopic> = {
       },
     ],
   },
+};
+
+export default PART;

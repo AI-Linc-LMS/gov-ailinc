@@ -379,7 +379,7 @@ async function storeUpload(req: DemoRequest) {
   if (file.size > MAX_UPLOAD_BYTES) {
     const mb = (file.size / (1024 * 1024)).toFixed(1);
     throw badRequest({
-      detail: `That image is ${mb} MB. Please upload one under 2 MB so it loads quickly for every student.`,
+      detail: `That image is ${mb} MB. Please upload one under 2 MB so it loads quickly for an aspirant on a district connection.`,
     });
   }
 

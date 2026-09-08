@@ -3,10 +3,23 @@
  * explainer, support tickets and purchase history.
  *
  * The points explainer is worth getting right rather than filling in. It is the
- * page that answers "how does scoring actually work", and the numbers on it must
- * match the ones the quiz and coding engines really use — a prospect who reads
- * "60 base, minus 5 every 10s after a 20s grace" and then watches a quiz decay
- * differently has caught the product lying about itself.
+ * page that answers "how does scoring actually work", and every number on it is
+ * the one the quiz engine really applies: an aspirant who reads "60 base, minus 5
+ * every 10s after a 20s grace" and then watches a quiz decay differently has
+ * caught the product lying about itself.
+ *
+ * Re-contented for this tenant by DELETING the coding row rather than renaming
+ * it. The catalogue has no coding topic (see `db/coding-bank.ts` for why), so a
+ * "Coding problem, 60-130 pts" line would have advertised points no aspirant on
+ * this instance can earn. The two curves the page draws are now the easy and the
+ * hard QUIZ question, both taken straight from `handlers/quiz.ts`.
+ *
+ * One row is still wrong and cannot be fixed from here: `DifficultyRow` in
+ * `lib/types/points-system.ts` requires a `coding` number, and
+ * `components/points-system/PointsSystemContent.tsx` prints it as
+ * "Quiz N · Coding N". Both are outside this module. The values below are
+ * therefore left at what the coding engine would really award, since a wrong
+ * number is worse than an unused one, and the column is flagged in the handover.
  */
 
 import { defineRoutes } from "../router";
@@ -106,9 +119,10 @@ defineRoutes(MODULE, {
   },
 
   /**
-   * How scoring works. Every number here is the one the engines actually apply:
-   * quiz base points by difficulty, the 20s grace and -5 per 10s decay from
-   * handlers/quiz.ts, and the coding curve from handlers/coding.ts.
+   * How scoring works. Every number here is the one the engine actually applies:
+   * the quiz base points by difficulty (40 / 60 / 90) and the 20s grace with
+   * -5 per 10s decay, all read off `BASE_POINTS` and `decayCurve` in
+   * handlers/quiz.ts.
    */
   "GET /adaptive-journey/api/points-system/": () => ({
     title: "How points work",
@@ -121,32 +135,43 @@ defineRoutes(MODULE, {
     activities: [
       { key: "article", icon: "mdi:book-open-page-variant-outline", accent: "#6366f1", label: "Read a lesson", sub: "Marked complete when you finish it", points: "25", unit: "pts" },
       { key: "quiz", icon: "mdi:comment-question-outline", accent: "#a855f7", label: "Adaptive quiz", sub: "Per question, by difficulty", points: "40-90", unit: "pts" },
-      { key: "coding", icon: "mdi:code-braces", accent: "#f59e0b", label: "Coding problem", sub: "Awarded when every case passes", points: "60-130", unit: "pts" },
-      { key: "assignment", icon: "mdi:clipboard-text-outline", accent: "#10b981", label: "Project or capstone", sub: "Graded submission", points: "150", unit: "pts" },
+      { key: "calibration", icon: "mdi:target", accent: "#f59e0b", label: "Placement check", sub: "Taken once, when you start a course", points: "100", unit: "pts" },
+      { key: "assignment", icon: "mdi:clipboard-text-outline", accent: "#10b981", label: "Assignment or field task", sub: "Graded submission", points: "150", unit: "pts" },
       { key: "interview", icon: "mdi:account-voice", accent: "#ec4899", label: "Mock interview", sub: "Scored on depth and communication", points: "200", unit: "pts" },
     ],
+    // The two keys are fixed by `PointsSystem` in lib/types/points-system.ts and
+    // by the component that reads `data.decay.quizEasy` / `data.decay.codingHard`
+    // by name, neither of which this module owns. What they CARRY is ours, so
+    // the second slot draws the hard quiz question rather than a coding problem
+    // no course here sets. Both specs match `decayCurve` in handlers/quiz.ts
+    // exactly: base 40 for easy and 90 for hard, a 20s grace, then 5 points every
+    // 10s down to a floor of 45 per cent of base.
     decay: {
       quizEasy: {
-        title: "Quiz question",
-        base: 60,
+        title: "Easy quiz question",
+        base: 40,
         grace: 20,
         dec: 5,
         iv: 10,
-        floor: 27,
+        floor: 18,
         tMax: 180,
-        curve: curve(60, 20, 5, 10, 27, 180),
+        curve: curve(40, 20, 5, 10, 18, 180),
       },
       codingHard: {
-        title: "Hard coding problem",
-        base: 130,
-        grace: 120,
+        title: "Hard quiz question",
+        base: 90,
+        grace: 20,
         dec: 5,
-        iv: 60,
-        floor: 52,
-        tMax: 1800,
-        curve: curve(130, 120, 5, 60, 52, 1800),
+        iv: 10,
+        floor: 41,
+        tMax: 180,
+        curve: curve(90, 20, 5, 10, 41, 180),
       },
     },
+    // `coding` is required by DifficultyRow and rendered by a component this
+    // module does not own (see the note at the top of the file). It holds the
+    // coding engine's real base points so that the number, if a reader ever sees
+    // it, is at least true of the product rather than invented.
     difficulty: [
       { label: "Easy", mult: 1, quiz: 40, coding: 60 },
       { label: "Medium", mult: 1.25, quiz: 60, coding: 90 },
@@ -157,22 +182,26 @@ defineRoutes(MODULE, {
       halfWindowDays: 3,
       staggerDays: 1,
       bands: [
-        { label: "On time", note: "Before the due date", mult: 1, caption: "Full credit" },
+        { label: "On time", note: "Before the due date, where a batch sets one", mult: 1, caption: "Full credit" },
         { label: "Up to 3 days late", note: "Still counts", mult: 0.75, caption: "Three quarters" },
         { label: "Up to 7 days late", note: "Partial credit", mult: 0.5, caption: "Half" },
         { label: "Beyond 7 days", note: "Learning still counts, points do not", mult: 0, caption: "No points" },
       ],
     },
+    // Arithmetic worth checking by hand, because a worked example that does not
+    // add up is read as proof that none of the other numbers do either. Medium
+    // at 35s: 15s past the grace is one interval, 60 - 5 = 55. Hard at 70s: 50s
+    // past the grace is five intervals, 90 - 25 = 65. A lesson does not decay.
     workedExample: {
       summary:
-        "A medium quiz answered correctly in 35 seconds, plus a hard coding problem solved in 12 minutes.",
+        "A medium quiz question answered correctly in 35 seconds, a hard one in 70 seconds, and a lesson read.",
       latePct: 0,
       rows: [
         { label: "Quiz question (medium, 35s)", raw: 60, late: false, final: 55 },
-        { label: "Coding problem (hard, 12m)", raw: 130, late: false, final: 130 },
+        { label: "Quiz question (hard, 70s)", raw: 90, late: false, final: 65 },
         { label: "Lesson read", raw: 25, late: false, final: 25 },
       ],
-      total: 210,
+      total: 145,
     },
   }),
 

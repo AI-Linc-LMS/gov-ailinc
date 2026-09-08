@@ -3,12 +3,12 @@
  *
  * `track-time` is a heartbeat: it fires on a timer from every page in the app,
  * including the signed-out auth screens. Unhandled, it was the single loudest
- * thing in the console — a warning every few seconds, on every route, which
+ * thing in the console: a warning every few seconds, on every route, which
  * buries any real error underneath it.
  *
  * The demo accepts the beats and discards them. Time-on-platform is seeded
  * (see the scorecard and heatmap handlers) rather than accumulated live,
- * because a prospect's ten-minute browse must not visibly rewrite a learner
+ * because a prospect's ten-minute browse must not visibly rewrite an aspirant
  * profile that says 140 hours.
  */
 
@@ -23,7 +23,14 @@ defineRoutes(MODULE, {
     recorded_at: iso(new Date(nowMs())),
   }),
 
-  /** Content-completion beacons from the article reader and video player. */
+  /**
+   * Content-completion beacons from the article reader and the quiz player.
+   *
+   * There is no video player on this tenant and no code judge: a topic is an
+   * article, a quiz or an assignment, so those are the only surfaces that ever
+   * fire this. The route keeps its generic name because it is the server's, not
+   * ours.
+   */
   "POST /activity/clients/:clientId/courses/:courseId/content/:contentId/": () => ({
     status: "ok",
   }),

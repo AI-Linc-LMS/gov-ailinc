@@ -59,6 +59,28 @@ const TRUSTED_BY = [
   "BHEL Hyderabad",
 ].map((name, i) => ({ id: i + 1, name, logo_url: companyLogoFor(name) }));
 
+/**
+ * The entry requirement shown on a course page, by section.
+ *
+ * One sentence for the whole catalogue was wrong the moment the catalogue held
+ * both a Group-I course and a domestic wiring course. The exam tracks assume the
+ * qualification the notification itself demands, and the trade courses
+ * deliberately assume nothing past schooling, because that is who a district
+ * skill centre enrols. Neither line states an eligibility rule as current fact:
+ * qualification, age and relaxation are set by each notification and change from
+ * one to the next, so the copy points the reader at the notification instead of
+ * answering for it.
+ */
+function requirementsFor(course: DemoCourse): string {
+  return course.section === "govt-jobs"
+    ? "No previous coaching is assumed and the syllabus is taught from the beginning. " +
+        "Read the eligibility clause of the notification you intend to sit, because qualification, " +
+        "age limit and relaxation are set there and not here."
+    : "Tenth standard reading and everyday arithmetic are enough to start. Tools, safety practice " +
+        "and the vocabulary of the trade are taught from the first module, and the practical work " +
+        "is done at your skill centre.";
+}
+
 /** Courses the visitor enrolled in during this session, on top of the seed. */
 function isEnrolled(course: DemoCourse): boolean {
   const extra = overlay.get<number[]>("courses:enrolled", []);
@@ -75,8 +97,7 @@ function toApiCourse(course: DemoCourse) {
     subtitle: course.subtitle,
     description: course.description,
     slug: course.slug,
-    requirements:
-      "Comfort with basic programming. Everything else is taught from first principles.",
+    requirements: requirementsFor(course),
     learning_objectives: course.modules.map((m) => m.summary).join("\n"),
     language: "English",
     difficulty_level: course.difficulty,

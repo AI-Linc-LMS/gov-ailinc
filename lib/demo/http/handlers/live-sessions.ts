@@ -9,6 +9,17 @@
  * Join links point at the session detail page rather than a real meeting. There
  * is no meeting to join, and a dead Zoom link discovered mid-demo is worse than
  * one that opens the session it belongs to.
+ *
+ * The schedule is the mission's, so it reads like one: exam classes for the
+ * government-jobs section, a trade practical streamed from a district skill
+ * centre, an enterprise session with a visiting branch officer. Faculty are
+ * taken from the roster by subject, never typed in as literal names, because the
+ * last hardcoded host on this screen outlived the roster that contained him.
+ *
+ * Slots are early morning or evening in Asia/Kolkata. An aspirant on this
+ * platform is usually working, farming or at a college during the day, and a
+ * timetable full of 11 AM classes is the fastest way to tell an officer that
+ * whoever built it has not met the candidate.
  */
 
 import { defineRoutes } from "../router";
@@ -30,99 +41,142 @@ interface DemoSession {
   durationMinutes: number;
   instructor: string;
   courseId: number;
+  /** The batch this sitting belongs to. Shown on the card instead of the course. */
+  cohort: { id: number; name: string };
   attended?: boolean;
   live?: boolean;
   summary?: string;
-  recurring?: boolean;
+  /**
+   * Human recurrence text, or absent for a one-off.
+   *
+   * It replaced a boolean plus one hardcoded "Every Tuesday, 6:00 PM" for every
+   * recurring row. Two problems with that: a weekly drill and a daily class read
+   * identically, and the named weekday contradicted the card beside it, because
+   * every date here is computed from today and today is not always a Tuesday.
+   * Recurrence text therefore never names a weekday.
+   */
+  recurrence?: string;
 }
+
+/** Batches. Ids 11 and 12 are the two exam batches the admin module also lists. */
+const BATCH = {
+  groupTwo: { id: 11, name: "TGPSC Group-II Batch 2026, Warangal" },
+  banking: { id: 12, name: "Banking Batch B-07, Hyderabad" },
+  solar: { id: 21, name: "Solar PV Batch S-12, Warangal centre" },
+  enterprise: { id: 22, name: "Enterprise Batch E-04, Khammam centre" },
+  digital: { id: 23, name: "Digital Literacy Batch D-09, Suryapet centre" },
+};
 
 const SESSIONS: DemoSession[] = [
   {
     id: 501,
-    topic: "Live doubt-clearing: React rendering and effects",
+    // Named the way the catalogue names it (module 302004, "Indian Constitution
+    // and polity") and without a paper number. Group-II paper numbering is stable
+    // but it is not this file's to assert, and a wrong one is the kind of detail
+    // the officers in the room correct out loud.
+    topic: "Group-II polity: the amendment procedure, and how the paper asks it",
     dayOffset: 0,
-    hour: 18,
-    minute: 0,
-    durationMinutes: 60,
-    instructor: INSTRUCTOR_PERSONA.full_name,
-    courseId: 201,
-    live: true,
-    recurring: true,
-  },
-  {
-    id: 502,
-    topic: "Workshop: designing a REST API you will not regret",
-    dayOffset: 2,
-    hour: 19,
-    minute: 0,
-    durationMinutes: 90,
-    instructor: INSTRUCTOR_PERSONA.full_name,
-    courseId: 201,
-  },
-  {
-    id: 503,
-    topic: "pandas clinic: joins, reshaping and the rows that vanish",
-    dayOffset: 4,
-    hour: 18,
+    hour: 6,
     minute: 30,
     durationMinutes: 60,
     instructor: FACULTY[0].full_name,
-    courseId: 202,
+    courseId: 302,
+    cohort: BATCH.groupTwo,
+    live: true,
+    recurrence: "Every weekday, 6:30 AM",
+  },
+  {
+    id: 502,
+    topic: "Telangana movement doubt-clearing: Mulki rules, the Six Point Formula and GO 610",
+    dayOffset: 2,
+    hour: 20,
+    minute: 0,
+    durationMinutes: 90,
+    instructor: FACULTY[0].full_name,
+    courseId: 302,
+    cohort: BATCH.groupTwo,
+  },
+  {
+    id: 503,
+    // Streamed from the centre, not held online: the trade is taught on a roof.
+    // Saying where it happens is the difference between a class and a practical.
+    topic: "Solar PV practical: rooftop survey, string sizing and commissioning, live from the Warangal centre",
+    dayOffset: 4,
+    hour: 7,
+    minute: 0,
+    durationMinutes: 120,
+    instructor: FACULTY[2].full_name,
+    courseId: 311,
+    cohort: BATCH.solar,
   },
   {
     id: 504,
-    topic: "Interview prep: talking through a problem out loud",
+    // Hung off the banking track on purpose. Interview technique is the faculty
+    // persona's own subject and it transfers across exams, but the stage itself
+    // has to be real for the batch it is offered to, and the banking selection
+    // ends at an interview. Which state recruitments carry an interview has
+    // changed more than once, so the seed does not claim one for them.
+    topic: "Mock interview panel briefing: how the board scores you, and answering what you do not know",
     dayOffset: 7,
     hour: 20,
     minute: 0,
     durationMinutes: 75,
     instructor: INSTRUCTOR_PERSONA.full_name,
-    courseId: 203,
+    courseId: 307,
+    cohort: BATCH.banking,
   },
   {
     id: 505,
-    topic: "Live doubt-clearing: closures, async and the event loop",
+    topic: "IBPS Prelims speed drill: quantitative aptitude under sectional timing",
     dayOffset: -3,
-    hour: 18,
-    minute: 0,
+    hour: 19,
+    minute: 30,
     durationMinutes: 60,
-    instructor: INSTRUCTOR_PERSONA.full_name,
-    courseId: 201,
+    instructor: FACULTY[1].full_name,
+    courseId: 307,
+    cohort: BATCH.banking,
     attended: true,
     summary:
-      "Covered why closures capture variables rather than values, the microtask queue's priority " +
-      "over macrotasks, and worked through three async ordering puzzles. Key question from the " +
-      "room: why a for-loop with var logs the same number every time, and how let fixes it.",
-    recurring: true,
+      "Ran three sectional sets against the prelims clock, twenty minutes for quantitative " +
+      "aptitude with no carry-over into the other sections. The recurring lesson was selection: " +
+      "the candidates who took the data interpretation set first and left the two heaviest " +
+      "arithmetic questions unattempted finished with a higher net score than the ones who " +
+      "attempted everything. Also covered approximation, and when squaring near a base beats " +
+      "long multiplication.",
+    recurrence: "Twice a week, 7:30 PM",
   },
   {
     id: 506,
-    topic: "Databases: indexes and reading an EXPLAIN plan",
+    topic: "SHG credit linkage: building a proposal a branch will read, with a visiting bank officer",
     dayOffset: -8,
-    hour: 19,
-    minute: 0,
+    hour: 18,
+    minute: 30,
     durationMinutes: 75,
-    instructor: FACULTY[1].full_name,
-    courseId: 201,
+    instructor: FACULTY[3].full_name,
+    courseId: 317,
+    cohort: BATCH.enterprise,
     attended: true,
     summary:
-      "Walked through three real slow queries and their plans. The recurring lesson: a sequential " +
-      "scan is not automatically wrong, and adding an index to every column makes writes slower " +
-      "without making reads faster.",
+      "A branch officer walked through what a credit linkage proposal is actually read for: the " +
+      "group's grading, the minutes book, the internal lending record and the repayment history. " +
+      "Covered the difference between a cash credit limit and a term loan, and why a group asks " +
+      "for the limit it can service rather than the largest one it can justify.",
   },
   {
     id: 507,
-    topic: "Cohort stand-up: capstone check-in",
+    topic: "Digital Seva counter: services, records and the end-of-day reconciliation",
     dayOffset: -12,
-    hour: 17,
-    minute: 30,
+    hour: 19,
+    minute: 0,
     durationMinutes: 45,
-    instructor: FACULTY[2].full_name,
-    courseId: 201,
+    instructor: FACULTY[4].full_name,
+    courseId: 315,
+    cohort: BATCH.digital,
     attended: false,
     summary:
-      "Each team demoed progress on their capstone. Recording covers the four demos and the " +
-      "feedback on scoping.",
+      "Recording covers the services a centre is authorised to deliver at the counter, the " +
+      "register kept against each transaction, and the reconciliation between receipts issued " +
+      "and the wallet balance at close of day.",
   },
 ];
 
@@ -131,9 +185,9 @@ const LIVE_STARTED_MINUTES_AGO = 22;
 
 function sessionTime(s: DemoSession): string {
   // The live one is anchored to NOW, not to a fixed hour. A prospect opening the
-  // demo at 10am would otherwise see a card badged LIVE next to a 6pm start time,
-  // and any page that derives "is it live?" from the clock would disagree with
-  // the badge outright.
+  // demo at 10am would otherwise see a card badged LIVE next to a 6:30am start
+  // time, and any page that derives "is it live?" from the clock would disagree
+  // with the badge outright.
   if (s.live) return iso(minutesAgo(LIVE_STARTED_MINUTES_AGO));
   return s.dayOffset >= 0
     ? isoDaysAhead(s.dayOffset, s.hour, s.minute)
@@ -188,12 +242,12 @@ function toApi(s: DemoSession) {
     has_recording: past,
     course_detail: course ? { id: course.id, title: course.title } : null,
     adaptive_course_detail: course ? { id: course.id, title: course.title } : null,
-    cohort_detail: { id: 11, name: "Autumn 2026 — Full-Stack" },
+    cohort_detail: s.cohort,
     instructor: s.instructor,
     attendance_count: seededInt(`att:${s.id}`, 28, 74),
     reminder_enabled: remindersOn().includes(s.id),
-    recurrence_summary: s.recurring ? "Every Tuesday, 6:00 PM" : null,
-    zoom_is_recurring: Boolean(s.recurring),
+    recurrence_summary: s.recurrence ?? null,
+    zoom_is_recurring: Boolean(s.recurrence),
     timezone: "Asia/Kolkata",
   };
 }
@@ -227,7 +281,7 @@ defineRoutes(MODULE, {
     return s ? toApi(s) : null;
   },
 
-  /** The learner's own attendance summary, shown as KPI tiles and a week strip. */
+  /** The aspirant's own attendance summary, shown as KPI tiles and a week strip. */
   "GET /live-class/api/clients/:clientId/my-live-stats/": () => {
     const past = SESSIONS.filter((s) => s.dayOffset < 0);
     const attended = past.filter((s) => s.attended).length;
@@ -276,7 +330,7 @@ defineRoutes(MODULE, {
     };
   },
 
-  /** Per-student reminder toggle, persisted so it survives a reload. */
+  /** Per-aspirant reminder toggle, persisted so it survives a reload. */
   "POST /live-class/api/clients/:clientId/live-activities/:id/reminder/": (req) => {
     const id = Number(req.params.id);
     const list = remindersOn();

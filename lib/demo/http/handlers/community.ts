@@ -1,10 +1,14 @@
 /**
  * The community forum: seed, shared state, and the read surface.
  *
- * Threads are written as questions a learner on these exact courses would
- * actually ask, with answers that read like peers rather than documentation.
- * This is the module where filler is most obvious: a forum full of "Great post!"
- * tells a prospect nobody uses it.
+ * Threads are written as questions an aspirant or a trainee on these exact
+ * courses would actually ask: how a Group-II paper treats 1969, why an inverter
+ * trips at noon and not in the morning, what to charge for a lined blouse. The
+ * answers read like peers and faculty rather than documentation, and the faculty
+ * answers are deliberately the better ones, because that is the claim the
+ * product is making.
+ * This is the module where filler is most obvious: a forum full of "Great post"
+ * tells an evaluating officer that nobody uses it.
  *
  * The cast is the shared roster, so the person who wrote the top thread is the
  * same person sitting at rank 3 on the dashboard leaderboard.
@@ -54,7 +58,7 @@ function foldName(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
-/** Resolve "kabir.deshmukh", "Kabir Deshmukh" or "KabirDeshmukh" to one person. */
+/** Resolve "sandhya.macherla", "Sandhya Macherla" or "SandhyaMacherla" to one person. */
 export function personByHandle(handle: string): DemoPerson | undefined {
   const wanted = foldName(handle);
   if (!wanted) return undefined;
@@ -124,18 +128,18 @@ export interface CommunityTag {
 }
 
 const SEED_TAGS: CommunityTag[] = [
-  { id: 1, name: "react" },
-  { id: 2, name: "javascript" },
-  { id: 3, name: "python" },
-  { id: 4, name: "sql" },
-  { id: 5, name: "algorithms" },
-  { id: 6, name: "careers" },
-  { id: 7, name: "interviews" },
-  { id: 8, name: "css" },
-  { id: 9, name: "git" },
-  { id: 10, name: "pandas" },
-  { id: 11, name: "machine-learning" },
-  { id: 12, name: "system-design" },
+  { id: 1, name: "tgpsc" },
+  { id: 2, name: "telangana-movement" },
+  { id: 3, name: "general-studies" },
+  { id: 4, name: "current-affairs" },
+  { id: 5, name: "ibps-po" },
+  { id: 6, name: "reasoning" },
+  { id: 7, name: "exam-strategy" },
+  { id: 8, name: "solar-pv" },
+  { id: 9, name: "electrician" },
+  { id: 10, name: "tailoring" },
+  { id: 11, name: "shg-finance" },
+  { id: 12, name: "micro-enterprise" },
 ];
 
 /** Seed tags plus anything the visitor created in the new-post dialog. */

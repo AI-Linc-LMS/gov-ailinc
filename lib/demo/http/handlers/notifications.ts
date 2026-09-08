@@ -4,11 +4,19 @@
  * Read state is persisted, so marking one read (or all of them) actually clears
  * the badge and stays cleared across a reload. A bell whose count never moves is
  * a detail a prospect notices within seconds of clicking it.
+ *
+ * Every notice is a mission notice: a recruitment notification going live, a
+ * class about to start, a mock result, a certificate, a batch allotment, a
+ * document the centre is still waiting for. That last one matters more than it
+ * looks. Document verification at the centre is the step a real aspirant is most
+ * often stuck on, and a notification list that never mentions it is a list
+ * written by someone who has not sat in the queue.
  */
 
 import { defineRoutes } from "../router";
 import { notFound } from "../types";
 import { overlay, nextDemoId } from "../../db/overlay";
+import { FACULTY } from "../../db/people";
 import { iso, isoDaysAgo, nowMs } from "../../clock";
 import type { Notification } from "@/lib/services/notification.service";
 
@@ -25,7 +33,7 @@ interface Seed {
 
 /**
  * A notification an admin sent during this session, stored with an absolute
- * timestamp rather than an "hours ago" offset — it happened at a real moment the
+ * timestamp rather than an "hours ago" offset. It happened at a real moment the
  * visitor can remember, so it must not drift the way a relative seed does.
  */
 interface SentNotification {
@@ -37,38 +45,79 @@ interface SentNotification {
   createdAt: string;
 }
 
+/**
+ * The seeded bell, newest first.
+ *
+ * `type` is not free text. `NotificationPopover` maps it through
+ * `NOTIFICATION_TYPE_CONFIG` to an icon and a colour and falls back to a plain
+ * bell for anything it does not recognise, so this seed uses that map's own keys
+ * wherever the meaning genuinely matches and accepts the bell where it does not.
+ * The seed this replaced used four types the map had never heard of and drew
+ * four identical bells.
+ *
+ * Names come from the roster by reference, never typed in. The 7001 row carried
+ * "with Vikram Menon" through a re-content that had already deleted him.
+ */
 const SEEDS: Seed[] = [
   {
     id: 7001,
-    title: "Live session starts in an hour",
-    body: "Live doubt-clearing: React rendering and effects, with Vikram Menon.",
+    // The hour-before reminder for session 501, which is live by the time a
+    // visitor opens the demo. That is the sequence, not a contradiction: the
+    // notice went out an hour ago and the class has since started.
+    title: "Live class starts in an hour",
+    body: `Group-II polity: the amendment procedure, and how the paper asks it, with ${FACULTY[0].full_name}.`,
     type: "live_session",
-    route: "/live-sessions",
+    route: "/live-sessions?session=501",
     hoursAgo: 1,
   },
   {
     id: 7002,
-    title: "Your DSA diagnostic has been graded",
-    body: "You scored 76%, placing you 7th of 84. Open the result to see the per-section breakdown.",
-    type: "assessment",
+    title: "New recruitment notification published",
+    body:
+      "Group-II Services: Assistant Section Officer and allied posts, TGPSC. Open the " +
+      "notification for the post list, the eligibility and the last date to apply.",
+    type: "job_published",
+    route: "/jobs-v2/601",
+    hoursAgo: 5,
+  },
+  {
+    id: 7003,
+    title: "Your Group-II full-length mock has been graded",
+    body:
+      "You scored 68%, placing you 12th of 96 in the batch. The result breaks the paper down " +
+      "section by section and lists what you left unattempted.",
+    type: "assessment_available",
     route: "/assessments",
     hoursAgo: 20,
   },
   {
-    id: 7003,
-    title: "Kabir replied to your question",
-    body: '"Your left pointer is jumping backwards..." on Sliding window: why is it still O(n)?',
-    type: "community",
-    route: "/community",
+    id: 7004,
+    title: "Certificate issued",
+    body:
+      "Solar PV Installer and Rooftop Technician. The certificate and its verification code " +
+      "are under Credentials.",
+    type: "course_completed",
+    route: "/credentials",
     hoursAgo: 30,
   },
   {
-    id: 7004,
-    title: "New role matched to your profile",
-    body: "Software Engineer I (Backend) at Razorpay. Applications close in 12 days.",
-    type: "job",
-    route: "/jobs-v2",
+    id: 7005,
+    title: "Batch allotment confirmed",
+    body: `Banking Batch B-07, Hyderabad, for IBPS PO and Clerk. Your faculty is ${FACULTY[1].full_name}, and the quantitative aptitude speed drill runs twice a week in the evening.`,
+    type: "course_enrolled",
+    route: "/live-sessions",
     hoursAgo: 48,
+  },
+  {
+    id: 7006,
+    title: "Documents pending at the skill centre",
+    body:
+      "Two documents are still to be verified at TSEM Skill Centre, Warangal: your residence " +
+      "proof and your qualifying certificate. Carry the originals to the centre before the " +
+      "next practical.",
+    type: "custom",
+    route: "/profile",
+    hoursAgo: 54,
   },
 ];
 
@@ -85,7 +134,7 @@ function sent(): SentNotification[] {
  *
  * Read state is a list of ids, not an "all read" boolean. The boolean version
  * marked every FUTURE notification read too, so a message an admin sent after
- * clicking "mark all read" arrived silently with no badge — the one thing the
+ * clicking "mark all read" arrived silently with no badge, the one thing the
  * notifications screen exists to demonstrate.
  */
 function feed(): Notification[] {
@@ -147,8 +196,8 @@ export function markNotificationRead(id: number): Notification {
 }
 
 /**
- * Put a notification in the bell. Used by the admin send screen so a message a
- * salesperson composes is actually there when they open the bell afterwards.
+ * Put a notification in the bell. Used by the admin send screen so a notice the
+ * programme officer composes is actually there when they open the bell after.
  */
 export function pushNotification(input: {
   title: string;

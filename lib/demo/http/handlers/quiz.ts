@@ -406,8 +406,8 @@ defineRoutes(MODULE, {
     const pending = session.pendingId != null ? questionById(session, session.pendingId) : null;
     return {
       teaser: pending
-        ? `This one is about ${pending.skill.toLowerCase()}. Rule out the two options that describe a different mechanism.`
-        : "Rule out the options that describe a different mechanism.",
+        ? `This one is about ${pending.skill.toLowerCase()}. Rule out the two options that are true in themselves but answer a different question.`
+        : "Rule out the options that are true in themselves but answer a different question.",
       hint: pending
         ? pending.explanation.split(". ")[0] + "."
         : "Re-read the question for the word that constrains the answer.",
@@ -610,7 +610,7 @@ function narration(req: DemoRequest) {
         : section === "misconceptions"
           ? wrongSkills.map((skill) => ({
               skill,
-              misconception: `Your wrong answers on ${skill} picked the option that describes a related but different mechanism.`,
+              misconception: `Your wrong answers on ${skill} picked the option that is correct in general but does not answer what the question asked.`,
               fix: `Re-read the ${skill} section of the lesson, then retry - that is usually one short session.`,
             }))
           : {

@@ -88,12 +88,19 @@ defineRoutes(MODULE, {
 
     const items = topic.kinds
       .map((kind) => {
+        // `coding` and `video` cannot occur in this tenant's catalogue: every
+        // topic in `db/courses.ts` is an article, a quiz or an assignment, by
+        // the build brief's decision that a mission teaching recruitment exams
+        // and vocational trades has no code judge and no bundled video. The two
+        // branches stay because this map is the complete statement of what a
+        // topic can hold, and a partial one would quietly return null for a kind
+        // the product does support.
         const map = {
           article: { id: ARTICLE_ID(topic), on_offer: POINTS.article, detail: "Read the lesson" },
           quiz: { id: QUIZ_ID(topic), on_offer: POINTS.quiz, detail: "Adaptive quiz" },
           coding: { id: CODING_ID(topic), on_offer: POINTS.coding, detail: "Coding practice set" },
           video: { id: VIDEO_ID(topic), on_offer: POINTS.video, detail: "Video with check-ins" },
-          assignment: { id: topic.id, on_offer: 150, detail: "Submitted project" },
+          assignment: { id: topic.id, on_offer: 150, detail: "Graded assignment" },
         } as const;
         const meta = map[kind];
         if (!meta) return null;
@@ -186,7 +193,7 @@ defineRoutes(MODULE, {
       followups: {
         even_simpler: `Put "${term}" in one sentence, with no jargon.`,
         show_diagram: `Show me "${term}" as a diagram.`,
-        real_example: `Give me a real example of "${term}" in production code.`,
+        real_example: `Give me a worked example of "${term}", the way it would come up in the exam or on the job.`,
       },
     };
   },
