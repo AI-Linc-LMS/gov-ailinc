@@ -19,8 +19,12 @@
  *   4. no course offers a content kind this product line cannot serve (coding, video)
  *   5. derived completion is consistent with what a course claims (enrolled vs progress)
  *   6. slugs are unique, titles are non-empty, house style holds (no em dashes)
- *   7. every authored curriculum topic corresponds to a real topic with the same title,
- *      and the coverage gap is reported rather than hidden
+ *   7. every authored curriculum topic corresponds to a real topic with the same title
+ *   8. a course that has a curriculum file authors ALL of its topics, not some of them.
+ *      Partial coverage is invisible from every angle: the course loads, the authored
+ *      lessons read well, and the unwritten ones quietly render generated scaffolding
+ *      in between. It is also the natural failure of parallel authoring, where an
+ *      author given eight topics writes four good ones and reports success.
  *
  * Usage: node scripts/verify-catalogue.mjs
  * Exits non-zero on any failure.
@@ -181,6 +185,8 @@ for (const course of courses) {
 /* ------------------------------------------------------- authored curriculum */
 
 let authoredTopics = 0;
+/** Every topic id an authored curriculum file actually defines, for the coverage check below. */
+const authoredIds = new Set();
 if (fs.existsSync(CURRICULUM_DIR)) {
   const files = fs.readdirSync(CURRICULUM_DIR).filter((f) => /^course-\d+\.ts$/.test(f));
   for (const file of files) {
@@ -202,6 +208,7 @@ if (fs.existsSync(CURRICULUM_DIR)) {
     for (const [key, topic] of Object.entries(curriculum ?? {})) {
       authoredTopics++;
       const id = Number(key);
+      authoredIds.add(id);
       const real = topicIndex.get(id);
       if (!real) {
         fail(`${file} topic ${id}`, "is not a topic in the catalogue, so nothing will ever render it");
@@ -213,18 +220,48 @@ if (fs.existsSync(CURRICULUM_DIR)) {
     }
   }
 
-  // Which catalogue topics have no authored content. Reported, not failed: the
-  // generated fallback is a documented degradation, and hiding the gap is what
-  // would let it grow.
-  const unauthored = [...topicIndex.keys()].filter((id) => {
-    const f = path.join(CURRICULUM_DIR, `course-${topicIndex.get(id).courseId}.ts`);
-    return !fs.existsSync(f);
-  });
-  const coursesWithoutCurriculum = new Set(unauthored.map((id) => topicIndex.get(id).courseId));
-  if (coursesWithoutCurriculum.size) {
+  /*
+   * Coverage, which is the check this file was missing and had to be taught.
+   *
+   * A course with NO curriculum file is a known, documented state: every topic
+   * falls through to the generated fallback, which is honest scaffolding. That is
+   * reported, not failed.
+   *
+   * A course WITH a curriculum file that is missing some of its topics is a
+   * different animal entirely and must fail. It is invisible from every angle: the
+   * course loads, the authored lessons read beautifully, and the three topics
+   * nobody wrote render the fallback in between them. Nothing errors, nothing logs,
+   * and the only way to find it is to open all twenty-four lessons by hand.
+   *
+   * It is also the exact failure mode of authoring in parallel: an author given
+   * eight topics writes four long ones, runs out of room, and reports success
+   * because the four it wrote are genuinely good.
+   */
+  const authoredCourseIds = new Set(
+    fs
+      .readdirSync(CURRICULUM_DIR)
+      .filter((f) => /^course-\d+\.ts$/.test(f))
+      .map((f) => Number(f.match(/\d+/)[0])),
+  );
+
+  const coursesWithoutCurriculum = [...seenCourseIds].filter((id) => !authoredCourseIds.has(id));
+  if (coursesWithoutCurriculum.length) {
     console.log(
-      `note: ${coursesWithoutCurriculum.size} course(s) have no authored curriculum yet: ${[...coursesWithoutCurriculum].sort().join(", ")}`,
+      `note: ${coursesWithoutCurriculum.length} course(s) have no authored curriculum yet, so every topic falls back: ${coursesWithoutCurriculum.sort((a, b) => a - b).join(", ")}`,
     );
+  }
+
+  for (const courseId of [...authoredCourseIds].sort((a, b) => a - b)) {
+    const expected = [...topicIndex.entries()]
+      .filter(([, v]) => v.courseId === courseId)
+      .map(([id]) => id);
+    const missing = expected.filter((id) => !authoredIds.has(id));
+    if (missing.length) {
+      fail(
+        `course-${courseId}.ts`,
+        `authors ${expected.length - missing.length} of ${expected.length} topics; ${missing.length} silently fall back to generated scaffolding: ${missing.join(", ")}`,
+      );
+    }
   }
 }
 
