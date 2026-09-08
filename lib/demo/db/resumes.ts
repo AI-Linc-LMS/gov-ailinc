@@ -27,22 +27,28 @@ import { isoDaysAgo, todayStart } from "../clock";
 export const UPLOADED_RESUMES_KEY = "resumes:uploaded";
 
 /**
- * The student persona's saved resumes.
+ * The aspirant persona's saved resumes.
  *
  * Two of them, not one: the picker is a dropdown, and a dropdown with a single
- * option reads as a placeholder rather than a real choice.
+ * option reads as a placeholder rather than a real choice. They are also the two
+ * tracks she is actually on, an office or banking role and the solar trade, so
+ * choosing between them in the apply wizard is a real decision rather than a
+ * pair of near-identical files.
+ *
+ * No year in the file name. A resume labelled with a fixed year is stale the
+ * moment the calendar turns, and everything else in this demo is relative.
  */
 const SEED_RESUMES: readonly SavedResume[] = [
   {
     id: 4101,
-    display_name: "Ananya Rao, Full-Stack Engineer (2026).pdf",
-    file_url: "/media/resumes/ananya-rao-full-stack-2026.pdf",
+    display_name: "Sandhya Macherla, Banking and Financial Sector.pdf",
+    file_url: "/media/resumes/sandhya-macherla-banking.pdf",
     created_at: isoDaysAgo(9, 21, 40),
   },
   {
     id: 4102,
-    display_name: "Ananya Rao, Data and ML (2026).pdf",
-    file_url: "/media/resumes/ananya-rao-data-ml-2026.pdf",
+    display_name: "Sandhya Macherla, Solar PV Technician.pdf",
+    file_url: "/media/resumes/sandhya-macherla-solar-pv.pdf",
     created_at: isoDaysAgo(34, 18, 5),
   },
 ];
@@ -108,13 +114,13 @@ export function resumeDocumentUrl(person: DemoPerson, facts: ResumeFacts): strin
 <p style="margin:0;font-size:13px;color:#334155;line-height:1.7">${esc(facts.skills)}</p>
 <h2 style="margin:22px 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#4f46e5">Experience</h2>
 <p style="margin:0;font-size:13px;color:#334155;line-height:1.7">${esc(facts.experience)}</p>
-<h2 style="margin:22px 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#4f46e5">Selected projects</h2>
+<h2 style="margin:22px 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#4f46e5">Training and practice</h2>
 <ul style="margin:0;padding-left:18px;font-size:13px;color:#334155;line-height:1.8">
-<li>Course capstone shipped to production, reviewed by a AI Linc instructor.</li>
-<li>Weekly coding practice, 180 problems solved across arrays, graphs and dynamic programming.</li>
-<li>Team project delivered in a four-week cohort sprint with a live demo day.</li>
+<li>Course capstone assignment submitted at the district skill centre and reviewed by mission faculty.</li>
+<li>Sectional practice across quantitative aptitude, reasoning and general awareness, with attempt-wise accuracy tracked.</li>
+<li>Batch project completed with a demonstration to the centre in-charge on the final day.</li>
 </ul>
-<p style="margin:28px 0 0;font-size:11px;color:#94a3b8">Generated from the AI Linc learner profile.</p>
+<p style="margin:28px 0 0;font-size:11px;color:#94a3b8">Generated from the Telangana Skills &amp; Employment Mission aspirant profile.</p>
 </div></body></html>`;
   return `data:text/html;charset=utf-8,${encodeURIComponent(html)}`;
 }
@@ -124,14 +130,17 @@ export function personaResumeUrl(): string {
   return resumeDocumentUrl(STUDENT_PERSONA, {
     headline: STUDENT_PERSONA.headline,
     college: STUDENT_PERSONA.college,
-    degree: "B.Tech, Computer Science and Engineering",
-    gradYear: todayStart().getUTCFullYear() + 1,
-    location: "Bengaluru, Karnataka",
+    degree: "B.Com (Computer Applications)",
+    // Four years back, matching the education entry in `profiles.ts`. A resume
+    // that graduates her in a different year to her own profile is the kind of
+    // detail an evaluator reads as a broken build.
+    gradYear: todayStart().getUTCFullYear() - 4,
+    location: "Warangal, Telangana",
     phone: STUDENT_PERSONA.phone,
     email: STUDENT_PERSONA.email,
     skills:
-      "React, TypeScript, Node.js, PostgreSQL, Python, pandas, scikit-learn, Docker, AWS, Git",
+      "Quantitative aptitude, reasoning, general English, Indian polity, Indian economy, Telangana movement and state formation, banking awareness, book-keeping with Tally, MS Excel",
     experience:
-      "Software engineering intern at a Bengaluru fintech for six months, working on the payouts service. Teaching assistant for the Data Structures and Algorithms track at AI Linc.",
+      "Accounts assistant with a rooftop solar contractor in Warangal, handling invoicing, the GST ledger and DISCOM net-metering paperwork. Earlier, a part-time data entry operator at a Common Service Centre in Hanamkonda.",
   });
 }

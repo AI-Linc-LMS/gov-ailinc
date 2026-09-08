@@ -1,14 +1,17 @@
 /**
- * The cast of the demo.
+ * The cast of the platform.
  *
- * One roster feeds every surface that shows a person — leaderboards, community
- * threads, cohort rosters, the admin student table, instructor gradebooks. That
- * consistency is what makes the prototype hold up under scrutiny: a prospect who
- * spots "Kabir Deshmukh" at rank 3 on the leaderboard and then opens the admin
- * student list finds the same person, with the same avatar and the same points.
+ * One roster feeds every surface that shows a person: leaderboards, community
+ * threads, batch rosters, the admin aspirant table, faculty gradebooks. That
+ * consistency is what makes the prototype hold up under scrutiny: an officer
+ * who spots "Srikanth Bandari" at rank 3 on the leaderboard and then opens the
+ * admin aspirant list finds the same person, with the same photograph and the
+ * same points.
  *
- * Names skew Indian because that is who AI Linc's institutions actually teach,
- * with enough international names to show the platform is not region-locked.
+ * Names are predominantly Telugu-speaking Telangana names, because that is who
+ * a state skilling mission serves. Urdu-speaking Hyderabadi, Banjara and
+ * Marathi-border names sit alongside them, because the state is not one
+ * community. Every person here is fictional.
  */
 
 import { portraitAt, portraitFor } from "./avatar";
@@ -35,99 +38,135 @@ export interface DemoPerson {
   headline: string;
 }
 
+/**
+ * Institutions and skill centres the roster is drawn from.
+ *
+ * The field on DemoPerson is still called `college`, because it is read in a
+ * dozen places and renamed in none of them, but for this tenant it holds
+ * whatever the person is attached to: a university, a government degree
+ * college, a polytechnic, an ITI or a mission skill centre. Every entry carries
+ * its district, because a state mission reports by district and an institution
+ * without one cannot be placed on that report.
+ */
 const COLLEGES = [
-  "Indian Institute of Technology, Bombay",
-  "National Institute of Technology, Trichy",
-  "Delhi Technological University",
-  "Vellore Institute of Technology",
-  "BITS Pilani",
-  "Manipal Institute of Technology",
-  "PES University",
-  "SRM Institute of Science and Technology",
-  "Anna University",
-  "Amrita Vishwa Vidyapeetham",
-  "Jadavpur University",
-  "College of Engineering, Pune",
+  "Osmania University, Hyderabad",
+  "Kakatiya University, Warangal",
+  "Telangana University, Nizamabad",
+  "Satavahana University, Karimnagar",
+  "Mahatma Gandhi University, Nalgonda",
+  "Palamuru University, Mahbubnagar",
+  "Government Polytechnic, Warangal",
+  "Government Polytechnic, Karimnagar",
+  "Government Polytechnic, Mancherial",
+  "Government Polytechnic, Nirmal",
+  "Government ITI, Nizamabad",
+  "Government ITI, Khammam",
+  "Government ITI, Adilabad",
+  "Government Degree College, Siddipet",
+  "Government Degree College, Wanaparthy",
+  "Government Degree College for Women, Jagtial",
+  "TSEM Skill Centre, Khammam",
+  "TSEM Skill Centre, Suryapet",
+  "TSEM Skill Centre, Vikarabad",
+  "TSEM Skill Centre, Sangareddy",
+  "TSEM Skill Centre, Rangareddy",
+  "TSEM Skill Centre, Bhadradri Kothagudem",
 ] as const;
 
+/**
+ * Headlines read like the people a state mission actually serves: someone
+ * sitting a recruitment exam, someone on a trade course at a district centre,
+ * someone turning a self-help group into a registered unit. None of them names
+ * a live vacancy, a fee or a cut-off, which is the one thing this seed must
+ * never assert as current fact.
+ */
 const HEADLINES = [
-  "Aspiring backend engineer",
-  "Full-stack learner | React + Node",
-  "Data science enthusiast",
-  "Preparing for product-based interviews",
-  "Cloud and DevOps track",
-  "Machine learning, one notebook at a time",
-  "Frontend developer in the making",
-  "CS undergrad | competitive programmer",
-  "Switching careers into tech",
-  "Python, SQL and everything in between",
+  "TGPSC Group-II aspirant, second attempt",
+  "Preparing for SSC CGL Tier-II",
+  "IBPS PO aspirant, banking awareness focus",
+  "RRB Group-D aspirant, Secunderabad zone",
+  "TGLPRB constable aspirant, written and physical",
+  "GATE aspirant targeting PSU recruitment",
+  "Solar PV trainee, Warangal centre",
+  "ITI electrician, wiring and estimation",
+  "Tailoring and boutique trainee, Karimnagar",
+  "Mobile repair trainee, runs a counter at home",
+  "Common Service Centre operator in training",
+  "SHG member starting a millet processing unit",
+  "FPO board member learning procurement",
+  "First-generation graduate preparing for state exams",
 ] as const;
 
 /** Raw roster: only the parts that must be hand-authored to read as real. */
 /**
- * The learner roster: a name and the portrait that belongs to that character.
+ * The roster: a name and the portrait that belongs to that character.
  *
  * The portrait is AUTHORED alongside the name, not derived from it. Portraits
  * used to be hashed across an anonymous pool, on the reasoning that inferring
  * anything about a person from their name is an assumption worth avoiding. That
  * reasoning is right, and this keeps it: nothing here reads a name and decides
  * anything. The photo is simply part of the character the seed describes, the
- * same as the name and the college.
+ * same as the name and the institution.
  *
- * What the hash produced instead was a demo where a persona introduced as Ananya
- * Rao appeared under a stranger's photograph on every screen, which a prospect
- * reads as a broken build rather than as a principled position.
+ * What the hash produced instead was a demo where a persona introduced as
+ * Sandhya Macherla appeared under a stranger's photograph on every screen,
+ * which an evaluator reads as a broken build rather than as a principled
+ * position.
  *
- * Indices are unique, so no two people in the demo share a face.
+ * Slots are unique, so no two people in the demo share a face.
  */
 const ROSTER_NAMES: ReadonlyArray<readonly [string, string, string]> = [
-  ["Kabir", "Deshmukh", "men/1"],
-  ["Ishita", "Bansal", "women/2"],
-  ["Rohan", "Pillai", "men/3"],
-  ["Meera", "Krishnan", "women/4"],
-  ["Arjun", "Sethi", "men/5"],
-  ["Sara", "Qureshi", "women/6"],
-  ["Nikhil", "Chaturvedi", "men/7"],
-  ["Diya", "Malhotra", "women/8"],
-  ["Aditya", "Ranganathan", "men/9"],
-  ["Tanvi", "Joshi", "women/10"],
-  ["Farhan", "Ansari", "men/11"],
-  ["Neha", "Bhattacharya", "women/12"],
-  ["Siddharth", "Venkatesh", "men/13"],
-  ["Pooja", "Reddy", "women/14"],
-  ["Yash", "Agarwal", "men/15"],
-  ["Ritika", "Sen", "women/16"],
-  ["Harsh", "Vardhan", "men/17"],
-  ["Aisha", "Khan", "women/18"],
-  ["Karthik", "Subramanian", "men/19"],
-  ["Shreya", "Ghosh", "women/20"],
-  ["Manav", "Trivedi", "men/21"],
-  ["Lakshmi", "Narayanan", "women/22"],
-  ["Devansh", "Kulkarni", "men/23"],
-  ["Zoya", "Merchant", "women/24"],
-  ["Pranav", "Bhatt", "men/25"],
-  ["Anjali", "Verma", "women/26"],
-  ["Imran", "Sheikh", "men/27"],
-  ["Kavya", "Prasad", "women/28"],
-  ["Rahul", "Chatterjee", "men/29"],
-  ["Simran", "Gill", "women/30"],
-  ["Vivek", "Nambiar", "men/31"],
-  ["Tara", "D\'Souza", "women/32"],
-  ["Aryan", "Mishra", "men/33"],
-  ["Nandini", "Rajan", "women/34"],
-  ["Omar", "Haddad", "men/35"],
-  ["Elena", "Petrova", "women/36"],
-  ["Daniel", "Okafor", "men/37"],
-  ["Mei", "Lin", "women/38"],
-  ["Gaurav", "Saxena", "men/39"],
-  ["Priyanka", "Iyer", "women/40"],
-  ["Sameer", "Kapadia", "men/41"],
-  ["Ayesha", "Siddiqui", "women/42"],
-  ["Varun", "Chopra", "men/43"],
-  ["Ridhi", "Aggarwal", "women/44"],
+  ["Srikanth", "Bandari", "men/1"],
+  ["Sravani", "Mekala", "women/2"],
+  ["Naveen", "Gaddam", "men/3"],
+  ["Anitha", "Vemula", "women/4"],
+  ["Rajkumar", "Dharavath", "men/5"],
+  ["Swapna", "Chintala", "women/6"],
+  ["Mohammed", "Ghouse", "men/7"],
+  ["Pravalika", "Kandula", "women/8"],
+  ["Venkatesh", "Thumma", "men/9"],
+  ["Sunitha", "Rathod", "women/10"],
+  ["Praveen", "Gundeti", "men/11"],
+  ["Kavitha", "Mallepally", "women/12"],
+  ["Yadagiri", "Sabbani", "men/13"],
+  ["Divya", "Nallamothu", "women/14"],
+  ["Rakesh", "Jakkula", "men/15"],
+  ["Shirisha", "Ganta", "women/16"],
+  ["Sandeep", "Karnati", "men/17"],
+  ["Ayesha", "Sultana", "women/18"],
+  ["Bhaskar", "Pallerla", "men/19"],
+  ["Lavanya", "Cherukuri", "women/20"],
+  ["Vamshi", "Mudiraj", "men/21"],
+  ["Sujatha", "Enugala", "women/22"],
+  ["Kiran", "Vaddepalli", "men/23"],
+  ["Mounika", "Kotha", "women/24"],
+  ["Nagaraju", "Talari", "men/25"],
+  ["Renuka", "Godishala", "women/26"],
+  ["Mahesh", "Sanka", "men/27"],
+  ["Vaishnavi", "Manthena", "women/28"],
+  ["Ranjith", "Ramavath", "men/29"],
+  ["Sridevi", "Uppala", "women/30"],
+  ["Sathish", "Konda", "men/31"],
+  ["Padma", "Chennuri", "women/32"],
+  ["Harish", "Bathula", "men/33"],
+  ["Anusha", "Gajula", "women/34"],
+  ["Imran", "Baig", "men/35"],
+  ["Nikita", "Deshmukh", "women/36"],
+  ["Ashok", "Jadhav", "men/37"],
+  ["Jyothi", "Burra", "women/38"],
+  ["Charan", "Nelakurthi", "men/39"],
+  ["Deepika", "Sirikonda", "women/40"],
+  ["Manjunath", "Gowda", "men/41"],
+  ["Sushma", "Nomula", "women/42"],
+  ["Balaraju", "Kummari", "men/43"],
+  ["Ramya", "Marri", "women/44"],
 ] as const;
 
-const EMAIL_DOMAIN = "ailinc.com";
+// The mission issues an account on its own domain to everyone it enrols, so
+// aspirants, trainees and faculty all sit here. The three persona addresses in
+// `DEMO_PERSONAS` are on the same domain, which is what stops the login screen
+// and the roster from drifting apart.
+const EMAIL_DOMAIN = "tsem.gov.in";
 
 function slugEmail(first: string, last: string, id: number): string {
   const base = `${first}.${last}`
@@ -175,29 +214,29 @@ function buildPerson(
  * emails come from `DEMO_PERSONAS` so the credentials shown on the login screen
  * and the accounts that actually work can never drift apart.
  */
-export const STUDENT_PERSONA: DemoPerson = buildPerson(1001, "Ananya", "Rao", "student", {
+export const STUDENT_PERSONA: DemoPerson = buildPerson(1001, "Sandhya", "Macherla", "student", {
   email: DEMO_PERSONAS[0].email,
   profile_pic_url: portraitAt("women/70"),
-  college: "Indian Institute of Technology, Bombay",
-  headline: "Final-year CS undergrad | full-stack and ML",
+  college: "Kakatiya University, Warangal",
+  headline: "TGPSC Group-II aspirant, second attempt | Warangal",
   points: 7840,
   streak: 23,
 });
 
-export const INSTRUCTOR_PERSONA: DemoPerson = buildPerson(1002, "Vikram", "Menon", "instructor", {
+export const INSTRUCTOR_PERSONA: DemoPerson = buildPerson(1002, "Srinivas", "Kandukuri", "instructor", {
   email: DEMO_PERSONAS[1].email,
   profile_pic_url: portraitAt("men/70"),
-  college: "AI Linc",
-  headline: "Senior Instructor | Backend Engineering and Systems",
+  college: "Telangana Skills & Employment Mission",
+  headline: "Senior Faculty | General Studies and exam strategy",
   points: 0,
   streak: 0,
 });
 
-export const ADMIN_PERSONA: DemoPerson = buildPerson(1003, "Priya", "Nair", "admin", {
+export const ADMIN_PERSONA: DemoPerson = buildPerson(1003, "Anuradha", "Devarakonda", "admin", {
   email: DEMO_PERSONAS[2].email,
   profile_pic_url: portraitAt("women/72"),
-  college: "AI Linc",
-  headline: "Director of Programs",
+  college: "Telangana Skills & Employment Mission",
+  headline: "Programme Officer | Skilling and placement",
   points: 0,
   streak: 0,
 });
@@ -208,28 +247,49 @@ export const PERSONAS: readonly DemoPerson[] = [
   ADMIN_PERSONA,
 ];
 
-/** Additional teaching staff, for cohort assignment and live-session hosts. */
+/**
+ * Subject faculty and skill-centre trainers, for batch assignment and
+ * live-session hosts.
+ *
+ * Expertise maps onto the catalogue: exam faculty for the government-jobs
+ * section, trade and enterprise trainers for skill development. The order is
+ * load-bearing, because `courses.ts`, `live-sessions.ts` and `community.ts`
+ * index FACULTY[0] to FACULTY[2] directly. Append to the end; never remove.
+ */
 export const FACULTY: readonly DemoPerson[] = [
-  buildPerson(1101, "Ritu", "Kulkarni", "instructor", {
-    profile_pic_url: portraitAt("women/74"),
-    headline: "Instructor | Data Science and Analytics",
-  }),
-  buildPerson(1102, "Suresh", "Iyengar", "instructor", {
+  buildPerson(1101, "Rajeshwar", "Katukuri", "instructor", {
     profile_pic_url: portraitAt("men/72"),
-    headline: "Instructor | Cloud and DevOps",
+    college: "Telangana Skills & Employment Mission",
+    headline: "Faculty | Polity, Economy and Telangana Movement",
   }),
-  buildPerson(1103, "Fatima", "Rizvi", "instructor", {
+  buildPerson(1102, "Padmaja", "Chekuri", "instructor", {
+    profile_pic_url: portraitAt("women/74"),
+    college: "Telangana Skills & Employment Mission",
+    headline: "Faculty | Quantitative Aptitude and Banking Awareness",
+  }),
+  buildPerson(1103, "Shankar", "Dandu", "instructor", {
+    profile_pic_url: portraitAt("men/76"),
+    college: "TSEM Skill Centre, Warangal",
+    headline: "Trainer | Solar PV installation and electrical trades",
+  }),
+  buildPerson(1104, "Sarala", "Nandyala", "instructor", {
     profile_pic_url: portraitAt("women/76"),
-    headline: "Instructor | Frontend Engineering",
+    college: "TSEM Skill Centre, Khammam",
+    headline: "Trainer | Enterprise development and SHG linkage",
+  }),
+  buildPerson(1105, "Nagalakshmi", "Vanam", "instructor", {
+    profile_pic_url: portraitAt("women/78"),
+    college: "TSEM Skill Centre, Suryapet",
+    headline: "Trainer | Digital literacy and CSC operations",
   }),
 ];
 
-/** The learner body. Ids start at 2000 to stay clearly distinct from staff. */
+/** The aspirants and trainees. Ids start at 2000 to stay clear of staff. */
 export const STUDENTS: readonly DemoPerson[] = ROSTER_NAMES.map(([first, last, portrait], i) =>
   buildPerson(2000 + i, first, last, "student", { profile_pic_url: portraitAt(portrait) }),
 );
 
-/** Everyone, in one list — the lookup surface handlers use. */
+/** Everyone, in one list: the lookup surface handlers use. */
 export const ALL_PEOPLE: readonly DemoPerson[] = [
   ...PERSONAS,
   ...FACULTY,
@@ -246,8 +306,8 @@ export function personByEmail(email: string): DemoPerson | undefined {
 }
 
 /**
- * The full learner list including the signed-in student persona, ranked by
- * points. Leaderboards, the admin roster and cohort views all read from here so
+ * The full learner list including the signed-in aspirant persona, ranked by
+ * points. Leaderboards, the admin roster and batch views all read from here, so
  * a person's standing is identical wherever it is shown.
  */
 export function rankedLearners(): DemoPerson[] {

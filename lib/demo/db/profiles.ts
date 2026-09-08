@@ -1,22 +1,22 @@
 /**
- * Full learner/staff profiles.
+ * Full profiles for aspirants, trainees and staff.
  *
  * The signed-in personas are scored 100% complete on purpose. Profile completion
- * is a real gate in this product — `ProfileCompletion.locked_modules` locks the
- * resume, jobs and interview modules until five fields are filled — and a
- * prospect who lands on a locked module has been shown a wall instead of a
- * feature. Anyone exploring the demo should reach every screen.
+ * is a real gate in this product: `ProfileCompletion.locked_modules` locks the
+ * resume, jobs and interview modules until five fields are filled, and anyone
+ * who lands on a locked module has been shown a wall instead of a feature.
+ * Everyone exploring the demo should reach every screen.
  */
 
 import type { ProfileCompletion, UserProfile } from "@/lib/services/profile.service";
 import { ADMIN_PERSONA, INSTRUCTOR_PERSONA, STUDENT_PERSONA, type DemoPerson } from "./people";
-import { ymd, daysAgo } from "../clock";
+import { ymd, daysAgo, todayStart } from "../clock";
 
-/** A fully satisfied completion payload — nothing locked, nothing nagging. */
+/** A fully satisfied completion payload: nothing locked, nothing nagging. */
 function completeProfile(): ProfileCompletion {
   const fields = [
     { field: "phone_number", label: "Phone number" },
-    { field: "college_name", label: "College" },
+    { field: "college_name", label: "Institution" },
     { field: "graduation_year", label: "Graduation year" },
     { field: "city", label: "City" },
     { field: "skills", label: "Skills" },
@@ -31,8 +31,14 @@ function completeProfile(): ProfileCompletion {
   };
 }
 
-/** Baseline profile derived from a roster entry — used for everyone but the personas. */
+/** Baseline profile derived from a roster entry, used for everyone but the personas. */
 function baseProfile(person: DemoPerson): UserProfile {
+  // The district is read off the institution rather than picked separately, so a
+  // trainee at "Government ITI, Khammam" is never shown as living in another
+  // district. Staff postings carry no comma ("Telangana Skills & Employment
+  // Mission"), and those sit at the state office in Hyderabad.
+  const parts = person.college.split(", ");
+  const district = parts.length > 1 ? parts[parts.length - 1] : "Hyderabad";
   return {
     profile_completion: completeProfile(),
     first_name: person.first_name,
@@ -50,11 +56,13 @@ function baseProfile(person: DemoPerson): UserProfile {
     headline: person.headline,
     cover_photo_url: null,
     college_name: person.college,
-    degree_type: "B.Tech",
-    branch: "Computer Science and Engineering",
-    graduation_year: String(new Date().getUTCFullYear() + 1),
-    city: "Bengaluru",
-    state: "Karnataka",
+    degree_type: "B.A.",
+    branch: "History, Economics and Political Science",
+    // todayStart(), not `new Date()`: seeds must not read the wall clock
+    // directly, or two renders a millisecond apart can disagree.
+    graduation_year: String(todayStart().getUTCFullYear() - 1),
+    city: district,
+    state: "Telangana",
     portfolio_website_url: null,
     leetcode_url: null,
     hackerrank_url: null,
@@ -70,196 +78,227 @@ function baseProfile(person: DemoPerson): UserProfile {
 }
 
 /**
- * The student a prospect signs in as.
+ * The aspirant a visitor signs in as.
  *
  * Written out in full rather than generated: this is the profile that gets
  * projected on a screen, opened in the resume builder and exported to PDF, so
  * every line has to survive being read closely.
+ *
+ * The four enrolments in `courses.ts` hang together on this record. She is a
+ * commerce graduate sitting the state and banking exams, she keeps the books for
+ * a rooftop solar contractor, which is why the solar PV trade course is hers,
+ * and she is doing the paperwork for a self-help group unit, which is why the
+ * micro-enterprise course is too.
  */
 const STUDENT_PROFILE: UserProfile = {
   ...baseProfile(STUDENT_PERSONA),
   bio:
-    "Final-year computer science student at IIT Bombay. I build full-stack products and " +
-    "spend most weekends on machine-learning side projects. Currently preparing for " +
-    "backend and applied-ML roles.",
-  headline: "Final-year CS undergrad | Full-stack & ML | Open to SDE roles",
-  date_of_birth: "2004-03-14",
-  city: "Mumbai",
-  state: "Maharashtra",
-  portfolio_website_url: "https://ananyarao.dev",
-  leetcode_url: "https://leetcode.com/ananyarao",
-  hackerrank_url: "https://www.hackerrank.com/ananyarao",
-  kaggle_url: "https://www.kaggle.com/ananyarao",
-  medium_url: "https://medium.com/@ananyarao",
-  social_links: {
-    linkedin: STUDENT_PERSONA.linkedin_url,
-    github: "https://github.com/ananyarao",
-    twitter: "https://x.com/ananyarao",
-  },
+    "B.Com graduate from Kakatiya University, Warangal. I keep the accounts for a rooftop " +
+    "solar contractor and I am preparing for TGPSC Group-II and the IBPS officer and " +
+    "clerical exams. I also handle the paperwork for my mother's self-help group, which is " +
+    "registering a tailoring unit.",
+  headline: "TGPSC Group-II aspirant, second attempt | Warangal",
+  date_of_birth: "2001-06-12",
+  city: "Warangal",
+  state: "Telangana",
+  degree_type: "B.Com",
+  branch: "Computer Applications",
+  graduation_year: String(todayStart().getUTCFullYear() - 4),
   skills: [
-    "Python",
-    "TypeScript",
-    "React",
-    "Node.js",
-    "PostgreSQL",
-    "Django",
-    "Docker",
-    "AWS",
-    "Pandas",
-    "scikit-learn",
-    "System Design",
-    "Data Structures & Algorithms",
+    "Quantitative Aptitude",
+    "Logical Reasoning",
+    "General English",
+    "Data Interpretation",
+    "Indian Polity",
+    "Indian Economy",
+    "Telangana Movement and State Formation",
+    "Current Affairs",
+    "Banking Awareness",
+    "Book-keeping and Tally",
+    "MS Excel",
+    "Descriptive Writing",
   ].map((name, i) => ({ id: `sk-${i + 1}`, name })),
   projects: [
     {
       id: "pr-1",
-      name: "Sahayak - campus support assistant",
+      name: "3 kW rooftop solar survey, Hanamkonda",
       description:
-        "Retrieval-augmented assistant that answers student queries from 4,000+ pages of " +
-        "institute circulars. Cut the helpdesk's repeat-question load by roughly 60%.",
-      technologies: ["Python", "FastAPI", "pgvector", "React"],
-      url: "https://github.com/ananyarao/sahayak",
-      start_date: ymd(daysAgo(240)),
-      end_date: ymd(daysAgo(90)),
+        "Shadow survey, roof load check and string layout for a residential rooftop, sized " +
+        "against the inverter's MPPT voltage window and submitted as the site-survey " +
+        "assignment for the solar PV installer course.",
+      technologies: ["Site survey", "String sizing", "Structure layout", "Single-line diagram"],
+      start_date: ymd(daysAgo(150)),
+      end_date: ymd(daysAgo(96)),
       current: false,
     },
     {
       id: "pr-2",
-      name: "Ledgerly - expense splitting for hostels",
+      name: "Tailoring unit project report, Warangal SHG",
       description:
-        "Group expense tracker with settle-up optimisation that minimises the number of " +
-        "transfers. Used by 300+ students across three hostels.",
-      technologies: ["TypeScript", "Next.js", "PostgreSQL", "Prisma"],
-      url: "https://github.com/ananyarao/ledgerly",
-      start_date: ymd(daysAgo(400)),
-      end_date: ymd(daysAgo(250)),
-      current: false,
+        "Machine and fixture costing, monthly break-even and a working-capital note for a " +
+        "four-machine tailoring unit run by a self-help group, written in the format a bank " +
+        "branch asks for on a MUDRA Kishore application.",
+      technologies: ["Unit costing", "Break-even analysis", "Working capital", "MUDRA Kishore"],
+      start_date: ymd(daysAgo(70)),
+      current: true,
     },
     {
       id: "pr-3",
-      name: "Signal - real-time crop disease detection",
+      name: "Group-II Paper-III answer bank",
       description:
-        "Fine-tuned a vision model on 18k leaf images and shipped it as an offline-first " +
-        "mobile app for low-connectivity areas. 91% top-1 accuracy on the held-out set.",
-      technologies: ["PyTorch", "ONNX", "React Native"],
-      start_date: ymd(daysAgo(120)),
+        "Ninety model answers on economy and development, each written to the word limit " +
+        "and checked against the question pattern of the last five papers.",
+      technologies: ["Answer writing", "Telangana economy", "Revision notes"],
+      start_date: ymd(daysAgo(210)),
       current: true,
     },
   ],
   experience: [
     {
       id: "ex-1",
-      company: "Zensar Technologies",
-      position: "Software Engineering Intern",
-      location: "Pune, India",
-      start_date: ymd(daysAgo(430)),
-      end_date: ymd(daysAgo(340)),
-      current: false,
+      company: "Suryodaya Solar Solutions",
+      position: "Accounts Assistant",
+      location: "Warangal, Telangana",
+      start_date: ymd(daysAgo(520)),
+      current: true,
       description:
-        "Rebuilt the internal reporting pipeline on Airflow, taking a nightly job from " +
-        "3.5 hours to 22 minutes. Wrote the migration runbook the team still uses.",
+        "Raise invoices, maintain the GST ledger and follow up net-metering paperwork with " +
+        "the DISCOM for rooftop installations across Warangal and Hanamkonda.",
     },
     {
       id: "ex-2",
-      company: "AI Linc",
-      position: "Teaching Assistant - Data Structures",
-      location: "Mumbai, India",
-      start_date: ymd(daysAgo(300)),
-      current: true,
+      company: "Common Service Centre, Hanamkonda",
+      position: "Data Entry Operator, part-time",
+      location: "Hanamkonda, Warangal",
+      start_date: ymd(daysAgo(1490)),
+      end_date: ymd(daysAgo(540)),
+      current: false,
       description:
-        "Run weekly lab sessions for 60 second-year students and grade assignments. " +
-        "Built an autograder that removed most of the manual marking.",
+        "Filed citizen applications for certificates, pensions and land records, and ran " +
+        "Aadhaar-based verification for walk-in applicants.",
     },
   ],
+  // The dates across education and experience are one continuous life: MEC at a
+  // government junior college, a three-year B.Com, a Common Service Centre job
+  // taken straight after it, and the solar contractor since. Move one and the
+  // others have to move with it.
   education: [
     {
       id: "ed-1",
-      institution: "Indian Institute of Technology, Bombay",
-      degree: "B.Tech",
-      field_of_study: "Computer Science and Engineering",
-      start_date: ymd(daysAgo(1200)),
-      end_date: ymd(daysAgo(-200)),
-      gpa: "8.7 / 10",
-      description: "Coursework: Operating Systems, Distributed Systems, Machine Learning, Databases.",
+      institution: "Kakatiya University, Warangal",
+      degree: "B.Com (Computer Applications)",
+      field_of_study: "Commerce",
+      start_date: ymd(daysAgo(2620)),
+      end_date: ymd(daysAgo(1550)),
+      gpa: "72%",
+      description:
+        "Coursework: Financial Accounting, Cost Accounting, Business Statistics, Income Tax, " +
+        "Computerised Accounting.",
+    },
+    {
+      id: "ed-2",
+      institution: "Government Junior College, Hanamkonda",
+      degree: "Intermediate (MEC)",
+      field_of_study: "Mathematics, Economics and Commerce",
+      start_date: ymd(daysAgo(3440)),
+      end_date: ymd(daysAgo(2710)),
+      gpa: "78%",
     },
   ],
   certifications: [
     {
       id: "ce-1",
-      name: "AWS Certified Cloud Practitioner",
-      issuing_organization: "Amazon Web Services",
-      issue_date: ymd(daysAgo(180)),
-      credential_id: "AWS-CCP-4471902",
-      credential_url: "https://aws.amazon.com/verification",
+      name: "Solar PV Installer (Suryamitra), NSQF Level 4",
+      issuing_organization: "Skill Council for Green Jobs",
+      issue_date: ymd(daysAgo(84)),
+      credential_id: "SCGJ-SPI-0117348",
     },
     {
       id: "ce-2",
-      name: "Full-Stack Web Development",
-      issuing_organization: "AI Linc",
-      issue_date: ymd(daysAgo(60)),
-      credential_id: "MIT-FSWD-2291",
+      name: "Book-keeping and Accounting with Tally",
+      issuing_organization: "Telangana Skills & Employment Mission",
+      issue_date: ymd(daysAgo(240)),
+      credential_id: "TSEM-BKT-1184",
     },
   ],
   achievements: [
     {
       id: "ac-1",
-      title: "Winner - AI Linc Annual Hackathon",
-      description: "First place out of 84 teams for an offline-first disaster-relief coordination app.",
-      date: ymd(daysAgo(75)),
-      organization: "AI Linc",
+      title: "Rank 34, Group-II mock test series",
+      description:
+        "Placed 34th of 4,180 candidates on the aggregate of the best eight of twelve tests " +
+        "in the mission's Group-II series.",
+      date: ymd(daysAgo(45)),
+      organization: "Telangana Skills & Employment Mission",
     },
     {
       id: "ac-2",
-      title: "Global rank 412 - ICPC Regionals qualifier",
-      date: ymd(daysAgo(210)),
-      organization: "ICPC",
+      title: "Best unit plan, district enterprise workshop",
+      description:
+        "Chosen from 62 plans at the Warangal workshop for self-help group members moving " +
+        "into manufacturing.",
+      date: ymd(daysAgo(120)),
+      organization: "District Rural Development Agency, Warangal",
     },
   ],
 };
 
 const INSTRUCTOR_PROFILE: UserProfile = {
   ...baseProfile(INSTRUCTOR_PERSONA),
-  headline: "Senior Instructor | Backend Engineering & Systems",
+  headline: "Senior Faculty | General Studies and exam strategy",
   bio:
-    "Twelve years building distributed systems before moving into teaching. I run the " +
-    "backend engineering track and the systems-design interview clinic at AI Linc.",
-  degree_type: "M.Tech",
-  branch: "Computer Science",
-  graduation_year: "2011",
-  city: "Bengaluru",
-  state: "Karnataka",
-  college_name: "Indian Institute of Science, Bengaluru",
-  skills: ["Distributed Systems", "Go", "Python", "Kubernetes", "System Design", "Mentoring"].map(
-    (name, i) => ({ id: `isk-${i + 1}`, name }),
-  ),
+    "Eighteen years teaching General Studies to state and central recruitment aspirants, ten " +
+    "of them at coaching centres in Warangal and Karimnagar. I run the Group-I and Group-II " +
+    "mentoring track and the weekly current affairs clinic.",
+  degree_type: "M.A.",
+  branch: "History",
+  graduation_year: "2004",
+  city: "Hyderabad",
+  state: "Telangana",
+  college_name: "Osmania University, Hyderabad",
+  skills: [
+    "Telangana Movement and State Formation",
+    "Indian Polity",
+    "Indian Economy",
+    "Answer Writing",
+    "Current Affairs",
+    "Mentoring",
+  ].map((name, i) => ({ id: `isk-${i + 1}`, name })),
   experience: [
     {
       id: "iex-1",
-      company: "AI Linc",
-      position: "Senior Instructor",
-      location: "Bengaluru, India",
-      start_date: ymd(daysAgo(1100)),
+      company: "Telangana Skills & Employment Mission",
+      position: "Senior Faculty, General Studies",
+      location: "Hyderabad, Telangana",
+      start_date: ymd(daysAgo(1460)),
       current: true,
-      description: "Owns the backend engineering curriculum and the systems-design clinic.",
+      description:
+        "Owns the General Studies curriculum across the government-jobs catalogue and chairs " +
+        "the Group-I mock interview panel.",
     },
   ],
 };
 
 const ADMIN_PROFILE: UserProfile = {
   ...baseProfile(ADMIN_PERSONA),
-  headline: "Director of Programs",
+  headline: "Programme Officer | Skilling and placement",
   bio:
-    "Responsible for programme design, outcomes and industry partnerships across every " +
-    "cohort at AI Linc.",
-  degree_type: "Ph.D.",
-  branch: "Education Technology",
-  graduation_year: "2009",
-  city: "Mumbai",
-  state: "Maharashtra",
-  college_name: "Tata Institute of Social Sciences",
-  skills: ["Programme Design", "Learning Outcomes", "Industry Partnerships", "Analytics"].map(
-    (name, i) => ({ id: `ask-${i + 1}`, name }),
-  ),
+    "Responsible for centre operations, batch planning, employer linkage and the monthly " +
+    "outcome report across every district the mission works in.",
+  degree_type: "M.A.",
+  branch: "Rural Development",
+  graduation_year: "2007",
+  city: "Hyderabad",
+  state: "Telangana",
+  college_name: "Osmania University, Hyderabad",
+  skills: [
+    "Programme Design",
+    "Centre Operations",
+    "Batch Planning",
+    "Employer Linkage",
+    "Monitoring and Evaluation",
+    "Scheme Convergence",
+  ].map((name, i) => ({ id: `ask-${i + 1}`, name })),
 };
 
 const BY_ID: Record<number, UserProfile> = {
