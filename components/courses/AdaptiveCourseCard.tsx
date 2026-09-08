@@ -4,6 +4,7 @@ import { Box, ButtonBase, Typography } from "@mui/material";
 import { PriceTag } from "@/components/common/PriceTag";
 import { Icon } from "@iconify/react";
 import type { AdaptiveCourseListItem } from "@/lib/services/adaptive-course.service";
+import { CourseCategoryChip } from "./CourseCategoryChip";
 
 /** A single adaptive-course card. Shared by the standalone library page and the
  *  "Adaptive courses" section embedded under /courses. */
@@ -66,14 +67,17 @@ export function AdaptiveCourseCard({
         )}
       </Box>
 
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 1.5 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 1.5, flexWrap: "wrap", minWidth: 0 }}>
         <Box sx={{ width: 44, height: 44, borderRadius: 3, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)", boxShadow: "0 14px 26px -14px rgba(168, 85, 247, 0.6)" }}>
           <Icon icon="mdi:book-education-outline" width={22} />
         </Box>
         {/* The "Adaptive" chip that used to sit here is gone. It existed to tell
             adaptive cards apart from legacy ones on the shared /courses page. This
             tenant has a single course product, so the chip was on every card and
-            distinguished nothing. */}
+            distinguished nothing. The category chip that replaced it does the
+            opposite: it varies per card, and it is what keeps a card readable on
+            My courses and the dashboard, away from its catalogue heading. */}
+        <CourseCategoryChip course={course} />
         {/* Still shown after purchase: "Paid" is a fact about how they got access, not a CTA. */}
         <PriceTag isPaid={course.is_paid} price={course.price} currency={course.currency} />
       </Box>

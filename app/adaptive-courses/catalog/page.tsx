@@ -16,6 +16,18 @@ import { SearchFilterBar } from "@/components/common/list";
 import { Reveal } from "@/components/scorecard/shared";
 import { CatalogCourseCard } from "@/components/courses/CatalogCourseCard";
 import { AdaptiveCourseListSkeleton } from "@/components/courses/CourseSkeletons";
+import {
+  CourseCardGrid,
+  CourseCategoryFilterRow,
+  CourseGroupedCatalogue,
+} from "@/components/courses/CourseGroups";
+import {
+  ALL_CATEGORIES,
+  categoryChips,
+  countCourses,
+  filterGroupsByCategory,
+  groupCourses,
+} from "@/components/courses/courseTaxonomy";
 import { useInstantNavigation } from "@/lib/hooks/useInstantNavigation";
 import { useToast } from "@/components/common/Toast";
 
@@ -27,6 +39,7 @@ export default function AdaptiveCourseCatalogPage() {
   const [items, setItems] = useState<AdaptiveCourseListItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<string>(ALL_CATEGORIES);
   const [enrollingId, setEnrollingId] = useState<number | null>(null);
   const { handlePayment } = usePayment();
 
@@ -58,9 +71,31 @@ export default function AdaptiveCourseCatalogPage() {
       (c) =>
         c.title.toLowerCase().includes(q) ||
         (c.description || "").toLowerCase().includes(q) ||
-        (c.target_audience || "").toLowerCase().includes(q),
+        (c.target_audience || "").toLowerCase().includes(q) ||
+        (c.category_title || "").toLowerCase().includes(q) ||
+        (c.section_title || "").toLowerCase().includes(q),
     );
   }, [items, query]);
+
+  /**
+   * Chips come from the full catalogue, the grouping below from the search
+   * results. That split is deliberate: a chip count answers "how big is this
+   * category", which does not change as you type, while the groups answer "what
+   * matches right now", which does. Deriving both from the filtered list made
+   * the whole chip row reflow on every keystroke.
+   */
+  const chips = useMemo(() => categoryChips(groupCourses(items)), [items]);
+
+  const groups = useMemo(
+    () => filterGroupsByCategory(groupCourses(visible), category),
+    [visible, category],
+  );
+  const shownCount = countCourses(groups);
+
+  function clearFilters() {
+    setQuery("");
+    setCategory(ALL_CATEGORIES);
+  }
 
   /**
    * Buy a paid course, then let the normal enroll path finish the job.
@@ -83,7 +118,7 @@ export default function AdaptiveCourseCatalogPage() {
           push(`/adaptive-courses/${course.id}`);
         } else if (outcome.kind === "settling") {
           // Charged; the webhook will grant access. Do NOT call this a failure and do NOT
-          // pretend it succeeded either — say what is true and let them refresh.
+          // pretend it succeeded either - say what is true and let them refresh.
           showToast(outcome.message, "info");
         } else if (outcome.kind === "failed") {
           showToast(outcome.message, "error");
@@ -95,7 +130,7 @@ export default function AdaptiveCourseCatalogPage() {
   async function handleEnroll(course: AdaptiveCourseListItem) {
     if (enrollingId !== null) return;
 
-    // Priced and unbought — go straight to checkout without a pointless round trip.
+    // Priced and unbought - go straight to checkout without a pointless round trip.
     if (course.is_paid && !course.purchased) {
       setEnrollingId(course.id);
       startPurchase(course);
@@ -144,7 +179,7 @@ export default function AdaptiveCourseCatalogPage() {
       <ModulePageHeader
         eyebrow="Learn"
         title="Browse courses"
-        description="Courses your organisation has opened for you to join. Enroll in one and it moves into My courses instantly."
+        description="Every course the mission runs, in two tracks: preparation for government recruitment, and skill development for employment and enterprise. Join one and it moves into My courses straight away."
         accent="purple"
         icon="mdi:compass-outline"
         action={
@@ -165,16 +200,17 @@ export default function AdaptiveCourseCatalogPage() {
       {!loading && !error && items.length === 0 && <CatalogEmptyState onBack={() => push("/adaptive-courses")} />}
 
       {!loading && !error && items.length > 0 && (
-        <Box sx={{ mb: 2.5 }}>
+        <Box sx={{ mb: 3 }}>
+          <CourseCategoryFilterRow chips={chips} value={category} onChange={setCategory} />
           <SearchFilterBar
             search={query}
             onSearchChange={setQuery}
-            searchPlaceholder="Search available courses…"
+            searchPlaceholder="Search by course, exam or trade…"
           />
         </Box>
       )}
 
-      {!loading && !error && items.length > 0 && visible.length === 0 && (
+      {!loading && !error && items.length > 0 && shownCount === 0 && (
         <Box
           sx={{
             p: { xs: 3, md: 5 },
@@ -185,31 +221,35 @@ export default function AdaptiveCourseCatalogPage() {
           }}
         >
           <Icon icon="mdi:magnify-close" width={44} style={{ color: "#a855f7" }} />
-          <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.05rem" }}>No courses match your search.</Typography>
-          <Chip label="Clear search" onClick={() => setQuery("")} sx={{ mt: 1.75, fontWeight: 700, cursor: "pointer" }} />
+          <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.05rem" }}>
+            No courses match your search.
+          </Typography>
+          <Chip
+            label="Clear search & category"
+            onClick={clearFilters}
+            sx={{ mt: 1.75, fontWeight: 700, cursor: "pointer" }}
+          />
         </Box>
       )}
 
-      {!loading && visible.length > 0 && (
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" },
-            gap: 2,
-            alignItems: "stretch",
-          }}
-        >
-          {visible.map((course, idx) => (
-            <Reveal key={course.id} delay={Math.min(idx, 8) * 0.06}>
-              <CatalogCourseCard
-                course={course}
-                enrolling={enrollingId === course.id}
-                disabled={enrollingId !== null && enrollingId !== course.id}
-                onEnroll={() => void handleEnroll(course)}
-              />
-            </Reveal>
-          ))}
-        </Box>
+      {!loading && shownCount > 0 && (
+        <CourseGroupedCatalogue
+          sections={groups}
+          renderCourses={(courses) => (
+            <CourseCardGrid>
+              {courses.map((course, idx) => (
+                <Reveal key={course.id} delay={Math.min(idx, 8) * 0.06}>
+                  <CatalogCourseCard
+                    course={course}
+                    enrolling={enrollingId === course.id}
+                    disabled={enrollingId !== null && enrollingId !== course.id}
+                    onEnroll={() => void handleEnroll(course)}
+                  />
+                </Reveal>
+              ))}
+            </CourseCardGrid>
+          )}
+        />
       )}
     </PageShell>
   );
@@ -231,7 +271,7 @@ function CatalogEmptyState({ onBack }: { onBack: () => void }) {
         No courses are open to join right now.
       </Typography>
       <Typography sx={{ color: "text.secondary", mt: 0.75, maxWidth: 520, mx: "auto", lineHeight: 1.5 }}>
-        {"When your organisation opens a course for self-enrollment, it'll show up here. You may already be enrolled in others."}
+        {"When the mission opens a course for enrolment, it shows up here. You may already be enrolled in others."}
       </Typography>
       <Chip label="Back to my courses" onClick={onBack} sx={{ mt: 2, fontWeight: 700, cursor: "pointer" }} />
     </Box>

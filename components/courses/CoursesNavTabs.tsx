@@ -16,7 +16,7 @@ interface TabDef {
 /**
  * Prominent section switcher for the Courses area. When the tenant has the
  * adaptive feature, ADAPTIVE is the primary "Courses" experience (listed first)
- * and the legacy structured catalogue is demoted to "Classic courses" — the
+ * and the legacy structured catalogue is demoted to "Classic courses" - the
  * courses→adaptive migration. When adaptive is off, the legacy catalogue keeps
  * the "Courses" name (and there's nothing to switch, so the control hides).
  */
@@ -34,7 +34,7 @@ export function CoursesNavTabs({ active }: { active: "courses" | "adaptive" }) {
   const adaptiveTab: TabDef = {
     key: "adaptive",
     label: "Courses",
-    sub: "AI-personalised in real time",
+    sub: "Adapts to your level as you work",
     icon: "mdi:book-education-outline",
     href: "/adaptive-courses",
   };

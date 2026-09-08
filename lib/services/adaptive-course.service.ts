@@ -163,6 +163,22 @@ export interface AdaptiveCourseListItem {
   card_image_url?: string | null;
   /** True when the admin has opened this course to student self-enrollment (catalog listing). */
   self_enroll_enabled?: boolean;
+  /**
+   * Where the course sits in the catalogue taxonomy: one section, one category.
+   *
+   * All four are OPTIONAL, and that is load-bearing rather than lazy. The
+   * catalogue groups by them, but not every backend serving this frontend
+   * carries a taxonomy, so a course that arrives with none of them must still
+   * render. `components/courses/courseTaxonomy.ts` files those into an "Other
+   * courses" group instead of dropping them.
+   *
+   * The `*_title` pairs are the server's human-readable labels, sent so the UI
+   * never has to re-derive a title from a slug it may not know.
+   */
+  section?: string;
+  section_title?: string;
+  category?: string;
+  category_title?: string;
   updated_at: string;
 }
 

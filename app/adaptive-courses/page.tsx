@@ -22,6 +22,19 @@ import { ViewToggle, SegmentedTabs, SearchFilterBar, type ListView } from "@/com
 import { Reveal } from "@/components/scorecard/shared";
 import { AdaptiveCourseCard } from "@/components/courses/AdaptiveCourseCard";
 import { AdaptiveCourseListSkeleton } from "@/components/courses/CourseSkeletons";
+import { CourseCategoryChip } from "@/components/courses/CourseCategoryChip";
+import {
+  CourseCardGrid,
+  CourseCategoryFilterRow,
+  CourseGroupedCatalogue,
+} from "@/components/courses/CourseGroups";
+import {
+  ALL_CATEGORIES,
+  categoryChips,
+  countCourses,
+  filterGroupsByCategory,
+  groupCourses,
+} from "@/components/courses/courseTaxonomy";
 import { useInstantNavigation } from "@/lib/hooks/useInstantNavigation";
 
 export default function AdaptiveCourseListPage() {
@@ -32,6 +45,7 @@ export default function AdaptiveCourseListPage() {
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [difficulty, setDifficulty] = useState<string>("all");
+  const [category, setCategory] = useState<string>(ALL_CATEGORIES);
   const [sort, setSort] = useState<"recent" | "title" | "content">("recent");
   const [viewMode, setViewMode] = useState<ListView>("cards");
 
@@ -84,7 +98,9 @@ export default function AdaptiveCourseListPage() {
         !q ||
         c.title.toLowerCase().includes(q) ||
         (c.description || "").toLowerCase().includes(q) ||
-        (c.target_audience || "").toLowerCase().includes(q);
+        (c.target_audience || "").toLowerCase().includes(q) ||
+        (c.category_title || "").toLowerCase().includes(q) ||
+        (c.section_title || "").toLowerCase().includes(q);
       const matchesDifficulty =
         difficulty === "all" || (c.difficulty_levels || []).includes(difficulty);
       return matchesQuery && matchesDifficulty;
@@ -97,6 +113,24 @@ export default function AdaptiveCourseListPage() {
       return (b.updated_at || "").localeCompare(a.updated_at || "");
     });
   }, [items, query, difficulty, sort]);
+
+  /**
+   * The same section/category grouping the catalogue uses, collapsed to what
+   * this aspirant is actually enrolled in. Groups are built from the courses
+   * present, so somebody enrolled in two categories sees two headings, and a
+   * section they have joined nothing in never appears at all.
+   *
+   * Chips come from the full enrolled list rather than the filtered one, so the
+   * row does not reflow while the search box is being typed into. The row hides
+   * itself when there is only one category to choose from.
+   */
+  const chips = useMemo(() => categoryChips(groupCourses(items)), [items]);
+
+  const groups = useMemo(
+    () => filterGroupsByCategory(groupCourses(visible), category),
+    [visible, category],
+  );
+  const shownCount = countCourses(groups);
 
   if (!featureOn) {
     return (
@@ -115,10 +149,11 @@ export default function AdaptiveCourseListPage() {
 
   return (
     <PageShell>
+      {/* Title stays "Courses" to match the sidebar entry that leads here. */}
       <ModulePageHeader
         eyebrow="Learn"
         title="Courses"
-        description="AI-personalised courses that adapt to your level in real time - practice, get instant feedback, and level up."
+        description="The courses you are enrolled in, grouped the way the catalogue is. Each one adapts to your level as you work: practice, immediate feedback, and a clear next step."
         accent="purple"
         icon="mdi:book-education-outline"
         action={
@@ -141,7 +176,7 @@ export default function AdaptiveCourseListPage() {
           )}
 
           {!loading && !error && items.length > 0 && (
-            <Box sx={{ mb: 2.5 }}>
+            <Box sx={{ mb: 3 }}>
               {difficultyTabs.length > 1 && (
                 <Box sx={{ mb: 2 }} data-tour-id="adaptive-levels">
                   <SegmentedTabs
@@ -151,11 +186,12 @@ export default function AdaptiveCourseListPage() {
                   />
                 </Box>
               )}
+              <CourseCategoryFilterRow chips={chips} value={category} onChange={setCategory} />
               <Box data-tour-id="adaptive-search">
               <SearchFilterBar
                 search={query}
                 onSearchChange={setQuery}
-                searchPlaceholder="Search courses…"
+                searchPlaceholder="Search your courses…"
                 rightSlot={
                   <Stack direction="row" spacing={1.5} alignItems="center">
                     <TextField
@@ -181,7 +217,7 @@ export default function AdaptiveCourseListPage() {
             </Box>
           )}
 
-          {!loading && !error && items.length > 0 && visible.length === 0 && (
+          {!loading && !error && items.length > 0 && shownCount === 0 && (
             <Box sx={{ p: { xs: 3, md: 5 }, borderRadius: 4, textAlign: "center", bgcolor: "color-mix(in srgb, var(--card-bg) 60%, transparent)", border: "1px dashed color-mix(in srgb, var(--border-default) 90%, transparent)" }}>
               <Icon icon="mdi:magnify-close" width={44} style={{ color: "#a855f7" }} />
               <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.05rem" }}>No courses match your search.</Typography>
@@ -190,45 +226,47 @@ export default function AdaptiveCourseListPage() {
                 onClick={() => {
                   setQuery("");
                   setDifficulty("all");
+                  setCategory(ALL_CATEGORIES);
                 }}
                 sx={{ mt: 1.75, fontWeight: 700, cursor: "pointer" }}
               />
             </Box>
           )}
 
-          {!loading && visible.length > 0 && viewMode === "cards" && (
-            <Box
-              data-tour-id="adaptive-grid"
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" },
-                gap: 2,
-                alignItems: "stretch",
-              }}
-            >
-              {visible.map((course, idx) => (
-                <Reveal key={course.id} delay={Math.min(idx, 8) * 0.06}>
-                  <AdaptiveCourseCard
-                    course={course}
-                    onOpen={() => push(`/adaptive-courses/${course.id}`)}
-                    onHover={() => prefetch(`/adaptive-courses/${course.id}`)}
-                  />
-                </Reveal>
-              ))}
+          {/* Both views share the grouping. A section heading that only applied to the
+              card view would make the list view look like a different page. */}
+          {!loading && shownCount > 0 && (
+            <Box data-tour-id="adaptive-grid">
+              <CourseGroupedCatalogue
+                sections={groups}
+                renderCourses={(courses) =>
+                  viewMode === "cards" ? (
+                    <CourseCardGrid>
+                      {courses.map((course, idx) => (
+                        <Reveal key={course.id} delay={Math.min(idx, 8) * 0.06}>
+                          <AdaptiveCourseCard
+                            course={course}
+                            onOpen={() => push(`/adaptive-courses/${course.id}`)}
+                            onHover={() => prefetch(`/adaptive-courses/${course.id}`)}
+                          />
+                        </Reveal>
+                      ))}
+                    </CourseCardGrid>
+                  ) : (
+                    <Stack spacing={1.25}>
+                      {courses.map((course) => (
+                        <AdaptiveCourseRow
+                          key={course.id}
+                          course={course}
+                          onOpen={() => push(`/adaptive-courses/${course.id}`)}
+                          onHover={() => prefetch(`/adaptive-courses/${course.id}`)}
+                        />
+                      ))}
+                    </Stack>
+                  )
+                }
+              />
             </Box>
-          )}
-
-          {!loading && visible.length > 0 && viewMode === "list" && (
-            <Stack spacing={1.25}>
-              {visible.map((course) => (
-                <AdaptiveCourseRow
-                  key={course.id}
-                  course={course}
-                  onOpen={() => push(`/adaptive-courses/${course.id}`)}
-                  onHover={() => prefetch(`/adaptive-courses/${course.id}`)}
-                />
-              ))}
-            </Stack>
           )}
     </PageShell>
   );
@@ -275,9 +313,17 @@ function AdaptiveCourseRow({
         <Icon icon="mdi:book-education-outline" width={22} />
       </Box>
       <Box sx={{ minWidth: 0, flex: 1 }}>
-        <Typography sx={{ fontWeight: 800, fontSize: "0.98rem" }} noWrap>
-          {course.title}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, minWidth: 0 }}>
+          <Typography sx={{ fontWeight: 800, fontSize: "0.98rem", minWidth: 0 }} noWrap>
+            {course.title}
+          </Typography>
+          {/* The row carries the category too. On a narrow screen the metric
+              columns are hidden, so this is the only thing telling one row from
+              the next once the titles start to look alike. */}
+          <Box sx={{ flexShrink: 0, display: { xs: "none", sm: "inline-flex" } }}>
+            <CourseCategoryChip course={course} />
+          </Box>
+        </Box>
         <Typography sx={{ color: "var(--font-secondary)", fontSize: "0.82rem" }} noWrap>
           {course.description || course.target_audience || "Course"}
         </Typography>
@@ -317,7 +363,7 @@ function EmptyState({ onBrowse }: { onBrowse: () => void }) {
         {"You're not enrolled in any course yet."}
       </Typography>
       <Typography sx={{ color: "text.secondary", mt: 0.75, maxWidth: 520, mx: "auto", lineHeight: 1.5 }}>
-        {"Browse the courses your organisation has opened for you to join - or check back once your instructor enrolls you."}
+        {"Browse the courses the mission has opened for enrolment, across government job preparation and skill development."}
       </Typography>
       <Chip
         label="Browse courses"

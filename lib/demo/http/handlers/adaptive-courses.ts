@@ -1,5 +1,5 @@
 /**
- * Adaptive courses — the product's primary learning surface.
+ * Adaptive courses - the product's primary learning surface.
  *
  * The same seed that drives the dashboard is projected here into the adaptive
  * shape: modules become weeks, topics become submodules, and each topic's
@@ -12,6 +12,8 @@ import { defineRoutes } from "../router";
 import { notFound } from "../types";
 import {
   COURSES,
+  COURSE_SECTIONS,
+  categoryOf,
   courseById,
   topicsOf,
   itemCounts,
@@ -168,7 +170,7 @@ export function conceptsFor(topic: DemoTopic): string[] {
     .filter((w) => w.length > 2 && !STOP.has(w.toLowerCase()));
 
   // Prefer terms already capitalised or containing a capital (React, PostgreSQL,
-  // Big-O) — those are the real technical nouns in a title.
+  // Big-O) - those are the real technical nouns in a title.
   const technical = words.filter((w) => /[A-Z]/.test(w.slice(1)) || /^[A-Z]/.test(w));
   const ordered = [...technical, ...words.filter((w) => !technical.includes(w))];
 
@@ -201,19 +203,49 @@ export function submoduleFor(topic: DemoTopic, order: number, courseId?: number)
   };
 }
 
+/**
+ * Who the course is for, in one line.
+ *
+ * Derived from the section as well as the difficulty. Reading off difficulty
+ * alone is what left an exam-preparation catalogue telling a tailoring trainee
+ * she was an "engineer preparing for senior or product-company interviews": the
+ * line was inherited wholesale from the software LMS this fork came from. A
+ * Beginner exam course and a Beginner trade course are aimed at different
+ * people, and the sentence has to know which it is describing.
+ */
+function targetAudience(course: DemoCourse): string {
+  const exam = course.section === "govt-jobs";
+  if (course.difficulty === "Beginner") {
+    return exam
+      ? "First-time aspirants building the basics before a serious attempt"
+      : "Trainees starting from a 10th standard base, with no earlier trade experience";
+  }
+  if (course.difficulty === "Advanced") {
+    return exam
+      ? "Repeat attempters going after strategy, traps and the marginal marks that decide a rank"
+      : "Trainees and micro-entrepreneurs who already do the work and want to do it to standard";
+  }
+  return exam
+    ? "Aspirants who know the syllabus and now need pattern practice and revision"
+    : "Trainees with some hands-on exposure, working towards a job-ready standard";
+}
+
 function listItem(course: DemoCourse) {
   const counts = itemCounts(course);
+  const section = COURSE_SECTIONS.find((s) => s.slug === course.section);
+  const category = categoryOf(course.category);
   return {
     id: course.id,
     title: course.title,
     slug: course.slug,
     description: course.description,
-    target_audience:
-      course.difficulty === "Beginner"
-        ? "Newcomers with no prior background"
-        : course.difficulty === "Advanced"
-          ? "Engineers preparing for senior or product-company interviews"
-          : "Learners with some programming experience",
+    target_audience: targetAudience(course),
+    // The catalogue taxonomy. Slugs drive the grouping, titles are sent with
+    // them so the UI never re-derives a label from a slug.
+    section: course.section,
+    section_title: section?.title ?? "",
+    category: course.category,
+    category_title: category.title,
     duration_weeks: course.modules.length * 2,
     difficulty_levels: [course.difficulty],
     module_count: course.modules.length,
@@ -254,7 +286,7 @@ function detail(course: DemoCourse) {
 }
 
 defineRoutes(MODULE, {
-  /** Courses this learner is enrolled in — the /adaptive-courses landing list. */
+  /** Courses this learner is enrolled in - the /adaptive-courses landing list. */
   "GET /adaptive-quiz/api/courses/": () => COURSES.filter(isEnrolled).map(listItem),
 
   /**

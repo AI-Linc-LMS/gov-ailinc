@@ -5,9 +5,10 @@ import { formatMoney } from "@/lib/utils/money";
 import { PriceTag } from "@/components/common/PriceTag";
 import { Icon } from "@iconify/react";
 import type { AdaptiveCourseListItem } from "@/lib/services/adaptive-course.service";
+import { CourseCategoryChip } from "./CourseCategoryChip";
 
 /** A course card for the self-enroll catalog. Mirrors AdaptiveCourseCard's visuals but the root is
- *  a plain Box (not a ButtonBase) so it can carry a real <button> Enroll action — a button nested
+ *  a plain Box (not a ButtonBase) so it can carry a real <button> Enroll action - a button nested
  *  inside a ButtonBase is invalid. Enroll-only: the course detail page is enrollment-gated (a
  *  non-enrolled learner would hit its 403), so the card intentionally offers no "open" affordance. */
 export function CatalogCourseCard({
@@ -18,7 +19,7 @@ export function CatalogCourseCard({
 }: {
   course: AdaptiveCourseListItem;
   enrolling: boolean;
-  /** True while a sibling card's enroll is in flight — greys this one out to prevent double-submit. */
+  /** True while a sibling card's enroll is in flight - greys this one out to prevent double-submit. */
   disabled?: boolean;
   onEnroll: () => void;
 }) {
@@ -79,7 +80,7 @@ export function CatalogCourseCard({
         )}
       </Box>
 
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 1.5 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 1.5, flexWrap: "wrap", minWidth: 0 }}>
         <Box
           sx={{
             width: 44,
@@ -95,22 +96,12 @@ export function CatalogCourseCard({
         >
           <Icon icon="mdi:book-education-outline" width={22} />
         </Box>
-        <Box
-          component="span"
-          sx={{
-            px: 1,
-            py: 0.3,
-            borderRadius: 999,
-            fontSize: "0.65rem",
-            fontWeight: 800,
-            letterSpacing: 0.4,
-            textTransform: "uppercase",
-            color: "#a855f7",
-            bgcolor: "color-mix(in srgb, #a855f7 14%, transparent)",
-          }}
-        >
-          Adaptive
-        </Box>
+        {/* Was a fixed "Adaptive" pill. It sat on every card and so distinguished
+            nothing, exactly as on AdaptiveCourseCard. The category is the fact
+            worth carrying instead: a card pulled out of its group by a search
+            still says whether it is a banking paper or a vocational trade. It
+            renders nothing when the server sends no category. */}
+        <CourseCategoryChip course={course} />
         <PriceTag isPaid={course.is_paid} price={course.price} currency={course.currency} withAmount />
       </Box>
 
