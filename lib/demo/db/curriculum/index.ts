@@ -18,6 +18,17 @@
  *
  * The handler contract allows this: `DemoHandler` may return a Promise and the
  * adapter awaits it, so a route can await the chunk before answering.
+ *
+ * COVERAGE. Only the courses listed below have authored lessons. Every other
+ * course in the catalogue serves the lesson outline from `../article-content.ts`
+ * instead, which states plainly that the full text is in preparation and still
+ * carries the topic's real concepts, practice and assessment. That is a
+ * deliberate, visible state rather than a gap: `scripts/verify-catalogue.mjs`
+ * reports which courses are unauthored, and fails any course listed here that
+ * authors only part of its topics, which is the failure that hides itself.
+ *
+ * Adding a course is two lines: author `parts/course-<id>-part-*.ts`, merge them
+ * in `course-<id>.ts`, and add the entry here.
  */
 
 import type { AuthoredTopic, CourseCurriculum } from "./types";
@@ -32,11 +43,9 @@ export type { AuthoredTopic, AuthoredProblem, AuthoredQuestion, ReadingTier } fr
  * to split or pulls in every match, which would defeat the point.
  */
 const LOADERS: Record<number, () => Promise<{ default: CourseCurriculum }>> = {
-  201: () => import("./course-201"),
-  202: () => import("./course-202"),
-  203: () => import("./course-203"),
-  204: () => import("./course-204"),
-  205: () => import("./course-205"),
+  302: () => import("./course-302"),
+  307: () => import("./course-307"),
+  311: () => import("./course-311"),
 };
 
 /** Chunks already fetched. A second visit to a course must not re-parse it. */
