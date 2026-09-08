@@ -1,0 +1,1258 @@
+"use client";
+
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  TextField,
+  Chip,
+  Stack,
+  Collapse,
+  ButtonBase,
+  useTheme,
+  IconButton,
+  Tooltip,
+  CircularProgress,
+} from "@mui/material";
+import { memo, useMemo, useRef, useState, useCallback, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { QuizQuestionList } from "@/components/quiz";
+import { QuestionTitle } from "@/components/quiz/QuestionTitle";
+import { IconWrapper } from "@/components/common/IconWrapper";
+import { MathSymbolToolbar } from "@/components/assessment/MathSymbolToolbar";
+import { SubjectiveVideoRecorder } from "@/components/assessment/SubjectiveVideoRecorder";
+import { uploadFile } from "@/lib/services/file-upload.service";
+import {
+  parseSubjectiveAnswerPayload,
+  type SubjectiveAnswerPayload,
+} from "@/utils/assessment.utils";
+
+const MAX_SUBJECTIVE_IMAGE_BYTES = 10 * 1024 * 1024;
+
+export interface SubjectiveQuestionItem {
+  id: string | number;
+  question_text: string;
+  max_marks?: number;
+  question_type?: string;
+  answer_mode?: string;
+}
+
+function formatQuestionTypeLabel(type: string) {
+  return type
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (ch) => ch.toUpperCase());
+}
+
+const WRITING_TIP_ITEMS = [
+  {
+    icon: "mdi:format-list-checks" as const,
+    title: "Cover every part of the question",
+    description:
+      "If the question has multiple bullets or sub-questions, respond to each one so markers never have to infer what you meant.",
+  },
+  {
+    icon: "mdi:format-list-numbered" as const,
+    title: "Use a clear structure",
+    description:
+      "A short setup line helps; then numbered points or short paragraphs are easier to mark than one dense block of text.",
+  },
+  {
+    icon: "mdi:scale-balance" as const,
+    title: "Case-style: assumptions first",
+    description:
+      "State your assumptions explicitly, walk through your reasoning, then end with a clear takeaway or recommendation.",
+  },
+  {
+    icon: "mdi:target" as const,
+    title: "Match depth to the marks",
+    description:
+      "Quality beats word count. Aim for enough detail to earn the marks shown - avoid padding or repeating the question.",
+  },
+];
+
+interface AssessmentSubjectiveLayoutProps {
+  currentQuestionIndex: number;
+  currentQuestion: SubjectiveQuestionItem;
+  /** Stored subjective value: string (legacy text) or rich payload object. */
+  value: unknown;
+  questions: Array<{
+    id: string | number;
+    question: string;
+    answered?: boolean;
+  }>;
+  totalQuestions: number;
+  onChange: (next: unknown) => void;
+  onNextQuestion?: () => void;
+  onPreviousQuestion?: () => void;
+  onQuestionClick?: (questionId: string | number) => void;
+  /** When set, students can paste or pick images; files upload and a markdown image line is inserted. */
+  assessmentUploadClientId?: number;
+  onSubjectiveImageUploadError?: (message: string) => void;
+  /**
+   * Call synchronously before opening a native file dialog so fullscreen exit
+   * from the picker can be treated as benign (assessment take page).
+   */
+  onNativeFilePickerWillOpen?: () => void;
+}
+
+export const AssessmentSubjectiveLayout = memo(
+  function AssessmentSubjectiveLayout({
+    currentQuestionIndex,
+    currentQuestion,
+    value,
+    questions = [],
+    totalQuestions,
+    onChange,
+    onNextQuestion,
+    onPreviousQuestion,
+    onQuestionClick,
+    assessmentUploadClientId,
+    onSubjectiveImageUploadError,
+    onNativeFilePickerWillOpen,
+  }: AssessmentSubjectiveLayoutProps) {
+    const theme = useTheme();
+    const { t } = useTranslation("common");
+    const mode = currentQuestion.answer_mode || "text";
+    const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
+    const isFirstQuestion = currentQuestionIndex === 0;
+
+    const payload = useMemo(
+      () => parseSubjectiveAnswerPayload(value),
+      [value],
+    );
+    const answerStr = payload.answer ?? "";
+
+    // Local text state so each keystroke does not bubble up to the parent page (and
+    // re-render the entire assessment tree). Commits are debounced; non-text patches
+    // flush local text first so they cannot drop pending characters.
+    const [localText, setLocalText] = useState<string>(answerStr);
+    const localTextRef = useRef(localText);
+    localTextRef.current = localText;
+    const lastCommittedTextRef = useRef<string>(answerStr);
+    const commitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // When the active question changes, snap local text to the new question's value.
+    const lastQuestionIdForTextRef = useRef(currentQuestion.id);
+    useEffect(() => {
+      if (lastQuestionIdForTextRef.current !== currentQuestion.id) {
+        lastQuestionIdForTextRef.current = currentQuestion.id;
+        if (commitTimerRef.current) {
+          clearTimeout(commitTimerRef.current);
+          commitTimerRef.current = null;
+        }
+        setLocalText(answerStr);
+        lastCommittedTextRef.current = answerStr;
+      }
+    }, [currentQuestion.id, answerStr]);
+
+    // If the parent value's text moves out of step with our local + last-committed
+    // (e.g. server hydrated existing draft, or another field updated the payload
+    // shape), accept the parent's text as the new source of truth.
+    useEffect(() => {
+      if (
+        answerStr !== lastCommittedTextRef.current &&
+        answerStr !== localTextRef.current
+      ) {
+        setLocalText(answerStr);
+        lastCommittedTextRef.current = answerStr;
+      }
+    }, [answerStr]);
+
+    const mergePayload = useCallback(
+      (patch: Partial<SubjectiveAnswerPayload>) => {
+        const base = parseSubjectiveAnswerPayload(value);
+        const { awarded_marks: _a, max_marks: _m, feedback: _f, ...rest } =
+          base as SubjectiveAnswerPayload & {
+            awarded_marks?: number;
+            max_marks?: number;
+            feedback?: string;
+          };
+        // Always carry pending local text into a non-text commit so image/file/video
+        // patches don't overwrite typed-but-uncommitted characters. A `patch.answer`
+        // (text commit) overrides via the trailing spread.
+        const merged: Partial<SubjectiveAnswerPayload> = {
+          ...rest,
+          answer: localTextRef.current,
+          ...patch,
+        };
+        if (typeof merged.answer === "string") {
+          lastCommittedTextRef.current = merged.answer;
+        }
+        onChange(merged);
+      },
+      [value, onChange],
+    );
+
+    const flushTextNow = useCallback(() => {
+      if (commitTimerRef.current) {
+        clearTimeout(commitTimerRef.current);
+        commitTimerRef.current = null;
+      }
+      const text = localTextRef.current;
+      if (text === lastCommittedTextRef.current) return;
+      mergePayload({ answer: text });
+    }, [mergePayload]);
+
+    const scheduleTextCommit = useCallback(
+      (text: string) => {
+        if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+        commitTimerRef.current = setTimeout(() => {
+          commitTimerRef.current = null;
+          if (text !== lastCommittedTextRef.current) {
+            mergePayload({ answer: text });
+          }
+        }, 250);
+      },
+      [mergePayload],
+    );
+
+    const handleTextChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const next = e.target.value;
+        setLocalText(next);
+        scheduleTextCommit(next);
+      },
+      [scheduleTextCommit],
+    );
+
+    // Flush any pending text on unmount so navigation away never silently drops chars.
+    useEffect(() => {
+      return () => {
+        if (commitTimerRef.current) {
+          clearTimeout(commitTimerRef.current);
+          commitTimerRef.current = null;
+          const text = localTextRef.current;
+          if (text !== lastCommittedTextRef.current) {
+            // mergePayload identity may have moved on, but onChange + value are captured
+            // by closure; we intentionally rely on the latest mergePayload via ref of
+            // localTextRef + lastCommittedTextRef for next tick - synchronous call here:
+            try {
+              const flush = flushTextNow;
+              flush();
+            } catch {
+              // best-effort flush
+            }
+          }
+        }
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const answeredCountRef = useRef<number>(0);
+    const lastQuestionsHashRef = useRef<string>("");
+
+    const answeredCount = useMemo(() => {
+      if (!questions || questions.length === 0) {
+        answeredCountRef.current = 0;
+        return 0;
+      }
+      const hash = questions.map((q) => `${q.id}:${q.answered ? "1" : "0"}`).join(",");
+      if (hash === lastQuestionsHashRef.current) {
+        return answeredCountRef.current;
+      }
+      lastQuestionsHashRef.current = hash;
+      const count = questions.filter((q) => q.answered).length;
+      answeredCountRef.current = count;
+      return count;
+    }, [questions]);
+
+    const { charCount, wordCount } = useMemo(() => {
+      const trimmed = localText.trim();
+      const words = trimmed ? trimmed.split(/\s+/).filter(Boolean) : [];
+      return { charCount: localText.length, wordCount: words.length };
+    }, [localText]);
+
+    const hasDraft =
+      charCount > 0 ||
+      (payload.images?.length ?? 0) > 0 ||
+      (payload.files?.length ?? 0) > 0 ||
+      !!(payload.video && payload.video.url);
+    const [writingTipsOpen, setWritingTipsOpen] = useState(false);
+    const toggleWritingTips = useCallback(() => {
+      setWritingTipsOpen((o) => !o);
+    }, []);
+
+    const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+    const pendingCaretRef = useRef<number | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const fileDocInputRef = useRef<HTMLInputElement | null>(null);
+    const imageUploadLockRef = useRef(false);
+    const [imageUploadBusy, setImageUploadBusy] = useState(false);
+    const [fileDocBusy, setFileDocBusy] = useState(false);
+
+    useEffect(() => {
+      pendingCaretRef.current = null;
+    }, [currentQuestion.id]);
+
+    const insertChunkAt = useCallback(
+      (start: number, end: number, chunk: string) => {
+        const base = localTextRef.current;
+        const s = Math.max(0, Math.min(start, base.length));
+        const e = Math.max(s, Math.min(end, base.length));
+        const next = base.slice(0, s) + chunk + base.slice(e);
+        pendingCaretRef.current = s + chunk.length;
+        setLocalText(next);
+        scheduleTextCommit(next);
+      },
+      [localTextRef, scheduleTextCommit],
+    );
+
+    const insertAtCaret = useCallback(
+      (text: string) => {
+        const el = textAreaRef.current;
+        const len = localTextRef.current.length;
+        const start = el ? el.selectionStart : len;
+        const end = el ? el.selectionEnd : len;
+        insertChunkAt(start, end, text);
+      },
+      [insertChunkAt],
+    );
+
+    const uploadAndInsertImage = useCallback(
+      async (file: File) => {
+        if (!assessmentUploadClientId || imageUploadLockRef.current) return;
+        if (!file.type.startsWith("image/")) {
+          onSubjectiveImageUploadError?.(
+            t("assessments.take.subjectiveImageTypeInvalid"),
+          );
+          return;
+        }
+        if (file.size > MAX_SUBJECTIVE_IMAGE_BYTES) {
+          onSubjectiveImageUploadError?.(
+            t("assessments.take.subjectiveImageTooLarge"),
+          );
+          return;
+        }
+        const el = textAreaRef.current;
+        const baseLen = localTextRef.current.length;
+        const start = el ? el.selectionStart : baseLen;
+        const end = el ? el.selectionEnd : baseLen;
+        imageUploadLockRef.current = true;
+        setImageUploadBusy(true);
+        try {
+          const result = await uploadFile(
+            assessmentUploadClientId,
+            file,
+            "other",
+          );
+          if (mode === "text_image") {
+            const prev = parseSubjectiveAnswerPayload(value);
+            mergePayload({
+              images: [
+                ...(prev.images || []),
+                {
+                  url: result.url,
+                  name: file.name,
+                  content_type: file.type,
+                },
+              ],
+            });
+          } else {
+            const md = `\n![image](${result.url})\n`;
+            insertChunkAt(start, end, md);
+          }
+        } catch (err) {
+          onSubjectiveImageUploadError?.(
+            err instanceof Error ? err.message : t("assessments.take.subjectiveImageUploadFailed"),
+          );
+        } finally {
+          imageUploadLockRef.current = false;
+          setImageUploadBusy(false);
+        }
+      },
+      [
+        assessmentUploadClientId,
+        insertChunkAt,
+        mergePayload,
+        mode,
+        onSubjectiveImageUploadError,
+        t,
+        value,
+      ],
+    );
+
+    const handleAnswerPaste = useCallback(
+      (e: React.ClipboardEvent) => {
+        if (!assessmentUploadClientId || mode !== "text_image") return;
+        const cd = e.clipboardData;
+        if (!cd) return;
+        let imageFile: File | null = null;
+        for (let i = 0; i < cd.items.length; i++) {
+          const it = cd.items[i];
+          if (it?.kind === "file" && it.type.startsWith("image/")) {
+            const f = it.getAsFile();
+            if (f && f.size > 0) {
+              imageFile = f;
+              break;
+            }
+          }
+        }
+        if (!imageFile && cd.files?.length) {
+          for (let i = 0; i < cd.files.length; i++) {
+            const f = cd.files[i];
+            if (f && f.type.startsWith("image/")) {
+              imageFile = f;
+              break;
+            }
+          }
+        }
+        if (!imageFile) return;
+        e.preventDefault();
+        e.stopPropagation();
+        void uploadAndInsertImage(imageFile);
+      },
+      [assessmentUploadClientId, mode, uploadAndInsertImage],
+    );
+
+    const handleImageFileChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const f = e.target.files?.[0];
+        e.target.value = "";
+        if (f) void uploadAndInsertImage(f);
+      },
+      [uploadAndInsertImage],
+    );
+
+    const handleFileDocChange = useCallback(
+      async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const f = e.target.files?.[0];
+        e.target.value = "";
+        if (!f || !assessmentUploadClientId || fileDocBusy) return;
+        setFileDocBusy(true);
+        try {
+          const result = await uploadFile(assessmentUploadClientId, f, "other");
+          const prev = parseSubjectiveAnswerPayload(value);
+          mergePayload({
+            files: [
+              ...(prev.files || []),
+              {
+                url: result.url,
+                name: f.name,
+                content_type: f.type,
+              },
+            ],
+          });
+        } catch (err) {
+          onSubjectiveImageUploadError?.(
+            err instanceof Error ? err.message : "Upload failed",
+          );
+        } finally {
+          setFileDocBusy(false);
+        }
+      },
+      [
+        assessmentUploadClientId,
+        fileDocBusy,
+        mergePayload,
+        onSubjectiveImageUploadError,
+        value,
+      ],
+    );
+
+    useEffect(() => {
+      const pos = pendingCaretRef.current;
+      if (pos === null) return;
+      pendingCaretRef.current = null;
+      const el = textAreaRef.current;
+      if (!el) return;
+      requestAnimationFrame(() => {
+        el.focus();
+        el.setSelectionRange(pos, pos);
+      });
+    }, [localText]);
+
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: { md: "stretch" },
+          gap: { xs: 2, md: 3 },
+          maxWidth: "100%",
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: "100%", md: "min(360px, 34vw)" },
+            flexShrink: 0,
+            display: "flex",
+            flexDirection: "column",
+            gap: 0,
+            order: { xs: 1, md: 0 },
+            alignSelf: { xs: "stretch", md: "flex-start" },
+            minHeight: { md: 0 },
+            position: { md: "sticky" },
+            top: { md: theme.spacing(18.5) },
+            maxHeight: {
+              md: `calc(100vh - ${theme.spacing(18.5)} - 16px)`,
+            },
+            zIndex: { md: 1 },
+          }}
+        >
+          <QuizQuestionList
+            questions={questions}
+            currentQuestionId={currentQuestion.id}
+            onQuestionClick={(qid) => {
+              flushTextNow();
+              onQuestionClick?.(qid);
+            }}
+            listTitle={t("quiz.writtenListTitle")}
+            listSubtitle={t("quiz.writtenListSubtitle")}
+            variant="subjective"
+          />
+        </Box>
+
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            minWidth: 0,
+            order: { xs: 0, md: 1 },
+          }}
+        >
+          <Paper
+            elevation={0}
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              p: { xs: 2, sm: 3, md: 4 },
+              backgroundColor: "var(--font-light)",
+              borderRadius: 2,
+              border: "1px solid var(--border-default)",
+              minHeight: { md: "min(520px, 70vh)" },
+              boxShadow:
+                "0 10px 40px color-mix(in srgb, var(--primary-900) 9%, transparent), 0 1px 0 color-mix(in srgb, var(--primary-900) 6%, transparent)",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                alignItems: { xs: "flex-start", sm: "center" },
+                justifyContent: "space-between",
+                gap: 1.5,
+                mb: 2,
+              }}
+            >
+              <Box>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    display: "block",
+                    color: "var(--accent-indigo)",
+                    fontWeight: 600,
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    mb: 0.25,
+                  }}
+                >
+                  Written response
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ color: "var(--font-secondary)", fontWeight: 500 }}
+                >
+                  Question {currentQuestionIndex + 1} of {totalQuestions}
+                </Typography>
+              </Box>
+              <Stack direction="row" flexWrap="wrap" gap={1} alignItems="center">
+                {currentQuestion.max_marks != null && (
+                  <Chip
+                    size="small"
+                    label={`Max ${currentQuestion.max_marks} marks`}
+                    sx={{
+                      height: 28,
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
+                      backgroundColor: "color-mix(in srgb, var(--course-cta) 10%, var(--card-bg))",
+                      color: "color-mix(in srgb, var(--course-cta) 78%, var(--font-dark))",
+                      border: "1px solid color-mix(in srgb, var(--course-cta) 22%, transparent)",
+                    }}
+                  />
+                )}
+                {currentQuestion.question_type ? (
+                  <Chip
+                    size="small"
+                    label={formatQuestionTypeLabel(currentQuestion.question_type)}
+                    variant="outlined"
+                    sx={{
+                      height: 28,
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
+                      borderColor: "var(--border-default)",
+                      color: "var(--font-muted)",
+                    }}
+                  />
+                ) : null}
+                <Chip
+                  size="small"
+                  label={`${answeredCount} / ${totalQuestions} with text`}
+                  sx={{
+                    height: 28,
+                    fontSize: "0.75rem",
+                    fontWeight: 600,
+                    backgroundColor: "var(--surface)",
+                    color: "var(--neutral-500)",
+                    border: "1px solid var(--border-default)",
+                  }}
+                />
+              </Stack>
+            </Box>
+
+            <QuestionTitle question={currentQuestion.question_text} />
+
+            {mode === "text_image" ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  mt: 1.5,
+                  color: "var(--font-secondary)",
+                  lineHeight: 1.55,
+                  pl: 1.25,
+                  borderLeft: "3px solid color-mix(in srgb, var(--accent-indigo) 55%, transparent)",
+                }}
+              >
+                {t("assessments.take.subjectiveModeHintTextImage")}
+              </Typography>
+            ) : null}
+            {mode === "file_upload" ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  mt: 1.5,
+                  color: "var(--font-secondary)",
+                  lineHeight: 1.55,
+                  pl: 1.25,
+                  borderLeft: "3px solid color-mix(in srgb, var(--accent-teal) 55%, transparent)",
+                }}
+              >
+                {t("assessments.take.subjectiveModeHintFileUpload")}
+              </Typography>
+            ) : null}
+            {mode === "video" ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  mt: 1.5,
+                  color: "var(--font-secondary)",
+                  lineHeight: 1.55,
+                  pl: 1.25,
+                  borderLeft: "3px solid color-mix(in srgb, var(--accent-indigo) 55%, transparent)",
+                }}
+              >
+                {t("assessments.take.subjectiveModeHintVideo")}
+              </Typography>
+            ) : null}
+
+            <Typography
+              component="label"
+              htmlFor={`subjective-answer-${currentQuestion.id}`}
+              variant="subtitle2"
+              sx={{
+                display: "block",
+                mt: 1,
+                mb: 1,
+                fontWeight: 600,
+                color: "var(--font-primary-dark)",
+                fontSize: "0.875rem",
+              }}
+            >
+              Your answer
+            </Typography>
+            {hasDraft ? (
+              <Typography variant="caption" sx={{ display: "block", mb: 1, color: "var(--font-secondary)" }}>
+                Draft saved automatically with your attempt.
+              </Typography>
+            ) : (
+              <Typography variant="caption" sx={{ display: "block", mb: 1, color: "var(--font-tertiary)" }}>
+                Start typing - your work is saved as you go.
+              </Typography>
+            )}
+
+            <TextField
+              id={`subjective-answer-${currentQuestion.id}`}
+              multiline
+              minRows={mode === "video" ? 3 : 10}
+              maxRows={26}
+              fullWidth
+              value={localText}
+              onChange={handleTextChange}
+              onBlur={flushTextNow}
+              inputRef={textAreaRef}
+              onPaste={handleAnswerPaste}
+              placeholder="Write a clear, structured answer. Use paragraphs where it helps readability."
+              variant="outlined"
+              inputProps={{
+                "aria-describedby": `subjective-answer-stats-${currentQuestion.id}`,
+                "data-assessment-allow-paste": "true",
+                "data-assessment-answer-field": "true",
+                style: {
+                  userSelect: "text",
+                  WebkitUserSelect: "text",
+                },
+              }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "var(--font-light)",
+                  borderRadius: 2,
+                  fontSize: "0.9375rem",
+                  lineHeight: 1.65,
+                  fontFamily: "var(--font-family-primary)",
+                  "& fieldset": {
+                    borderColor: "var(--border-default)",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "var(--border-light)",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "var(--accent-indigo)",
+                    borderWidth: "1px",
+                  },
+                },
+                "& .MuiInputBase-input": {
+                  userSelect: "text",
+                  WebkitUserSelect: "text",
+                  py: 1.5,
+                },
+                "& .MuiInputBase-input::placeholder": {
+                  color: "var(--font-tertiary)",
+                  opacity: 1,
+                },
+              }}
+            />
+
+            {mode === "video" && assessmentUploadClientId ? (
+              <Box sx={{ mt: 2 }}>
+                <SubjectiveVideoRecorder
+                  clientId={assessmentUploadClientId}
+                  existingUrl={payload.video?.url ?? null}
+                  onUploaded={(meta) => mergePayload({ video: meta })}
+                  onError={onSubjectiveImageUploadError}
+                />
+              </Box>
+            ) : null}
+
+            {mode === "file_upload" && assessmentUploadClientId ? (
+              <Box sx={{ mt: 2 }}>
+                <input
+                  ref={fileDocInputRef}
+                  type="file"
+                  style={{ display: "none" }}
+                  onChange={handleFileDocChange}
+                />
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    onNativeFilePickerWillOpen?.();
+                    fileDocInputRef.current?.click();
+                  }}
+                  disabled={fileDocBusy}
+                  sx={{ textTransform: "none" }}
+                >
+                  {fileDocBusy
+                    ? t("assessments.take.subjectiveAttachFileUploading")
+                    : t("assessments.take.subjectiveAttachFile")}
+                </Button>
+                <Stack spacing={0.75} sx={{ mt: 1 }}>
+                  {(payload.files || []).map((f, i) => (
+                    <Box
+                      key={`${f.url}-${i}`}
+                      sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}
+                    >
+                      <Typography variant="caption">
+                        <Box
+                          component="a"
+                          href={f.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          sx={{ color: "var(--accent-indigo-dark)" }}
+                        >
+                          {f.name || "Attachment"}
+                        </Box>
+                      </Typography>
+                      <Button
+                        size="small"
+                        onClick={() => {
+                          const next = [...(payload.files || [])];
+                          next.splice(i, 1);
+                          mergePayload({ files: next });
+                        }}
+                        sx={{ textTransform: "none" }}
+                      >
+                        Remove
+                      </Button>
+                    </Box>
+                  ))}
+                </Stack>
+              </Box>
+            ) : null}
+
+            {mode === "text_image" && (payload.images?.length ?? 0) > 0 ? (
+              <Stack spacing={0.75} sx={{ mt: 1 }}>
+                {(payload.images || []).map((im, i) => (
+                  <Box
+                    key={`${im.url}-${i}`}
+                    sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}
+                  >
+                    <Typography variant="caption">
+                      <Box
+                        component="a"
+                        href={im.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{ color: "var(--accent-indigo-dark)" }}
+                      >
+                        {im.name || "Image"}
+                      </Box>
+                    </Typography>
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        const next = [...(payload.images || [])];
+                        next.splice(i, 1);
+                        mergePayload({ images: next });
+                      }}
+                      sx={{ textTransform: "none" }}
+                    >
+                      Remove
+                    </Button>
+                  </Box>
+                ))}
+              </Stack>
+            ) : null}
+
+            <Box
+              sx={{
+                mt: 1.5,
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                alignItems: { sm: "center" },
+                gap: 1.5,
+                flexWrap: "wrap",
+              }}
+            >
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                {(mode === "text" || mode === "text_image") && (
+                  <MathSymbolToolbar onInsert={insertAtCaret} />
+                )}
+              </Box>
+              {assessmentUploadClientId && mode === "text_image" ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    flexShrink: 0,
+                  }}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
+                    style={{ display: "none" }}
+                    onChange={handleImageFileChange}
+                  />
+                  <Tooltip title={t("assessments.take.subjectiveInsertImageTooltip")}>
+                    <span>
+                      <IconButton
+                        type="button"
+                        size="small"
+                        disabled={imageUploadBusy}
+                        onClick={() => {
+                          onNativeFilePickerWillOpen?.();
+                          fileInputRef.current?.click();
+                        }}
+                        aria-label={t("assessments.take.subjectiveInsertImage")}
+                        sx={{
+                          border: "1px solid color-mix(in srgb, var(--accent-indigo) 28%, transparent)",
+                          borderRadius: 2,
+                          bgcolor: "var(--font-light)",
+                          color: "var(--accent-indigo-dark)",
+                          "&:hover": { bgcolor: "var(--surface-indigo-light)" },
+                        }}
+                      >
+                        {imageUploadBusy ? (
+                          <CircularProgress size={22} color="inherit" />
+                        ) : (
+                          <IconWrapper icon="mdi:image-plus-outline" size={22} color="currentColor" />
+                        )}
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                  <Typography variant="caption" sx={{ color: "var(--font-secondary)", maxWidth: 220, lineHeight: 1.45 }}>
+                    {t("assessments.take.subjectiveImagePasteHint")}
+                  </Typography>
+                </Box>
+              ) : null}
+            </Box>
+
+            <Box
+              id={`subjective-answer-stats-${currentQuestion.id}`}
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 1,
+                mt: 1.5,
+              }}
+            >
+              <Typography variant="caption" sx={{ color: "var(--font-secondary)", fontWeight: 500 }}>
+                {charCount.toLocaleString()} characters · {wordCount.toLocaleString()} words
+              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                <IconWrapper icon="mdi:cloud-check-outline" size={16} color="var(--course-cta)" />
+                <Typography variant="caption" sx={{ color: "var(--font-secondary)", fontWeight: 500 }}>
+                  Autosaved
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box
+              component="section"
+              aria-labelledby="subjective-writing-tips-heading"
+              sx={{
+                mt: 3,
+                borderRadius: 2,
+                overflow: "hidden",
+                border: "1px solid color-mix(in srgb, var(--accent-indigo) 28%, transparent)",
+                backgroundColor: "var(--surface)",
+                boxShadow: "0 1px 2px color-mix(in srgb, var(--primary-900) 6%, transparent)",
+              }}
+            >
+              <ButtonBase
+                component="button"
+                type="button"
+                id="subjective-writing-tips-heading"
+                aria-expanded={writingTipsOpen}
+                aria-controls="subjective-writing-tips-panel"
+                onClick={toggleWritingTips}
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  textAlign: "left",
+                  gap: 1.5,
+                  p: 2,
+                  pr: 1.5,
+                  borderRadius: 0,
+                  transition: "background-color 0.15s ease",
+                  backgroundColor: writingTipsOpen ? "var(--surface-indigo-light)" : "var(--neutral-100)",
+                  borderBottom: writingTipsOpen ? "1px solid color-mix(in srgb, var(--accent-indigo) 28%, transparent)" : "none",
+                  "&:hover": {
+                    backgroundColor: "color-mix(in srgb, var(--surface-indigo-light) 85%, var(--accent-indigo))",
+                  },
+                  "&.Mui-focusVisible": {
+                    outline: "2px solid var(--accent-indigo)",
+                    outlineOffset: -2,
+                    zIndex: 1,
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 2,
+                    flexShrink: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "var(--font-light)",
+                    border: "1px solid color-mix(in srgb, var(--accent-indigo) 28%, transparent)",
+                    boxShadow:
+                      "0 1px 2px color-mix(in srgb, var(--accent-indigo-dark) 10%, transparent)",
+                  }}
+                >
+                  <IconWrapper icon="mdi:lightbulb-on-outline" size={24} color="var(--accent-indigo-dark)" />
+                </Box>
+                <Box sx={{ flex: 1, minWidth: 0, py: 0.25 }}>
+                  <Stack direction="row" alignItems="center" gap={1} flexWrap="wrap" sx={{ mb: 0.25 }}>
+                    <Typography
+                      component="span"
+                      variant="subtitle2"
+                      sx={{
+                        fontWeight: 800,
+                        color: "var(--accent-indigo-dark)",
+                        fontSize: "0.9375rem",
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      Writing tips
+                    </Typography>
+                    <Box
+                      component="span"
+                      sx={{
+                        fontSize: "0.65rem",
+                        fontWeight: 700,
+                        letterSpacing: "0.06em",
+                        textTransform: "uppercase",
+                        color: "var(--accent-indigo-dark)",
+                        bgcolor: "color-mix(in srgb, var(--accent-indigo) 14%, transparent)",
+                        px: 0.75,
+                        py: 0.25,
+                        borderRadius: 1,
+                      }}
+                    >
+                      Quick guide
+                    </Box>
+                  </Stack>
+                  <Typography variant="caption" sx={{ color: "var(--font-secondary)", display: "block", lineHeight: 1.5 }}>
+                    {writingTipsOpen
+                      ? "Tap the header again anytime to hide this panel and focus on your answer."
+                      : `${WRITING_TIP_ITEMS.length} short ideas - expand when you want a refresher.`}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    flexShrink: 0,
+                    width: 36,
+                    height: 36,
+                    borderRadius: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "var(--accent-indigo-dark)",
+                    mt: 0.25,
+                  }}
+                  aria-hidden
+                >
+                  <IconWrapper
+                    icon={writingTipsOpen ? "mdi:chevron-up" : "mdi:chevron-down"}
+                    size={28}
+                    color="var(--accent-indigo-dark)"
+                  />
+                </Box>
+              </ButtonBase>
+
+              <Collapse in={writingTipsOpen} timeout="auto">
+                <Stack
+                  id="subjective-writing-tips-panel"
+                  spacing={1.25}
+                  sx={{
+                    p: 2,
+                    pt: 1.75,
+                    bgcolor: "var(--font-light)",
+                  }}
+                >
+                  {WRITING_TIP_ITEMS.map((item, index) => (
+                    <Box
+                      key={item.title}
+                      sx={{
+                        display: "flex",
+                        gap: 1.5,
+                        p: 1.5,
+                        borderRadius: 2,
+                        border: "1px solid var(--border-light)",
+                        backgroundColor: "var(--card-bg)",
+                        transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+                        "&:hover": {
+                          borderColor: "color-mix(in srgb, var(--accent-indigo) 28%, transparent)",
+                        },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: 44,
+                          minWidth: 44,
+                          height: 44,
+                          borderRadius: 1.5,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          backgroundColor: "var(--surface-indigo-light)",
+                          border: "1px solid color-mix(in srgb, var(--surface-indigo-light) 85%, var(--accent-indigo))",
+                        }}
+                        aria-hidden
+                      >
+                        <IconWrapper icon={item.icon} size={22} color="var(--accent-indigo-dark)" />
+                      </Box>
+                      <Box sx={{ minWidth: 0, flex: 1 }}>
+                        <Typography
+                          component="h3"
+                          variant="subtitle2"
+                          sx={{
+                            fontWeight: 700,
+                            color: "color-mix(in srgb, var(--accent-indigo-dark) 88%, var(--font-dark))",
+                            fontSize: "0.8125rem",
+                            lineHeight: 1.35,
+                            mb: 0.5,
+                          }}
+                        >
+                          <Box component="span" sx={{ color: "var(--accent-indigo)", fontWeight: 800, mr: 0.75 }}>
+                            {index + 1}.
+                          </Box>
+                          {item.title}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "var(--font-muted)",
+                            fontSize: "0.8125rem",
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          {item.description}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                </Stack>
+              </Collapse>
+            </Box>
+            <Box
+              sx={{
+                mt: 4,
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                justifyContent: "space-between",
+                alignItems: { xs: "stretch", sm: "center" },
+                gap: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  display: { xs: "block", sm: "none" },
+                  textAlign: "center",
+                  mb: 1,
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: "var(--font-secondary)",
+                    fontWeight: 500,
+                  }}
+                >
+                  {answeredCount} of {totalQuestions} answered
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: 2,
+                  width: { xs: "100%", sm: "auto" },
+                  alignItems: { xs: "stretch", sm: "center" },
+                  justifyContent: "space-between",
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    flushTextNow();
+                    onPreviousQuestion?.();
+                  }}
+                  disabled={isFirstQuestion}
+                  startIcon={<IconWrapper icon="mdi:chevron-left" size={20} />}
+                  sx={{
+                    borderColor: "var(--accent-indigo)",
+                    color: "var(--accent-indigo)",
+                    px: { xs: 2, sm: 3 },
+                    py: 1.5,
+                    fontSize: "0.9375rem",
+                    fontWeight: 600,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    flex: { xs: 1, sm: "none" },
+                    minWidth: { xs: "auto", sm: "120px" },
+                    "&:hover": {
+                      borderColor: "var(--accent-indigo-dark)",
+                      backgroundColor: "color-mix(in srgb, var(--accent-indigo) 9%, transparent)",
+                    },
+                    "&:disabled": {
+                      borderColor: "var(--border-light)",
+                      color: "var(--font-tertiary)",
+                    },
+                  }}
+                >
+                  Previous
+                </Button>
+
+                <Box
+                  sx={{
+                    display: { xs: "none", sm: "flex" },
+                    alignItems: "center",
+                    minWidth: "150px",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: "var(--font-secondary)",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {answeredCount} of {totalQuestions} answered
+                  </Typography>
+                </Box>
+
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    flushTextNow();
+                    onNextQuestion?.();
+                  }}
+                  disabled={isLastQuestion}
+                  endIcon={<IconWrapper icon="mdi:chevron-right" size={20} />}
+                  sx={{
+                    backgroundColor: "var(--accent-indigo)",
+                    color: "var(--font-light)",
+                    px: { xs: 2, sm: 4 },
+                    py: 1.5,
+                    fontSize: "0.9375rem",
+                    fontWeight: 600,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    flex: { xs: 1, sm: "none" },
+                    minWidth: { xs: "auto", sm: "140px" },
+                    "&:hover": {
+                      backgroundColor: "var(--accent-indigo-dark)",
+                    },
+                    "&:disabled": {
+                      backgroundColor: "var(--border-light)",
+                      color: "var(--font-tertiary)",
+                    },
+                  }}
+                >
+                  Next
+                </Button>
+              </Box>
+            </Box>
+          </Paper>
+        </Box>
+      </Box>
+    );
+  },
+  (prevProps, nextProps) => {
+    if (prevProps.currentQuestionIndex !== nextProps.currentQuestionIndex) return false;
+    if (prevProps.currentQuestion.id !== nextProps.currentQuestion.id) return false;
+    if (JSON.stringify(prevProps.value) !== JSON.stringify(nextProps.value)) return false;
+    if (prevProps.totalQuestions !== nextProps.totalQuestions) return false;
+    if (prevProps.questions.length !== nextProps.questions.length) return false;
+
+    const qId = nextProps.currentQuestion.id;
+    const prevA = prevProps.questions.find((q) => q.id === qId)?.answered;
+    const nextA = nextProps.questions.find((q) => q.id === qId)?.answered;
+    if (prevA !== nextA) return false;
+
+    const prevAnswered = prevProps.questions.filter((q) => q.answered).length;
+    const nextAnswered = nextProps.questions.filter((q) => q.answered).length;
+    if (prevAnswered !== nextAnswered) return false;
+
+    if (prevProps.assessmentUploadClientId !== nextProps.assessmentUploadClientId)
+      return false;
+    if (prevProps.onSubjectiveImageUploadError !== nextProps.onSubjectiveImageUploadError)
+      return false;
+
+    return true;
+  }
+);

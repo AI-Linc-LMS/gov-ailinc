@@ -1,0 +1,283 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
+import { Box, Paper, Typography, Tooltip } from "@mui/material";
+import { IconWrapper } from "@/components/common/IconWrapper";
+
+interface DetailItem {
+  icon: string;
+  label: string;
+  value: string;
+  copyable?: boolean;
+  linkable?: boolean;
+  url?: string;
+}
+
+interface UserDetailsCardProps {
+  username: string;
+  emailAddress: string;
+  socialLinks?: {
+    github: string;
+    linkedin: string;
+  };
+  externalProfiles?: {
+    portfolio_website_url?: string;
+    leetcode_url?: string;
+    hackerrank_url?: string;
+    kaggle_url?: string;
+    medium_url?: string;
+  };
+}
+
+export function UserDetailsCard({
+  username,
+  emailAddress,
+  socialLinks,
+  externalProfiles,
+}: UserDetailsCardProps) {
+  const { t } = useTranslation();
+  const formatUrl = (url: string) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+    return `https://${url}`;
+  };
+
+  const details: DetailItem[] = [
+    {
+      icon: "mdi:account",
+      label: t("profile.username"),
+      value: username,
+    },
+    {
+      icon: "mdi:email",
+      label: t("profile.emailAddress"),
+      value: emailAddress,
+      copyable: true,
+    },
+    ...(socialLinks?.github
+      ? [
+          {
+            icon: "mdi:github",
+            label: t("profile.github"),
+            value: `https://github.com/${socialLinks.github}`,
+            copyable: true,
+            linkable: true,
+            url: `https://github.com/${socialLinks.github}`,
+          },
+        ]
+      : []),
+    ...(socialLinks?.linkedin
+      ? [
+          {
+            icon: "mdi:linkedin",
+            label: t("profile.linkedin"),
+            value: `https://www.linkedin.com/in/${socialLinks.linkedin}`,
+            copyable: true,
+            linkable: true,
+            url: `https://www.linkedin.com/in/${socialLinks.linkedin}`,
+          },
+        ]
+      : []),
+    ...(externalProfiles?.portfolio_website_url
+      ? [
+          {
+            icon: "mdi:web",
+            label: t("profile.portfolio"),
+            value: externalProfiles.portfolio_website_url,
+            copyable: true,
+            linkable: true,
+            url: formatUrl(externalProfiles.portfolio_website_url),
+          },
+        ]
+      : []),
+    ...(externalProfiles?.leetcode_url
+      ? [
+          {
+            icon: "mdi:code-tags",
+            label: t("profile.leetcode"),
+            value: externalProfiles.leetcode_url,
+            copyable: true,
+            linkable: true,
+            url: formatUrl(externalProfiles.leetcode_url),
+          },
+        ]
+      : []),
+    ...(externalProfiles?.hackerrank_url
+      ? [
+          {
+            icon: "mdi:code-braces",
+            label: t("profile.hackerrank"),
+            value: externalProfiles.hackerrank_url,
+            copyable: true,
+            linkable: true,
+            url: formatUrl(externalProfiles.hackerrank_url),
+          },
+        ]
+      : []),
+    ...(externalProfiles?.kaggle_url
+      ? [
+          {
+            icon: "mdi:chart-box",
+            label: t("profile.kaggle"),
+            value: externalProfiles.kaggle_url,
+            copyable: true,
+            linkable: true,
+            url: formatUrl(externalProfiles.kaggle_url),
+          },
+        ]
+      : []),
+    ...(externalProfiles?.medium_url
+      ? [
+          {
+            icon: "mdi:book-open-variant",
+            label: t("profile.medium"),
+            value: externalProfiles.medium_url,
+            copyable: true,
+            linkable: true,
+            url: formatUrl(externalProfiles.medium_url),
+          },
+        ]
+      : []),
+  ];
+
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        p: { xs: 2, sm: 3 },
+        border: "1px solid color-mix(in srgb, var(--font-primary) 10%, transparent)",
+        borderRadius: 4,
+        boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 12px 28px -20px rgba(30,27,75,0.28)",
+        backgroundColor: "var(--background)",
+        transition: "box-shadow 0.2s ease",
+        "&:hover": {
+          boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 16px 34px -20px rgba(30,27,75,0.34)",
+        },
+      }}
+    >
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+        {details.map((detail, index) => (
+          <Box
+            key={index}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <Box
+              sx={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                backgroundColor: "color-mix(in srgb, var(--surface) 85%, var(--background))",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  backgroundColor: "color-mix(in srgb, var(--surface) 72%, var(--background))",
+                },
+              }}
+            >
+              <IconWrapper icon={detail.icon} size={22} color="var(--accent-indigo)" />
+            </Box>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "var(--font-secondary)",
+                  fontSize: "0.8125rem",
+                  fontWeight: 600,
+                  display: "block",
+                  mb: 0.5,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                {detail.label}
+              </Typography>
+              <Tooltip title={detail.value} arrow placement="top">
+                {detail.linkable && detail.url ? (
+                  <Box
+                    component="a"
+                    href={detail.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      display: "block",
+                      textDecoration: "none",
+                      color: "var(--accent-indigo)",
+                      "&:hover": {
+                        textDecoration: "underline",
+                        color: "var(--accent-indigo-dark)",
+                      },
+                      transition: "all 0.2s ease",
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: 500,
+                        fontSize: "0.9375rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {detail.value}
+                    </Typography>
+                  </Box>
+                ) : (
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: "var(--font-primary)",
+                      fontWeight: 500,
+                      fontSize: "0.9375rem",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      cursor: "default",
+                    }}
+                  >
+                    {detail.value}
+                  </Typography>
+                )}
+              </Tooltip>
+            </Box>
+            {detail.copyable && (
+              <Tooltip title="Copy to clipboard" arrow placement="top">
+                <Box
+                  sx={{
+                    cursor: "pointer",
+                    p: 1,
+                    borderRadius: "50%",
+                    transition: "all 0.2s ease",
+                    "&:hover": {
+                      backgroundColor: "color-mix(in srgb, var(--surface) 85%, var(--background))",
+                      transform: "scale(1.1)",
+                    },
+                  }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(detail.value);
+                  }}
+                >
+                  <IconWrapper
+                    icon="mdi:content-copy"
+                    size={16}
+                    color="var(--font-tertiary)"
+                  />
+                </Box>
+              </Tooltip>
+            )}
+          </Box>
+        ))}
+      </Box>
+    </Paper>
+  );
+}

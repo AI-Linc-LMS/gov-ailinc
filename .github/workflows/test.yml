@@ -1,0 +1,59 @@
+# Pre-deploy checks for the demo.
+#
+# This repo is handed to prospects, so a broken main branch is a broken sales
+# demo. The three checks below are ordered by how early they can catch the
+# failures that have actually happened here, cheapest first.
+name: test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Runs before install: it only reads package-lock.json, so it costs a second
+      # and fails fast. npm silently prunes optional linux-x64 packages from the
+      # lockfile when someone runs `npm install` on a Mac, which is invisible
+      # locally and kills the Netlify build with a missing native module. This is
+      # the only place that regression can be caught before a red deploy.
+      - run: node scripts/check-lockfile-platforms.mjs
+
+      - uses: actions/setup-node@v4
+        with:
+          # 22, not 20. jsdom 30 pulls undici 8, which calls
+          # `webidl.util.markAsUncloneable` — an API that only exists on Node 22+. On 20 it
+          # is undefined, so jsdom throws while being imported and every test file dies at
+          # load time: "Tests: no tests, Errors: 3 errors".
+          node-version: 22
+
+      # Plain `npm ci` — .npmrc already sets legacy-peer-deps (@tiptap/extension-image
+      # pins an older @tiptap/core than the starter kit resolves, and npm refuses to
+      # install the tree without it).
+      #
+      # Deliberately NO `|| npm install` fallback: that would paper over a
+      # lockfile/package.json mismatch by resolving a different tree, so CI would
+      # pass against dependencies the Netlify build will never use.
+      - run: npm ci
+
+      # Typecheck, because nothing else here does. A type error is not caught by
+      # the unit suite, so without this it merges green and the Netlify deploy is
+      # the first thing to fail — leaving the live demo on the previous build with
+      # no obvious signal that anything broke.
+      - run: npm run typecheck
+
+      - run: npm test
+
+      # Build on a FRESH CHECKOUT, which is the only thing that catches a file
+      # that exists on a developer's disk but was never committed. That is
+      # exactly how the icon bundle broke a deploy: .gitignore silently excluded
+      # lib/demo/icons/, `git add -A` reported nothing, and every local build
+      # passed because the file was sitting there untracked.
+      #
+      # Netlify runs the same two commands. Failing here means failing before
+      # the live demo does, which is the whole point.
+      - run: npm run build

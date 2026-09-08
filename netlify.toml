@@ -1,0 +1,13 @@
+[build]
+# npm, not yarn: this repo commits package-lock.json so a demo rebuilt months
+# later resolves the exact tree it was verified against. `npm ci` fails loudly on
+# a lockfile/package.json mismatch rather than silently resolving something new.
+command = "npm ci && npm run build"
+publish = ".next"
+
+[build.environment]
+# Node 22: jsdom 30 pulls undici 8, which calls an API that only exists on 22+.
+NODE_VERSION = "22"
+
+[[plugins]]
+package = "@netlify/plugin-nextjs"

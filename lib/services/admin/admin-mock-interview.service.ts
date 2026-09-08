@@ -1,0 +1,829 @@
+import apiClient from "../api";
+import { config } from "../../config";
+
+// Dashboard types
+export interface DashboardOverview {
+  total_interviews: number;
+  total_unique_students: number;
+  active_students_in_period: number;
+  completion_rate: number;
+  status_breakdown: {
+    scheduled: number;
+    in_progress: number;
+    completed: number;
+    cancelled: number;
+  };
+}
+
+export interface DashboardScoreStatistics {
+  average_score: number;
+  highest_score: number;
+  lowest_score: number;
+  median_score: number;
+  total_scored_interviews: number;
+}
+
+export interface DashboardTimeStatistics {
+  average_time_minutes: number;
+  total_time_spent_minutes: number;
+  interviews_with_time_data: number;
+}
+
+export interface DifficultyStats {
+  total: number;
+  completed: number;
+  average_score: number;
+}
+
+export interface TopicBreakdownItem {
+  topic: string;
+  total_interviews: number;
+  completed_interviews: number;
+  unique_students: number;
+  average_score: number;
+}
+
+export interface DailyTrendItem {
+  date: string;
+  created: number;
+  completed: number;
+}
+
+export interface TopPerformer {
+  student_id: number;
+  student_name: string;
+  student_email: string;
+  interviews_completed: number;
+  average_score: number;
+  highest_score: number;
+}
+
+export interface DashboardResponse {
+  overview: DashboardOverview;
+  score_statistics: DashboardScoreStatistics;
+  time_statistics: DashboardTimeStatistics;
+  difficulty_distribution: Record<string, DifficultyStats>;
+  topic_breakdown: TopicBreakdownItem[];
+  daily_trend: DailyTrendItem[];
+  top_performers: TopPerformer[];
+  recent_interviews: AdminInterviewListItem[];
+}
+
+// Interview list types
+export interface AdminInterviewListItem {
+  id: number;
+  title: string;
+  topic: string;
+  subtopic?: string;
+  difficulty: string;
+  status: string;
+  duration_minutes: number;
+  scheduled_date_time?: string;
+  started_at?: string;
+  submitted_at?: string;
+  created_at: string;
+  student_name: string;
+  student_email: string;
+  student_id: number;
+  overall_score?: number;
+  /** True 0-100 percentage (from overall_percentage, or derived from score/max). */
+  overall_percentage?: number;
+}
+
+export interface InterviewsPagination {
+  current_page: number;
+  total_pages: number;
+  total_interviews: number;
+  limit: number;
+  has_next: boolean;
+  has_previous: boolean;
+}
+
+export interface ListInterviewsParams {
+  status?: string;
+  difficulty?: string;
+  topic?: string;
+  student_id?: number;
+  search?: string;
+  date_from?: string;
+  date_to?: string;
+  sort_by?: string;
+  sort_order?: "asc" | "desc";
+  page?: number;
+  limit?: number;
+}
+
+export interface ListInterviewsResponse {
+  interviews: AdminInterviewListItem[];
+  pagination: InterviewsPagination;
+  filters_applied: Record<string, string | number | null>;
+}
+
+// Interview detail types
+export interface AdminQuestionForInterview {
+  question: string;
+  question_number: number;
+}
+
+export interface GradingSchemeCriteria {
+  technical_accuracy?: number;
+  communication?: number;
+  problem_solving?: number;
+  code_quality?: number;
+  [key: string]: number | undefined;
+}
+
+export interface GradingScheme {
+  criteria: GradingSchemeCriteria;
+}
+
+export interface EvaluationScore {
+  overall_score: number;
+  technical_accuracy?: number;
+  communication?: number;
+  problem_solving?: number;
+  code_quality?: number;
+  feedback?: string;
+  /** From API: overall_feedback */
+  areas_for_improvement?: string[];
+  max_possible_score?: number;
+}
+
+export interface TranscriptResponse {
+  question_number: number;
+  response: string;
+}
+
+export interface InterviewTranscript {
+  responses: TranscriptResponse[];
+  metadata?: {
+    tabSwitches?: number;
+    windowSwitches?: number;
+    fullscreen_exits?: number;
+    face_validation_failures?: number;
+    [key: string]: unknown;
+  };
+}
+
+export interface AdminInterviewDetail {
+  id: number;
+  title: string;
+  topic: string;
+  subtopic?: string;
+  difficulty: string;
+  status: string;
+  duration_minutes: number;
+  scheduled_date_time?: string;
+  started_at?: string;
+  submitted_at?: string;
+  created_at: string;
+  updated_at?: string;
+  student_name: string;
+  student_email: string;
+  student_id: number;
+  questions_for_interview: AdminQuestionForInterview[];
+  /**
+   * Full raw question data from the backend - preserves `type`, `expected_key_points`,
+   * `coding_problem`, `mcq_options`, etc. The admin-side result page renders this
+   * through the SAME QuestionPerformance component as the student side, so the
+   * View-problem buttons + per-question feedback structure look identical.
+   */
+  questions_full?: RawQuestionForInterview[];
+  /**
+   * Per-question scores keyed by question_id (as string). Mirrors the student-side
+   * evaluation_score.question_scores shape. Empty/absent if the evaluator hasn't
+   * finished or didn't produce per-question detail.
+   */
+  question_scores?: Record<string, RawQuestionScore>;
+  /** Raw response objects (with answer text), keyed against question_id. */
+  responses_full?: Array<{
+    question_id: number;
+    answer?: string;
+    question_text?: string;
+  }>;
+  grading_scheme?: GradingScheme;
+  evaluation_score?: EvaluationScore;
+  interview_transcript?: InterviewTranscript;
+  time_taken_minutes?: number;
+}
+
+export interface RawQuestionScore {
+  score: number;
+  max_score: number;
+  percentage?: number;
+  feedback?: string;
+  strengths?: string[];
+  improvements?: string[];
+}
+
+// Raw API response shape for interview detail (backend may use different field names)
+export interface RawQuestionForInterview {
+  id: number;
+  type?: string;
+  question_text: string;
+  expected_key_points?: string[];
+}
+
+export interface RawTranscriptResponse {
+  question_id: number;
+  answer: string;
+}
+
+export interface RawEvaluationScore {
+  overall_score: number;
+  overall_feedback?: string;
+  max_possible_score?: number;
+  overall_percentage?: number;
+  areas_for_improvement?: string[];
+  question_scores?: Record<string, unknown>;
+  strengths?: unknown[];
+}
+
+export interface RawInterviewDetail {
+  id: number;
+  title: string;
+  topic: string;
+  subtopic?: string;
+  difficulty: string;
+  status: string;
+  duration_minutes: number;
+  scheduled_date_time?: string;
+  started_at?: string;
+  submitted_at?: string;
+  created_at: string;
+  updated_at?: string;
+  student_name: string;
+  student_email: string;
+  student_id: number;
+  questions_for_interview: RawQuestionForInterview[];
+  grading_scheme?: unknown;
+  evaluation_score?: RawEvaluationScore;
+  interview_transcript?: {
+    responses: RawTranscriptResponse[];
+    metadata?: InterviewTranscript["metadata"];
+    logs?: unknown[];
+    total_duration_seconds?: number;
+  };
+  time_taken_minutes?: number;
+}
+
+/** Normalize payload: API may return interview at top level or under .data / .result */
+function unwrapInterviewPayload(body: unknown): RawInterviewDetail {
+  if (body && typeof body === "object") {
+    const obj = body as Record<string, unknown>;
+    if (obj.data && typeof obj.data === "object" && !Array.isArray(obj.data)) {
+      return obj.data as RawInterviewDetail;
+    }
+    if (obj.result && typeof obj.result === "object" && !Array.isArray(obj.result)) {
+      return obj.result as RawInterviewDetail;
+    }
+  }
+  return body as RawInterviewDetail;
+}
+
+/** Map raw API interview detail response to AdminInterviewDetail */
+export function mapInterviewDetailResponse(raw: RawInterviewDetail): AdminInterviewDetail {
+  const rawPayload = raw as RawInterviewDetail & { questions?: RawQuestionForInterview[] };
+  const rawQuestions = Array.isArray(raw.questions_for_interview)
+    ? raw.questions_for_interview
+    : Array.isArray(rawPayload.questions)
+      ? rawPayload.questions
+      : [];
+  const questions_for_interview: AdminQuestionForInterview[] = rawQuestions.map((q) => {
+    const item = q as RawQuestionForInterview & { question?: string; question_number?: number };
+    return {
+      question: item.question_text ?? item.question ?? "",
+      question_number: item.id ?? item.question_number ?? 0,
+    };
+  });
+
+  const rawResponses = Array.isArray(raw.interview_transcript?.responses)
+    ? raw.interview_transcript.responses
+    : [];
+  const responses: TranscriptResponse[] = rawResponses.map((r) => {
+    const item = r as RawTranscriptResponse & { question_number?: number; response?: string };
+    return {
+      question_number: item.question_id ?? item.question_number ?? 0,
+      response: item.answer ?? item.response ?? "",
+    };
+  });
+
+  const evaluation_score: EvaluationScore | undefined = raw.evaluation_score
+    ? {
+        overall_score: raw.evaluation_score.overall_score,
+        feedback: raw.evaluation_score.overall_feedback,
+        areas_for_improvement: raw.evaluation_score.areas_for_improvement,
+        max_possible_score: raw.evaluation_score.max_possible_score,
+      }
+    : undefined;
+
+  const maxPossible = raw.evaluation_score?.max_possible_score ?? 100;
+  const grading_scheme: GradingScheme = {
+    criteria: { total: maxPossible },
+  };
+
+  const responses_full = rawResponses.map((r) => {
+    const item = r as RawTranscriptResponse & { question_text?: string };
+    return {
+      question_id: item.question_id,
+      answer: item.answer ?? "",
+      question_text: item.question_text ?? "",
+    };
+  });
+
+  const question_scores =
+    (raw.evaluation_score?.question_scores as Record<string, RawQuestionScore> | undefined) ?? {};
+
+  return {
+    id: raw.id,
+    title: raw.title,
+    topic: raw.topic,
+    subtopic: raw.subtopic,
+    difficulty: raw.difficulty,
+    status: raw.status,
+    duration_minutes: raw.duration_minutes,
+    scheduled_date_time: raw.scheduled_date_time,
+    started_at: raw.started_at,
+    submitted_at: raw.submitted_at,
+    created_at: raw.created_at,
+    updated_at: raw.updated_at,
+    student_name: raw.student_name,
+    student_email: raw.student_email,
+    student_id: raw.student_id,
+    questions_for_interview,
+    questions_full: rawQuestions,
+    question_scores,
+    responses_full,
+    grading_scheme,
+    evaluation_score,
+    interview_transcript: {
+      responses,
+      metadata: raw.interview_transcript?.metadata,
+    },
+    time_taken_minutes: raw.time_taken_minutes,
+  };
+}
+
+// Student list types
+export interface AdminStudentListItem {
+  student_id: number;
+  student_name: string;
+  student_email: string;
+  total_interviews: number;
+  completed_interviews: number;
+  in_progress_interviews: number;
+  scheduled_interviews: number;
+  cancelled_interviews: number;
+  average_score: number;
+  highest_score: number;
+  lowest_score: number;
+  total_time_spent_minutes: number;
+  average_time_per_interview_minutes: number;
+  topics_attempted: string[];
+  difficulty_distribution: Record<string, number>;
+  last_interview_date?: string;
+  completion_rate: number;
+}
+
+export interface StudentsPagination {
+  current_page: number;
+  total_pages: number;
+  total_students: number;
+  limit: number;
+  has_next: boolean;
+  has_previous: boolean;
+}
+
+export interface ListStudentsParams {
+  search?: string;
+  sort_by?: string;
+  sort_order?: "asc" | "desc";
+  page?: number;
+  limit?: number;
+  min_interviews?: number;
+}
+
+export interface ListStudentsResponse {
+  students: AdminStudentListItem[];
+  pagination: StudentsPagination;
+}
+
+// Student detail types
+export interface AdminStudentProfile {
+  id: number;
+  name: string;
+  email: string;
+  phone_number?: string;
+  profile_pic_url?: string;
+}
+
+export interface AdminStudentSummary {
+  total_interviews: number;
+  completed_interviews: number;
+  in_progress_interviews: number;
+  scheduled_interviews: number;
+  cancelled_interviews: number;
+  average_score: number;
+  highest_score: number;
+  lowest_score: number;
+  total_time_spent_minutes: number;
+  average_time_per_interview_minutes: number;
+  completion_rate: number;
+  topics_attempted: string[];
+  difficulty_distribution: Record<string, number>;
+  last_interview_date?: string;
+}
+
+export interface ScoreTrendItem {
+  interview_id: number;
+  title: string;
+  topic: string;
+  difficulty: string;
+  date: string;
+  score: number;
+}
+
+export interface TopicPerformanceItem {
+  topic: string;
+  total_interviews: number;
+  completed: number;
+  average_score: number;
+  highest_score: number;
+  subtopics: string[];
+}
+
+export interface DifficultyPerformanceItem {
+  total: number;
+  completed: number;
+  average_score: number;
+  highest_score: number;
+}
+
+export interface StudentDetailResponse {
+  student: AdminStudentProfile;
+  summary: AdminStudentSummary;
+  score_trend: ScoreTrendItem[];
+  topic_performance: TopicPerformanceItem[];
+  difficulty_performance: Record<string, DifficultyPerformanceItem>;
+  interviews?: AdminInterviewListItem[];
+}
+
+// Topic analytics types
+export interface TopicSubtopic {
+  subtopic: string;
+  total_interviews: number;
+  completed: number;
+  unique_students: number;
+  average_score: number;
+}
+
+export interface AdminTopicItem {
+  topic: string;
+  total_interviews: number;
+  completed_interviews: number;
+  unique_students: number;
+  average_score: number;
+  highest_score: number;
+  lowest_score: number;
+  difficulty_breakdown: Record<string, number>;
+  subtopics: TopicSubtopic[];
+}
+
+export interface TopicsResponse {
+  total_topics: number;
+  topics: AdminTopicItem[];
+}
+
+export interface GetTopicsParams {
+  sort_by?: string;
+  sort_order?: "asc" | "desc";
+}
+
+// Export params
+export interface ExportCSVParams {
+  status?: string;
+  difficulty?: string;
+  student_id?: number;
+  date_from?: string;
+  date_to?: string;
+}
+
+const BASE_URL = `/admin-dashboard/api/clients/${config.clientId}/mock-interviews`;
+// Templates live in the mock_interview app's URL space, not under admin-dashboard. They're
+// still admin-gated server-side, just routed alongside the student-facing interview URLs.
+const TEMPLATES_BASE_URL = `/mock-interview/api/clients/${config.clientId}/interview-templates`;
+
+export type InterviewTemplateDifficulty = "Easy" | "Medium" | "Hard";
+
+export type InterviewResultReleaseMode = "immediate" | "manual" | "scheduled";
+
+export interface InterviewTemplate {
+  id: number;
+  title: string;
+  topic: string;
+  subtopic: string;
+  difficulty: InterviewTemplateDifficulty;
+  duration_minutes: number;
+  description: string;
+  is_active: boolean;
+  course_ids: number[];
+  adaptive_course_ids?: number[];
+  courses: Array<{ id: number; title: string }>;
+  attempt_count: number;
+  num_coding_questions: number;
+  num_mcq_questions: number;
+  result_release_mode: InterviewResultReleaseMode;
+  result_release_at: string | null;
+  resume_enabled: boolean;
+  /** Minutes from start within which a dropped attempt may be resumed; null = default. */
+  resume_window_minutes: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface InterviewTemplateCreatePayload {
+  title: string;
+  topic: string;
+  subtopic: string;
+  difficulty: InterviewTemplateDifficulty;
+  duration_minutes: number;
+  description?: string;
+  is_active?: boolean;
+  course_ids?: number[];
+  adaptive_course_ids?: number[];
+  num_coding_questions?: number;
+  num_mcq_questions?: number;
+  result_release_mode?: InterviewResultReleaseMode;
+  result_release_at?: string | null;
+  resume_enabled?: boolean;
+  resume_window_minutes?: number | null;
+}
+
+export type InterviewTemplateUpdatePayload = Partial<InterviewTemplateCreatePayload>;
+
+export interface AdminTemplateAttempt {
+  id: number;
+  student_id: number;
+  student_name: string;
+  student_email: string | null;
+  status: string;
+  started_at: string | null;
+  submitted_at: string | null;
+  result_visible_to_student: boolean;
+  result_released_at: string | null;
+  has_evaluation: boolean;
+  superseded: boolean;
+}
+
+export type ReattemptScope = "all" | "failed" | "completed";
+
+export interface AdminReattemptSingleResponse {
+  id: number;
+  superseded: boolean;
+  message: string;
+}
+
+export interface AdminReattemptBulkResponse {
+  template_id: number;
+  scope: ReattemptScope;
+  granted: number;
+  message: string;
+}
+
+export interface AdminReleaseSingleResponse {
+  id: number;
+  result_visible_to_student: true;
+  result_released_at: string | null;
+  message: string;
+}
+
+export interface AdminReleaseBulkResponse {
+  template_id: number;
+  released: number;
+  message: string;
+}
+
+export interface AdminEvaluatePendingResponse {
+  template_id: number;
+  /** How many completed-but-unevaluated attempts were queued for AI evaluation. */
+  queued: number;
+  message: string;
+}
+
+const adminMockInterviewService = {
+  /**
+   * Get dashboard overview with KPIs, trends, and top performers
+   */
+  getDashboard: async (
+    days?: number,
+    courseId?: number
+  ): Promise<DashboardResponse> => {
+    const params: { days?: number; course_id?: number } = {};
+    if (days != null) params.days = days;
+    if (courseId != null) params.course_id = courseId;
+    const response = await apiClient.get(`${BASE_URL}/dashboard/`, { params });
+    return response.data;
+  },
+
+  /**
+   * List all mock interviews with filtering, search, sorting, and pagination
+   */
+  listInterviews: async (
+    params: ListInterviewsParams = {}
+  ): Promise<ListInterviewsResponse> => {
+    const response = await apiClient.get(BASE_URL, { params });
+    return response.data;
+  },
+
+  /**
+   * Get full details of a single mock interview.
+   * Normalizes the API response (question_text -> question, question_id -> question_number, etc.) for UI consumption.
+   */
+  getInterviewDetail: async (
+    interviewId: number
+  ): Promise<AdminInterviewDetail> => {
+    const response = await apiClient.get<RawInterviewDetail | { data?: RawInterviewDetail; result?: RawInterviewDetail }>(
+      `${BASE_URL}/${interviewId}/`
+    );
+    const raw = unwrapInterviewPayload(response.data);
+    return mapInterviewDetailResponse(raw);
+  },
+
+  /**
+   * List all students with mock interview summary statistics
+   */
+  listStudents: async (
+    params: ListStudentsParams & { course_id?: number } = {}
+  ): Promise<ListStudentsResponse> => {
+    const response = await apiClient.get(`${BASE_URL}/students/`, {
+      params,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get detailed performance report for a specific student
+   */
+  getStudentDetail: async (
+    studentId: number,
+    includeInterviews = true
+  ): Promise<StudentDetailResponse> => {
+    const response = await apiClient.get(
+      `${BASE_URL}/students/${studentId}/`,
+      { params: { include_interviews: includeInterviews } }
+    );
+    return response.data;
+  },
+
+  /**
+   * Get topic-level analytics
+   */
+  getTopics: async (
+    params: GetTopicsParams & { course_id?: number } = {}
+  ): Promise<TopicsResponse> => {
+    const response = await apiClient.get(`${BASE_URL}/topics/`, {
+      params,
+    });
+    return response.data;
+  },
+
+  /**
+   * Export mock interview data as CSV
+   */
+  exportCSV: async (
+    params: ExportCSVParams & { course_id?: number } = {}
+  ): Promise<Blob> => {
+    const response = await apiClient.get(`${BASE_URL}/export/`, {
+      params,
+      responseType: "blob",
+      headers: {
+        Accept: "text/csv",
+      },
+    });
+    return response.data as Blob;
+  },
+
+  // ----- Interview templates (course mapping) -----
+
+  /**
+   * List interview templates for this client. Pass `courseId` to narrow to templates on a
+   * specific course.
+   */
+  listTemplates: async (
+    courseId?: number
+  ): Promise<InterviewTemplate[]> => {
+    const params: { course_id?: number } = {};
+    if (courseId != null) params.course_id = courseId;
+    const response = await apiClient.get(`${TEMPLATES_BASE_URL}/`, { params });
+    return response.data;
+  },
+
+  getTemplate: async (templateId: number): Promise<InterviewTemplate> => {
+    const response = await apiClient.get(
+      `${TEMPLATES_BASE_URL}/${templateId}/`
+    );
+    return response.data;
+  },
+
+  /**
+   * Create a new template. If `course_ids` is non-empty, every student already enrolled in
+   * any of those courses gets an `interview_assigned` notification fired server-side.
+   */
+  createTemplate: async (
+    payload: InterviewTemplateCreatePayload
+  ): Promise<InterviewTemplate> => {
+    const response = await apiClient.post(`${TEMPLATES_BASE_URL}/`, payload);
+    return response.data;
+  },
+
+  /**
+   * Update an existing template. `course_ids` REPLACES the M2M when provided; omit the field
+   * entirely to leave course attachments unchanged. Newly-added courses fire notifications;
+   * removed or unchanged courses do not.
+   */
+  updateTemplate: async (
+    templateId: number,
+    payload: InterviewTemplateUpdatePayload
+  ): Promise<InterviewTemplate> => {
+    const response = await apiClient.patch(
+      `${TEMPLATES_BASE_URL}/${templateId}/`,
+      payload
+    );
+    return response.data;
+  },
+
+  deleteTemplate: async (templateId: number): Promise<void> => {
+    await apiClient.delete(`${TEMPLATES_BASE_URL}/${templateId}/`);
+  },
+
+  listTemplateAttempts: async (
+    templateId: number,
+  ): Promise<AdminTemplateAttempt[]> => {
+    const response = await apiClient.get(
+      `${TEMPLATES_BASE_URL}/${templateId}/attempts/`,
+    );
+    return response.data;
+  },
+
+  releaseTemplateResults: async (
+    templateId: number,
+  ): Promise<AdminReleaseBulkResponse> => {
+    const response = await apiClient.post(
+      `${TEMPLATES_BASE_URL}/${templateId}/release-results/`,
+    );
+    return response.data;
+  },
+
+  /**
+   * Trigger AI (re)evaluation for every completed attempt of a template whose evaluation
+   * never landed (result stuck on "evaluation pending"). Runs in the background server-side;
+   * the returned `queued` count is how many attempts are being evaluated. Reopen the
+   * attempts list shortly after to release the freshly-scored ones.
+   */
+  evaluatePendingTemplateResults: async (
+    templateId: number,
+  ): Promise<AdminEvaluatePendingResponse> => {
+    const response = await apiClient.post(
+      `${TEMPLATES_BASE_URL}/${templateId}/evaluate-pending/`,
+    );
+    return response.data;
+  },
+
+  /**
+   * Grant ONE student a retake. Marks their attempt superseded so it no longer blocks their
+   * pending list; claiming the interview again creates a fresh attempt.
+   */
+  reattemptSingleInterview: async (
+    interviewId: number,
+  ): Promise<AdminReattemptSingleResponse> => {
+    const response = await apiClient.post(
+      `/mock-interview/api/clients/${config.clientId}/mock-interviews/${interviewId}/admin/reattempt/`,
+    );
+    return response.data;
+  },
+
+  /**
+   * Bulk-grant retakes for a template, scoped by attempt status (all / failed / completed).
+   */
+  reattemptTemplateAttempts: async (
+    templateId: number,
+    scope: ReattemptScope = "all",
+  ): Promise<AdminReattemptBulkResponse> => {
+    const response = await apiClient.post(
+      `${TEMPLATES_BASE_URL}/${templateId}/reattempt/`,
+      { status: scope },
+    );
+    return response.data;
+  },
+
+  releaseSingleInterviewResult: async (
+    interviewId: number,
+  ): Promise<AdminReleaseSingleResponse> => {
+    const response = await apiClient.post(
+      `/mock-interview/api/clients/${config.clientId}/mock-interviews/${interviewId}/admin/release-result/`,
+    );
+    return response.data;
+  },
+};
+
+export default adminMockInterviewService;

@@ -1,0 +1,208 @@
+"use client";
+
+import {
+  Box,
+  Typography,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Paper,
+  InputAdornment,
+  Checkbox,
+  ListItemText,
+  OutlinedInput,
+} from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { IconWrapper } from "@/components/common/IconWrapper";
+
+interface Course {
+  id: number;
+  title: string;
+}
+
+interface StudentsFiltersProps {
+  courses: Course[];
+  selectedCourses: string[];
+  /** When true, empty multi-select shows "All courses" (course managers auto-load all scoped students). */
+  emptySelectionMeansAllCourses?: boolean;
+  status: string;
+  resumeFilter: "all" | "yes" | "no";
+  searchTerm: string;
+  onCourseChange: (value: string[]) => void;
+  onStatusChange: (value: string) => void;
+  onResumeFilterChange: (value: "all" | "yes" | "no") => void;
+  onSearchChange: (value: string) => void;
+}
+
+export function StudentsFilters({
+  courses,
+  selectedCourses,
+  emptySelectionMeansAllCourses = false,
+  status,
+  resumeFilter,
+  searchTerm,
+  onCourseChange,
+  onStatusChange,
+  onResumeFilterChange,
+  onSearchChange,
+}: StudentsFiltersProps) {
+  const { t } = useTranslation("common");
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        p: { xs: 2, sm: 2.5 },
+        mb: { xs: 2.5, sm: 3 },
+        borderRadius: 3,
+        border: "1px solid var(--border-default)",
+        boxShadow:
+          "0 2px 12px color-mix(in srgb, var(--font-primary) 6%, transparent)",
+        backgroundColor: "var(--card-bg)",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1.5,
+          mb: { xs: 2, sm: 2.5 },
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 36,
+            height: 36,
+            borderRadius: 1.5,
+            backgroundColor: "color-mix(in srgb, var(--font-secondary) 12%, var(--surface) 88%)",
+            color: "var(--font-secondary)",
+          }}
+          aria-hidden
+        >
+          <IconWrapper icon="mdi:tune-variant" size={22} />
+        </Box>
+        <Typography
+          variant="subtitle1"
+          sx={{
+            fontWeight: 700,
+            color: "var(--font-primary)",
+            fontSize: { xs: "0.9375rem", sm: "1rem" },
+          }}
+        >
+          {t("adminManageStudents.filterSectionTitle")}
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "1fr 1fr",
+            md: "repeat(2, 1fr)",
+            lg: "repeat(4, 1fr)",
+          },
+          gap: { xs: 2, sm: 2 },
+        }}
+      >
+        {/* Filter by Enrolled Course */}
+        <FormControl fullWidth>
+          <InputLabel id="course-filter-label">
+            {t("adminManageStudents.filterByCourse")}
+          </InputLabel>
+          <Select
+            labelId="course-filter-label"
+            multiple
+            value={selectedCourses}
+            onChange={(e) => {
+              const value = e.target.value;
+              onCourseChange(
+                typeof value === "string"
+                  ? value.split(",").filter(Boolean)
+                  : (value as string[])
+              );
+            }}
+            input={<OutlinedInput label={t("adminManageStudents.filterByCourse")} />}
+            renderValue={(selected) => {
+              const selectedIds = selected as string[];
+              if (!selectedIds.length) {
+                return emptySelectionMeansAllCourses
+                  ? t("adminManageStudents.allCourses")
+                  : t("adminManageStudents.filterByCourse");
+              }
+              const titleMap = new Map(courses.map((c) => [String(c.id), c.title]));
+              return selectedIds
+                .map((id) => titleMap.get(id) || id)
+                .join(", ");
+            }}
+            label={t("adminManageStudents.filterByCourse")}
+          >
+            {courses.map((course) => (
+              <MenuItem key={course.id} value={course.id.toString()}>
+                <Checkbox
+                  size="small"
+                  checked={selectedCourses.includes(course.id.toString())}
+                />
+                <ListItemText primary={course.title} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* Status Filter */}
+        <FormControl fullWidth>
+          <InputLabel id="status-filter-label">{t("adminManageStudents.status")}</InputLabel>
+          <Select
+            labelId="status-filter-label"
+            value={status}
+            onChange={(e) => onStatusChange(e.target.value)}
+            label={t("adminManageStudents.status")}
+          >
+            <MenuItem value="all">{t("adminManageStudents.all")}</MenuItem>
+            <MenuItem value="active">{t("adminManageStudents.active")}</MenuItem>
+            <MenuItem value="inactive">{t("adminManageStudents.inactive")}</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* Saved resume filter */}
+        <FormControl fullWidth>
+          <InputLabel id="resume-filter-label">
+            {t("adminManageStudents.filterSavedResume")}
+          </InputLabel>
+          <Select
+            labelId="resume-filter-label"
+            value={resumeFilter}
+            onChange={(e) =>
+              onResumeFilterChange(e.target.value as "all" | "yes" | "no")
+            }
+            label={t("adminManageStudents.filterSavedResume")}
+          >
+            <MenuItem value="all">{t("adminManageStudents.all")}</MenuItem>
+            <MenuItem value="yes">{t("adminManageStudents.resumeYes")}</MenuItem>
+            <MenuItem value="no">{t("adminManageStudents.resumeNo")}</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* Search Term */}
+        <TextField
+          fullWidth
+          label={t("adminManageStudents.searchTerm")}
+          placeholder={t("adminManageStudents.searchPlaceholder")}
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <IconWrapper icon="mdi:magnify" size={20} color="var(--font-secondary)" />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+    </Paper>
+  );
+}
+

@@ -1,0 +1,176 @@
+import apiClient from "../api";
+import { config } from "../../config";
+import { AxiosError } from "axios";
+
+export interface ApiErrorPayload {
+  error?: string;
+  message?: string;
+  detail?: string;
+  [key: string]: any;
+}
+
+export type EnrollmentJobStatus = "PENDING" | "IN_PROGRESS" | "COMPLETED" | "FAILED";
+
+export interface StudentData {
+  name: string;
+  email: string;
+  phone?: string;
+}
+
+export interface EnrolledStudent {
+  user_id: number;
+  course_id: number;
+}
+
+export interface SkippedEnrollment {
+  user_id: number;
+  course_id: number;
+}
+
+export interface FailedStudent {
+  student: StudentData;
+  error: string;
+}
+
+export interface StudentEnrollmentJob {
+  id: number;
+  task_id: string;
+  client: number;
+  students: StudentData[];
+  course_ids: number[];
+  created_accounts: number[];
+  enrolled_students: EnrolledStudent[];
+  skipped_accounts: number[];
+  skipped_enrollments: SkippedEnrollment[];
+  failed_students: FailedStudent[];
+  status: EnrollmentJobStatus;
+  notes: string | null;
+  error_details: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+  completed_at: string | null;
+  /** Maps user id (string) to display name from the API (see formatEnrollmentJobStudentLabel). */
+  user_labels?: Record<string, string>;
+}
+
+export function formatEnrollmentJobStudentLabel(
+  userId: number,
+  userLabels: Record<string, string> | undefined
+): string {
+  const name = userLabels?.[String(userId)]?.trim();
+  if (name) {
+    return `${name} (ID: ${userId})`;
+  }
+  return `User ID: ${userId}`;
+}
+
+export interface CreateEnrollmentJobRequest {
+  students: StudentData[];
+  /** Comma-separated legacy course ids like "360,361,363". Optional if adaptive_course_ids given. */
+  course_ids?: string;
+  /** Comma-separated adaptive course ids like "12,13". Optional if course_ids given. */
+  adaptive_course_ids?: string;
+  /** Comma-separated cohort ids like "4,5" - enroll the CSV straight into cohorts. */
+  cohort_ids?: string;
+}
+
+/** Quick-enroll ONE student (modal). name + email required; everything else optional (courses
+ *  optional => create the account only). Course ids are comma-separated strings. */
+export interface QuickEnrollRequest {
+  name: string;
+  email: string;
+  phone?: string;
+  course_ids?: string;
+  adaptive_course_ids?: string;
+}
+
+export interface QuickEnrollResult {
+  email: string;
+  user_id: number;
+  profile_id: number;
+  created_account: boolean;
+  created_profile: boolean;
+  legacy_enrolled: number[];
+  legacy_already_enrolled: number[];
+  adaptive_enrolled: number;
+  adaptive_already_enrolled: number;
+}
+
+export const adminStudentEnrollmentService = {
+  // Create a new enrollment job
+  createEnrollmentJob: async (
+    data: CreateEnrollmentJobRequest
+  ): Promise<StudentEnrollmentJob> => {
+    try {
+      const response = await apiClient.post<StudentEnrollmentJob>(
+        `/admin-dashboard/api/clients/${config.clientId}/student-enrollment-jobs/`,
+        data
+      );
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<ApiErrorPayload>;
+      const message =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.response?.data?.detail ||
+        "Failed to create enrollment job";
+      throw new Error(message);
+    }
+  },
+
+  // Get job status by task_id
+  getJobStatus: async (taskId: string): Promise<StudentEnrollmentJob> => {
+    try {
+      const response = await apiClient.get<StudentEnrollmentJob>(
+        `/admin-dashboard/api/clients/${config.clientId}/student-enrollment-jobs/${taskId}/`
+      );
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<ApiErrorPayload>;
+      const message =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.response?.data?.detail ||
+        "Failed to fetch job status";
+      throw new Error(message);
+    }
+  },
+
+  // List all enrollment jobs for the client
+  listAllJobs: async (): Promise<StudentEnrollmentJob[]> => {
+    try {
+      const response = await apiClient.get<StudentEnrollmentJob[]>(
+        `/admin-dashboard/api/clients/${config.clientId}/student-enrollment-jobs/`
+      );
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<ApiErrorPayload>;
+      const message =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.response?.data?.detail ||
+        "Failed to fetch enrollment jobs";
+      throw new Error(message);
+    }
+  },
+
+  // Quick-enroll a SINGLE student synchronously - creates the account if missing and (optionally)
+  // enrolls into courses. Non-CSV alternative to createEnrollmentJob; courses are optional.
+  quickEnrollStudent: async (data: QuickEnrollRequest): Promise<QuickEnrollResult> => {
+    try {
+      const response = await apiClient.post<QuickEnrollResult>(
+        `/admin-dashboard/api/clients/${config.clientId}/students/enroll-single/`,
+        data
+      );
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<ApiErrorPayload>;
+      const message =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.response?.data?.detail ||
+        "Failed to enroll student";
+      throw new Error(message);
+    }
+  },
+};

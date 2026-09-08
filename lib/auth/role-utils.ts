@@ -1,0 +1,162 @@
+/**
+ * Normalized role string for comparisons (handles "Course Manager", "course_manager", etc.)
+ */
+export function normalizeRole(role: string | undefined | null): string {
+  if (role == null || role === "") return "";
+  return String(role).trim().toLowerCase().replace(/\s+/g, "_");
+}
+
+/** Admin / instructor with full access and student↔admin toggle */
+export function isFullAdminRole(role: string | undefined | null): boolean {
+  const r = normalizeRole(role);
+  return r === "admin" || r === "superadmin" || r === "instructor";
+}
+
+/**
+ * Roles that only use the admin shell + modules granted via client features
+ * (e.g. assessments, manage students, jobs) - not the main student app by default.
+ */
+export function isAdminOnlyRole(role: string | undefined | null): boolean {
+  const r = normalizeRole(role);
+  return (
+    r === "course_manager" ||
+    r === "coursemanager" ||
+    r === "content_manager" ||
+    r === "contentmanager"
+  );
+}
+
+/** Course manager only - used for tighter nav than other admin-only roles. */
+export function isCourseManagerRole(role: string | undefined | null): boolean {
+  const r = normalizeRole(role);
+  return r === "course_manager" || r === "coursemanager";
+}
+
+/** Instructor role only. */
+export function isInstructorRole(role: string | undefined | null): boolean {
+  return normalizeRole(role) === "instructor";
+}
+
+/** Scoped admin - instructor or course manager. Used for UI gating around course-scoped admin features. */
+export function isScopedAdminRole(role: string | undefined | null): boolean {
+  return isCourseManagerRole(role) || isInstructorRole(role);
+}
+
+/** Organization admin / superadmin only (excludes instructor and course_manager). */
+export function isClientOrgAdminRole(role: string | undefined | null): boolean {
+  const r = normalizeRole(role);
+  return r === "admin" || r === "superadmin";
+}
+
+/**
+ * Admin sidebar `featureName` values shown to course managers (subset of admin nav).
+ * Client feature flags still apply first; this list further restricts visible links.
+ */
+export const COURSE_MANAGER_ADMIN_SIDEBAR_FEATURES: readonly string[] = [
+  "admin_dashboard",
+  "admin_manage_students",
+  "admin_mock_interview",
+  "admin_assessment",
+  "admin_scorecard",
+  "admin_jobs_v2",
+  "admin_tickets",
+];
+
+/**
+ * Admin sidebar `featureName` values shown to instructors when in admin mode (subset of admin nav).
+ * Client feature flags still apply first; this list further restricts visible links.
+ */
+export const INSTRUCTOR_ADMIN_SIDEBAR_FEATURES: readonly string[] = [
+  "admin_dashboard",
+  "admin_manage_students",
+  "admin_adaptive_quizzes",
+  "admin_assessment",
+  "admin_mock_interview",
+  "admin_scorecard",
+  "admin_live_sessions",
+  "admin_notifications",
+  "admin_tickets",
+];
+
+/** May see /admin/* navigation (full or limited) */
+export function canAccessAdminArea(role: string | undefined | null): boolean {
+  return isFullAdminRole(role) || isAdminOnlyRole(role);
+}
+
+/**
+ * Whether a role buys things.
+ *
+ * Only learners do. Admins, instructors and course managers are staff of the institution — a
+ * receipts entry in their menu is an item that will always be empty for them.
+ *
+ * Note this gates the MENU, not the page. Someone promoted from student to instructor still has
+ * real receipts, and hiding a menu item should not put their purchase history out of reach.
+ */
+export function canPurchase(role: string | undefined | null): boolean {
+  return !canAccessAdminArea(role) && !isInstructorRole(role) && !isCourseManagerRole(role);
+}
+
+const DEFAULT_STUDENT_HOME = "/dashboard";
+const DEFAULT_ADMIN_HOME = "/admin/dashboard";
+const INSTRUCTOR_HOME = "/instructor/dashboard";
+
+function pathnameOnly(url: string): string {
+  try {
+    if (url.startsWith("/")) {
+      const q = url.indexOf("?");
+      return q >= 0 ? url.slice(0, q) : url;
+    }
+  } catch {
+    /* fall through */
+  }
+  return url.split("?")[0] || "";
+}
+
+export function isAdminAppPath(path: string): boolean {
+  const p = pathnameOnly(path);
+  return p === "/admin" || p.startsWith("/admin/");
+}
+
+/**
+ * Safe post-login path: students are not sent to /admin; limited admins are not sent to student home by default.
+ */
+export function resolvePostLoginPath(
+  role: string | undefined | null,
+  requestedRedirect: string | null | undefined
+): string {
+  const raw = (requestedRedirect ?? "").trim();
+  let path = raw || DEFAULT_STUDENT_HOME;
+
+  if (!path.startsWith("/") || path.startsWith("//")) {
+    path = DEFAULT_STUDENT_HOME;
+  }
+
+  const pathname = pathnameOnly(path);
+  const canAdmin = canAccessAdminArea(role);
+
+  const limitedAdmin = isAdminOnlyRole(role);
+
+  // Instructors land in their dedicated space by default; an explicit in-app redirect is honored.
+  if (isInstructorRole(role)) {
+    if (raw && (isAdminAppPath(pathname) || pathname.startsWith("/instructor"))) {
+      return path;
+    }
+    return INSTRUCTOR_HOME;
+  }
+
+  if (!canAdmin) {
+    if (isAdminAppPath(pathname)) {
+      return DEFAULT_STUDENT_HOME;
+    }
+    return path;
+  }
+
+  if (limitedAdmin) {
+    if (isAdminAppPath(pathname)) {
+      return path;
+    }
+    return DEFAULT_ADMIN_HOME;
+  }
+
+  return path;
+}

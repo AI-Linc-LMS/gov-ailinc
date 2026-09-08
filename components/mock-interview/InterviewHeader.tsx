@@ -1,0 +1,205 @@
+"use client";
+
+import { Box, Typography, Button, IconButton } from "@mui/material";
+import { IconWrapper } from "@/components/common/IconWrapper";
+import { InterviewTimer } from "./InterviewTimer";
+import { memo } from "react";
+import { cleanInterviewTitle } from "@/lib/utils/mock-interview-title";
+
+interface InterviewHeaderProps {
+  title: string;
+  topic: string;
+  difficulty: string;
+  interviewStarted: boolean;
+  onBack?: () => void;
+  durationMinutes: number;
+  startedAt: Date | null;
+  onTimeUp: () => void;
+  onEndInterview: () => void;
+  endInterviewDisabled?: boolean;
+  // Proctoring status
+  isProctoringActive: boolean;
+  proctoringStatus: "NORMAL" | "WARNING" | "VIOLATION";
+  faceCount: number;
+  latestViolation: {
+    type: string;
+    message: string;
+  } | null;
+  /**
+   * When true, the embedded `InterviewTimer` is visually paused (no tick, "PAUSED" badge).
+   * Set by the take page while a coding-question modal is open.
+   */
+  timerPaused?: boolean;
+  /**
+   * Extra seconds added to the timer's effective budget (e.g. +5/+7/+10 min credited when
+   * a coding question fires). Forwarded into `InterviewTimer.bonusSeconds` so the visible
+   * countdown stays in lock-step with the backend's effective budget.
+   */
+  bonusSeconds?: number;
+}
+
+export const InterviewHeader = memo(function InterviewHeader({
+  title,
+  topic,
+  difficulty,
+  interviewStarted,
+  onBack,
+  durationMinutes,
+  startedAt,
+  onTimeUp,
+  onEndInterview,
+  endInterviewDisabled = false,
+  isProctoringActive,
+  proctoringStatus,
+  faceCount,
+  latestViolation,
+  timerPaused = false,
+  bonusSeconds = 0,
+}: InterviewHeaderProps) {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        px: 3,
+        py: 2,
+        backgroundColor: "var(--card-bg)",
+        borderBottom: "1px solid var(--border-default)",
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        {!interviewStarted && onBack && (
+          <IconButton onClick={onBack} sx={{ color: "var(--font-primary)" }}>
+            <IconWrapper icon="mdi:arrow-left" size={24} />
+          </IconButton>
+        )}
+        <Box>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+              fontSize: "1.25rem",
+              color: "var(--font-primary)",
+            }}
+          >
+            {cleanInterviewTitle(title)}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{ color: "var(--font-secondary)", fontSize: "0.75rem" }}
+          >
+            {topic} • {difficulty}
+          </Typography>
+        </Box>
+      </Box>
+
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        {/* Proctoring Status Indicator */}
+        {interviewStarted && isProctoringActive && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              px: 1.5,
+              py: 0.75,
+              backgroundColor:
+                proctoringStatus === "VIOLATION"
+                  ? "rgba(239, 68, 68, 0.9)"
+                  : proctoringStatus === "WARNING"
+                  ? "rgba(245, 158, 11, 0.9)"
+                  : "rgba(16, 185, 129, 0.9)",
+              borderRadius: 1,
+              border: `2px solid ${
+                proctoringStatus === "VIOLATION"
+                  ? "#ef4444"
+                  : proctoringStatus === "WARNING"
+                  ? "#f59e0b"
+                  : "#10b981"
+              }`,
+            }}
+          >
+            <IconWrapper
+              icon={
+                faceCount === 0
+                  ? "mdi:account-off"
+                  : faceCount > 1
+                  ? "mdi:account-multiple"
+                  : latestViolation?.type === "LOOKING_AWAY"
+                  ? "mdi:eye-off"
+                  : latestViolation?.type === "FACE_TOO_CLOSE"
+                  ? "mdi:arrow-down"
+                  : latestViolation?.type === "FACE_TOO_FAR"
+                  ? "mdi:arrow-up"
+                  : "mdi:check-circle"
+              }
+              size={18}
+              color="#ffffff"
+            />
+            <Typography
+              variant="caption"
+              sx={{ color: "#ffffff", fontSize: "0.75rem", fontWeight: 500 }}
+            >
+              {faceCount === 0
+                ? "No Face"
+                : faceCount > 1
+                ? `${faceCount} Faces`
+                : latestViolation
+                ? latestViolation.message
+                : "Face OK"}
+            </Typography>
+          </Box>
+        )}
+
+        {interviewStarted && (
+          <InterviewTimer
+            durationMinutes={durationMinutes}
+            startedAt={startedAt || new Date()}
+            onTimeUp={onTimeUp}
+            paused={timerPaused}
+            bonusSeconds={bonusSeconds}
+          />
+        )}
+
+        {interviewStarted && (
+          <>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{
+                backgroundColor: "var(--error-500, #ef4444)",
+                color: "var(--font-light)",
+                textTransform: "none",
+                "&:hover": {
+                  backgroundColor: "var(--error-600, #dc2626)",
+                },
+              }}
+              startIcon={<IconWrapper icon="mdi:record" size={18} />}
+            >
+              Live Recording
+            </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={onEndInterview}
+              disabled={endInterviewDisabled}
+              sx={{
+                borderColor: "var(--border-default)",
+                color: "var(--font-primary)",
+                textTransform: "none",
+                "&:hover": {
+                  borderColor: "var(--font-tertiary)",
+                  backgroundColor: "var(--surface)",
+                },
+              }}
+            >
+              End Interview
+            </Button>
+          </>
+        )}
+      </Box>
+    </Box>
+  );
+});

@@ -1,0 +1,3010 @@
+"use client";
+
+import { useState, useEffect, useCallback, useMemo, useRef, type MouseEvent } from "react";
+import { useRouter, useParams, usePathname, useSearchParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import {
+  Box,
+  Typography,
+  Paper,
+  Avatar,
+  Button,
+  Tabs,
+  Tab,
+  Alert,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  CircularProgress,
+  Pagination,
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Chip,
+  Tooltip,
+  TextField,
+} from "@mui/material";
+import { PerPageSelect } from "@/components/common/PerPageSelect";
+import { MainLayout } from "@/components/layout/MainLayout";
+import { useToast } from "@/components/common/Toast";
+import { IconWrapper } from "@/components/common/IconWrapper";
+import {
+  adminAssessmentService,
+  QuestionsExportResponse,
+  SubmissionsExportResponse,
+  SubmissionsExportMeta,
+  SubmissionsExportSubmission,
+  AssessmentDetail,
+  CreateAssessmentPayload,
+  isMCQQuestion,
+  isCodingQuestion,
+  isSubjectiveQuestion,
+  QuestionsExportMCQQuestion,
+  QuestionsExportCodingQuestion,
+  QuestionsExportSubjectiveQuestion,
+  type AssessmentAnalyticsResponse,
+  clampAssessmentAnalyticsTopPerformers,
+} from "@/lib/services/admin/admin-assessment.service";
+import { adminCoursesService } from "@/lib/services/admin/admin-courses.service";
+import { config, getPublicAppOrigin } from "@/lib/config";
+import { getPassBandFieldErrors } from "@/lib/utils/assessment-pass-band.utils";
+import { escapeCsvCell } from "@/lib/utils/csv-export";
+import {
+  AssessmentSectionHero,
+  StatusChip,
+  SegmentedTabs,
+  DifficultyBalanceMeter,
+  AssessmentBreadcrumb,
+} from "@/components/admin/assessment/shared";
+import { BasicInfoSection } from "@/components/admin/assessment/BasicInfoSection";
+import { AssessmentSettingsSection } from "@/components/admin/assessment/AssessmentSettingsSection";
+import { PaginationControls } from "@/components/admin/assessment/PaginationControls";
+import { ProblemDescription } from "@/components/coding/ProblemDescription";
+import { useAuth } from "@/lib/auth/auth-context";
+import { isCourseManagerRole } from "@/lib/auth/auth-utils";
+import { useClientInfo } from "@/lib/contexts/ClientInfoContext";
+import type { EmailNotificationEditorHandle } from "@/components/admin/assessment/EmailNotificationEditor";
+import { buildAssessmentNotificationEmailHtml } from "@/lib/utils/email-template";
+import { extractSavedEmailAttachment } from "@/lib/utils/assessment-email-attachment";
+import { generateAssessmentResultPdfVector } from "@/lib/utils/assessment-result-pdf.utils";
+import { preloadPdfBrandAssets } from "@/lib/utils/assessment-pdf-assets";
+import { resolveCertificateLogoUrl } from "@/lib/utils/resolveCertificateLogoUrl";
+import { generateAssessmentAnalyticsPdfVector } from "@/lib/utils/assessment-analytics-pdf.utils";
+import { AssessmentAnalyticsCharts } from "@/components/admin/assessment/AssessmentAnalyticsCharts";
+import JSZip from "jszip";
+import {
+  mapSubmissionsExportRowToAssessmentResult,
+  safeAssessmentPdfFileName,
+  safeReportCsvFileName,
+} from "@/lib/utils/admin-submission-export-to-assessment-result.utils";
+
+type TabValue = "overview" | "details" | "questions" | "submissions" | "analytics";
+type QuestionsSubTab = "mcq" | "coding" | "written";
+
+const ASSESSMENT_EDIT_TAB_VALUES: TabValue[] = [
+  "overview",
+  "details",
+  "questions",
+  "submissions",
+  "analytics",
+];
+
+function parseAssessmentEditTabParam(value: string | null): TabValue | null {
+  if (!value) return null;
+  return ASSESSMENT_EDIT_TAB_VALUES.includes(value as TabValue)
+    ? (value as TabValue)
+    : null;
+}
+
+function escapeCsv(val: unknown): string {
+  // Delegates to the shared hardened helper (neutralizes formula injection).
+  return escapeCsvCell(typeof val === "object" && val !== null ? JSON.stringify(val) : val);
+}
+
+function jsonToCsvRows<T extends Record<string, unknown>>(
+  rows: T[],
+  columns: { key: keyof T; header: string }[]
+): string {
+  if (!rows.length) return "";
+  const header = columns.map((c) => escapeCsv(c.header)).join(",");
+  const data = rows.map((row) =>
+    columns.map((c) => escapeCsv(row[c.key])).join(",")
+  );
+  return [header, ...data].join("\n");
+}
+
+/** Convert HTML to plain text for CSV: preserve superscripts (10^5), decode entities, keep line breaks */
+function htmlToPlainText(html: string): string {
+  if (!html || typeof html !== "string") return "";
+  let s = html;
+  s = s.replace(/<\/p>\s*<p>/gi, "\n");
+  s = s.replace(/<br\s*\/?>/gi, "\n");
+  s = s.replace(/<sup>(\d+)<\/sup>/gi, "^$1");
+  s = s.replace(/<sub>(\d+)<\/sub>/gi, "_$1");
+  s = s.replace(/&le;/g, "≤").replace(/&ge;/g, "≥");
+  s = s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/&nbsp;/g, " ");
+  s = s.replace(/<[^>]*>/g, " ");
+  s = s.replace(/[ \t]+/g, " ");
+  s = s.replace(/^\s+|\s+$/gm, "");
+  s = s.replace(/\n\s*\n/g, "\n").trim();
+  return s;
+}
+
+
+
+/** Format ISO date string for display (e.g. "12 Feb 2026, 12:43") */
+function formatSubmissionDate(iso: string | null | undefined): string {
+  if (!iso || !iso.trim()) return "-";
+  try {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return "-";
+    return d.toLocaleString(undefined, {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch {
+    return "-";
+  }
+}
+
+function humanizeAnalyticsStatus(raw: string | null | undefined): string {
+  if (raw == null || !String(raw).trim()) return "-";
+  return String(raw)
+    .trim()
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function analyticsStatusChipColor(
+  raw: string | null | undefined,
+): "default" | "success" | "warning" | "error" | "info" {
+  const s = String(raw ?? "")
+    .toLowerCase()
+    .replace(/-/g, "_");
+  if (
+    s === "submitted" ||
+    s === "completed" ||
+    s === "graded" ||
+    s === "passed"
+  ) {
+    return "success";
+  }
+  if (s === "in_progress" || s === "started" || s === "ongoing") {
+    return "warning";
+  }
+  if (
+    s === "failed" ||
+    s === "expired" ||
+    s === "abandoned" ||
+    s === "cancelled"
+  ) {
+    return "error";
+  }
+  if (s === "pending" || s === "draft" || s === "scheduled") {
+    return "info";
+  }
+  return "default";
+}
+
+type ScoreChipDisplay = {
+  label: string;
+  color: "default" | "primary" | "warning" | "info";
+  variant: "filled" | "outlined";
+};
+
+function getScoreChipDisplay(
+  submission: { status?: string; overall_score?: number | null; maximum_marks?: number | null },
+  evaluationMode: "auto" | "manual" | string | null | undefined,
+): ScoreChipDisplay {
+  // submitted_at uses auto_now in the backend, so it ticks on every response
+  // auto-save. In-progress attempts therefore look "submitted but ungraded"
+  // unless we differentiate by status here.
+  if (submission.status === "in_progress") {
+    return { label: "In progress", color: "warning", variant: "outlined" };
+  }
+  if (submission.overall_score != null) {
+    return {
+      label: `${submission.overall_score}/${submission.maximum_marks ?? "-"}`,
+      color: "primary",
+      variant: "filled",
+    };
+  }
+  if (evaluationMode === "manual") {
+    return { label: "Pending evaluation", color: "info", variant: "outlined" };
+  }
+  return { label: "Not graded", color: "default", variant: "outlined" };
+}
+
+function humanizeReviewStatus(raw: string | null | undefined): string {
+  if (!raw || !String(raw).trim()) return "Pending evaluation";
+  return String(raw)
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function reviewStatusChipColor(
+  raw: string | null | undefined,
+): "default" | "success" | "warning" | "info" {
+  const normalized = String(raw || "").toLowerCase();
+  if (normalized === "published") return "success";
+  if (normalized === "evaluated") return "info";
+  if (normalized === "pending_evaluation") return "warning";
+  return "default";
+}
+
+function buildInitials(name: string | null | undefined): string {
+  const safe = String(name || "").trim();
+  if (!safe) return "U";
+  const words = safe.split(/\s+/).filter(Boolean);
+  if (words.length === 1) return words[0].slice(0, 1).toUpperCase();
+  return `${words[0][0] || ""}${words[1][0] || ""}`.toUpperCase();
+}
+
+function clampPercentDisplay(n: number | null | undefined): number {
+  if (n == null || !Number.isFinite(n)) return 0;
+  return Math.min(100, Math.max(0, n));
+}
+
+function toAssessmentApiDecimalString(
+  raw: string | undefined
+): string | undefined {
+  if (raw == null || !String(raw).trim()) return undefined;
+  const s = String(raw).trim().replace(",", ".");
+  const n = Number(s);
+  if (!Number.isFinite(n)) return undefined;
+  return n.toFixed(2);
+}
+
+function submissionHasProctoringPayload(
+  p: SubmissionsExportSubmission["proctoring"],
+): boolean {
+  return !!p && typeof p === "object" && Object.keys(p).length > 0;
+}
+
+function formatProctoringSummaryForTable(
+  p: SubmissionsExportSubmission["proctoring"],
+): string {
+  if (!submissionHasProctoringPayload(p)) return "";
+  const parts: string[] = [];
+  if (p!.total_violation_count != null) {
+    parts.push(`Total violations: ${p!.total_violation_count}`);
+  }
+  if (p!.tab_switches_count != null) {
+    parts.push(`Tab switches: ${p!.tab_switches_count}`);
+  }
+  if (p!.face_violations_count != null) {
+    parts.push(`Face: ${p!.face_violations_count}`);
+  }
+  if (p!.fullscreen_exits_count != null) {
+    parts.push(`Fullscreen exits: ${p!.fullscreen_exits_count}`);
+  }
+  if (p!.eye_movement_count != null) {
+    parts.push(`Eye movement: ${p!.eye_movement_count}`);
+  }
+  if (p!.face_validation_failures_count != null) {
+    parts.push(`Face validation: ${p!.face_validation_failures_count}`);
+  }
+  if (p!.multiple_face_detections_count != null) {
+    parts.push(`Multi-face: ${p!.multiple_face_detections_count}`);
+  }
+  return parts.join(" · ");
+}
+
+function formatToDatetimeLocal(dateTimeString: string | null | undefined): string {
+  if (!dateTimeString?.trim()) return "";
+  try {
+    const s = dateTimeString.trim();
+
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(s)) {
+      return s.slice(0, 16); 
+    }
+    const ddParts = s.match(/^(\d{1,2})\s+(\d{1,2})\s+(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+    if (ddParts) {
+      const [, d, mo, y, h, min] = ddParts;
+      return `${y}-${mo!.padStart(2, "0")}-${d!.padStart(2, "0")}T${h!.padStart(2, "0")}:${min}`;
+    }
+    const isoMatch = s.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?(?:.*)?$/);
+    if (isoMatch) {
+      const [, y, mo, d, h, min] = isoMatch;
+      return `${y}-${mo}-${d}T${h}:${min}`;
+    }
+    const d = new Date(s);
+    if (isNaN(d.getTime())) return "";
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const hr = String(d.getHours()).padStart(2, "0");
+    const min = String(d.getMinutes()).padStart(2, "0");
+    return `${year}-${month}-${day}T${hr}:${min}`;
+  } catch {
+    return "";
+  }
+}
+
+function safeAnalyticsPdfFileName(slug: string, id: number): string {
+  const slugPart = (slug || "assessment").replace(/[^a-zA-Z0-9._-]+/g, "-");
+  return `${slugPart}-${id}-analytics-report.pdf`;
+}
+
+function safeZipFileName(slug: string, id: number): string {
+  const slugPart = (slug || "assessment").replace(/[^a-zA-Z0-9._-]+/g, "-");
+  return `${slugPart}-${id}-student-reports.zip`;
+}
+
+function formatDateForDisplay(dateTimeString: string | null | undefined): string {
+  if (!dateTimeString?.trim()) return "";
+  try {
+    const d = new Date(dateTimeString.trim());
+    if (isNaN(d.getTime())) return dateTimeString?.trim() ?? "";
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
+    const hr = String(d.getHours()).padStart(2, "0");
+    const min = String(d.getMinutes()).padStart(2, "0");
+    const sec = String(d.getSeconds()).padStart(2, "0");
+    return `${day}/${month}/${year} ${hr}:${min}:${sec}`;
+  } catch {
+    return "";
+  }
+}
+
+/** Parse "dd mm yyyy hh:mm:ss" (or datetime-local) to IST "YYYY-MM-DDTHH:mm:ss+05:30" for API */
+function toISTForAPI(dateTimeString: string | null | undefined): string | undefined {
+  if (!dateTimeString?.trim()) return undefined;
+  try {
+    const s = dateTimeString.trim();
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(s)) {
+      const m = s.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/);
+      if (m) {
+        const [, y, mo, d, h, min, sec] = m;
+        return `${y}-${mo}-${d}T${h}:${min}:${sec ?? "00"}+05:30`;
+      }
+    }
+    const parts = s.match(/^(\d{1,2})\s+(\d{1,2})\s+(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+    if (parts) {
+      const [, d, mo, y, h, min, sec] = parts;
+      const dd = d!.padStart(2, "0");
+      const mm = mo!.padStart(2, "0");
+      const hh = h!.padStart(2, "0");
+      const ss = (sec ?? "00").padStart(2, "0");
+      return `${y}-${mm}-${dd}T${hh}:${min}:${ss}+05:30`;
+    }
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export default function AssessmentEditPage() {
+  const { t } = useTranslation("common");
+  const { showToast } = useToast();
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const { user, loading: authLoading } = useAuth();
+  const { clientInfo } = useClientInfo();
+  const canConfigureLiveStreaming =
+    clientInfo?.live_proctoring_enabled === true;
+  const hideAdminQuestions = isCourseManagerRole(user?.role);
+  const readOnly =
+    hideAdminQuestions || searchParams.get("readonly") === "1";
+  const assessmentId = Number(params.id);
+  const [tab, setTab] = useState<TabValue>(
+    () => parseAssessmentEditTabParam(searchParams.get("tab")) ?? "overview",
+  );
+
+  useEffect(() => {
+    const parsed = parseAssessmentEditTabParam(searchParams.get("tab"));
+    if (!parsed) return;
+    if (hideAdminQuestions && parsed === "questions") {
+      setTab("details");
+      return;
+    }
+    setTab(parsed);
+  }, [searchParams, hideAdminQuestions]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [assessment, setAssessment] = useState<AssessmentDetail | null>(null);
+  const [questionsData, setQuestionsData] =
+    useState<QuestionsExportResponse | null>(null);
+  const [submissionsData, setSubmissionsData] =
+    useState<SubmissionsExportResponse | null>(null);
+  // P4: submissions are loaded lazily (only on the Submissions tab) and gated on a
+  // cheap ?meta_only progress probe, so at scale the tab shows "building… X/Y" with
+  // the true count instead of a false "0 submissions" that needed a hard refresh.
+  const [submissionsMeta, setSubmissionsMeta] =
+    useState<SubmissionsExportMeta | null>(null);
+  const [submissionsLoading, setSubmissionsLoading] = useState(false);
+  const [courses, setCourses] = useState<any[]>([]);
+  const [loadingCourses, setLoadingCourses] = useState(false);
+
+  // Form state (Details tab) – synced from GET
+  const [title, setTitle] = useState("");
+  const [instructions, setInstructions] = useState("");
+  const [description, setDescription] = useState("");
+  const [durationMinutes, setDurationMinutes] = useState(60);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [isPaid, setIsPaid] = useState(false);
+  const [price, setPrice] = useState<string>("");
+  const [currency, setCurrency] = useState<string>("INR");
+  // Blank means "use the institution's timezone" — the same default the backend resolves to.
+  const [timezone, setTimezone] = useState<string>("");
+  const [isActive, setIsActive] = useState(true);
+  const [courseIds, setCourseIds] = useState<number[]>([]);
+  const [colleges, setColleges] = useState<string[]>([]);
+  const [proctoringEnabled, setProctoringEnabled] = useState(true);
+  const [liveStreaming, setLiveStreaming] = useState(false);
+  const [sendCommunication, setSendCommunication] = useState(false);
+  // Scheduled-reminder opt-in + chosen lead times (minutes before start). Seeded
+  // from the saved assessment on load so the checkboxes re-check themselves.
+  const [emailRemindersEnabled, setEmailRemindersEnabled] = useState(false);
+  const [emailReminderOffsets, setEmailReminderOffsets] = useState<number[]>([]);
+  // Email subject/body/attachment are owned by <EmailNotificationEditor /> to
+  // keep typing snappy. We snapshot them through this ref at submit time.
+  const emailEditorRef = useRef<EmailNotificationEditorHandle>(null);
+  const [emailEditorHasData, setEmailEditorHasData] = useState(false);
+  const emailNotificationEnabled = sendCommunication && emailEditorHasData;
+  // Previously-saved attachment surfaced as a chip in the editor on reload.
+  // If the admin doesn't replace it, we won't re-send `email_attachment` and
+  // the backend keeps the existing file.
+  const [existingEmailAttachmentUrl, setExistingEmailAttachmentUrl] = useState<
+    string | null
+  >(null);
+  const [existingEmailAttachmentName, setExistingEmailAttachmentName] =
+    useState<string | null>(null);
+  // The email body the admin last saved. Seeds the editor on load so a
+  // customised message survives a reload; empty means "use the title-derived
+  // default". Kept separate from the live-built default because the backend
+  // does persist and return email_body - we just weren't reading it back.
+  const [savedEmailBody, setSavedEmailBody] = useState("");
+  const [showResult, setShowResult] = useState(true);
+  const [evaluationMode, setEvaluationMode] = useState<"auto" | "manual">("auto");
+  const [allowMovementAcrossSections, setAllowMovementAcrossSections] =
+    useState(true);
+  const [tabSwitchLimitEnabled, setTabSwitchLimitEnabled] = useState(false);
+  const [tabSwitchLimitCount, setTabSwitchLimitCount] = useState(2);
+  const [certificateAvailable, setCertificateAvailable] = useState(false);
+  const [passBandLowerPercent, setPassBandLowerPercent] = useState("");
+  const [passBandUpperPercent, setPassBandUpperPercent] = useState("");
+  const [allowDesktop, setAllowDesktop] = useState(true);
+  const [allowMobile, setAllowMobile] = useState(true);
+  const [allowTablet, setAllowTablet] = useState(true);
+
+  const [questionsPage, setQuestionsPage] = useState(1);
+  const [questionsLimit, setQuestionsLimit] = useState(10);
+  const [codingQuestionsPage, setCodingQuestionsPage] = useState(1);
+  const [codingQuestionsLimit, setCodingQuestionsLimit] = useState(10);
+  const [writtenQuestionsPage, setWrittenQuestionsPage] = useState(1);
+  const [writtenQuestionsLimit, setWrittenQuestionsLimit] = useState(10);
+  const [submissionsPage, setSubmissionsPage] = useState(1);
+  const [submissionsLimit, setSubmissionsLimit] = useState(10);
+  const [downloadingAllSubmissionPdfs, setDownloadingAllSubmissionPdfs] =
+    useState(false);
+  const [submissionActionsAnchorEl, setSubmissionActionsAnchorEl] = useState<null | HTMLElement>(null);
+  const [submissionActionsTarget, setSubmissionActionsTarget] = useState<SubmissionsExportSubmission | null>(null);
+  useEffect(() => {
+    if (evaluationMode === "manual" && showResult) {
+      setShowResult(false);
+    }
+  }, [evaluationMode, showResult]);
+
+  // Live-built default subject/body for the student notification email.
+  const defaultEmailSubject = useMemo(
+    () => `Important Notification - ${title.trim() || "New Assessment"}`,
+    [title]
+  );
+  // Schedule (start/end/duration) is rendered separately by the preview /
+  // email HTML, so the seeded body stays light. See create page for the
+  // same pattern.
+  const defaultEmailBody = useMemo(() => {
+    return [
+      "<p>Dear {name},</p>",
+      "<p>All set! Your assessment details are below. Good luck 👍.</p>",
+      `<p><strong>Assessment:</strong> ${title.trim() || "New Assessment"}</p>`,
+    ].join("");
+  }, [title]);
+  // What the editor is actually seeded with: the admin's saved body when one
+  // exists, otherwise the title-derived default. The editor mounts only after
+  // loadAssessment completes (the page is gated on `loading`), so this is
+  // correct on the editor's first - and only - mount.
+  const emailBodySeed = useMemo(
+    () => (savedEmailBody ? savedEmailBody : defaultEmailBody),
+    [savedEmailBody, defaultEmailBody]
+  );
+
+  const emailSchedule = useMemo(
+    () => ({
+      startTime: startTime || null,
+      endTime: endTime || null,
+      durationMinutes: durationMinutes || null,
+    }),
+    [startTime, endTime, durationMinutes]
+  );
+
+  const [previewMCQ, setPreviewMCQ] = useState<{
+    section: { section_title: string };
+    question: QuestionsExportMCQQuestion;
+  } | null>(null);
+  const [previewCoding, setPreviewCoding] = useState<{
+    section: { section_title: string };
+    question: QuestionsExportCodingQuestion;
+  } | null>(null);
+  const [previewWritten, setPreviewWritten] = useState<{
+    section: { section_title: string };
+    question: QuestionsExportSubjectiveQuestion;
+  } | null>(null);
+  const [questionsSubTab, setQuestionsSubTab] = useState<QuestionsSubTab>("mcq");
+
+  const [analyticsData, setAnalyticsData] =
+    useState<AssessmentAnalyticsResponse | null>(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
+  const [analyticsComputing, setAnalyticsComputing] = useState(false);
+  const analyticsRetryRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [analyticsTopNApplied, setAnalyticsTopNApplied] = useState(10);
+  const [analyticsTopNDraft, setAnalyticsTopNDraft] = useState("10");
+  const [analyticsStudentsPage, setAnalyticsStudentsPage] = useState(1);
+  const [analyticsStudentsLimit, setAnalyticsStudentsLimit] = useState(12);
+  const [analyticsSectionPage, setAnalyticsSectionPage] = useState(1);
+  const [analyticsSectionLimit, setAnalyticsSectionLimit] = useState(10);
+  const [analyticsTopPerformersTablePage, setAnalyticsTopPerformersTablePage] =
+    useState(1);
+  const [analyticsTopPerformersTableLimit, setAnalyticsTopPerformersTableLimit] =
+    useState(10);
+
+  const passBandFieldErrors = useMemo(
+    () =>
+      getPassBandFieldErrors(
+        passBandLowerPercent,
+        passBandUpperPercent,
+        certificateAvailable
+      ),
+    [passBandLowerPercent, passBandUpperPercent, certificateAvailable]
+  );
+
+  const analyticsTopNAppliedRef = useRef(analyticsTopNApplied);
+  useEffect(() => {
+    analyticsTopNAppliedRef.current = analyticsTopNApplied;
+  }, [analyticsTopNApplied]);
+
+  const loadAssessment = useCallback(async () => {
+    if (!assessmentId || !config.clientId) return;
+    try {
+      const data = await adminAssessmentService.getAssessmentById(
+        config.clientId,
+        assessmentId
+      );
+      setAssessment(data);
+      setTitle(data.title ?? "");
+      setInstructions(data.instructions ?? "");
+      setDescription(data.description ?? "");
+      setDurationMinutes(data.duration_minutes ?? 60);
+      setStartTime(formatToDatetimeLocal(data.start_time ?? "") || "");
+      setEndTime(formatToDatetimeLocal(data.end_time ?? "") || "");
+      const anyData = data as any;
+      setIsPaid(anyData.is_paid ?? false);
+      setPrice(
+        anyData.price != null && anyData.price !== ""
+          ? String(anyData.price)
+          : ""
+      );
+      setCurrency(anyData.currency ?? "INR");
+      setTimezone(anyData.timezone ?? "");
+      setIsActive(data.is_active ?? true);
+      const anyDataCourses = (data as any);
+      const loadedCourseIds = Array.isArray(anyDataCourses.course_ids)
+        ? anyDataCourses.course_ids
+        : Array.isArray(anyDataCourses.courses)
+          ? (anyDataCourses.courses as { id: number }[]).map((c) => c.id)
+          : [];
+      setCourseIds(loadedCourseIds);
+      setColleges(Array.isArray((data as any).colleges) ? (data as any).colleges : []);
+      setProctoringEnabled((data as any).proctoring_enabled ?? true);
+      setLiveStreaming((data as any).live_streaming ?? false);
+      // Prefer the new `email_notification_enabled` field, fall back to the
+      // legacy `send_communication` key for older saved assessments.
+      setSendCommunication(
+        ((data as any).email_notification_enabled ??
+          (data as any).send_communication ??
+          false) === true
+      );
+      // Capture any previously-saved attachment so the editor can show it.
+      // Backend has used a few different field names over time - accept any.
+      const dAny = data as unknown as Record<string, unknown>;
+      const savedAttachment = extractSavedEmailAttachment(dAny);
+      setExistingEmailAttachmentUrl(savedAttachment.url);
+      setExistingEmailAttachmentName(savedAttachment.name);
+      // Read the saved message body back so a customised email survives reload.
+      // (Subject is intentionally left title-derived - it auto-syncs with the
+      // assessment title by design; only the body is admin-authored content.)
+      setSavedEmailBody(
+        typeof dAny.email_body === "string" ? dAny.email_body.trim() : ""
+      );
+      // Re-check the saved reminder boxes on load.
+      setEmailRemindersEnabled(dAny.email_reminders_enabled === true);
+      setEmailReminderOffsets(
+        Array.isArray(dAny.email_reminder_offsets)
+          ? (dAny.email_reminder_offsets as number[])
+          : []
+      );
+      setShowResult((data as any).show_result ?? true);
+      setEvaluationMode((data as any).evaluation_mode === "manual" ? "manual" : "auto");
+      setAllowMovementAcrossSections(anyData.allow_movement !== false);
+      setTabSwitchLimitEnabled(Boolean(anyData.tab_switch_limit_enabled));
+      setTabSwitchLimitCount(
+        Number(anyData.tab_switch_limit_count) > 0
+          ? Number(anyData.tab_switch_limit_count)
+          : 2
+      );
+      setCertificateAvailable(Boolean(anyData.certificate_available));
+      setPassBandLowerPercent(
+        anyData.pass_band_lower_min_percent != null &&
+          String(anyData.pass_band_lower_min_percent).trim() !== ""
+          ? String(anyData.pass_band_lower_min_percent)
+          : ""
+      );
+      setPassBandUpperPercent(
+        anyData.pass_band_upper_min_percent != null &&
+          String(anyData.pass_band_upper_min_percent).trim() !== ""
+          ? String(anyData.pass_band_upper_min_percent)
+          : ""
+      );
+      setAllowDesktop((data as any).allow_desktop ?? true);
+      setAllowMobile((data as any).allow_mobile ?? true);
+      setAllowTablet((data as any).allow_tablet ?? true);
+    } catch (e: any) {
+      showToast(e?.message || "Failed to load assessment", "error");
+      setAssessment(null);
+    }
+  }, [assessmentId, showToast]);
+
+  const loadCourses = useCallback(async () => {
+    try {
+      setLoadingCourses(true);
+      const data = await adminCoursesService.getCourses({ limit: 1000 });
+      const list = Array.isArray(data) ? data : (data.results || data.data || []);
+      setCourses(list);
+    } catch (e: any) {
+      showToast(e?.message || "Failed to load courses", "error");
+    } finally {
+      setLoadingCourses(false);
+    }
+  }, [showToast]);
+
+  
+  const coursesWithAssessment = useMemo(() => {
+    const byId = new Map<number, { id: number; title?: string; name?: string }>();
+    const add = (c: any) => {
+      if (c?.id == null) return;
+      const id = Number(c.id);
+      if (!byId.has(id)) byId.set(id, { id, title: c.title, name: c.name });
+    };
+    courses.forEach(add);
+    (assessment as any)?.courses?.forEach(add);
+    return Array.from(byId.values());
+  }, [courses, assessment]);
+
+  const loadQuestions = useCallback(async () => {
+    if (!assessmentId || !config.clientId) return;
+    try {
+      const data = await adminAssessmentService.getQuestionsExportJson(
+        config.clientId,
+        assessmentId
+      );
+      setQuestionsData(data);
+    } catch (e: any) {
+      showToast(e?.message || "Failed to load questions", "error");
+      setQuestionsData(null);
+    }
+  }, [assessmentId, showToast]);
+
+  const loadSubmissions = useCallback(async () => {
+    if (!assessmentId || !config.clientId) return;
+    try {
+      const data = await adminAssessmentService.getSubmissionsExportJson(
+        config.clientId,
+        assessmentId
+      );
+      setSubmissionsData(data);
+    } catch (e: any) {
+      showToast(e?.message || "Failed to load submissions", "error");
+      setSubmissionsData(null);
+    }
+  }, [assessmentId, showToast]);
+
+  const loadAnalytics = useCallback(
+    async (topOverride?: number) => {
+      if (!assessmentId || !config.clientId) return;
+      const top = clampAssessmentAnalyticsTopPerformers(
+        topOverride ?? analyticsTopNAppliedRef.current,
+      );
+      setAnalyticsLoading(true);
+      try {
+        const data = await adminAssessmentService.getAssessmentAnalytics(
+          config.clientId,
+          assessmentId,
+          { top_performers: top },
+        );
+        if ("computing" in data && data.computing) {
+          // Large assessment, cache warming server-side (RC-6a) - poll shortly.
+          setAnalyticsComputing(true);
+          setAnalyticsData(null);
+          if (analyticsRetryRef.current) clearTimeout(analyticsRetryRef.current);
+          analyticsRetryRef.current = setTimeout(() => {
+            void loadAnalytics(top);
+          }, 4000);
+          return;
+        }
+        setAnalyticsComputing(false);
+        setAnalyticsData(data as AssessmentAnalyticsResponse);
+        setAnalyticsTopNApplied(top);
+        setAnalyticsTopNDraft(String(top));
+      } catch (e: any) {
+        showToast(e?.message || "Failed to load analytics", "error");
+        setAnalyticsData(null);
+        setAnalyticsComputing(false);
+      } finally {
+        setAnalyticsLoading(false);
+      }
+    },
+    [assessmentId, showToast],
+  );
+
+  useEffect(() => {
+    if (tab !== "analytics" || !assessmentId || !config.clientId) {
+      // Leaving the tab: stop any pending "computing" poll.
+      if (analyticsRetryRef.current) {
+        clearTimeout(analyticsRetryRef.current);
+        analyticsRetryRef.current = null;
+      }
+      return;
+    }
+    void loadAnalytics();
+    return () => {
+      if (analyticsRetryRef.current) {
+        clearTimeout(analyticsRetryRef.current);
+        analyticsRetryRef.current = null;
+      }
+    };
+  }, [tab, assessmentId, loadAnalytics]);
+
+  useEffect(() => {
+    if (!assessmentId || authLoading) return;
+    let cancelled = false;
+    setLoading(true);
+    (async () => {
+      await loadAssessment();
+      if (cancelled) return;
+      await loadCourses();
+      if (cancelled) return;
+      if (hideAdminQuestions) {
+        setQuestionsData(null);
+      } else {
+        await loadQuestions();
+      }
+      // Submissions are NOT loaded here anymore - that fat fetch is deferred to the
+      // Submissions tab (see the lazy effect below), so opening Details is instant.
+    })().finally(() => {
+      if (!cancelled) setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    assessmentId,
+    authLoading,
+    hideAdminQuestions,
+    loadAssessment,
+    loadCourses,
+    loadQuestions,
+  ]);
+
+  // P4: load submissions lazily on the Submissions tab, gated on the cheap
+  // ?meta_only probe. While the export cache builds we keep polling (2.5s) and
+  // show "building… X/Y" with the true count; the fat payload is fetched once ready.
+  useEffect(() => {
+    if (tab !== "submissions" || !assessmentId || !config.clientId) return;
+    if (submissionsData) return; // already have the full payload
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    const fetchFull = async () => {
+      setSubmissionsLoading(true);
+      try {
+        await loadSubmissions();
+      } finally {
+        if (!cancelled) setSubmissionsLoading(false);
+      }
+    };
+
+    const poll = async () => {
+      try {
+        const meta = await adminAssessmentService.getSubmissionsExportMeta(
+          config.clientId,
+          assessmentId,
+        );
+        if (cancelled) return;
+        setSubmissionsMeta(meta);
+        if (meta.ready) {
+          await fetchFull();
+        } else {
+          timer = setTimeout(poll, 2500); // still building - check again
+        }
+      } catch {
+        // Probe failed (e.g. older backend) - fall back to a direct full load.
+        if (!cancelled) await fetchFull();
+      }
+    };
+
+    void poll();
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, [tab, assessmentId, submissionsData, loadSubmissions]);
+
+  useEffect(() => {
+    if (hideAdminQuestions && tab === "questions") {
+      setTab("details");
+    }
+  }, [hideAdminQuestions, tab]);
+
+  const handleSave = async () => {
+    if (readOnly) return;
+    if (!assessmentId || !config.clientId || !assessment) return;
+    if (!title.trim() || !instructions.trim()) {
+      showToast("Title and instructions are required", "error");
+      return;
+    }
+    if (durationMinutes < 1) {
+      showToast("Duration must be at least 1 minute", "error");
+      return;
+    }
+    if (isPaid && (!price || Number(price) <= 0)) {
+      showToast("Please enter a valid price for paid assessment", "error");
+      return;
+    }
+    if (passBandFieldErrors.lower || passBandFieldErrors.upper) {
+      const passMsgs = [passBandFieldErrors.lower, passBandFieldErrors.upper].filter(
+        (m): m is string => Boolean(m)
+      );
+      showToast(passMsgs.join(" "), "error");
+      return;
+    }
+    if (!allowDesktop && !allowMobile && !allowTablet) {
+      showToast(t("assessmentDevice.atLeastOne"), "error");
+      return;
+    }
+    if (tabSwitchLimitEnabled && tabSwitchLimitCount < 1) {
+      showToast("Allowed tab switches must be at least 1", "error");
+      return;
+    }
+    try {
+      setSaving(true);
+      const payload: Partial<CreateAssessmentPayload> = {
+        title: title.trim(),
+        instructions: instructions.trim(),
+        description: description.trim() || undefined,
+        duration_minutes: durationMinutes,
+        start_time: toISTForAPI(startTime),
+        end_time: toISTForAPI(endTime),
+        is_paid: isPaid,
+        price: isPaid ? (price ? Number(price) : null) : null,
+        currency: isPaid ? currency : undefined,
+        // Sent even when blank: clearing it back to the institution's zone is a real
+        // edit, and omitting the key would silently keep the old override.
+        timezone,
+        is_active: isActive,
+        proctoring_enabled: proctoringEnabled,
+        live_streaming: canConfigureLiveStreaming ? liveStreaming : false,
+        // Populated below from the email editor snapshot.
+        email_notification_enabled: false,
+        email_subject: undefined,
+        email_body: undefined,
+        email_html: undefined,
+        attachment_url: undefined,
+        show_result: evaluationMode === "manual" ? false : showResult,
+        evaluation_mode: evaluationMode,
+        certificate_available: certificateAvailable,
+        allow_movement: allowMovementAcrossSections,
+        tab_switch_limit_enabled: tabSwitchLimitEnabled,
+        tab_switch_limit_count: tabSwitchLimitEnabled ? tabSwitchLimitCount : null,
+        allow_desktop: allowDesktop,
+        allow_mobile: allowMobile,
+        allow_tablet: allowTablet,
+        course_ids: courseIds,
+        colleges: colleges.length ? colleges : undefined,
+      };
+      const passLower = toAssessmentApiDecimalString(passBandLowerPercent);
+      const passUpper = toAssessmentApiDecimalString(passBandUpperPercent);
+      if (passLower != null) {
+        (payload as CreateAssessmentPayload).pass_band_lower_min_percent =
+          passLower;
+      }
+      if (passUpper != null) {
+        (payload as CreateAssessmentPayload).pass_band_upper_min_percent =
+          passUpper;
+      }
+      // Snapshot the email editor (subject/body/attachment live there). The
+      // editor ref is null when notifications are off or the editor hasn't
+      // mounted yet - both translate to "don't send an email".
+      const emailSnapshot = emailNotificationEnabled
+        ? emailEditorRef.current?.getValues() ?? null
+        : null;
+      payload.email_notification_enabled = emailNotificationEnabled;
+      payload.email_subject = emailSnapshot?.subject;
+      payload.email_body = emailSnapshot?.body;
+      payload.email_html = emailSnapshot
+        ? buildAssessmentNotificationEmailHtml({
+            subject: emailSnapshot.subject,
+            bodyHtml: emailSnapshot.body,
+            clientName: clientInfo?.name?.trim() || "Your team",
+            logoUrl: clientInfo?.app_logo_url ?? null,
+            schedule: emailSchedule,
+          })
+        : undefined;
+      payload.email_base_url = getPublicAppOrigin();
+      // Scheduled reminders are additive to the on-publish send; only meaningful
+      // when notifications are on. Offsets are always sent (empty clears them).
+      payload.email_reminders_enabled =
+        emailNotificationEnabled && emailRemindersEnabled;
+      payload.email_reminder_offsets = emailRemindersEnabled
+        ? emailReminderOffsets
+        : [];
+      const emailAttachment = emailSnapshot?.attachment ?? null;
+      // Keep the saved attachment when no new file is picked.
+      payload.attachment_url = emailSnapshot?.attachmentUrl ?? undefined;
+
+      Object.keys(payload).forEach((k) => {
+        if ((payload as any)[k] === undefined) delete (payload as any)[k];
+      });
+      await adminAssessmentService.updateAssessment(
+        config.clientId,
+        assessmentId,
+        payload,
+        emailAttachment
+      );
+      showToast("Assessment updated successfully", "success");
+      await loadAssessment();
+    } catch (e: any) {
+      showToast(e?.message || "Failed to update assessment", "error");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handlePublishSubmission = async (submission: SubmissionsExportSubmission) => {
+    if (!assessmentId || !config.clientId) return;
+    const submissionId = Number((submission as any).submission_id);
+    if (!submissionId) return;
+    try {
+      await adminAssessmentService.publishSubmissionResult(config.clientId, assessmentId, submissionId);
+      showToast("Result published", "success");
+      await loadSubmissions();
+      await loadAssessment();
+    } catch (e: any) {
+      showToast(e?.message || "Failed to publish result", "error");
+    }
+  };
+
+  const handleOpenSubmissionActionsMenu = (
+    event: MouseEvent<HTMLElement>,
+    submission: SubmissionsExportSubmission,
+  ) => {
+    setSubmissionActionsAnchorEl(event.currentTarget);
+    setSubmissionActionsTarget(submission);
+  };
+
+  const handleCloseSubmissionActionsMenu = () => {
+    setSubmissionActionsAnchorEl(null);
+    setSubmissionActionsTarget(null);
+  };
+
+  const handleBulkPublish = async () => {
+    if (!assessmentId || !config.clientId) return;
+    try {
+      const result = await adminAssessmentService.publishAssessmentResultsBulk(config.clientId, assessmentId);
+      showToast(`Published ${result.published_count ?? 0} submissions`, "success");
+      await loadSubmissions();
+      await loadAssessment();
+    } catch (e: any) {
+      showToast(e?.message || "Failed to bulk publish results", "error");
+    }
+  };
+
+  const handleDownloadMCQQuestions = () => {
+    if (!questionsData) return;
+    const flat: Record<string, unknown>[] = [];
+    for (const sec of quizSections) {
+      for (const q of sec.questions) {
+        if (isMCQQuestion(q)) {
+          flat.push({
+            section_id: sec.section_id,
+            section_title: sec.section_title,
+            section_order: sec.order,
+            id: q.id,
+            question_text: q.question_text,
+            option_a: q.option_a,
+            option_b: q.option_b,
+            option_c: q.option_c,
+            option_d: q.option_d,
+            correct_option: q.correct_option,
+            explanation: q.explanation ?? "",
+            difficulty_level: q.difficulty_level ?? "",
+            topic: q.topic ?? "",
+            skills: q.skills ?? "",
+          });
+        }
+      }
+    }
+    const columns: { key: string; header: string }[] = [
+      { key: "section_id", header: "Section ID" },
+      { key: "section_title", header: "Section Title" },
+      { key: "section_order", header: "Section Order" },
+      { key: "id", header: "Question ID" },
+      { key: "question_text", header: "Question Text" },
+      { key: "option_a", header: "Option A" },
+      { key: "option_b", header: "Option B" },
+      { key: "option_c", header: "Option C" },
+      { key: "option_d", header: "Option D" },
+      { key: "correct_option", header: "Correct Option" },
+      { key: "explanation", header: "Explanation" },
+      { key: "difficulty_level", header: "Difficulty" },
+      { key: "topic", header: "Topic" },
+      { key: "skills", header: "Skills" },
+    ];
+    const csv = jsonToCsvRows(flat, columns);
+    downloadCsv(csv, `assessment-${questionsData.assessment.slug || assessmentId}-mcq-questions.csv`);
+    showToast("MCQ questions exported", "success");
+  };
+
+  const handleDownloadCodingQuestions = () => {
+    if (!questionsData) return;
+    const flat: Record<string, unknown>[] = [];
+    for (const sec of codingSections) {
+      for (const q of sec.questions) {
+        if (isCodingQuestion(q)) {
+          const ps = typeof q.problem_statement === "string" ? q.problem_statement : "";
+          const inp = typeof q.input_format === "string" ? q.input_format : "";
+          const out = typeof q.output_format === "string" ? q.output_format : "";
+          const con = typeof q.constraints === "string" ? q.constraints : "";
+          flat.push({
+            section_id: sec.section_id,
+            section_title: sec.section_title,
+            section_order: sec.order,
+            id: q.id,
+            title: q.title ?? "",
+            problem_statement: htmlToPlainText(ps),
+            input_format: htmlToPlainText(inp),
+            output_format: htmlToPlainText(out),
+            sample_input: q.sample_input ?? "",
+            sample_output: q.sample_output ?? "",
+            constraints: htmlToPlainText(con),
+            difficulty_level: q.difficulty_level ?? "",
+            tags: q.tags ?? "",
+            time_limit: q.time_limit ?? "",
+            memory_limit: q.memory_limit ?? "",
+          });
+        }
+      }
+    }
+    const columns: { key: string; header: string }[] = [
+      { key: "section_id", header: "Section ID" },
+      { key: "section_title", header: "Section Title" },
+      { key: "section_order", header: "Section Order" },
+      { key: "id", header: "Question ID" },
+      { key: "title", header: "Title" },
+      { key: "problem_statement", header: "Problem Statement" },
+      { key: "input_format", header: "Input Format" },
+      { key: "output_format", header: "Output Format" },
+      { key: "sample_input", header: "Sample Input" },
+      { key: "sample_output", header: "Sample Output" },
+      { key: "constraints", header: "Constraints" },
+      { key: "difficulty_level", header: "Difficulty" },
+      { key: "tags", header: "Tags" },
+      { key: "time_limit", header: "Time Limit (sec)" },
+      { key: "memory_limit", header: "Memory Limit (MB)" },
+    ];
+    const csv = jsonToCsvRows(flat, columns);
+    downloadCsv(csv, `assessment-${questionsData.assessment.slug || assessmentId}-coding-questions.csv`);
+    showToast("Coding questions exported", "success");
+  };
+
+  const handleDownloadWrittenQuestions = () => {
+    if (!questionsData) return;
+    const flat: Record<string, unknown>[] = [];
+    for (const sec of subjectiveSections) {
+      for (const q of sec.questions) {
+        if (isSubjectiveQuestion(q)) {
+          flat.push({
+            section_id: sec.section_id,
+            section_title: sec.section_title,
+            section_order: sec.order,
+            id: q.id,
+            question_text: q.question_text,
+            evaluation_prompt: q.evaluation_prompt,
+            max_marks: q.max_marks,
+            question_type: q.question_type ?? "",
+            answer_mode: q.answer_mode ?? "text",
+          });
+        }
+      }
+    }
+    const columns: { key: string; header: string }[] = [
+      { key: "section_id", header: "Section ID" },
+      { key: "section_title", header: "Section Title" },
+      { key: "section_order", header: "Section Order" },
+      { key: "id", header: "Question ID" },
+      { key: "question_text", header: "Question Text" },
+      { key: "evaluation_prompt", header: "Evaluation Prompt" },
+      { key: "max_marks", header: "Max Marks" },
+      { key: "question_type", header: "Question Type" },
+      { key: "answer_mode", header: "Answer Mode" },
+    ];
+    const csv = jsonToCsvRows(flat, columns);
+    downloadCsv(csv, `assessment-${questionsData.assessment.slug || assessmentId}-written-questions.csv`);
+    showToast("Written questions exported", "success");
+  };
+
+  function downloadCsv(csv: string, filename: string) {
+    const BOM = "\uFEFF";
+    const blob = new Blob([BOM + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  const handleDownloadSubmissions = () => {
+    if (!submissionsData) return;
+    const subs = submissionsData.submissions;
+
+    const sectionKeySet = new Set<string>();
+    for (const s of subs) {
+      if (s.section_wise_scores) {
+        Object.keys(s.section_wise_scores).forEach((k) => sectionKeySet.add(k));
+      }
+      if (s.section_wise_max_scores) {
+        Object.keys(s.section_wise_max_scores).forEach((k) =>
+          sectionKeySet.add(k)
+        );
+      }
+    }
+    const sectionKeys = Array.from(sectionKeySet).sort();
+
+    const baseColumns: { key: string; header: string }[] = [
+      { key: "name", header: "Name" },
+      { key: "email", header: "Email" },
+      { key: "phone", header: "Phone" },
+      { key: "started_at", header: "Started At" },
+      { key: "submitted_at", header: "Submitted At" },
+      { key: "maximum_marks", header: "Maximum Marks" },
+      { key: "overall_score", header: "Overall Score" },
+      { key: "percentage", header: "Percentage" },
+      { key: "total_questions", header: "Total Questions" },
+      { key: "attempted_questions", header: "Attempted Questions" },
+      { key: "tab_switches_count", header: "Tab Switches Count" },
+      { key: "face_violations_count", header: "Face Violations Count" },
+      { key: "fullscreen_exits_count", header: "Fullscreen Exits Count" },
+      { key: "face_validation_failures_count", header: "Face Validation Failures Count" },
+      { key: "multiple_face_detections_count", header: "Multiple Face Detections Count" },
+      { key: "total_violation_count", header: "Total Violation Count" },
+    ];
+    const sectionColumns = sectionKeys.flatMap((k) => [
+      { key: `section_wise_scores_${k}`, header: `Section-wise Scores-${k}` },
+      {
+        key: `section_wise_max_scores_${k}`,
+        header: `Section-wise Max Scores-${k}`,
+      },
+    ]);
+    const columns = [...baseColumns, ...sectionColumns];
+
+    const rows: Record<string, unknown>[] = subs.map((s) => {
+      const pd = s.proctoring;
+      const base: Record<string, unknown> = {
+        name: s.name ?? "",
+        email: s.email ?? "",
+        phone: s.phone ?? "",
+        started_at: formatDateForDisplay(s.started_at) || "",
+        submitted_at: formatDateForDisplay(s.submitted_at) || "",
+        maximum_marks: s.maximum_marks ?? "",
+        overall_score: s.overall_score ?? "",
+        percentage: s.percentage??"",
+        total_questions: s.total_questions ?? "",
+        attempted_questions: s.attempted_questions ?? "",
+        tab_switches_count: pd?.tab_switches_count ?? 0,
+        face_violations_count: pd?.face_violations_count ?? 0,
+        fullscreen_exits_count: pd?.fullscreen_exits_count ?? 0,
+        face_validation_failures_count: pd?.face_validation_failures_count ?? 0,
+        multiple_face_detections_count: pd?.multiple_face_detections_count ?? 0,
+        total_violation_count: pd?.total_violation_count ?? 0,
+      };
+      const sectionCells: Record<string, unknown> = {};
+      for (const k of sectionKeys) {
+        sectionCells[`section_wise_scores_${k}`] =
+          s.section_wise_scores?.[k] ?? "";
+        sectionCells[`section_wise_max_scores_${k}`] =
+          s.section_wise_max_scores?.[k] ?? "";
+      }
+      return { ...base, ...sectionCells };
+    });
+
+    const csv = jsonToCsvRows(rows, columns);
+    // Route through downloadCsv so the UTF-8 BOM is prepended (raw Blob dropped it).
+    downloadCsv(
+      csv,
+      safeReportCsvFileName(submissionsData.assessment.title || String(assessmentId)),
+    );
+    showToast("Submissions exported", "success");
+  };
+
+  const quizSections = useMemo(() => {
+    if (!questionsData?.sections) return [];
+    return questionsData.sections.filter(
+      (s) => (s.section_type ?? "quiz").toLowerCase() === "quiz"
+    );
+  }, [questionsData]);
+
+  const codingSections = useMemo(() => {
+    if (!questionsData?.sections) return [];
+    return questionsData.sections.filter(
+      (s) => (s.section_type ?? "").toLowerCase() === "coding"
+    );
+  }, [questionsData]);
+
+  const subjectiveSections = useMemo(() => {
+    if (!questionsData?.sections) return [];
+    return questionsData.sections.filter((s) => {
+      const t = (s.section_type ?? "").toLowerCase();
+      return t === "subjective" || t === "written";
+    });
+  }, [questionsData]);
+
+  // Overview tab (mockup #5): section rows + a difficulty balance rolled up from every
+  // question's difficulty_level across all sections.
+  const overviewSections = useMemo(() => {
+    if (!questionsData?.sections) return [];
+    return questionsData.sections.map((s, i) => {
+      const type = (s.section_type ?? "quiz").toLowerCase();
+      return {
+        title: s.section_title || `Section ${i + 1}`,
+        type,
+        count: Array.isArray(s.questions) ? s.questions.length : 0,
+        order: i + 1,
+        icon: type === "coding" ? "mdi:code-tags" : type === "subjective" || type === "written" ? "mdi:text-box-outline" : "mdi:help-box-outline",
+        label: type === "coding" ? "Coding" : type === "subjective" || type === "written" ? "Written" : "Quiz",
+      };
+    });
+  }, [questionsData]);
+
+  const overviewBalance = useMemo(() => {
+    const b = { easy: 0, medium: 0, hard: 0 };
+    for (const s of questionsData?.sections ?? []) {
+      for (const q of s.questions ?? []) {
+        const d = String((q as { difficulty_level?: string }).difficulty_level ?? "").toLowerCase();
+        if (d.startsWith("easy")) b.easy++;
+        else if (d.startsWith("med")) b.medium++;
+        else if (d.startsWith("hard")) b.hard++;
+      }
+    }
+    return b;
+  }, [questionsData]);
+
+  const allQuizItems = useMemo(() => {
+    return quizSections.flatMap((sec) =>
+      sec.questions
+        .filter((q): q is QuestionsExportMCQQuestion => isMCQQuestion(q))
+        .map((q) => ({ section: sec, question: q }))
+    );
+  }, [quizSections]);
+
+  const allCodingItems = useMemo(() => {
+    return codingSections.flatMap((sec) =>
+      sec.questions
+        .filter((q): q is QuestionsExportCodingQuestion => isCodingQuestion(q))
+        .map((q) => ({ section: sec, question: q }))
+    );
+  }, [codingSections]);
+
+  const allWrittenItems = useMemo(() => {
+    return subjectiveSections.flatMap((sec) =>
+      sec.questions
+        .filter((q): q is QuestionsExportSubjectiveQuestion => isSubjectiveQuestion(q))
+        .map((q) => ({ section: sec, question: q }))
+    );
+  }, [subjectiveSections]);
+
+  const paginatedQuizQuestions = useMemo(() => {
+    const start = (questionsPage - 1) * questionsLimit;
+    return allQuizItems.slice(start, start + questionsLimit);
+  }, [allQuizItems, questionsPage, questionsLimit]);
+
+  const paginatedCodingQuestions = useMemo(() => {
+    const start = (codingQuestionsPage - 1) * codingQuestionsLimit;
+    return allCodingItems.slice(start, start + codingQuestionsLimit);
+  }, [allCodingItems, codingQuestionsPage, codingQuestionsLimit]);
+
+  const paginatedWrittenQuestions = useMemo(() => {
+    const start = (writtenQuestionsPage - 1) * writtenQuestionsLimit;
+    return allWrittenItems.slice(start, start + writtenQuestionsLimit);
+  }, [allWrittenItems, writtenQuestionsPage, writtenQuestionsLimit]);
+
+  const totalQuizQuestions = allQuizItems.length;
+  const totalCodingQuestions = allCodingItems.length;
+  const totalWrittenQuestions = allWrittenItems.length;
+
+  const paginatedSubmissions = useMemo(() => {
+    if (!submissionsData?.submissions) return [];
+    const start = (submissionsPage - 1) * submissionsLimit;
+    return submissionsData.submissions.slice(start, start + submissionsLimit);
+  }, [submissionsData, submissionsPage, submissionsLimit]);
+
+  const totalSubmissions = submissionsData?.submissions?.length ?? 0;
+
+  const manualReviewStats = useMemo(() => {
+    const rows = submissionsData?.submissions || [];
+    let pending = 0;
+    let evaluated = 0;
+    let published = 0;
+    rows.forEach((row) => {
+      const status = String((row as any).review_status || "pending_evaluation").toLowerCase();
+      if (status === "published") published += 1;
+      else if (status === "evaluated") evaluated += 1;
+      else pending += 1;
+    });
+    return { pending, evaluated, published };
+  }, [submissionsData]);
+
+  const submissionsIncludeProctoring = useMemo(() => {
+    if (!submissionsData?.submissions?.length) return false;
+    return submissionsData.submissions.some((s) =>
+      submissionHasProctoringPayload(s.proctoring),
+    );
+  }, [submissionsData]);
+
+  const handleDownloadSubmissionPdf = useCallback(
+    async (submission: SubmissionsExportSubmission) => {
+      if (!submissionsData) return;
+      try {
+        // Load the AiLinc logo + cursive font once so the report renders fully branded.
+        await preloadPdfBrandAssets({
+        name: clientInfo?.name,
+        logoUrl: resolveCertificateLogoUrl(clientInfo),
+      });
+        const result = mapSubmissionsExportRowToAssessmentResult(
+          submissionsData,
+          submission,
+        );
+        const fileName = safeAssessmentPdfFileName(
+          submissionsData.assessment.title ||
+            String(submissionsData.assessment.id),
+          submission.name,
+        );
+        generateAssessmentResultPdfVector(result, fileName);
+        showToast("PDF downloaded", "success");
+      } catch (e: unknown) {
+        const msg =
+          e && typeof e === "object" && "message" in e
+            ? String((e as { message?: string }).message)
+            : "Failed to generate PDF";
+        showToast(msg, "error");
+      }
+    },
+    [submissionsData, showToast],
+  );
+
+  const handleDownloadAllSubmissionPdfsZip = useCallback(async () => {
+    if (!submissionsData?.submissions?.length) return;
+    // Each report is a full multi-page vector PDF generated in-browser; a very large cohort can
+    // freeze/OOM the tab. Confirm before the heavy run so the admin knows what they're triggering.
+    const cohort = submissionsData.submissions.length;
+    const BULK_PDF_WARN_THRESHOLD = 300;
+    if (
+      cohort > BULK_PDF_WARN_THRESHOLD &&
+      typeof window !== "undefined" &&
+      !window.confirm(
+        `This will generate ${cohort} PDF reports in your browser and may take a while (or slow the tab). Continue?`,
+      )
+    ) {
+      return;
+    }
+    setDownloadingAllSubmissionPdfs(true);
+    try {
+      // Load the AiLinc logo + cursive font once; every report in the zip reuses the cache.
+      await preloadPdfBrandAssets({
+        name: clientInfo?.name,
+        logoUrl: resolveCertificateLogoUrl(clientInfo),
+      });
+      const zip = new JSZip();
+      const usedFileNames = new Set<string>();
+
+      let i = 0;
+      for (const submission of submissionsData.submissions) {
+        try {
+          const result = mapSubmissionsExportRowToAssessmentResult(
+            submissionsData,
+            submission,
+          );
+          const baseFileName = safeAssessmentPdfFileName(
+            submissionsData.assessment.title ||
+              String(submissionsData.assessment.id),
+            submission.name,
+          );
+          let fileName = baseFileName;
+          let duplicateCount = 2;
+          while (usedFileNames.has(fileName)) {
+            fileName = baseFileName.replace(
+              /\.pdf$/i,
+              `-${duplicateCount}.pdf`,
+            );
+            duplicateCount += 1;
+          }
+          usedFileNames.add(fileName);
+          const pdfBlob = generateAssessmentResultPdfVector(
+            result,
+            fileName,
+            undefined,
+            { download: false },
+          );
+          zip.file(fileName, pdfBlob);
+        } catch {
+          // One bad row must not abort the whole export - skip it and keep going.
+        }
+        // Yield to the event loop periodically so the UI/spinner stays responsive.
+        if (++i % 15 === 0) {
+          await new Promise((r) => setTimeout(r, 0));
+        }
+      }
+
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      const zipFileName = safeZipFileName(
+        submissionsData.assessment.title || String(submissionsData.assessment.id),
+        submissionsData.assessment.id,
+      );
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = zipFileName;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("All student PDF reports downloaded as ZIP", "success");
+    } catch (e: unknown) {
+      const msg =
+        e && typeof e === "object" && "message" in e
+          ? String((e as { message?: string }).message)
+          : "Failed to generate ZIP of student reports";
+      showToast(msg, "error");
+    } finally {
+      setDownloadingAllSubmissionPdfs(false);
+    }
+  }, [submissionsData, showToast]);
+
+  const handleAnalyticsApplyTopPerformers = () => {
+    const parsed = Number.parseInt(analyticsTopNDraft.trim(), 10);
+    const top = clampAssessmentAnalyticsTopPerformers(
+      Number.isFinite(parsed) ? parsed : 10,
+    );
+    setAnalyticsTopNDraft(String(top));
+    void loadAnalytics(top);
+  };
+
+  /** Reload analytics using the last applied top-performers limit (ignores draft). */
+  const handleAnalyticsReload = () => {
+    void loadAnalytics(analyticsTopNAppliedRef.current);
+  };
+
+  const handleDownloadAnalyticsPdf = () => {
+    if (!analyticsData) return;
+    try {
+      const slug =
+        analyticsData.assessment.title ||
+        String(analyticsData.assessment.id);
+      const fileName = safeAnalyticsPdfFileName(
+        slug,
+        analyticsData.assessment.id,
+      );
+      generateAssessmentAnalyticsPdfVector(analyticsData, fileName);
+      showToast("Analytics PDF downloaded (print-ready vector report)", "success");
+    } catch (e: unknown) {
+      const msg =
+        e && typeof e === "object" && "message" in e
+          ? String((e as { message?: string }).message)
+          : "Failed to generate analytics PDF";
+      showToast(msg, "error");
+    }
+  };
+
+  useEffect(() => {
+    setQuestionsPage(1);
+    setCodingQuestionsPage(1);
+    setWrittenQuestionsPage(1);
+    setSubmissionsPage(1);
+  }, [tab]);
+
+  useEffect(() => {
+    if (tab !== "questions" || !questionsData) return;
+    if (questionsSubTab === "mcq" && totalQuizQuestions === 0) {
+      if (totalCodingQuestions > 0) setQuestionsSubTab("coding");
+      else if (totalWrittenQuestions > 0) setQuestionsSubTab("written");
+    } else if (questionsSubTab === "coding" && totalCodingQuestions === 0) {
+      if (totalQuizQuestions > 0) setQuestionsSubTab("mcq");
+      else if (totalWrittenQuestions > 0) setQuestionsSubTab("written");
+    } else if (questionsSubTab === "written" && totalWrittenQuestions === 0) {
+      if (totalQuizQuestions > 0) setQuestionsSubTab("mcq");
+      else if (totalCodingQuestions > 0) setQuestionsSubTab("coding");
+    }
+  }, [
+    tab,
+    questionsData,
+    questionsSubTab,
+    totalQuizQuestions,
+    totalCodingQuestions,
+    totalWrittenQuestions,
+  ]);
+
+  const codingProblemDataForPreview = (q: QuestionsExportCodingQuestion) => ({
+    content_title: q.title,
+    details: {
+      title: q.title,
+      name: q.title,
+      problem_title: q.title,
+      problem_statement: q.problem_statement ?? "",
+      input_format: q.input_format,
+      output_format: q.output_format,
+      sample_input: q.sample_input,
+      sample_output: q.sample_output,
+      constraints: q.constraints,
+      difficulty_level: q.difficulty_level,
+      tags: q.tags,
+      test_cases: q.test_cases,
+    },
+  });
+
+  if (loading) {
+    return (
+      <MainLayout fullWidthContent>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: 400,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </MainLayout>
+    );
+  }
+
+  if (!assessment) {
+    return (
+      <MainLayout fullWidthContent>
+        <Box sx={{ p: 3 }}>
+          <Typography color="text.secondary">Assessment not found</Typography>
+          <Button
+            sx={{ mt: 2 }}
+            startIcon={<IconWrapper icon="mdi:arrow-left" size={18} />}
+            onClick={() => router.push("/admin/assessment")}
+          >
+            Back to Assessments
+          </Button>
+        </Box>
+      </MainLayout>
+    );
+  }
+
+  const displayTitle = assessment.title || (readOnly ? "View Assessment" : "Edit Assessment");
+
+  return (
+    <MainLayout fullWidthContent>
+      <Box sx={{ p: { xs: 2, sm: 3 } }}>
+        <AssessmentBreadcrumb segments={[{ label: "Admin", href: "/admin/dashboard" }, { label: "Assessments", href: "/admin/assessment" }, { label: displayTitle || `Assessment #${assessmentId}` }]} />
+        <Button
+          startIcon={<IconWrapper icon="mdi:arrow-left" size={20} />}
+          onClick={() => router.push("/admin/assessment")}
+          sx={{ mb: 2, color: "var(--accent-indigo)", textTransform: "none" }}
+        >
+          Back to Assessments
+        </Button>
+        <Box sx={{ mb: 3 }}>
+          <AssessmentSectionHero
+            chapter={`ASSESSMENT · #${assessmentId}`}
+            title={displayTitle}
+            subtitle={assessment.slug ? `/${assessment.slug}` : undefined}
+            accent="indigo"
+            icon="mdi:clipboard-text-outline"
+            rightSlot={
+              <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                {assessment.is_draft ? (
+                  <StatusChip label="Draft" tone="warning" icon="mdi:pencil-outline" />
+                ) : (
+                  <StatusChip label="Active" tone="success" icon="mdi:check-circle-outline" />
+                )}
+                {assessment.proctoring_enabled ? (
+                  <StatusChip label="Proctored" tone="info" icon="mdi:shield-check-outline" />
+                ) : null}
+              </Box>
+            }
+          />
+        </Box>
+        {readOnly && (
+          <Alert severity="info" sx={{ mb: 3 }}>
+            {hideAdminQuestions
+              ? "You can view assessment details and submissions. Question content is not available for your role."
+              : "You can view this assessment but cannot change settings or content."}
+          </Alert>
+        )}
+        {!readOnly &&
+          assessment.is_draft &&
+          !(assessment.submissions_count && assessment.submissions_count > 0) && (
+            <Alert
+              severity="warning"
+              sx={{ mb: 3 }}
+              action={
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={() =>
+                    router.push(`/admin/assessment/${assessmentId}/build`)
+                  }
+                >
+                  Continue editing
+                </Button>
+              }
+            >
+              This assessment is still a draft. Open the full editor to change sections, questions, and
+              AI-generated content. Publish from the editor when you are ready to make it visible to learners.
+            </Alert>
+          )}
+
+        <Box sx={{ mb: 3 }}>
+          <SegmentedTabs<TabValue>
+            value={tab}
+            onChange={(v) => {
+              setTab(v);
+              const next = new URLSearchParams(searchParams.toString());
+              next.set("tab", v);
+              router.replace(`${pathname}?${next.toString()}`, { scroll: false });
+            }}
+            tabs={[
+              { value: "overview", label: "Overview", icon: "mdi:view-dashboard-outline" },
+              { value: "details", label: "Details", icon: "mdi:information-outline" },
+              ...(!hideAdminQuestions
+                ? [
+                    {
+                      value: "questions" as TabValue,
+                      label: "Questions",
+                      icon: "mdi:help-box-outline",
+                    },
+                  ]
+                : []),
+              {
+                value: "submissions",
+                label: "Submissions",
+                icon: "mdi:file-document-multiple-outline",
+              },
+              { value: "analytics", label: "Analytics", icon: "mdi:chart-box-outline" },
+            ]}
+          />
+        </Box>
+        <Paper sx={{ borderRadius: 2, overflow: "hidden", boxShadow: 1 }}>
+          <Box sx={{ p: { xs: 2, sm: 3 } }}>
+            {tab === "overview" && (
+              <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "minmax(0, 2fr) minmax(240px, 1fr)" }, gap: 2.5, alignItems: "start" }}>
+                {/* Main column */}
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5, minWidth: 0 }}>
+                  {/* 4 KPI cards */}
+                  <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr 1fr", sm: "repeat(4, 1fr)" }, gap: 2 }}>
+                    {([
+                      { label: "Questions", value: assessment.total_questions ?? 0, icon: "mdi:help-box-outline", tone: "var(--accent-indigo)" },
+                      { label: "Duration", value: `${durationMinutes}m`, icon: "mdi:clock-outline", tone: "var(--tone-proctored)" },
+                      { label: "Submissions", value: assessment.submissions_count ?? 0, icon: "mdi:file-document-outline", tone: "var(--ai-violet)" },
+                      { label: "Pass mark", value: passBandLowerPercent ? `${passBandLowerPercent}%` : "-", icon: "mdi:trophy-outline", tone: "var(--success-500)" },
+                    ]).map((k) => (
+                      <Box key={k.label} sx={{ p: 2.25, borderRadius: "var(--radius-card)", border: "1px solid var(--border-default)", bgcolor: "var(--card-bg)" }}>
+                        <Box sx={{ width: 40, height: 40, borderRadius: 2, display: "grid", placeItems: "center", mb: 1.5, bgcolor: `color-mix(in srgb, ${k.tone} 12%, var(--card-bg) 88%)`, color: k.tone }}>
+                          <IconWrapper icon={k.icon} size={20} />
+                        </Box>
+                        <Typography sx={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: "1.55rem", lineHeight: 1, color: "var(--font-primary)" }}>{k.value}</Typography>
+                        <Typography variant="caption" sx={{ color: "var(--font-tertiary)" }}>{k.label}</Typography>
+                      </Box>
+                    ))}
+                  </Box>
+
+                  {/* Instructions students see */}
+                  <Box sx={{ p: 2.75, borderRadius: "var(--radius-card)", border: "1px solid var(--border-default)", bgcolor: "var(--card-bg)" }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
+                      <IconWrapper icon="mdi:text-box-outline" size={20} color="var(--accent-indigo)" />
+                      <Typography sx={{ fontWeight: 800, color: "var(--font-primary)", fontFamily: "var(--font-jakarta)" }}>Instructions students see</Typography>
+                    </Box>
+                    <Box sx={{ p: 2, borderRadius: 2, bgcolor: "var(--surface)" }}>
+                      <Typography sx={{ whiteSpace: "pre-wrap", fontSize: "0.9rem", color: instructions?.trim() ? "var(--font-secondary)" : "var(--font-tertiary)" }}>
+                        {instructions?.trim() || "No instructions set."}
+                      </Typography>
+                    </Box>
+                    {description?.trim() ? (
+                      <Typography variant="caption" sx={{ color: "var(--font-tertiary)", display: "block", mt: 1.25 }}>{description}</Typography>
+                    ) : null}
+                  </Box>
+
+                  {/* Sections & balance */}
+                  <Box sx={{ p: 2.75, borderRadius: "var(--radius-card)", border: "1px solid var(--border-default)", bgcolor: "var(--card-bg)" }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
+                      <IconWrapper icon="mdi:view-grid-outline" size={20} color="var(--accent-indigo)" />
+                      <Typography sx={{ fontWeight: 800, color: "var(--font-primary)", fontFamily: "var(--font-jakarta)" }}>Sections &amp; balance</Typography>
+                    </Box>
+                    {overviewSections.length === 0 ? (
+                      <Typography variant="caption" sx={{ color: "var(--font-tertiary)" }}>
+                        {hideAdminQuestions ? "Question content isn't available for your role." : "Section breakdown appears here once questions load."}
+                      </Typography>
+                    ) : (
+                      <>
+                        {overviewSections.map((s) => (
+                          <Box key={`${s.title}-${s.order}`} sx={{ display: "flex", alignItems: "center", gap: 1.25, py: 1.1, borderBottom: "1px solid var(--border-default)" }}>
+                            <Box sx={{ width: 36, height: 36, borderRadius: 1.5, display: "grid", placeItems: "center", flexShrink: 0, bgcolor: "color-mix(in srgb, var(--accent-indigo) 10%, var(--card-bg) 90%)", color: "var(--accent-indigo)" }}>
+                              <IconWrapper icon={s.icon} size={18} />
+                            </Box>
+                            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                              <Typography sx={{ fontWeight: 700, color: "var(--font-primary)", fontSize: "0.92rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{s.title}</Typography>
+                              <Typography variant="caption" sx={{ color: "var(--font-tertiary)" }}>{s.label} · {s.count} question{s.count === 1 ? "" : "s"}</Typography>
+                            </Box>
+                            <Typography variant="caption" sx={{ color: "var(--font-tertiary)", fontFamily: "var(--font-mono)" }}>order {s.order}</Typography>
+                          </Box>
+                        ))}
+                        {overviewBalance.easy + overviewBalance.medium + overviewBalance.hard > 0 ? (
+                          <Box sx={{ mt: 2 }}>
+                            <DifficultyBalanceMeter balance={overviewBalance} legend height={8} />
+                          </Box>
+                        ) : null}
+                      </>
+                    )}
+                  </Box>
+
+                  {!readOnly && assessment.is_draft && (
+                    <Box>
+                      <Button
+                        variant="contained"
+                        startIcon={<IconWrapper icon="mdi:pencil-ruler" size={18} />}
+                        onClick={() => router.push(`/admin/assessment/${assessmentId}/build`)}
+                        sx={{ textTransform: "none", bgcolor: "var(--accent-indigo)", "&:hover": { bgcolor: "var(--accent-indigo-dark)" } }}
+                      >
+                        Continue building
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+
+                {/* Policies sidebar */}
+                <Box sx={{ borderRadius: "var(--radius-card)", border: "1px solid var(--border-default)", bgcolor: "var(--card-bg)", overflow: "hidden", position: { md: "sticky" }, top: { md: 16 } }}>
+                  <Box sx={{ px: 2.5, py: 2, background: "var(--gradient-ai-soft)" }}>
+                    <Typography sx={{ fontWeight: 800, color: "var(--font-primary)", fontFamily: "var(--font-jakarta)", fontSize: "1.15rem" }}>Policies</Typography>
+                  </Box>
+                  <Box sx={{ p: 1.5 }}>
+                    {([
+                      { icon: "mdi:cctv", label: "Proctoring", on: (proctoringEnabled ?? true), value: (proctoringEnabled ?? true) ? "On" : "Off" },
+                      { icon: "mdi:auto-fix", label: "Auto-grade (AI)", on: evaluationMode !== "manual", value: evaluationMode !== "manual" ? "On" : "Off" },
+                      { icon: "mdi:eye-outline", label: "Show results", on: showResult, value: showResult ? "On" : "Off" },
+                      { icon: "mdi:tab", label: "Tab-switch guard", on: tabSwitchLimitEnabled, value: tabSwitchLimitEnabled ? "On" : "Off" },
+                      { icon: "mdi:email-outline", label: "Email on open", on: sendCommunication, value: sendCommunication ? "On" : "Off" },
+                      { icon: "mdi:cash-multiple", label: "Paid", on: isPaid, value: isPaid ? "On" : "Off" },
+                      { icon: "mdi:certificate", label: "Certificate", on: certificateAvailable, value: certificateAvailable ? (passBandLowerPercent ? `${passBandLowerPercent}% band` : "On") : "Off" },
+                    ]).map((p) => (
+                      <Box key={p.label} sx={{ display: "flex", alignItems: "center", gap: 1.25, py: 1.1, px: 1 }}>
+                        <IconWrapper icon={p.icon} size={18} color="var(--accent-indigo)" />
+                        <Typography sx={{ flexGrow: 1, fontSize: "0.9rem", fontWeight: 600, color: "var(--font-secondary)" }}>{p.label}</Typography>
+                        <Typography sx={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: "0.85rem", color: p.on ? "var(--success-500)" : "var(--font-tertiary)" }}>{p.value}</Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              </Box>
+            )}
+            {tab === "details" && (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                <BasicInfoSection
+                  title={title}
+                  instructions={instructions}
+                  description={description}
+                  onTitleChange={setTitle}
+                  onInstructionsChange={setInstructions}
+                  onDescriptionChange={setDescription}
+                  readOnly={readOnly}
+                />
+                <AssessmentSettingsSection
+                  durationMinutes={durationMinutes}
+                  startTime={startTime}
+                  endTime={endTime}
+                  isPaid={isPaid}
+                  price={price}
+                  currency={currency}
+                  isActive={isActive}
+                  courseIds={courseIds}
+                  courses={coursesWithAssessment}
+                  loadingCourses={loadingCourses}
+                  colleges={colleges}
+                  proctoringEnabled={proctoringEnabled}
+                  liveStreaming={liveStreaming}
+                  showLiveStreamingToggle={canConfigureLiveStreaming}
+                  sendCommunication={sendCommunication}
+                  emailNotificationEnabled={emailNotificationEnabled}
+                  onEmailEnabledChange={setEmailEditorHasData}
+                  emailRemindersEnabled={emailRemindersEnabled}
+                  emailReminderOffsets={emailReminderOffsets}
+                  onEmailRemindersEnabledChange={setEmailRemindersEnabled}
+                  onEmailReminderOffsetsChange={setEmailReminderOffsets}
+                  emailEditorRef={emailEditorRef}
+                  defaultEmailSubject={defaultEmailSubject}
+                  defaultEmailBody={emailBodySeed}
+                  existingEmailAttachmentUrl={existingEmailAttachmentUrl}
+                  existingEmailAttachmentName={existingEmailAttachmentName}
+                  emailSchedule={emailSchedule}
+                  showResult={showResult}
+                  evaluationMode={evaluationMode}
+                  allowMovementAcrossSections={allowMovementAcrossSections}
+                  tabSwitchLimitEnabled={tabSwitchLimitEnabled}
+                  tabSwitchLimitCount={tabSwitchLimitCount}
+                  certificateAvailable={certificateAvailable}
+                  passBandLowerPercent={passBandLowerPercent}
+                  passBandUpperPercent={passBandUpperPercent}
+                  passBandLowerError={passBandFieldErrors.lower}
+                  passBandUpperError={passBandFieldErrors.upper}
+                  allowDesktop={allowDesktop}
+                  allowMobile={allowMobile}
+                  allowTablet={allowTablet}
+                  onDurationChange={setDurationMinutes}
+                  onStartTimeChange={setStartTime}
+                  onEndTimeChange={setEndTime}
+                  onPaidChange={setIsPaid}
+                  onPriceChange={setPrice}
+                  onCurrencyChange={setCurrency}
+                  timezone={timezone}
+                  onTimezoneChange={setTimezone}
+                  onActiveChange={setIsActive}
+                  onCourseIdsChange={setCourseIds}
+                  onCollegesChange={setColleges}
+                  onProctoringEnabledChange={setProctoringEnabled}
+                  onLiveStreamingChange={setLiveStreaming}
+                  onSendCommunicationChange={(value) => {
+                    setSendCommunication(value);
+                    if (value) {
+                      // Make sure the editor has data when enabling so the
+                      // derived flag flips true. seedDefaults is a no-op when
+                      // content is already present.
+                      emailEditorRef.current?.seedDefaults();
+                    }
+                  }}
+                  onShowResultChange={setShowResult}
+                  onEvaluationModeChange={setEvaluationMode}
+                  onAllowMovementAcrossSectionsChange={
+                    setAllowMovementAcrossSections
+                  }
+                  onTabSwitchLimitEnabledChange={setTabSwitchLimitEnabled}
+                  onTabSwitchLimitCountChange={setTabSwitchLimitCount}
+                  onCertificateAvailableChange={setCertificateAvailable}
+                  onPassBandLowerPercentChange={setPassBandLowerPercent}
+                  onPassBandUpperPercentChange={setPassBandUpperPercent}
+                  onAllowDesktopChange={setAllowDesktop}
+                  onAllowMobileChange={setAllowMobile}
+                  onAllowTabletChange={setAllowTablet}
+                  readOnly={readOnly}
+                />
+                {!readOnly && (
+                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button
+                      variant="contained"
+                      onClick={handleSave}
+                      disabled={
+                        saving ||
+                        Boolean(
+                          passBandFieldErrors.lower || passBandFieldErrors.upper
+                        )
+                      }
+                      startIcon={
+                        saving ? (
+                          <CircularProgress size={18} color="inherit" />
+                        ) : (
+                          <IconWrapper icon="mdi:content-save" size={18} />
+                        )
+                      }
+                      sx={{
+                        bgcolor: "var(--accent-indigo)",
+                        "&:hover": { bgcolor: "var(--accent-indigo-dark)" },
+                      }}
+                    >
+                      {saving ? "Saving…" : "Save"}
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+            )}
+
+            {!hideAdminQuestions && tab === "questions" && (
+              <>
+                {!questionsData?.sections?.length ? (
+                  <Box sx={{ py: 6, textAlign: "center" }}>
+                    <Typography color="text.secondary" variant="body1">
+                      No questions to display.
+                    </Typography>
+                  </Box>
+                ) : (
+                  <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                    <Tabs
+                      value={questionsSubTab}
+                      onChange={(_, v: QuestionsSubTab) => setQuestionsSubTab(v)}
+                      sx={{
+                        minHeight: 40,
+                        "& .MuiTab-root": { textTransform: "none", fontWeight: 600, minHeight: 40, py: 0 },
+                        "& .MuiTabs-indicator": { height: 3, borderRadius: "3px 3px 0 0" },
+                      }}
+                    >
+                      <Tab
+                        value="mcq"
+                        label={
+                          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                            MCQ / Quiz
+                            {totalQuizQuestions > 0 && (
+                              <Chip
+                                label={totalQuizQuestions}
+                                size="small"
+                                sx={{
+                                  height: 20,
+                                  fontSize: "0.75rem",
+                                  bgcolor: questionsSubTab === "mcq" ? "primary.main" : "action.hover",
+                                  color: questionsSubTab === "mcq" ? "primary.contrastText" : "text.secondary",
+                                }}
+                              />
+                            )}
+                          </Box>
+                        }
+                      />
+                      <Tab
+                        value="coding"
+                        label={
+                          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                            Coding
+                            {totalCodingQuestions > 0 && (
+                              <Chip
+                                label={totalCodingQuestions}
+                                size="small"
+                                sx={{
+                                  height: 20,
+                                  fontSize: "0.75rem",
+                                  bgcolor: questionsSubTab === "coding" ? "primary.main" : "action.hover",
+                                  color: questionsSubTab === "coding" ? "primary.contrastText" : "text.secondary",
+                                }}
+                              />
+                            )}
+                          </Box>
+                        }
+                      />
+                      <Tab
+                        value="written"
+                        label={
+                          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                            Written
+                            {totalWrittenQuestions > 0 && (
+                              <Chip
+                                label={totalWrittenQuestions}
+                                size="small"
+                                sx={{
+                                  height: 20,
+                                  fontSize: "0.75rem",
+                                  bgcolor:
+                                    questionsSubTab === "written"
+                                      ? "warning.main"
+                                      : "action.hover",
+                                  color:
+                                    questionsSubTab === "written"
+                                      ? "primary.contrastText"
+                                      : "text.secondary",
+                                }}
+                              />
+                            )}
+                          </Box>
+                        }
+                      />
+                    </Tabs>
+
+                    {questionsSubTab === "mcq" && (
+                      <Paper
+                        variant="outlined"
+                        sx={{
+                          borderRadius: 2,
+                          overflow: "hidden",
+                          borderColor: "var(--border-default)",
+                          bgcolor: "var(--surface)",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            px: 2,
+                            py: 1.5,
+                            borderBottom: "1px solid var(--border-default)",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            flexWrap: "wrap",
+                            gap: 1,
+                            bgcolor: "var(--card-bg)",
+                          }}
+                        >
+                          <Typography variant="body2" color="text.secondary">
+                            {totalQuizQuestions} MCQ question{totalQuizQuestions !== 1 ? "s" : ""}
+                          </Typography>
+                          <Button
+                            variant="contained"
+                            size="small"
+                            startIcon={<IconWrapper icon="mdi:download" size={18} />}
+                            onClick={handleDownloadMCQQuestions}
+                            disabled={readOnly || totalQuizQuestions === 0}
+                            sx={{
+                              bgcolor: "var(--accent-indigo)",
+                              "&:hover": { bgcolor: "var(--accent-indigo-dark)" },
+                            }}
+                          >
+                            Download MCQ CSV
+                          </Button>
+                        </Box>
+                        {totalQuizQuestions === 0 ? (
+                          <Box sx={{ py: 6, textAlign: "center" }}>
+                            <Typography color="text.secondary">No MCQ questions.</Typography>
+                          </Box>
+                        ) : (
+                          <>
+                            <TableContainer sx={{ maxHeight: 440 }}>
+                              <Table size="small" stickyHeader>
+                                <TableHead>
+                                  <TableRow sx={{ bgcolor: "var(--surface)" }}>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>Section</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>Order</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>ID</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem", minWidth: 220 }}>Question</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>Correct</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>Difficulty</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, width: 56, textAlign: "center", fontSize: "0.8rem" }} />
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {paginatedQuizQuestions.map(({ section: sec, question: q }) => (
+                                    <TableRow key={`mcq-${q.id}`} hover sx={{ "&:hover": { bgcolor: "var(--surface)" } }}>
+                                      <TableCell sx={{ py: 1.5 }}>{sec.section_title}</TableCell>
+                                      <TableCell sx={{ py: 1.5 }}>{sec.order}</TableCell>
+                                      <TableCell sx={{ py: 1.5, fontFamily: "monospace" }}>{q.id}</TableCell>
+                                      <TableCell sx={{ py: 1.5, maxWidth: 280 }}>
+                                        <Typography
+                                          variant="body2"
+                                          sx={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            display: "-webkit-box",
+                                            WebkitLineClamp: 2,
+                                            WebkitBoxOrient: "vertical",
+                                          }}
+                                          title={q.question_text}
+                                        >
+                                          {q.question_text}
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell sx={{ py: 1.5, fontWeight: 600 }}>{q.correct_option}</TableCell>
+                                      <TableCell sx={{ py: 1.5 }}>{q.difficulty_level ?? "-"}</TableCell>
+                                      <TableCell sx={{ py: 1.5, textAlign: "center" }}>
+                                        <IconButton
+                                          size="small"
+                                          onClick={() => setPreviewMCQ({ section: sec, question: q })}
+                                          sx={{ color: "var(--accent-indigo)" }}
+                                          title="Preview"
+                                        >
+                                          <IconWrapper icon="mdi:eye-outline" size={18} />
+                                        </IconButton>
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                            <PaginationControls
+                              totalItems={totalQuizQuestions}
+                              page={questionsPage}
+                              limit={questionsLimit}
+                              onPageChange={setQuestionsPage}
+                              onLimitChange={(l) => { setQuestionsLimit(l); setQuestionsPage(1); }}
+                              itemLabel="questions"
+                            />
+                          </>
+                        )}
+                      </Paper>
+                    )}
+
+                    {questionsSubTab === "coding" && (
+                      <Paper
+                        variant="outlined"
+                        sx={{
+                          borderRadius: 2,
+                          overflow: "hidden",
+                          borderColor: "var(--border-default)",
+                          bgcolor: "var(--surface)",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            px: 2,
+                            py: 1.5,
+                            borderBottom: "1px solid var(--border-default)",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            flexWrap: "wrap",
+                            gap: 1,
+                            bgcolor: "var(--card-bg)",
+                          }}
+                        >
+                          <Typography variant="body2" color="text.secondary">
+                            {totalCodingQuestions} coding question{totalCodingQuestions !== 1 ? "s" : ""}
+                          </Typography>
+                          <Button
+                            variant="contained"
+                            size="small"
+                            startIcon={<IconWrapper icon="mdi:download" size={18} />}
+                            onClick={handleDownloadCodingQuestions}
+                            disabled={readOnly || totalCodingQuestions === 0}
+                            sx={{
+                              bgcolor: "var(--accent-indigo)",
+                              "&:hover": { bgcolor: "var(--accent-indigo-dark)" },
+                            }}
+                          >
+                            Download Coding CSV
+                          </Button>
+                        </Box>
+                        {totalCodingQuestions === 0 ? (
+                          <Box sx={{ py: 6, textAlign: "center" }}>
+                            <Typography color="text.secondary">No coding questions.</Typography>
+                          </Box>
+                        ) : (
+                          <>
+                            <TableContainer sx={{ maxHeight: 440 }}>
+                              <Table size="small" stickyHeader>
+                                <TableHead>
+                                  <TableRow sx={{ bgcolor: "var(--surface)" }}>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>Section</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>Order</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>ID</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem", minWidth: 260 }}>Title</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>Difficulty</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>Tags</TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, width: 56, textAlign: "center", fontSize: "0.8rem" }} />
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {paginatedCodingQuestions.map(({ section: sec, question: q }) => (
+                                    <TableRow key={`coding-${q.id}`} hover sx={{ "&:hover": { bgcolor: "var(--surface)" } }}>
+                                      <TableCell sx={{ py: 1.5 }}>{sec.section_title}</TableCell>
+                                      <TableCell sx={{ py: 1.5 }}>{sec.order}</TableCell>
+                                      <TableCell sx={{ py: 1.5, fontFamily: "monospace" }}>{q.id}</TableCell>
+                                      <TableCell sx={{ py: 1.5, maxWidth: 300 }}>
+                                        <Typography variant="body2" fontWeight={500}>
+                                          {q.title}
+                                        </Typography>
+                                        {q.problem_statement && (
+                                          <Typography
+                                            variant="caption"
+                                            sx={{ color: "var(--font-secondary)", display: "block", mt: 0.25 }}
+                                          >
+                                            {(() => {
+                                              const text = htmlToPlainText(String(q.problem_statement));
+                                              return text.length > 90 ? text.slice(0, 90) + "…" : text;
+                                            })()}
+                                          </Typography>
+                                        )}
+                                      </TableCell>
+                                      <TableCell sx={{ py: 1.5 }}>
+                                        {q.difficulty_level ? (
+                                          <Chip
+                                            label={q.difficulty_level}
+                                            size="small"
+                                            sx={{
+                                              bgcolor:
+                                                q.difficulty_level === "Easy"
+                                                  ? "color-mix(in srgb, var(--success-500) 14%, var(--surface) 86%)"
+                                                  : q.difficulty_level === "Medium"
+                                                  ? "color-mix(in srgb, var(--warning-500) 16%, var(--surface) 84%)"
+                                                  : "color-mix(in srgb, var(--warning-500) 20%, var(--surface) 80%)",
+                                              color:
+                                                q.difficulty_level === "Easy"
+                                                  ? "var(--success-500)"
+                                                  : q.difficulty_level === "Medium"
+                                                  ? "var(--warning-500)"
+                                                  : "var(--warning-500)",
+                                              fontWeight: 600,
+                                              fontSize: "0.7rem",
+                                            }}
+                                          />
+                                        ) : (
+                                          "-"
+                                        )}
+                                      </TableCell>
+                                      <TableCell sx={{ py: 1.5 }}>{q.tags ?? "-"}</TableCell>
+                                      <TableCell sx={{ py: 1.5, textAlign: "center" }}>
+                                        <IconButton
+                                          size="small"
+                                          onClick={() => setPreviewCoding({ section: sec, question: q })}
+                                          sx={{ color: "var(--accent-indigo)" }}
+                                          title="Preview"
+                                        >
+                                          <IconWrapper icon="mdi:eye-outline" size={18} />
+                                        </IconButton>
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                            <PaginationControls
+                              totalItems={totalCodingQuestions}
+                              page={codingQuestionsPage}
+                              limit={codingQuestionsLimit}
+                              onPageChange={setCodingQuestionsPage}
+                              onLimitChange={(l) => { setCodingQuestionsLimit(l); setCodingQuestionsPage(1); }}
+                              itemLabel="questions"
+                            />
+                          </>
+                        )}
+                      </Paper>
+                    )}
+
+                    {questionsSubTab === "written" && (
+                      <Paper
+                        variant="outlined"
+                        sx={{
+                          borderRadius: 2,
+                          overflow: "hidden",
+                          borderColor: "var(--border-default)",
+                          bgcolor: "var(--surface)",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            px: 2,
+                            py: 1.5,
+                            borderBottom: "1px solid var(--border-default)",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            flexWrap: "wrap",
+                            gap: 1,
+                            bgcolor: "var(--card-bg)",
+                          }}
+                        >
+                          <Typography variant="body2" color="text.secondary">
+                            {totalWrittenQuestions} written prompt
+                            {totalWrittenQuestions !== 1 ? "s" : ""}
+                          </Typography>
+                          <Button
+                            variant="contained"
+                            size="small"
+                            startIcon={<IconWrapper icon="mdi:download" size={18} />}
+                            onClick={handleDownloadWrittenQuestions}
+                            disabled={readOnly || totalWrittenQuestions === 0}
+                            sx={{
+                              bgcolor: "var(--warning-500)",
+                              "&:hover": { bgcolor: "color-mix(in srgb, var(--warning-500) 85%, var(--font-primary) 15%)" },
+                            }}
+                          >
+                            Download written CSV
+                          </Button>
+                        </Box>
+                        {totalWrittenQuestions === 0 ? (
+                          <Box sx={{ py: 6, textAlign: "center" }}>
+                            <Typography color="text.secondary">
+                              No written (subjective) questions.
+                            </Typography>
+                          </Box>
+                        ) : (
+                          <>
+                            <TableContainer sx={{ maxHeight: 440 }}>
+                              <Table size="small" stickyHeader>
+                                <TableHead>
+                                  <TableRow sx={{ bgcolor: "var(--surface)" }}>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>
+                                      Section
+                                    </TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>
+                                      Order
+                                    </TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>
+                                      ID
+                                    </TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem", minWidth: 220 }}>
+                                      Prompt
+                                    </TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>
+                                      Max marks
+                                    </TableCell>
+                                    <TableCell sx={{ fontWeight: 700, py: 1.5, fontSize: "0.8rem" }}>
+                                      Answer mode
+                                    </TableCell>
+                                    <TableCell
+                                      sx={{
+                                        fontWeight: 700,
+                                        py: 1.5,
+                                        width: 56,
+                                        textAlign: "center",
+                                        fontSize: "0.8rem",
+                                      }}
+                                    />
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {paginatedWrittenQuestions.map(({ section: sec, question: q }) => (
+                                    <TableRow
+                                      key={`written-${q.id}-${sec.section_id}`}
+                                      hover
+                                      sx={{ "&:hover": { bgcolor: "var(--surface)" } }}
+                                    >
+                                      <TableCell sx={{ py: 1.5 }}>{sec.section_title}</TableCell>
+                                      <TableCell sx={{ py: 1.5 }}>{sec.order}</TableCell>
+                                      <TableCell sx={{ py: 1.5, fontFamily: "monospace" }}>{q.id}</TableCell>
+                                      <TableCell sx={{ py: 1.5, maxWidth: 300 }}>
+                                        <Typography
+                                          variant="body2"
+                                          sx={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            display: "-webkit-box",
+                                            WebkitLineClamp: 2,
+                                            WebkitBoxOrient: "vertical",
+                                          }}
+                                          title={q.question_text}
+                                        >
+                                          {q.question_text}
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell sx={{ py: 1.5, fontWeight: 600 }}>{q.max_marks}</TableCell>
+                                      <TableCell sx={{ py: 1.5 }}>
+                                        <Chip
+                                          label={q.answer_mode || "text"}
+                                          size="small"
+                                          sx={{
+                                            bgcolor:
+                                              "color-mix(in srgb, var(--warning-500) 16%, var(--surface) 84%)",
+                                            color: "var(--warning-500)",
+                                            fontWeight: 600,
+                                            fontSize: "0.7rem",
+                                          }}
+                                        />
+                                      </TableCell>
+                                      <TableCell sx={{ py: 1.5, textAlign: "center" }}>
+                                        <IconButton
+                                          size="small"
+                                          onClick={() =>
+                                            setPreviewWritten({ section: sec, question: q })
+                                          }
+                                          sx={{ color: "var(--warning-500)" }}
+                                          title="Preview"
+                                        >
+                                          <IconWrapper icon="mdi:eye-outline" size={18} />
+                                        </IconButton>
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                            <PaginationControls
+                              totalItems={totalWrittenQuestions}
+                              page={writtenQuestionsPage}
+                              limit={writtenQuestionsLimit}
+                              onPageChange={setWrittenQuestionsPage}
+                              onLimitChange={(l) => {
+                                setWrittenQuestionsLimit(l);
+                                setWrittenQuestionsPage(1);
+                              }}
+                              itemLabel="prompts"
+                            />
+                          </>
+                        )}
+                      </Paper>
+                    )}
+                  </Box>
+                )}
+
+                {/* MCQ Preview Dialog */}
+                <Dialog
+                  open={!!previewMCQ}
+                  onClose={() => setPreviewMCQ(null)}
+                  maxWidth="sm"
+                  fullWidth
+                  PaperProps={{ sx: { borderRadius: 2 } }}
+                >
+                  <DialogTitle sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span>MCQ Preview · {previewMCQ?.section.section_title}</span>
+                    <IconButton size="small" onClick={() => setPreviewMCQ(null)} aria-label="Close">
+                      <IconWrapper icon="mdi:close" size={20} />
+                    </IconButton>
+                  </DialogTitle>
+                  <DialogContent dividers>
+                    {previewMCQ && (
+                      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                        <Typography variant="body1">{previewMCQ.question.question_text}</Typography>
+                        <Box sx={{ pl: 2 }}>
+                          <Typography variant="body2"><strong>A:</strong> {previewMCQ.question.option_a}</Typography>
+                          <Typography variant="body2"><strong>B:</strong> {previewMCQ.question.option_b}</Typography>
+                          <Typography variant="body2"><strong>C:</strong> {previewMCQ.question.option_c}</Typography>
+                          <Typography variant="body2"><strong>D:</strong> {previewMCQ.question.option_d}</Typography>
+                        </Box>
+                        <Typography variant="body2" color="primary"><strong>Correct:</strong> {previewMCQ.question.correct_option}</Typography>
+                        {previewMCQ.question.explanation && (
+                          <Typography variant="body2" color="text.secondary">{previewMCQ.question.explanation}</Typography>
+                        )}
+                        {previewMCQ.question.difficulty_level && (
+                          <Chip label={previewMCQ.question.difficulty_level} size="small" />
+                        )}
+                      </Box>
+                    )}
+                  </DialogContent>
+                </Dialog>
+
+                {/* Coding Preview Dialog */}
+                <Dialog
+                  open={!!previewCoding}
+                  onClose={() => setPreviewCoding(null)}
+                  maxWidth="md"
+                  fullWidth
+                  PaperProps={{ sx: { maxHeight: "90vh", borderRadius: 2 } }}
+                >
+                  <DialogTitle sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span>Coding Problem Preview · {previewCoding?.section.section_title}</span>
+                    <IconButton size="small" onClick={() => setPreviewCoding(null)} aria-label="Close">
+                      <IconWrapper icon="mdi:close" size={20} />
+                    </IconButton>
+                  </DialogTitle>
+                  <DialogContent dividers sx={{ p: 0, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+                    {previewCoding && (
+                      <Box sx={{ overflow: "auto", flex: 1, minHeight: 0 }}>
+                        <ProblemDescription problemData={codingProblemDataForPreview(previewCoding.question)} />
+                      </Box>
+                    )}
+                  </DialogContent>
+                </Dialog>
+
+                {/* Written / subjective preview dialog */}
+                <Dialog
+                  open={!!previewWritten}
+                  onClose={() => setPreviewWritten(null)}
+                  maxWidth="sm"
+                  fullWidth
+                  PaperProps={{ sx: { borderRadius: 2 } }}
+                >
+                  <DialogTitle sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span>Written prompt · {previewWritten?.section.section_title}</span>
+                    <IconButton size="small" onClick={() => setPreviewWritten(null)} aria-label="Close">
+                      <IconWrapper icon="mdi:close" size={20} />
+                    </IconButton>
+                  </DialogTitle>
+                  <DialogContent dividers>
+                    {previewWritten && (
+                      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                        <Typography variant="subtitle2" color="text.secondary">
+                          Question
+                        </Typography>
+                        <Typography variant="body1">{previewWritten.question.question_text}</Typography>
+                        <Typography variant="subtitle2" color="text.secondary">
+                          Evaluation prompt (rubric / AI)
+                        </Typography>
+                        <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
+                          {previewWritten.question.evaluation_prompt}
+                        </Typography>
+                        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", alignItems: "center" }}>
+                          <Chip
+                            label={`Max marks: ${previewWritten.question.max_marks}`}
+                            size="small"
+                            sx={{ fontWeight: 600 }}
+                          />
+                          <Chip
+                            label={previewWritten.question.answer_mode || "text"}
+                            size="small"
+                            sx={{
+                              bgcolor: "color-mix(in srgb, var(--warning-500) 16%, var(--surface) 84%)",
+                              color: "var(--warning-500)",
+                              fontWeight: 600,
+                            }}
+                          />
+                          {previewWritten.question.question_type ? (
+                            <Chip label={previewWritten.question.question_type} size="small" variant="outlined" />
+                          ) : null}
+                        </Box>
+                      </Box>
+                    )}
+                  </DialogContent>
+                </Dialog>
+              </>
+            )}
+
+            {tab === "submissions" && (
+              <>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    mb: 2,
+                    p: { xs: 1.5, sm: 2 },
+                    borderRadius: "var(--radius-card)",
+                    border: "1px solid var(--border-default)",
+                    background: "var(--gradient-ai-soft)",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      flexWrap: "wrap",
+                      gap: 1.5,
+                    }}
+                  >
+                    <Box>
+                      <Typography variant="h6" sx={{ fontWeight: 800, fontFamily: "var(--font-jakarta)", color: "var(--font-primary)" }}>
+                        Submissions workspace
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {totalSubmissions} attempt{totalSubmissions === 1 ? "" : "s"} ·{" "}
+                        {evaluationMode === "manual" ? "manual evaluation" : "AI auto-evaluation"}
+                        {proctoringEnabled ? " · integrity flags surfaced" : ""}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                      {evaluationMode === "manual" && (
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          startIcon={<IconWrapper icon="mdi:publish" size={18} />}
+                          onClick={() => void handleBulkPublish()}
+                        >
+                          Publish evaluated
+                        </Button>
+                      )}
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        startIcon={<IconWrapper icon="mdi:download" size={18} />}
+                        onClick={handleDownloadSubmissions}
+                        disabled={
+                          !submissionsData?.submissions?.length ||
+                          (readOnly && !hideAdminQuestions)
+                        }
+                        sx={{
+                          textTransform: "none",
+                          fontWeight: 600,
+                          borderRadius: 2,
+                          color: "var(--font-secondary)",
+                          borderColor: "var(--border-default)",
+                          "&:hover": { borderColor: "var(--accent-indigo)", color: "var(--accent-indigo)" },
+                        }}
+                      >
+                        Table
+                      </Button>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        startIcon={
+                          downloadingAllSubmissionPdfs ? (
+                            <CircularProgress size={16} color="inherit" />
+                          ) : (
+                            <IconWrapper icon="mdi:download" size={18} />
+                          )
+                        }
+                        onClick={() => void handleDownloadAllSubmissionPdfsZip()}
+                        disabled={
+                          downloadingAllSubmissionPdfs ||
+                          !submissionsData?.submissions?.length ||
+                          (readOnly && !hideAdminQuestions)
+                        }
+                        sx={{
+                          textTransform: "none",
+                          fontWeight: 700,
+                          borderRadius: 2,
+                          color: "#fff",
+                          background: "var(--gradient-ai)",
+                          "&:hover": { filter: "brightness(1.05)" },
+                          "&.Mui-disabled": {
+                            background: "color-mix(in srgb, var(--ai-violet) 18%, var(--surface) 82%)",
+                            color: "var(--font-secondary)",
+                          },
+                        }}
+                      >
+                        {downloadingAllSubmissionPdfs
+                          ? "Preparing ZIP..."
+                          : "All PDFs"}
+                      </Button>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ mt: 1.5, display: "flex", gap: 1, flexWrap: "wrap" }}>
+                    <Chip size="small" label={`Total ${totalSubmissions}`} sx={{ fontWeight: 700 }} />
+                    {evaluationMode === "manual" ? (
+                      <>
+                        <Chip size="small" color="warning" variant="outlined" label={`Pending ${manualReviewStats.pending}`} />
+                        <Chip size="small" color="info" variant="outlined" label={`Evaluated ${manualReviewStats.evaluated}`} />
+                        <Chip size="small" color="success" variant="outlined" label={`Published ${manualReviewStats.published}`} />
+                      </>
+                    ) : (
+                      <Chip size="small" color="info" variant="outlined" label="Auto evaluation mode" />
+                    )}
+                  </Box>
+                </Paper>
+                {!submissionsData?.submissions?.length ? (
+                  submissionsLoading ||
+                  (submissionsMeta && !submissionsMeta.ready) ? (
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 1.5, py: 2 }}
+                    >
+                      <CircularProgress size={20} />
+                      <Typography color="text.secondary">
+                        {submissionsMeta && submissionsMeta.count > 0
+                          ? `Building results for ${submissionsMeta.count} submission${
+                              submissionsMeta.count === 1 ? "" : "s"
+                            }…${
+                              submissionsMeta.total_count
+                                ? ` (${submissionsMeta.processed_count}/${submissionsMeta.total_count})`
+                                : ""
+                            }`
+                          : "Loading submissions…"}
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Typography color="text.secondary">
+                      No submissions yet.
+                    </Typography>
+                  )
+                ) : (
+                  <>
+                    <TableContainer
+                      sx={{
+                        maxHeight: 560,
+                        overflow: "auto",
+                        border: "1px solid var(--border-default)",
+                        borderRadius: "var(--radius-card)",
+                        bgcolor: "var(--card-bg)",
+                      }}
+                    >
+                      <Table size="small" stickyHeader>
+                        <TableHead>
+                          <TableRow sx={{ bgcolor: "var(--surface)" }}>
+                            {(["STUDENT", "SCORE", "INTEGRITY", "EVALUATION"] as const).map((h) => (
+                              <TableCell key={h} sx={{ fontWeight: 800, py: 1.5, fontSize: "0.7rem", letterSpacing: "0.08em", color: "var(--font-tertiary)", ...(h === "STUDENT" ? { minWidth: 260 } : { minWidth: 120 }) }}>
+                                {h}
+                              </TableCell>
+                            ))}
+                            {evaluationMode === "manual" && (
+                              <>
+                                <TableCell sx={{ fontWeight: 800, py: 1.5, fontSize: "0.7rem", letterSpacing: "0.08em", color: "var(--font-tertiary)" }}>REVIEW</TableCell>
+                                <TableCell sx={{ fontWeight: 800, py: 1.5, fontSize: "0.7rem", letterSpacing: "0.08em", color: "var(--font-tertiary)" }}>EVALUATED</TableCell>
+                              </>
+                            )}
+                            <TableCell sx={{ py: 1.5 }} align="right" />
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {paginatedSubmissions.map((s, idx) => (
+                            <TableRow
+                              key={`${s.email}-${s.submitted_at ?? idx}-${(submissionsPage - 1) * submissionsLimit + idx}`}
+                              hover
+                              sx={{
+                                "&:nth-of-type(even)": {
+                                  bgcolor:
+                                    "color-mix(in srgb, var(--font-secondary) 8%, transparent)",
+                                },
+                              }}
+                            >
+                              {/* STUDENT: avatar + name + meta line (mockup) */}
+                              <TableCell sx={{ py: 1.5 }}>
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
+                                  <Avatar
+                                    src={(s as any).profile_pic_url || undefined}
+                                    sx={{
+                                      width: 36,
+                                      height: 36,
+                                      fontSize: 13,
+                                      fontWeight: 700,
+                                      bgcolor:
+                                        "color-mix(in srgb, var(--accent-indigo) 16%, transparent)",
+                                      color: "var(--accent-indigo-dark)",
+                                    }}
+                                  >
+                                    {buildInitials(s.name)}
+                                  </Avatar>
+                                  <Box sx={{ minWidth: 0 }}>
+                                    <Typography variant="body2" sx={{ fontWeight: 700, color: "var(--font-primary)" }}>
+                                      {s.name || "Unknown learner"}
+                                    </Typography>
+                                    <Typography variant="caption" sx={{ color: "var(--font-tertiary)", display: "block" }}>
+                                      {[
+                                        s.email || null,
+                                        s.status === "in_progress" ? "in progress" : formatSubmissionDate(s.submitted_at),
+                                        s.attempted_questions != null
+                                          ? `${s.attempted_questions}/${s.total_questions ?? "-"} answered`
+                                          : null,
+                                      ].filter(Boolean).join(" · ")}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              </TableCell>
+                              {/* SCORE: mono value /max + colored band bar (mockup) */}
+                              <TableCell sx={{ py: 1.5, minWidth: 140 }}>
+                                {s.status === "in_progress" || s.overall_score == null ? (
+                                  (() => {
+                                    const d = getScoreChipDisplay(s, evaluationMode);
+                                    return <Chip size="small" label={d.label} color={d.color} variant={d.variant} sx={{ fontWeight: 700 }} />;
+                                  })()
+                                ) : (
+                                  (() => {
+                                    const max = s.maximum_marks ?? 0;
+                                    const pct = max > 0 ? (Number(s.overall_score) / max) * 100 : (s.percentage ?? 0);
+                                    const barColor = pct >= 70 ? "var(--success-500)" : pct >= 40 ? "var(--warning-500)" : "var(--error-500)";
+                                    return (
+                                      <Box>
+                                        <Typography component="span" sx={{ fontFamily: "var(--font-mono)", fontWeight: 800, color: barColor }}>
+                                          {s.overall_score}
+                                        </Typography>
+                                        <Typography component="span" variant="caption" sx={{ fontFamily: "var(--font-mono)", color: "var(--font-tertiary)" }}>
+                                          {" "}/{max || "-"}
+                                        </Typography>
+                                        <Box sx={{ mt: 0.5, height: 5, borderRadius: 999, bgcolor: "var(--surface)", overflow: "hidden", maxWidth: 120 }}>
+                                          <Box sx={{ width: `${Math.max(0, Math.min(100, pct))}%`, height: "100%", borderRadius: 999, bgcolor: barColor }} />
+                                        </Box>
+                                      </Box>
+                                    );
+                                  })()
+                                )}
+                              </TableCell>
+                              {/* INTEGRITY: real proctoring violation count (mockup) */}
+                              <TableCell sx={{ py: 1.5 }}>
+                                {(() => {
+                                  if (!proctoringEnabled) {
+                                    return <Typography variant="caption" sx={{ color: "var(--font-tertiary)" }}>-</Typography>;
+                                  }
+                                  const flags = s.proctoring?.total_violation_count ?? 0;
+                                  return flags > 0 ? (
+                                    <StatusChip label={`${flags} flag${flags === 1 ? "" : "s"}`} tone="error" icon="mdi:shield-alert-outline" />
+                                  ) : (
+                                    <StatusChip label="Clean" tone="success" icon="mdi:check" />
+                                  );
+                                })()}
+                              </TableCell>
+                              {/* EVALUATION: Auto (AI) vs Manual (mockup) */}
+                              <TableCell sx={{ py: 1.5 }}>
+                                {evaluationMode === "manual" ? (
+                                  <StatusChip label="Manual" tone="warning" icon="mdi:pencil-outline" />
+                                ) : (
+                                  <StatusChip label="Auto" tone="ai" icon="mdi:auto-fix" />
+                                )}
+                              </TableCell>
+                              {evaluationMode === "manual" && (
+                                <>
+                                  <TableCell sx={{ py: 1.5 }}>
+                                    <Chip
+                                      size="small"
+                                      label={humanizeReviewStatus((s as any).review_status)}
+                                      color={reviewStatusChipColor((s as any).review_status)}
+                                      variant={(s as any).review_status === "published" ? "filled" : "outlined"}
+                                    />
+                                  </TableCell>
+                                  <TableCell sx={{ py: 1.25 }}>
+                                    <Chip
+                                      size="small"
+                                      label={
+                                        s.status === "in_progress"
+                                          ? "In progress"
+                                          : s.overall_score != null
+                                            ? `${s.overall_score}/${s.maximum_marks ?? "-"}`
+                                            : "Not evaluated"
+                                      }
+                                      color={
+                                        s.status === "in_progress"
+                                          ? "warning"
+                                          : s.overall_score != null
+                                            ? "primary"
+                                            : "default"
+                                      }
+                                      variant={s.overall_score != null && s.status !== "in_progress" ? "filled" : "outlined"}
+                                      sx={{ fontWeight: 700 }}
+                                    />
+                                  </TableCell>
+                                </>
+                              )}
+                              {/* Row actions: manual opens the actions menu (Evaluate / Download PDF);
+                                  auto is already graded, so it offers a direct per-student report download. */}
+                              <TableCell sx={{ py: 1.5 }} align="right">
+                                {evaluationMode === "manual" ? (
+                                  <IconButton
+                                    size="small"
+                                    onClick={(event) =>
+                                      handleOpenSubmissionActionsMenu(event, s)
+                                    }
+                                    aria-label={`Open actions for ${s.name || "submission"}`}
+                                  >
+                                    <IconWrapper icon="mdi:dots-vertical" size={20} />
+                                  </IconButton>
+                                ) : (
+                                  <Button
+                                    size="small"
+                                    onClick={() => handleDownloadSubmissionPdf(s)}
+                                    startIcon={<IconWrapper icon="mdi:file-download-outline" size={15} />}
+                                    sx={{ textTransform: "none", fontWeight: 700, color: "var(--accent-indigo)", whiteSpace: "nowrap" }}
+                                  >
+                                    Download report
+                                  </Button>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <Menu
+                      anchorEl={submissionActionsAnchorEl}
+                      open={Boolean(submissionActionsAnchorEl) && Boolean(submissionActionsTarget)}
+                      onClose={handleCloseSubmissionActionsMenu}
+                      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                      transformOrigin={{ vertical: "top", horizontal: "left" }}
+                    >
+                      <MenuItem
+                        onClick={() => {
+                          if (submissionActionsTarget) {
+                            router.push(
+                              `/admin/assessment/${assessmentId}/submissions/${Number(
+                                (submissionActionsTarget as any).submission_id,
+                              )}`,
+                            );
+                          }
+                          handleCloseSubmissionActionsMenu();
+                        }}
+                      >
+                        <ListItemIcon>
+                          <IconWrapper icon="mdi:file-document-edit-outline" size={18} />
+                        </ListItemIcon>
+                        <ListItemText primary="Evaluate" />
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          if (submissionActionsTarget) {
+                            handleDownloadSubmissionPdf(submissionActionsTarget);
+                          }
+                          handleCloseSubmissionActionsMenu();
+                        }}
+                        disabled={readOnly && !hideAdminQuestions}
+                      >
+                        <ListItemIcon>
+                          <IconWrapper icon="mdi:file-download-outline" size={18} />
+                        </ListItemIcon>
+                        <ListItemText primary="Download PDF" />
+                      </MenuItem>
+                      <MenuItem
+                        onClick={async () => {
+                          if (submissionActionsTarget) {
+                            await handlePublishSubmission(submissionActionsTarget);
+                          }
+                          handleCloseSubmissionActionsMenu();
+                        }}
+                      >
+                        <ListItemIcon>
+                          <IconWrapper icon="mdi:publish" size={18} />
+                        </ListItemIcon>
+                        <ListItemText primary="Publish" />
+                      </MenuItem>
+                    </Menu>
+                    {totalSubmissions > 0 && (
+                      <Box
+                        sx={{
+                          pt: 2,
+                          borderTop: "1px solid var(--border-default)",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                          gap: 2,
+                        }}
+                      >
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            Showing{" "}
+                            {(submissionsPage - 1) * submissionsLimit + 1} to{" "}
+                            {Math.min(
+                              totalSubmissions,
+                              submissionsPage * submissionsLimit
+                            )}{" "}
+                            of {totalSubmissions}
+                          </Typography>
+                          <PerPageSelect
+                            value={submissionsLimit}
+                            onChange={(v) => {
+                              setSubmissionsLimit(v);
+                              setSubmissionsPage(1);
+                            }}
+                          />
+                        </Box>
+                        <Pagination
+                          count={Math.ceil(totalSubmissions / submissionsLimit)}
+                          page={submissionsPage}
+                          onChange={(_, v) => setSubmissionsPage(v)}
+                          color="primary"
+                          size="small"
+                          showFirstButton={false}
+                          showLastButton={false}
+                          boundaryCount={1}
+                          siblingCount={0}
+                          disabled={
+                            Math.ceil(
+                              totalSubmissions / submissionsLimit
+                            ) <= 1
+                          }
+                        />
+                      </Box>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+
+            {tab === "analytics" && (
+              <Box
+                sx={{
+                  bgcolor: "background.paper",
+                  overflow: "visible",
+                  py: { xs: 0.5, sm: 1 },
+                  px: { xs: 0, sm: 0.5 },
+                }}
+              >
+                {analyticsComputing && !analyticsData && (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      p: 2,
+                      mb: 1.5,
+                      borderRadius: 1,
+                      bgcolor: "action.hover",
+                    }}
+                  >
+                    <CircularProgress size={20} />
+                    <Typography variant="body2" color="text.secondary">
+                      Analytics for this assessment are being computed (large submission
+                      count). This refreshes automatically in a few seconds…
+                    </Typography>
+                  </Box>
+                )}
+                <AssessmentAnalyticsCharts
+                  data={analyticsData}
+                  toolbar={{
+                    topNDraft: analyticsTopNDraft,
+                    onTopNDraftChange: setAnalyticsTopNDraft,
+                    appliedTopN: analyticsTopNApplied,
+                    onApply: handleAnalyticsApplyTopPerformers,
+                    onReload: handleAnalyticsReload,
+                    onDownloadPdf: handleDownloadAnalyticsPdf,
+                    loading: analyticsLoading,
+                    canDownloadPdf: !!analyticsData && !analyticsLoading,
+                  }}
+                />
+              </Box>
+            )}
+          </Box>
+        </Paper>
+      </Box>
+    </MainLayout>
+  );
+}

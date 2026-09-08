@@ -1,0 +1,249 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { Box, Paper, Typography, Button, TextField } from "@mui/material";
+import { IconWrapper } from "@/components/common/IconWrapper";
+import { LoadingButton } from "@/components/common/LoadingButton";
+import { UserProfile } from "@/lib/services/profile.service";
+import { PROFILE, TILE_GRADIENT } from "./theme/profileTokens";
+
+interface ProfileSummaryProps {
+  profile: UserProfile;
+  onSave?: (updatedProfile: Partial<UserProfile>) => Promise<void>;
+  readOnly?: boolean;
+}
+
+const MAX_PREVIEW_LENGTH = 200;
+
+export function ProfileSummary({
+  profile,
+  onSave,
+  readOnly = false,
+}: ProfileSummaryProps) {
+  const { t } = useTranslation("common");
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [formData, setFormData] = useState({
+    bio: profile.bio || "",
+  });
+
+  useEffect(() => {
+    if (!editing) setFormData({ bio: profile.bio || "" });
+  }, [profile.bio, editing]);
+
+  const bio = profile.bio || "";
+  const shouldTruncate = bio.length > MAX_PREVIEW_LENGTH;
+  const displayText = expanded || !shouldTruncate ? bio : `${bio.substring(0, MAX_PREVIEW_LENGTH)}...`;
+
+  const handleSave = async () => {
+    if (!onSave) return;
+    try {
+      setSaving(true);
+      const dataToSave = {
+        bio: formData.bio || null,
+      };
+      await onSave(dataToSave);
+      setEditing(false);
+    } catch (error) {
+      // Silently handle profile save error
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setFormData({
+      bio: profile.bio || "",
+    });
+    setEditing(false);
+  };
+
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        p: { xs: 2, sm: 3 },
+        border: "1px solid color-mix(in srgb, var(--font-primary) 10%, transparent)",
+        borderRadius: 4,
+        boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 12px 28px -20px rgba(30,27,75,0.28)",
+        transition: "box-shadow 0.2s ease",
+        "&:hover": {
+          boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 16px 34px -20px rgba(30,27,75,0.34)",
+        },
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 2.5,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, minWidth: 0 }}>
+          <Box
+            sx={{
+              width: 30,
+              height: 30,
+              borderRadius: 2,
+              flexShrink: 0,
+              display: "grid",
+              placeItems: "center",
+              color: "#fff",
+              background: TILE_GRADIENT,
+            }}
+          >
+            <IconWrapper icon="mdi:text-account" size={17} />
+          </Box>
+          <Typography
+            component="h3"
+            sx={{
+              fontWeight: 800,
+              color: PROFILE.ink,
+              fontSize: "0.95rem",
+              lineHeight: 1.2,
+              letterSpacing: "-0.2px",
+            }}
+          >
+            {t("profile.about")}
+          </Typography>
+        </Box>
+        {!readOnly && (
+          !editing ? (
+            <Button
+              variant="text"
+              size="small"
+              startIcon={<IconWrapper icon="mdi:pencil" size={16} />}
+              onClick={() => {
+                setFormData({ bio: profile.bio || "" });
+                setEditing(true);
+              }}
+              sx={{
+                textTransform: "none",
+                color: "var(--primary-500)",
+                fontWeight: 600,
+                fontSize: "0.9375rem",
+                "&:hover": {
+                  backgroundColor: "color-mix(in srgb, var(--primary-500) 10%, transparent)",
+                },
+                transition: "all 0.2s ease",
+              }}
+            >
+              {t("profile.edit")}
+            </Button>
+          ) : (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Button
+                variant="text"
+                size="small"
+                onClick={handleCancel}
+                disabled={saving}
+                sx={{
+                  textTransform: "none",
+                  fontWeight: 600,
+                  color: "var(--font-secondary)",
+                  "&:hover": {
+                    backgroundColor: "color-mix(in srgb, var(--surface) 85%, var(--background))",
+                  },
+                }}
+              >
+                {t("profile.cancel")}
+              </Button>
+              <LoadingButton
+                variant="contained"
+                size="small"
+                onClick={handleSave}
+                loading={saving}
+                loadingText={t("profile.saving")}
+                sx={{
+                  textTransform: "none",
+                  fontWeight: 600,
+                  backgroundColor: "var(--primary-500)",
+                  borderRadius: "24px",
+                  px: 2,
+                  "&:hover": {
+                    backgroundColor: "var(--primary-700)",
+                  },
+                  transition: "all 0.2s ease",
+                }}
+              >
+                {t("profile.save")}
+              </LoadingButton>
+            </Box>
+          )
+        )}
+      </Box>
+
+      {editing ? (
+        <TextField
+          value={formData.bio}
+          onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+          fullWidth
+          multiline
+          rows={6}
+          placeholder={t("profile.tellUsAboutYourself")}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 1.5,
+              fontSize: "0.9375rem",
+              lineHeight: 1.5,
+            },
+          }}
+        />
+      ) : (
+        <Box>
+          {bio ? (
+            <>
+              <Typography
+                variant="body1"
+                sx={{
+                  color: "var(--font-primary)",
+                  fontSize: "0.9375rem",
+                  lineHeight: 1.7,
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                  letterSpacing: "0.01em",
+                }}
+              >
+                {displayText}
+              </Typography>
+              {shouldTruncate && (
+                <Button
+                  variant="text"
+                  size="small"
+                  onClick={() => setExpanded(!expanded)}
+                  sx={{
+                    textTransform: "none",
+                    color: "var(--primary-500)",
+                    fontWeight: 600,
+                    fontSize: "0.875rem",
+                    mt: 1,
+                    px: 0,
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  {expanded ? t("profile.showLess") : t("profile.showMore")}
+                </Button>
+              )}
+            </>
+          ) : (
+            <Typography
+              variant="body2"
+              sx={{
+                color: "var(--font-secondary)",
+                fontStyle: "italic",
+              }}
+            >
+              {t("profile.noSummaryClickEdit")}
+            </Typography>
+          )}
+        </Box>
+      )}
+    </Paper>
+  );
+}

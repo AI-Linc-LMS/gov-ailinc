@@ -1,0 +1,97 @@
+import apiClient from "./api";
+import { config } from "../config";
+
+const BASE = `/live-class/api/clients/${config.clientId}`;
+
+export interface LiveClassSession {
+  id: number;
+  topic_name?: string;
+  title?: string;
+  description?: string;
+  class_datetime?: string;
+  timezone?: string | null;
+  scheduled_time?: string;
+  duration_minutes: number;
+  instructor?: { id: number; name?: string } | number;
+  status?: string;
+  meeting_link?: string;
+  join_link?: string | null;
+  is_google_meet?: boolean;
+  closes_at?: string | null;
+  course?: number | null;
+  course_detail?: { id: number; title: string; slug: string } | null;
+  cohort?: number | null;
+  cohort_detail?: { id: number; name: string; status: string } | null;
+  adaptive_course?: number | null;
+  adaptive_course_detail?: { id: number; title: string; is_published: boolean } | null;
+}
+
+export interface CreateLiveClassSessionPayload {
+  topic_name: string;
+  description?: string;
+  /** Naive wall-clock ("YYYY-MM-DDTHH:mm"); the backend interprets it in `timezone`. */
+  class_datetime: string;
+  /** IANA zone the wall-clock is in (defaults to the picker's browser/tenant zone). */
+  timezone?: string;
+  duration_minutes: number;
+  instructor_id?: number;
+  instructor?: number;
+  course?: number | null;
+  cohort?: number | null;
+  adaptive_course?: number | null;
+  join_link?: string;
+  is_google_meet?: boolean;
+  google_source?: "platform" | "manual";
+  zoom_meeting_type?: "meeting" | "webinar";
+  closes_at?: string | null;
+}
+
+export interface UpdateLiveClassSessionPayload {
+  topic_name?: string;
+  description?: string;
+  /** Naive wall-clock; interpreted in `timezone` when both are sent together. */
+  class_datetime?: string;
+  timezone?: string;
+  duration_minutes?: number;
+  meeting_link?: string;
+  status?: string;
+  course?: number | null;
+  cohort?: number | null;
+  adaptive_course?: number | null;
+}
+
+export const liveClassService = {
+  getSessions: async (params?: {
+    status?: string;
+    upcoming?: boolean;
+  }): Promise<LiveClassSession[]> => {
+    const query = new URLSearchParams();
+    if (params?.status) query.append("status", params.status);
+    if (params?.upcoming != null)
+      query.append("upcoming", String(params.upcoming));
+    const url = `${BASE}/sessions/${query.toString() ? `?${query}` : ""}`;
+    const response = await apiClient.get<LiveClassSession[]>(url);
+    return response.data;
+  },
+
+  createSession: async (
+    payload: CreateLiveClassSessionPayload
+  ): Promise<LiveClassSession> => {
+    const response = await apiClient.post<LiveClassSession>(
+      `${BASE}/sessions/create/`,
+      payload
+    );
+    return response.data;
+  },
+
+  updateSession: async (
+    classId: number,
+    payload: UpdateLiveClassSessionPayload
+  ): Promise<LiveClassSession> => {
+    const response = await apiClient.patch<LiveClassSession>(
+      `${BASE}/sessions/${classId}/update/`,
+      payload
+    );
+    return response.data;
+  },
+};
