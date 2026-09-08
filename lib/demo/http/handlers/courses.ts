@@ -1,10 +1,19 @@
 /**
- * The course list the dashboard's "My Courses" rail and the catalogue read.
+ * The legacy `lms/` course shape.
  *
- * This is the legacy `lms/` shape. The product is mid-migration to adaptive
- * courses (which have their own endpoints and their own richer payload), but the
- * dashboard still sources this rail from here, so both are served from the same
- * seed to keep them consistent.
+ * The product is mid-migration to adaptive courses (which have their own
+ * endpoints and their own richer payload). For this tenant the migration is
+ * finished at the sidebar: `db/tenant.ts` leaves the `course` feature flag OFF,
+ * because the mission's programmes ARE the adaptive courses and two entries
+ * called Courses pointing at different products is not a thing to show an
+ * officer.
+ *
+ * These routes stay served anyway, because the flag hides a nav item and not the
+ * API. The admin enrolment picker (`EnrollmentJobStatus.tsx`) still lists
+ * programmes from `GET /lms/.../courses/`, so an empty answer here would leave a
+ * Programme Officer choosing a course from an empty dropdown. Everything is
+ * projected off the same nineteen-course seed the adaptive endpoints use, so the
+ * two can never disagree about what the mission runs.
  */
 
 import { defineRoutes } from "../router";
@@ -27,14 +36,27 @@ import { seededSample } from "../../random";
 
 const MODULE = "courses";
 
-/** Employers shown as "trusted by" on a course page. */
+/**
+ * Recruiting bodies and public undertakings shown as "trusted by" on a course
+ * page.
+ *
+ * For a state mission this strip means "these are the organisations our
+ * candidates are selected into", so it names recruiting bodies and state
+ * undertakings rather than employers with a careers brand. The same names appear
+ * on the notification board in `db/jobs.ts`, which is deliberate: an officer who
+ * reads one screen and then the other should meet the same institutions.
+ *
+ * The logos are generated initials tiles (`companyLogoFor`), never a fetched
+ * emblem, because reproducing a real government seal is out of bounds and the
+ * demo may not reach the network.
+ */
 const TRUSTED_BY = [
-  "Razorpay",
-  "Zerodha",
-  "Swiggy",
-  "Freshworks",
-  "Postman",
-  "Atlassian",
+  "TGPSC",
+  "SSC",
+  "IBPS",
+  "Singareni Collieries",
+  "TGTRANSCO",
+  "BHEL Hyderabad",
 ].map((name, i) => ({ id: i + 1, name, logo_url: companyLogoFor(name) }));
 
 /** Courses the visitor enrolled in during this session, on top of the seed. */

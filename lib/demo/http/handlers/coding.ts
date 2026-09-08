@@ -1,6 +1,24 @@
 /**
  * The coding workspace.
  *
+ * UNREACHABLE FOR THIS TENANT, and left working on purpose. Every route below is
+ * registered, but no aspirant reaches one: the nineteen courses in
+ * `db/courses.ts` declare only `article`, `quiz` and `assignment` topics, so
+ * nothing in the catalogue ever mints a coding config id. That is a content
+ * decision from the build brief, not an oversight. There is no code judge in
+ * this product line, and a recruitment-exam or vocational-trade catalogue that
+ * served a coding problem would be advertising a capability the mission does not
+ * assess.
+ *
+ * Not deleted because `db/coding-bank.ts` still exports `CODING_PROBLEMS` to
+ * `assessment-admin.ts`, and because a handler that returns a correct 404 costs
+ * nothing while a missing route returns the transport's generic failure.
+ *
+ * What would have to be true to use it again: a course topic would have to carry
+ * a `coding` kind, which only makes sense if this tenant ever teaches writing
+ * code as the trade itself. Until then, treat this file as dormant and do not
+ * cite its points values as something a learner here can earn.
+ *
  * The learner's JavaScript is EXECUTED, in their own browser, against the
  * problem's real test cases. A coding screen where "Run" returns a canned pass
  * is the most obvious fake in a demo of a learning platform, and the first thing

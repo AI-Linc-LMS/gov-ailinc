@@ -1,6 +1,29 @@
 /**
  * Coding problems, with test cases that actually run.
  *
+ * UNREFERENCED BY THIS TENANT. Nothing a Telangana Skills & Employment Mission
+ * aspirant can reach opens a problem from this bank. The catalogue in
+ * `db/courses.ts` is nineteen recruitment-exam and vocational-trade courses and
+ * not one topic declares a `coding` kind, by the decision recorded in the build
+ * brief: there is no code judge in this product line, and a coding card on a
+ * tailoring course is the single most obvious way to reveal that the content was
+ * ported from a software LMS. So the routes in `http/handlers/coding.ts` are
+ * registered and correct, and no screen ever calls them.
+ *
+ * Kept rather than deleted for two reasons. `assessment-admin.ts` imports
+ * `CODING_PROBLEMS` to populate the question-bank picker an administrator can
+ * browse, so removing the export breaks a module that is on. And the executing
+ * grader below is the expensive part: it is easier to leave working code unused
+ * than to rebuild it.
+ *
+ * What would have to be true to use it again: a course would have to declare a
+ * `coding` kind on a topic, which only makes sense if this tenant ever adds a
+ * track where writing code is the trade being taught (a CSC-operator course does
+ * not qualify, and the GATE and PSU track is examined on paper). At that point
+ * the problems themselves would also need re-authoring, because the ones below
+ * are generic interview algorithm questions rather than anything a state mission
+ * would set.
+ *
  * The demo executes the learner's JavaScript for real, in their own browser, and
  * grades it against these cases. That was worth the effort: a coding workspace
  * where "Run" returns a canned pass is the single most obvious fake in a demo of

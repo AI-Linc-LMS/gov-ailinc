@@ -412,11 +412,20 @@ defineRoutes(MODULE, {
   /**
    * Confirm an external application.
    *
-   * Applying through an employer's own site leaves the row as `applying` until
-   * the learner says they finished, which is what this flips. No seeded posting
-   * carries an `apply_link` (nothing in this demo may reach the network), so the
-   * dialog that calls this only appears for a job an administrator points at an
-   * external link during the session.
+   * Applying through the recruiting body's own portal leaves the row as
+   * `applying` until the aspirant says they finished, which is what this flips.
+   *
+   * This comment used to claim no seeded posting carried an `apply_link`, which
+   * was true of the software tenant and is false here: every recruitment
+   * notification in `db/jobs.ts` (TGPSC, TGLPRB, SCCL, SSC, RRB, IBPS, SBI, RBI,
+   * BHEL) carries the recruiting body's own portal, because that portal is where
+   * a government application is actually filed. So this dialog is on the normal
+   * path for ten of the fifteen postings, not an edge case reachable only after
+   * an administrator pastes a link. The vocational openings carry no link and run
+   * the in-app apply wizard instead.
+   *
+   * The links are rendered as `href`s and never fetched, so the offline rule
+   * still holds.
    */
   "PATCH /jobs-v2/api/applications/me/:applicationId/confirm-applied/": (req) => {
     const id = Number(req.params.applicationId);
