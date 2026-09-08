@@ -1,10 +1,12 @@
 /**
- * The demo tenant: AI Linc.
+ * The demo tenant: the Telangana Skills & Employment Mission (TSEM), a fictional
+ * state mission. See `docs/GOVERNMENT-BUILD-BRIEF.md`.
  *
- * This is the `client-info` payload the whole app boots from — branding, the
+ * This is the `client-info` payload the whole app boots from: branding, the
  * timezone live sessions render in, and the feature flags that decide which
- * modules appear in the sidebar. Every module is switched on, because the point
- * of the prototype is to show the complete platform rather than one package.
+ * modules appear in the sidebar. Nearly every module is switched on, because the
+ * point of the prototype is to show the complete platform rather than one
+ * package. Each module that is off is argued for at the line that drops it.
  */
 
 import { DEMO_CLIENT_ID, DEMO_TENANT } from "../config";
@@ -35,6 +37,23 @@ const ENABLED_FEATURES = [
   // achieve it.
   "adaptive_quiz",
   "assessment",
+  // "mock_interview" is ON, and the reasoning is worth recording because it was
+  // switched off once and that was wrong.
+  //
+  // The module does contain a Monaco coding round, which has no place in a
+  // catalogue of recruitment exams and vocational trades. But the coding round
+  // is data, not structure: every interview topic in
+  // `lib/demo/http/handlers/interview-actions.ts` is seeded with
+  // `num_coding_questions: 0`, so no aspirant is ever handed an editor. Removing
+  // the module to avoid a screen nobody is served would have cost this tenant
+  // the single stage its candidates are most afraid of. Group-I ends at an
+  // interview board, bank PO ends at an interview, SI selection ends at a board,
+  // and a trade course ends at a viva. A candidate who has never sat in front of
+  // a panel is exactly who this practises.
+  //
+  // The obligation that comes with keeping it on: the interview panels and their
+  // question sets are re-contented for this sector, and the coding round stays
+  // seeded at zero.
   "mock_interview",
   "jobs_v2",
   "resume",
@@ -82,7 +101,14 @@ const THEME_SETTINGS: Record<string, string> = {
   // /public/fonts instead, so the demo needs no font CDN and renders identically
   // with the network unplugged.
   fontImportUrl: "",
-  loginHeroSlogan: "Learn with intent. Graduate job-ready.",
+  // The mission's own line, and the only sentence on the sign-in screen. It is
+  // also read back onto certificates as the issuer tagline (see
+  // `lib/certificate/client-branding.ts`), which is why it names what the
+  // mission promises rather than describing the software.
+  loginHeroSlogan: "Skills for every district. A career for every aspirant.",
+  // Unchanged from the sizing that was tuned against this hero panel. The line
+  // is longer than the one it replaces and wraps to three lines inside the
+  // panel's 460px column, which is what the two-line skeleton already allows for.
   loginHeroSloganFontSize: "30px",
   loginHeroSloganFontWeight: "600",
   loginHeroLogoMaxWidthPx: "230",
@@ -98,19 +124,30 @@ export const DEMO_CLIENT_INFO: ClientInfo = {
   is_active: true,
   timezone: DEMO_TENANT.timezone,
 
-  // Under /images/ deliberately. The route middleware (proxy.ts) bypasses auth
-  // for /images/, /videos/ and /assets/ only — anything else 307s to /login for
-  // a signed-out visitor, which would break the logo on the sign-in screen
-  // itself. Using the existing public prefix avoids touching shared auth logic.
+  // Under /logos/ deliberately. The route middleware (proxy.ts) bypasses auth
+  // for /images/, /videos/, /assets/, /monaco/ and /logos/ only: anything else
+  // 307s to /login for a signed-out visitor, which would break the logo on the
+  // sign-in screen itself. Keep new brand files in this folder.
   //
-  // Three variants, because the two surfaces that show a logo are BOTH dark:
-  //   app_logo_url   -> ink sidebar, small box  -> light, wordmark only
+  // The mark is three ascending arches on a common plinth: districts stepping up
+  // together. It is an original device and is deliberately not derived from the
+  // national emblem, the state emblem, the lion capital or any real seal, since
+  // this is a fictional mission and must not read as a government's own mark.
+  //
+  // The white lockup is wired to both logo fields, because the two surfaces that
+  // show one are BOTH dark:
+  //   app_logo_url   -> ink sidebar, small box  -> light, full lockup
   //   login_logo_url -> ink hero panel, larger  -> light, full lockup
-  // ai-linc-lockup-ink.svg is the dark-text lockup, kept for light surfaces
-  // (certificates, exported PDFs) rather than either of these.
-  app_logo_url: "/logos/ai-linc-lockup-white.svg",
-  app_icon_url: "/logos/ai-linc-mark-color.svg",
-  login_logo_url: "/logos/ai-linc-lockup-white.svg",
+  //   app_icon_url   -> favicon and small chips -> the mark on its own
+  // tsem-lockup-ink.svg is the dark-text lockup, kept for light surfaces
+  // (printed handouts, exported PDFs) rather than any of these, and
+  // tsem-*-darkmode.svg is the brightened pair for a dark ground. Every file
+  // reuses the canvas of the ai-linc-*.svg lockups it replaces (1600x600 lockup,
+  // 400x240 mark, mark and text in the same slots) so the sizing below did not
+  // have to be retuned.
+  app_logo_url: "/logos/tsem-lockup-white.svg",
+  app_icon_url: "/logos/tsem-mark-color.svg",
+  login_logo_url: "/logos/tsem-lockup-white.svg",
   login_img_url: null,
 
   features: ENABLED_FEATURES.map((name, index) => ({ id: index + 1, name })),
@@ -121,11 +158,14 @@ export const DEMO_CLIENT_INFO: ClientInfo = {
   live_proctoring_enabled: true,
   hide_available_courses_from_students: false,
 
-  certificate_signatory_name: "Dr. Priya Nair",
-  certificate_signatory_title: "Director of Programs, AI Linc",
+  // Who signs a completion certificate. A fictional officer of a fictional
+  // mission: no real official is named, and the acronym is used in the title so
+  // the line does not repeat the full mission name already printed above it.
+  certificate_signatory_name: "Dr. Sailaja Vemireddy",
+  certificate_signatory_title: "Mission Director, TSEM",
   certificate_signature_url: null,
 
-  // The tenant is fully provisioned: a prospect must never land in the
+  // The tenant is fully provisioned: a visitor must never land in the
   // first-login setup wizard, which would block the app behind onboarding.
   setup_completed: true,
   setup_step: 8,

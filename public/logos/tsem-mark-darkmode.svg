@@ -1,0 +1,14 @@
+<!-- TSEM mark, darkmode. Three ascending arches on a common plinth: districts
+     that step up together. Original device, deliberately unlike any real seal. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240">
+  <defs>
+    <linearGradient id="m-darkmode" x1="66" y1="120" x2="334" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#818CF8"></stop>
+      <stop offset="1" stop-color="#34D399"></stop>
+    </linearGradient>
+  </defs>
+  <g>
+    <path d="M 66 210 L 66 162 A 34 34 0 0 1 134 162 L 134 210 Z M 86 210 L 86 162 A 14 14 0 0 1 114 162 L 114 210 Z M 148 210 L 148 114 A 40 40 0 0 1 228 114 L 228 210 Z M 168 210 L 168 114 A 20 20 0 0 1 208 114 L 208 210 Z M 242 210 L 242 62 A 46 46 0 0 1 334 62 L 334 210 Z M 262 210 L 262 62 A 26 26 0 0 1 308 62 L 308 210 Z" fill="url(#m-darkmode)" fill-rule="evenodd"></path>
+    <path d="M 66 206 L 334 206 L 334 228 L 66 228 Z" fill="url(#m-darkmode)"></path>
+  </g>
+</svg>
