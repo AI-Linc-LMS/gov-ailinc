@@ -9,7 +9,7 @@
 
 import { defineRoutes } from "../router";
 import { badRequest, notFound, unauthorized, type DemoRequest } from "../types";
-import { DEMO_PASSWORD } from "../../config";
+import { DEMO_PASSWORD, DEMO_PERSONAS } from "../../config";
 import { mintDemoToken } from "../../jwt";
 import { overlay } from "../../db/overlay";
 import { ALL_PEOPLE, personByEmail, personById, type DemoPerson } from "../../db/people";
@@ -113,11 +113,17 @@ defineRoutes(MODULE, {
 
   /**
    * Google sign-in. There is no Google to talk to, so the button signs in as the
-   * student persona — the flow a prospect clicking "Continue with Google" is
-   * trying to see is what happens *after* the handshake, not the handshake.
+   * aspirant persona: what a visitor clicking "Continue with Google" wants to see
+   * is what happens *after* the handshake, not the handshake.
+   *
+   * The address is read from DEMO_PERSONAS rather than written out here. It was
+   * written out here, and re-branding the tenant changed every persona address
+   * except this one, so the button threw a 404 while every other sign-in path
+   * worked. A literal that duplicates configuration is a literal that goes stale
+   * silently.
    */
   "POST /accounts/clients/:clientId/user/login/google/": () => {
-    const person = personByEmail("student@ailinc.com");
+    const person = personByEmail(DEMO_PERSONAS[0].email);
     if (!person) throw notFound("Demo student persona missing");
     return authResponse(person);
   },

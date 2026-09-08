@@ -65,7 +65,7 @@ export interface AuthoredProblem {
 }
 
 export interface AuthoredTopic {
-  /** Topic id from lib/demo/db/courses.ts (5000..5069). */
+  /** Topic id from lib/demo/db/courses.ts (30101..31920, courseId * 100 + n). */
   topicId: number;
   /** Repeated here so a mismatch with courses.ts is caught by the validator. */
   title: string;
