@@ -1,5 +1,5 @@
 /**
- * Course 307: IBPS PO & Clerk: Prelims and Mains.
+ * Course 316: Start Your Rural Micro-Enterprise.
  *
  * Assembled from the per-module parts in ./parts/. The course is authored in
  * parallel, a few topics at a time, because one author writing twenty-odd topics
@@ -18,34 +18,20 @@
  */
 
 import type { CourseCurriculum } from "./types";
-import part1 from "./parts/course-307-part-1";
-import part2 from "./parts/course-307-part-2";
-import part3 from "./parts/course-307-part-3";
-import part4 from "./parts/course-307-part-4";
-import part5 from "./parts/course-307-part-5";
-import part6 from "./parts/course-307-part-6";
-import part7 from "./parts/course-307-part-7";
-import part8 from "./parts/course-307-part-8";
-import part9 from "./parts/course-307-part-9";
-import part10 from "./parts/course-307-part-10";
-import part11 from "./parts/course-307-part-11";
-import part12 from "./parts/course-307-part-12";
-import part13 from "./parts/course-307-part-13";
+import part1 from "./parts/course-316-part-1";
+import part2 from "./parts/course-316-part-2";
+import part3 from "./parts/course-316-part-3";
+import part4 from "./parts/course-316-part-4";
+import part6 from "./parts/course-316-part-6";
+import part7 from "./parts/course-316-part-7";
 
 const CURRICULUM: CourseCurriculum = {
   ...part1,
   ...part2,
   ...part3,
   ...part4,
-  ...part5,
   ...part6,
   ...part7,
-  ...part8,
-  ...part9,
-  ...part10,
-  ...part11,
-  ...part12,
-  ...part13,
 };
 
 export default CURRICULUM;

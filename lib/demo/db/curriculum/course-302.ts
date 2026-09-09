@@ -9,9 +9,9 @@
  * scripts/verify-catalogue.mjs, which fails a course that authors only part of
  * its topics.
  *
- * Part numbers are not always contiguous: gaps left by an interrupted run were
- * filled by later-numbered parts rather than by renumbering, because a topic id
- * is a contract and moving one would orphan the lesson behind it.
+ * Part numbers are not contiguous. Gaps left by interrupted runs were filled by
+ * later-numbered parts rather than by renumbering, because a topic id is a
+ * contract and moving one would orphan the lesson behind it.
  *
  * They are merged here rather than loaded separately so the lazy per-course
  * chunk stays exactly one import for the loader in ./index.ts.
@@ -23,6 +23,8 @@ import part2 from "./parts/course-302-part-2";
 import part3 from "./parts/course-302-part-3";
 import part4 from "./parts/course-302-part-4";
 import part5 from "./parts/course-302-part-5";
+import part6 from "./parts/course-302-part-6";
+import part7 from "./parts/course-302-part-7";
 
 const CURRICULUM: CourseCurriculum = {
   ...part1,
@@ -30,6 +32,8 @@ const CURRICULUM: CourseCurriculum = {
   ...part3,
   ...part4,
   ...part5,
+  ...part6,
+  ...part7,
 };
 
 export default CURRICULUM;

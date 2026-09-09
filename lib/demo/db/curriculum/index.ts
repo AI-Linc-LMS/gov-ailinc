@@ -46,6 +46,7 @@ const LOADERS: Record<number, () => Promise<{ default: CourseCurriculum }>> = {
   302: () => import("./course-302"),
   307: () => import("./course-307"),
   311: () => import("./course-311"),
+  316: () => import("./course-316"),
 };
 
 /** Chunks already fetched. A second visit to a course must not re-parse it. */
