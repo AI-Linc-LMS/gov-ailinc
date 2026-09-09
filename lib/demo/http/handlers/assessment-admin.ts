@@ -94,17 +94,42 @@ function fromAdaptiveBank(m: DemoMcq, topic: string): BankQuestion {
   };
 }
 
-const FS = QUIZ_BANK[201];
-const PY = QUIZ_BANK[202];
-const DSA = QUIZ_BANK[203];
-const CLOUD = QUIZ_BANK[204];
-const SQL = QUIZ_BANK[205];
+/**
+ * Course banks this file draws paper questions from.
+ *
+ * These were QUIZ_BANK[201] to QUIZ_BANK[205], the five software courses this fork
+ * replaced. Those ids no longer exist, so every one of them was `undefined` and the
+ * first `FS[1]` below threw at module load and took the whole demo transport down with
+ * it: the sign-in screen rendered blank.
+ *
+ * Read through a helper that falls back to an empty bank, and indexed through `pick`,
+ * so a course whose bank is ever missing or shorter than this file expects degrades to
+ * one fewer question on a paper rather than to a white screen. A seeded assessment is
+ * not worth an outage.
+ */
+const bank = (courseId: number): DemoMcq[] => QUIZ_BANK[courseId] ?? [];
+
+/**
+ * The nth question of a bank, or the last one it has.
+ *
+ * Never undefined, because every call site passes the result straight into
+ * `fromAdaptiveBank`, which reads `.question` off it.
+ */
+function pick(list: DemoMcq[], index: number): DemoMcq {
+  return list[index] ?? list[list.length - 1];
+}
+
+const GS = bank(302);       // TGPSC Group-II and Group-III: general studies
+const BANKING = bank(307);  // IBPS PO and Clerk
+const APTITUDE = bank(303); // SSC CGL and CHSL: aptitude, reasoning, English
+const TRADE = bank(311);    // Solar PV: trade theory
+const ENTERPRISE = bank(316); // Rural micro-enterprise
 
 // Full-Stack paper -----------------------------------------------------------
 
 const FS_HTTP: BankQuestion[] = [
-  fromAdaptiveBank(FS[1], "HTTP"),
-  fromAdaptiveBank(FS[7], "Authentication"),
+  fromAdaptiveBank(pick(GS, 1), "Telangana movement"),
+  fromAdaptiveBank(pick(GS, 7), "Polity and governance"),
   q(
     "A POST returns 201 with a Location header. What is the client expected to do with it?",
     [
@@ -150,7 +175,7 @@ const FS_HTTP: BankQuestion[] = [
 ];
 
 const FS_LANGUAGE: BankQuestion[] = [
-  fromAdaptiveBank(FS[4], "TypeScript"),
+  fromAdaptiveBank(pick(GS, 4), "Economy and development"),
   q(
     "What does awaiting inside a for loop over an array of promises actually do?",
     [
@@ -210,9 +235,9 @@ const FS_LANGUAGE: BankQuestion[] = [
 ];
 
 const FS_REACT: BankQuestion[] = [
-  fromAdaptiveBank(FS[0], "React"),
-  fromAdaptiveBank(FS[3], "React"),
-  fromAdaptiveBank(FS[5], "React"),
+  fromAdaptiveBank(pick(GS, 0), "Telangana history"),
+  fromAdaptiveBank(pick(GS, 3), "Telangana history"),
+  fromAdaptiveBank(pick(GS, 5), "Telangana history"),
   q(
     "A useEffect with no dependency array refetches on every render, in a loop. What is the fix?",
     [
@@ -246,9 +271,9 @@ const FS_REACT: BankQuestion[] = [
 // DSA diagnostic -------------------------------------------------------------
 
 const DSA_COMPLEXITY: BankQuestion[] = [
-  fromAdaptiveBank(DSA[2], "Complexity"),
-  fromAdaptiveBank(DSA[7], "Complexity"),
-  fromAdaptiveBank(DSA[6], "Complexity"),
+  fromAdaptiveBank(pick(APTITUDE, 2), "Quantitative aptitude"),
+  fromAdaptiveBank(pick(APTITUDE, 7), "Quantitative aptitude"),
+  fromAdaptiveBank(pick(APTITUDE, 6), "Quantitative aptitude"),
   q(
     "What is the time complexity of binary search on a sorted array of n elements?",
     ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
@@ -302,9 +327,9 @@ const DSA_COMPLEXITY: BankQuestion[] = [
 ];
 
 const DSA_ARRAYS: BankQuestion[] = [
-  fromAdaptiveBank(DSA[0], "Arrays and hashing"),
-  fromAdaptiveBank(DSA[1], "Arrays and hashing"),
-  fromAdaptiveBank(DSA[5], "Arrays and hashing"),
+  fromAdaptiveBank(pick(APTITUDE, 0), "Reasoning"),
+  fromAdaptiveBank(pick(APTITUDE, 1), "Reasoning"),
+  fromAdaptiveBank(pick(APTITUDE, 5), "Reasoning"),
   q(
     "You need to know whether any value repeats in an array. What is the cheapest correct approach?",
     [
@@ -392,8 +417,8 @@ const DSA_ARRAYS: BankQuestion[] = [
 ];
 
 const DSA_GRAPHS: BankQuestion[] = [
-  fromAdaptiveBank(DSA[4], "Trees and graphs"),
-  fromAdaptiveBank(DSA[3], "Trees and graphs"),
+  fromAdaptiveBank(pick(APTITUDE, 4), "English language"),
+  fromAdaptiveBank(pick(APTITUDE, 3), "English language"),
   q(
     "An in-order traversal of a binary search tree produces:",
     [
@@ -477,7 +502,7 @@ const DSA_GRAPHS: BankQuestion[] = [
 
 // Python paper ---------------------------------------------------------------
 
-const PY_PANDAS: BankQuestion[] = PY.map((m) => fromAdaptiveBank(m, "pandas"));
+const PY_PANDAS: BankQuestion[] = BANKING.map((m) => fromAdaptiveBank(m, "Banking awareness"));
 
 export interface WrittenQuestion {
   id: number;
@@ -541,12 +566,12 @@ const PY_WRITTEN = [WRITTEN_BANK[0], WRITTEN_BANK[1]];
 // Comprehensive paper --------------------------------------------------------
 
 const COMP_SYSTEMS: BankQuestion[] = [
-  fromAdaptiveBank(FS[2], "Databases"),
-  fromAdaptiveBank(FS[6], "Databases"),
-  ...SQL.map((m) => fromAdaptiveBank(m, "Databases")),
+  fromAdaptiveBank(pick(GS, 2), "General science"),
+  fromAdaptiveBank(pick(GS, 6), "General science"),
+  ...ENTERPRISE.map((m) => fromAdaptiveBank(m, "Enterprise finance")),
 ];
 
-const COMP_CLOUD: BankQuestion[] = CLOUD.map((m) => fromAdaptiveBank(m, "Cloud and delivery"));
+const COMP_CLOUD: BankQuestion[] = TRADE.map((m) => fromAdaptiveBank(m, "Trade theory"));
 
 const COMP_WEB: BankQuestion[] = [FS_HTTP[2], FS_HTTP[3], FS_HTTP[4]];
 
