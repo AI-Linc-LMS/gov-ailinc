@@ -20,7 +20,7 @@
  *     row in the table on the next refresh is a worse lie than an error.
  *  4. Scorecard configuration (badges and skills). Both pages previously fell
  *     through to the adapter's empty-collection default, and their empty states
- *     tell the reader to "run python manage.py migrate scorecard" — Django
+ *     tell the reader to "run python manage.py migrate scorecard", which is Django
  *     operations instructions, printed at a prospect.
  */
 
@@ -59,7 +59,7 @@ const MODULE = "account-actions";
  *
  * The dropping is load-bearing, not tidiness: object offsets in the xref table
  * below are computed with `String.length`, which counts UTF-16 units, while the
- * file is read as bytes. One "—" in a heading shifted every offset after it and
+ * file is read as bytes. One em dash in a heading shifted every offset after it and
  * produced a PDF that Chrome's viewer refused to open.
  */
 function pdfEscape(text: string): string {
@@ -1262,41 +1262,113 @@ interface SkillSeed {
 /**
  * The skill catalogue.
  *
- * The first block is exactly the tag set the courses carry, because the learner
- * scorecard derives its skill rows from those same tags. If the two lists
- * disagreed, an administrator would be configuring skills that no learner's
- * scorecard has ever mentioned. The rest are the finer-grained skills a real
- * catalogue accumulates once people start tagging individual questions.
+ * The bulk of it is the tag set the nineteen courses carry, spelled
+ * identically, because the learner scorecard derives its skill rows from those
+ * same tags. If the two lists disagreed, an administrator would be configuring
+ * skills that no learner's scorecard has ever mentioned, and `mappingCount`
+ * below would report no tagged content for a skill half the catalogue teaches.
+ *
+ * The rest are the finer-grained skills a real catalogue accumulates once people
+ * start tagging individual questions: sectional time management, negative
+ * marking, letter drafting. Those deliberately match no course tag, because an
+ * untagged skill is exactly what the page's amber "Untagged" tile exists to
+ * surface, and a catalogue where every row happened to be tagged left that tile
+ * permanently at zero with nothing to act on.
+ *
+ * Id 701 is load-bearing. The `skill_score` badge in `BADGE_SEEDS` above names
+ * `skill_id: 701`, so the first row here has to stay General Studies or that
+ * badge points at nothing and no aspirant can earn it. The software fork this
+ * repository was cut from had React at 701, which is how the mismatch got in.
  */
 const SKILL_SEEDS: SkillSeed[] = [
-  { id: 701, name: "React", category: "Frontend", description: "Components, hooks, state and rendering behaviour." },
-  { id: 702, name: "Node.js", category: "Backend", description: "Server-side JavaScript, the event loop, npm tooling." },
-  { id: 703, name: "PostgreSQL", category: "Data", description: "Relational modelling, indexes and query planning." },
-  { id: 704, name: "TypeScript", category: "Frontend", description: "Static typing, generics and narrowing." },
-  { id: 705, name: "REST", category: "Backend", description: "Resource design, status codes, versioning." },
-  { id: 706, name: "Python", category: "Data", description: "Core language, idioms and the standard library." },
-  { id: 707, name: "pandas", category: "Data", description: "DataFrames, joins, grouping and reshaping." },
-  { id: 708, name: "scikit-learn", category: "Data", description: "Model fitting, pipelines and evaluation." },
-  { id: 709, name: "Statistics", category: "Data", description: "Distributions, inference and experiment design." },
-  { id: 710, name: "Visualisation", category: "Data", description: "Choosing and building an honest chart." },
-  { id: 711, name: "Algorithms", category: "DSA", description: "Sorting, searching, graphs and dynamic programming." },
-  { id: 712, name: "Problem Solving", category: "DSA", description: "Decomposition and choosing a workable approach." },
-  { id: 713, name: "Interviews", category: "Career", description: "Communicating a solution while writing it." },
-  { id: 714, name: "Complexity", category: "DSA", description: "Reasoning about time and space cost." },
-  { id: 715, name: "AWS", category: "Cloud", description: "Core compute, storage and networking services." },
-  { id: 716, name: "Docker", category: "Cloud", description: "Images, layers, volumes and compose files." },
-  { id: 717, name: "CI/CD", category: "Cloud", description: "Build pipelines, gating and safe deploys." },
-  { id: 718, name: "Terraform", category: "Cloud", description: "Declarative infrastructure and state management." },
-  { id: 719, name: "Observability", category: "Cloud", description: "Logs, metrics, traces and useful alerts." },
-  { id: 720, name: "SQL", category: "Data", description: "Joins, aggregation, window functions and CTEs." },
-  { id: 721, name: "Data Modelling", category: "Data", description: "Normalisation, keys and schema evolution." },
-  { id: 722, name: "Performance", category: "Data", description: "Profiling queries and reading an execution plan." },
-  { id: 723, name: "System Design", category: "Backend", description: "Capacity, caching, queues and failure modes." },
-  { id: 724, name: "Testing", category: "Engineering", description: "Unit, integration and what is worth asserting." },
-  { id: 725, name: "Git", category: "Engineering", description: "Branching, rebasing and resolving conflicts." },
-  { id: 726, name: "Accessibility", category: "Frontend", description: "Semantics, focus order and assistive technology." },
-  { id: 727, name: "Communication", category: "Behavioural", description: "Written updates and explaining a trade-off." },
-  { id: 728, name: "Ownership", category: "Behavioural", description: "Following a problem through to a resolution." },
+  // General studies, the ground every exam course in section one stands on.
+  { id: 701, name: "General Studies", category: "General Studies", description: "Polity, history, geography and economy as a general paper asks them together." },
+  { id: 702, name: "Telangana Movement", category: "General Studies", description: "The agitations, the accords that followed them, and state formation." },
+  { id: 703, name: "Indian Polity", category: "General Studies", description: "The Constitution, the amendment procedure and Centre-State relations." },
+  { id: 704, name: "General Science", category: "General Studies", description: "Everyday physics, chemistry and biology at the level a recruitment paper asks." },
+  { id: 705, name: "Current Affairs", category: "General Studies", description: "National and state developments, filed under a syllabus heading and not a date." },
+  { id: 706, name: "Telangana Geography", category: "General Studies", description: "Rivers, irrigation projects, soils, minerals and the district profiles." },
+
+  // Aptitude, which decides the prelims of almost every notification here.
+  { id: 707, name: "Quantitative Aptitude", category: "Aptitude", description: "Arithmetic, algebra and mensuration, with the shortcuts that survive a clock." },
+  { id: 708, name: "Reasoning", category: "Aptitude", description: "Puzzles, seating arrangement, syllogism, series and coding-decoding." },
+  { id: 709, name: "Arithmetic", category: "Aptitude", description: "Percentage, ratio, time and work, and the sums a constable paper repeats." },
+  { id: 710, name: "Data Interpretation", category: "Aptitude", description: "Reading a table, a bar set or a caselet without recomputing all of it." },
+  { id: 711, name: "Data Analysis", category: "Aptitude", description: "Comparing data sets and drawing the one conclusion the question asked for." },
+  { id: 712, name: "Engineering Mathematics", category: "Aptitude", description: "Linear algebra, calculus, probability and transforms at GATE level." },
+  { id: 713, name: "General Aptitude", category: "Aptitude", description: "Verbal and numerical ability as the GATE common section sets it." },
+  { id: 714, name: "Mental Calculation", category: "Aptitude", description: "Tables, squares and approximation, so the pencil becomes a last resort." },
+
+  // Language, which is a separate skill from knowing the material.
+  { id: 715, name: "English", category: "Language", description: "Grammar, error spotting, cloze and comprehension under a sectional clock." },
+  { id: 716, name: "Mains Answer Writing", category: "Language", description: "Answering what was asked, with a specific anchor under every point." },
+  { id: 717, name: "Descriptive Paper", category: "Language", description: "Essay, precis and letter, written to a word count and a time limit." },
+  { id: 718, name: "Report and Letter Drafting", category: "Language", description: "Official formats: the parts, the order and the register each one uses." },
+
+  // Banking and economy, for the whole of the banking category.
+  { id: 719, name: "Banking Awareness", category: "Banking & Economy", description: "Products, regulators and the vocabulary a branch counter actually uses." },
+  { id: 720, name: "Indian Economy", category: "Banking & Economy", description: "Budget, monetary policy, growth, and the terms that recur every cycle." },
+  { id: 721, name: "Financial Inclusion", category: "Banking & Economy", description: "Accounts, credit and insurance reaching households that had none." },
+  { id: 722, name: "Economic and Social Issues", category: "Banking & Economy", description: "Growth, poverty, demography and social policy, as the RBI paper frames them." },
+  { id: 723, name: "Finance and Management", category: "Banking & Economy", description: "Financial markets, risk, and the management theory the paper names." },
+
+  // Exam craft: what separates a second attempt from a third.
+  { id: 724, name: "Sectional Time Management", category: "Exam Craft", description: "Spending a section's minutes on the questions that will actually fall." },
+  { id: 725, name: "Physical Efficiency Test", category: "Exam Craft", description: "Preparing for the running, jumping and endurance events a notification sets." },
+  { id: 726, name: "Technical Interview", category: "Exam Craft", description: "Defending your branch subjects and your project in front of a panel." },
+  { id: 727, name: "Group Exercise", category: "Exam Craft", description: "Making a point, conceding one, and moving a group discussion forward." },
+  { id: 728, name: "Negative Marking Strategy", category: "Exam Craft", description: "When a guess is worth the risk, and when it is only worth the time." },
+
+  // The electrical trades, where the assessment is a practical task.
+  { id: 729, name: "Solar PV", category: "Electrical Trades", description: "Modules, strings, inverters and how a rooftop array is sized." },
+  { id: 730, name: "Net Metering", category: "Electrical Trades", description: "The application, the bidirectional meter, and how export is settled." },
+  { id: 731, name: "Electrical Safety", category: "Electrical Trades", description: "Isolation, prove-test-prove, and the practices that keep a person alive." },
+  { id: 732, name: "Earthing", category: "Electrical Trades", description: "Electrodes and conductors, and why an earth that measures badly protects nobody." },
+  { id: 733, name: "Domestic Wiring", category: "Electrical Trades", description: "Circuits, cable sizing, protection and the layout of a house board." },
+  { id: 734, name: "Motor Control", category: "Electrical Trades", description: "Starters, contactors, overload protection and single-phase preventers." },
+  { id: 735, name: "Installation", category: "Electrical Trades", description: "Mounting, routing, terminating and commissioning without a return visit." },
+  { id: 736, name: "Rooftop", category: "Electrical Trades", description: "Reading a roof before quoting for it: shade, orientation, condition, cable route." },
+
+  // Garment and electronics trades.
+  { id: 737, name: "Tailoring", category: "Trade Skills", description: "Measurement, cutting, stitching and finishing to one customer's fit." },
+  { id: 738, name: "Pattern Drafting", category: "Trade Skills", description: "Turning a measurement set into a paper pattern that repeats." },
+  { id: 739, name: "Garment Making", category: "Trade Skills", description: "Assembly order, seams, linings, and the finishing that decides the price." },
+  { id: 740, name: "Costing", category: "Trade Skills", description: "Material, labour and overhead on a sheet, before a price is quoted." },
+  { id: 741, name: "Boutique", category: "Trade Skills", description: "Samples, an order book, delivery dates, and the customer who comes back." },
+  { id: 742, name: "Mobile Repair", category: "Trade Skills", description: "Fault finding on handsets, from the reported symptom to the component." },
+  { id: 743, name: "Soldering", category: "Trade Skills", description: "Temperature, flux and wetting, and rework that does not lift a pad." },
+  { id: 744, name: "Board Level Repair", category: "Trade Skills", description: "Reading a schematic, tracing a rail, replacing what actually failed." },
+  { id: 745, name: "Diagnostics", category: "Trade Skills", description: "Narrowing a fault by measurement rather than by replacing parts in turn." },
+  { id: 746, name: "Service Counter", category: "Trade Skills", description: "Taking a job in, quoting it, and handing it back with a written record." },
+
+  // Digital services, which is both a trade and the counter half the state runs on.
+  { id: 747, name: "Digital Literacy", category: "Digital Services", description: "Files, forms, email and a browser, for someone starting from a phone." },
+  { id: 748, name: "Common Service Centre", category: "Digital Services", description: "Running a counter: services offered, records kept and money handled." },
+  { id: 749, name: "UPI", category: "Digital Services", description: "Collect and pay flows, what a failure means, and what to tell the customer." },
+  { id: 750, name: "AePS", category: "Digital Services", description: "Aadhaar-enabled withdrawal and deposit at a counter, and where its limits are." },
+  { id: 751, name: "Citizen Services", category: "Digital Services", description: "Certificates, pensions and applications, and the documents each one needs." },
+  { id: 752, name: "Digital Marketing", category: "Digital Services", description: "Listings, photographs and pricing that reach buyers outside the mandal." },
+  { id: 753, name: "ONDC", category: "Digital Services", description: "Selling on an open network: catalogue, orders, logistics and settlement." },
+  { id: 754, name: "WhatsApp Business", category: "Digital Services", description: "Catalogue, broadcast, and the discipline of replying the same day." },
+  { id: 755, name: "Online Selling", category: "Digital Services", description: "Packing, dispatch, returns, and what each of them costs you." },
+
+  // Enterprise, credit and the collective forms rural businesses take.
+  { id: 756, name: "Micro-Enterprise", category: "Enterprise & Finance", description: "Running a one-person or family unit, from the idea to the first repeat order." },
+  { id: 757, name: "Business Plan", category: "Enterprise & Finance", description: "What you sell, to whom, at what cost, and what happens if half of it sells." },
+  { id: 758, name: "Break-even", category: "Enterprise & Finance", description: "Fixed cost, contribution, and the volume at which a unit stops losing money." },
+  { id: 759, name: "Bookkeeping", category: "Enterprise & Finance", description: "Cash book, ledger and stock, kept daily rather than reconstructed later." },
+  { id: 760, name: "Udyam", category: "Enterprise & Finance", description: "MSME registration, what it is used for, and what it does not by itself get you." },
+  { id: 761, name: "MUDRA", category: "Enterprise & Finance", description: "The loan categories, what a branch looks for, and where applications stall." },
+  { id: 762, name: "SHG Bank Linkage", category: "Enterprise & Finance", description: "Grading, the group's own books, and the resolution a branch asks to see." },
+  { id: 763, name: "Project Report", category: "Enterprise & Finance", description: "The document a bank actually reads: costing, cash flow and repayment." },
+  { id: 764, name: "CGTMSE", category: "Enterprise & Finance", description: "Credit guarantee behind collateral-free lending, and what it covers." },
+  { id: 765, name: "PMEGP", category: "Enterprise & Finance", description: "The margin money route: eligibility, the sponsoring agency and the sequence." },
+  { id: 766, name: "FPO", category: "Enterprise & Finance", description: "Forming a producer organisation: promoters, members, share capital, business plan." },
+  { id: 767, name: "Producer Company", category: "Enterprise & Finance", description: "The legal form an FPO takes, its members, its board and its statutory duties." },
+  { id: 768, name: "Aggregation", category: "Enterprise & Finance", description: "Collecting, grading and pooling produce so a small holding gets a better price." },
+  { id: 769, name: "eNAM", category: "Enterprise & Finance", description: "Selling through the national market platform: lots, assaying and payment." },
+  { id: 770, name: "Governance", category: "Enterprise & Finance", description: "Meetings, minutes, accounts and audit, in a body that answers to its members." },
+
 ];
 
 interface SkillEdit {

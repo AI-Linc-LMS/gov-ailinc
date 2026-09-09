@@ -1194,7 +1194,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       directly above a mode button wearing the same crown. It also introduced a
                       fixed hue into the one surface that is entirely tenant-branded.
                       This follows the platform's pill convention (dashboard `BandPill`): colour
-                      in the text, a neutral tint behind it, sentence case, no border, no icon. */}
+                      in the text, a neutral tint behind it, sentence case, no border, no icon.
+
+                      THE WORD ITSELF IS THE TENANT'S, NOT THE PRODUCT'S.
+                      `getRoleLabel` returns the product's vocabulary ("Student",
+                      "Instructor"), and this pill is the first thing anyone reads about
+                      themselves here. So the label is resolved from `roleLabel.*` in
+                      locales/en/common.json and falls back to `getRoleLabel` for a role
+                      nobody has translated yet: an unrecognised role still renders as a
+                      presentable phrase rather than as a raw key. The sidebar is the only
+                      caller of `getRoleLabel`, so this is the whole surface. */}
                   <Box
                     component="span"
                     sx={{
@@ -1214,7 +1223,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       whiteSpace: "nowrap",
                     }}
                   >
-                    {getRoleLabel(user?.role)}
+                    {t(
+                      `roleLabel.${(user?.role || "student").trim().toLowerCase()}`,
+                      getRoleLabel(user?.role)
+                    )}
                   </Box>
                 </Box>
               </Box>

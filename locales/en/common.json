@@ -37,6 +37,13 @@
     "adaptiveQuizzes": "Courses",
     "adminAdaptiveQuizzes": "Course Builder"
   },
+  "roleLabel": {
+    "student": "Candidate",
+    "instructor": "Faculty",
+    "admin": "Programme Officer",
+    "superadmin": "Mission Administrator",
+    "course_manager": "Curriculum Officer"
+  },
   "navSection": {
     "learn": "Learn",
     "career": "Career",

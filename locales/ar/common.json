@@ -33,6 +33,13 @@
     "adaptiveQuizzes": "الاختبارات التكيفية",
     "adminAdaptiveQuizzes": "الاختبارات التكيفية"
   },
+  "roleLabel": {
+    "student": "مترشح",
+    "instructor": "هيئة التدريس",
+    "admin": "مسؤول البرنامج",
+    "superadmin": "المشرف العام",
+    "course_manager": "مسؤول المناهج"
+  },
   "certificatesUpload": {
     "heroBadge": "إدارة · التخزين",
     "loadingWorkspace": "جارٍ تهيئة مساحة العمل…",

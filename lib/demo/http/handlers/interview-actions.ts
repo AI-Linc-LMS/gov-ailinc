@@ -15,13 +15,19 @@
  *
  * So the interview here is SCRIPTED and the scoring is a real rubric run locally:
  *
- *   - Each topic has a fixed set of five interviewer questions, written the way a
- *     working engineer actually asks them, each with the key points an interviewer is
- *     listening for.
+ *   - Each topic has a fixed set of five questions, written the way a selection board,
+ *     a bank panel or a trade test examiner actually asks them, each with the key
+ *     points that panel is listening for.
  *   - The candidate types (voice still works if the browser's own SpeechRecognition
  *     happens to function, but nothing depends on it).
  *   - Submit scores every answer against its key points immediately and returns the
  *     result. No polling, no "our AI is thinking", no 90-second timeout.
+ *
+ * The five panels are the ones this tenant's candidates actually sit in front of: a
+ * TGPSC Group-I and Group-II board, a bank probationary officer interview, a Telangana
+ * police sub-inspector board, a solar and electrical trade test viva, and an enterprise
+ * readiness panel. There is no coding round anywhere in the module and the seed comment
+ * on SEED_TEMPLATES explains why that zero is load-bearing.
  *
  * The score is genuinely derived from what the candidate wrote: substance, coverage of
  * the expected key points, structure and specificity. A blank answer scores zero and
@@ -68,428 +74,437 @@ interface Script {
   closing: string;
 }
 
-const FULLSTACK: Script = {
+/**
+ * A TGPSC Group-I and Group-II interview board.
+ *
+ * The five things a state service board actually opens with: the detailed
+ * application form in front of them, the home district written on it, why the public
+ * service at all, an opinion on something current, and one ethics situation from the
+ * post the candidate is applying for.
+ */
+const GROUP_BOARD: Script = {
   questions: [
     {
-      text: "Let's start with something you have built. Walk me through a web feature you shipped end to end, from the data model through to what the user finally sees.",
+      text: "Your detailed application form is in front of me. Take the board through it yourself: education, what you have done since, and the one entry on it you most expect us to open on.",
       type: "behavioral",
       keyPoints: [
-        "the data model or schema behind the feature",
-        "the API contract between client and server",
-        "a design decision and the reason for it",
-        "how you verified the feature actually worked",
+        "your education and employment history in the order it happened",
+        "the reason behind a gap year or a repeat attempt",
+        "the hobby or optional subject you have written down",
+        "the one entry a board is most likely to open on",
       ],
     },
     {
-      text: "A dashboard in your app takes six seconds to become usable, but the API behind it responds in 200 milliseconds. Where do you look, and in what order?",
-      type: "technical",
+      text: "Take the board through your home district. What is it known for, and what is the one problem there you would take up if you were posted back to it?",
+      type: "behavioral",
       keyPoints: [
-        "separating network time from rendering time",
-        "bundle size and code splitting",
-        "re-render cost, memoisation or virtualisation",
-        "measuring before changing anything",
+        "the district with its administrative and geographic setting",
+        "an industry, crop or institution the district is known for",
+        "one local problem rather than a national one",
+        "what a posted officer could realistically do about it",
       ],
     },
     {
-      text: "A user reports that clicking Save twice creates two records. How do you stop that, on the client and on the server?",
-      type: "technical",
+      text: "Why the public service, and why now? With your qualification you could take a private job tomorrow.",
+      type: "behavioral",
       keyPoints: [
-        "disabling the control or guarding the in-flight request",
-        "an idempotency key or a unique constraint on the server",
-        "why the client fix alone is not enough",
-        "what the user sees when the second click is rejected",
+        "a motive grounded in something you have witnessed yourself",
+        "what the service can do that a private job cannot",
+        "the department or cadre you are aiming at",
+        "honesty about the salary and security part of it",
       ],
     },
     {
-      text: "Your team wants to move a page from server rendering to client rendering because it will feel faster. What do you ask before you agree?",
+      text: "Pick one decision the government has taken in the last year that you have an opinion on. Tell me what it does, and where you think it is weak.",
       type: "situational",
       keyPoints: [
-        "what problem this is actually solving",
-        "the first-paint and indexing trade-off",
-        "data freshness and caching",
-        "measuring the current numbers first",
+        "the decision described accurately before it is judged",
+        "who benefits and who bears the cost",
+        "a weakness stated without turning into a political speech",
+        "what you would watch to know whether it is working",
       ],
     },
     {
-      text: "Last one. Model authentication for a small product that has both a web app and a mobile client. What do you choose, and what breaks if you get it wrong?",
-      type: "technical",
+      text: "Last one. You are the officer in charge of a scheme payment. A senior you respect asks you to clear a file that you know is short of one document. What do you do, and what do you do next?",
+      type: "situational",
       keyPoints: [
-        "a session or token choice with a reason",
-        "where the credential is stored and why",
-        "refresh and expiry handling",
-        "logging out everywhere, and revocation",
+        "the rule or procedure that governs that file",
+        "refusing in writing rather than only in conversation",
+        "the escalation route above the person asking",
+        "what the delay costs the beneficiary waiting on that payment",
       ],
     },
   ],
   closing:
-    "That is everything I wanted to cover. You explained your reasoning out loud rather than jumping to answers, which is the habit that carries a real interview. Submit whenever you are ready and your feedback will be waiting on the next screen.",
+    "That is everything the board wanted to ask. You stayed with the question instead of reciting prepared matter, which is what a board is actually testing. Submit whenever you are ready and your feedback is on the next screen.",
 };
 
-const DATA: Script = {
+/**
+ * A bank probationary officer interview.
+ *
+ * A bank panel is not a general studies board. It wants to know that you understand
+ * what a branch does, that you chose banking rather than fell into it, that you can
+ * stand at a counter, and that you can hold a simple economics answer without
+ * reciting a definition.
+ */
+const BANK_PANEL: Script = {
   questions: [
     {
-      text: "Start me off with a dataset you have worked with that did not behave. What was wrong with it, and what did you do about it?",
+      text: "Start with the obvious one. Why banking, and why a probationary officer rather than any other government post you are eligible for?",
       type: "behavioral",
       keyPoints: [
-        "the specific data problem, not just 'it was messy'",
-        "the cleaning decision and what it cost you",
-        "how you checked the fix was right",
-        "what you told the people relying on that data",
+        "a motive specific to banking rather than to any government post",
+        "what a probationary officer does in the first two years",
+        "the branch posting and transfer you are accepting",
+        "something from the sector you have followed recently",
       ],
     },
     {
-      text: "You have a classifier at 94 percent accuracy and your stakeholder is delighted. What do you check before you agree with them?",
+      text: "Explain to me what a non-performing asset is, why a bank cares so much about it, and what a branch can do before an account becomes one.",
       type: "technical",
       keyPoints: [
-        "class balance and the base rate",
-        "precision, recall or a confusion matrix",
-        "how the train and test split was made",
-        "whether the metric matches the decision being made",
+        "an asset stops earning when repayment is overdue past a fixed period",
+        "provisioning, and what it does to the bank profit",
+        "the early warning signal a branch can act on",
+        "recovery and restructuring as different routes",
       ],
     },
     {
-      text: "A column you need has 30 percent missing values. Talk me through your options and how you would choose between them.",
-      type: "technical",
-      keyPoints: [
-        "drop, impute, or model the missingness itself",
-        "whether the data is missing at random",
-        "leakage from imputing before the split",
-        "tying the choice to the downstream model",
-      ],
-    },
-    {
-      text: "Explain the difference between a groupby aggregation and a window function to somebody who only knows spreadsheets.",
+      text: "A customer at your counter is angry. Money has left her account through a failed transaction and it has not come back, and she is not interested in your process. How do you handle the next five minutes?",
       type: "situational",
       keyPoints: [
-        "aggregation collapses rows, a window keeps them",
-        "a concrete example the listener can picture",
-        "running totals, ranks or moving averages",
-        "checking the listener has followed you",
+        "handling the person before explaining the system",
+        "the actual reversal timeline and the complaint you raise",
+        "what you commit to and what you do not promise",
+        "the record you leave so the next officer can continue",
       ],
     },
     {
-      text: "Last one. Your notebook produces a different number today than it did last week, and none of your code changed. Where do you start?",
+      text: "Basic economy now. When the Reserve Bank raises the repo rate, walk me through what happens to your branch, to your borrower and to your depositor.",
       type: "technical",
       keyPoints: [
-        "pinning the data snapshot or checking the source",
-        "random seeds and non-deterministic steps",
-        "library versions and the environment",
-        "what you would change to make the run reproducible",
+        "the repo rate as the cost of bank borrowing",
+        "lending rates and the loan instalment moving up",
+        "deposit rates and what the saver does",
+        "the inflation it is aimed at, and the delay before it bites",
+      ],
+    },
+    {
+      text: "Last one. Your branch is behind on an insurance target and your manager wants every loan applicant to be offered a policy. A farmer in front of you clearly does not want one. What do you do?",
+      type: "situational",
+      keyPoints: [
+        "mis-selling and what the regulator treats it as",
+        "a target treated as a target and not as a licence",
+        "what you would say to your manager afterwards",
+        "an alternative that meets the customer's own requirement",
       ],
     },
   ],
   closing:
-    "That is the end of my questions. You were willing to question a number rather than accept it, which is most of the job. Submit when you are ready and your feedback appears straight away.",
+    "That is the end of the panel. You answered the counter question as a person rather than as a policy, which is the half of this interview that cannot be revised for. Submit when you are ready.",
 };
 
-const ALGORITHMS: Script = {
+/**
+ * A Telangana police sub-inspector board.
+ *
+ * Almost entirely situational, because that is what the board is. The questions put
+ * the candidate at a scene and ask for an order of actions and a reason for that
+ * order, which is the only thing a board can test in fifteen minutes.
+ */
+const POLICE_BOARD: Script = {
   questions: [
     {
-      text: "Before any code: tell me how you approach a problem you have never seen. What happens in the first two minutes?",
+      text: "Why the police service, and what have you actually done to be ready for it? Take the ground events and the written test separately.",
       type: "behavioral",
       keyPoints: [
-        "restating the problem in your own words",
-        "clarifying input size and constraints",
-        "stating a brute force before optimising",
-        "walking a small example, including the edge cases",
+        "a motive beyond the security of a government post",
+        "your current running, endurance or event preparation",
+        "the written paper you are weakest at and the plan for it",
+        "what your family thinks about the posting and the hours",
       ],
     },
     {
-      text: "Given a list of numbers, find the two that sum to a target. Take me from the slowest approach to the fastest, out loud.",
-      type: "technical",
-      keyPoints: [
-        "the nested loop and why it is quadratic",
-        "sorting with two pointers",
-        "a hash map in a single pass",
-        "the time and space trade-off between them",
-      ],
-    },
-    {
-      text: "When would you deliberately accept an O(n log n) solution over an O(n) one?",
-      type: "technical",
-      keyPoints: [
-        "constant factors at realistic input sizes",
-        "memory pressure of the linear solution",
-        "readability and maintenance cost",
-        "a concrete situation where you made that call",
-      ],
-    },
-    {
-      text: "Explain what a hash collision is, and what happens to your complexity when collisions get frequent.",
-      type: "technical",
-      keyPoints: [
-        "two keys landing in the same bucket",
-        "chaining or open addressing",
-        "the worst case degrading toward linear",
-        "load factor, resizing or the quality of the hash",
-      ],
-    },
-    {
-      text: "Last one. Your solution fails one hidden test and you cannot see the input. What do you do?",
+      text: "You reach a road accident before the ambulance. There is a crowd, one injured man, and a vehicle blocking the highway. Order your actions and tell me why that order.",
       type: "situational",
       keyPoints: [
-        "re-reading the constraints for the case you skipped",
-        "testing boundaries: empty, single element, duplicates, overflow",
-        "reasoning about the invariant instead of guessing",
-        "narrowing it down systematically rather than randomly",
+        "the injured person first, and the golden hour",
+        "crowd control and preserving the scene",
+        "the wireless message and the control room call you make",
+        "the case record and the seizure memo that come later",
+      ],
+    },
+    {
+      text: "Two groups in a village are about to clash over a procession route. You are the sub-inspector of that station and you have six constables. What do you do before it starts, and what do you do if it starts anyway?",
+      type: "situational",
+      keyPoints: [
+        "the elders on both sides, spoken to before the day",
+        "the permission, the route and the condition attached",
+        "asking for additional force in time rather than late",
+        "minimum force, and the record you keep of what you did",
+      ],
+    },
+    {
+      text: "Somebody influential in the district asks you to go easy on a case. He is not threatening you, he is being friendly. What actually happens next?",
+      type: "situational",
+      keyPoints: [
+        "the law leaves you no discretion on registering it",
+        "keeping the conversation on record with your superior",
+        "the difference between courtesy and a favour",
+        "what happens to you and to the station if you agree",
+      ],
+    },
+    {
+      text: "Last one. A woman comes to your station at eleven at night to complain, and the officer on duty tells her to come back in the morning. You hear it. What do you do that night, and what do you do afterwards?",
+      type: "situational",
+      keyPoints: [
+        "the complaint taken at once, and zero-hour registration",
+        "what the law requires regardless of station convenience",
+        "correcting the officer without a scene in front of her",
+        "the follow-up so it does not happen in that station again",
       ],
     },
   ],
   closing:
-    "That is all of them. The thing to keep doing is saying the brute force out loud early, because it buys you credit before the optimisation lands. Submit when you are ready.",
+    "That is the last of it. A board is watching whether you decide at all, not whether you decide perfectly, and you did decide. Submit when you are ready.",
 };
 
-const CLOUD: Script = {
+/**
+ * A solar and electrical trade test viva.
+ *
+ * A trade examiner opens on safety and stays there until satisfied, then asks for one
+ * fault the candidate traced with their own hands, then the instruments they own, then
+ * the standard they work to. Nothing here can be answered from a book.
+ */
+const TRADE_VIVA: Script = {
   questions: [
     {
-      text: "Take an application you know well. What has to change about it before it can serve real users in production?",
-      type: "behavioral",
-      keyPoints: [
-        "configuration and secrets out of the code",
-        "logging, metrics and alerting",
-        "how it is deployed and how it is rolled back",
-        "what happens when a single instance dies",
-      ],
-    },
-    {
-      text: "Traffic grows a hundredfold overnight. What breaks first, and how would you know it was that?",
+      text: "Before we talk about any job you have done: what do you check before you start work on an installation, and what would make you refuse to start at all?",
       type: "technical",
       keyPoints: [
-        "a specific bottleneck: connections, a single instance, disk, a lock",
-        "the metric that would show it",
-        "diagnosing before reaching for a fix",
-        "a cache or a queue, with its trade-off named",
+        "isolation, lock-out and proof that the circuit is dead",
+        "the gloves, helmet and safety shoes you actually put on",
+        "the ladder, the roof and the weather before you climb",
+        "the condition that makes you stop and call the supervisor",
       ],
     },
     {
-      text: "Explain the difference between scaling up and scaling out, and when scaling up is the honest answer.",
+      text: "Tell me about a fault you traced yourself. What were the symptoms, what did you measure, and what turned out to be wrong?",
       type: "technical",
       keyPoints: [
-        "vertical versus horizontal",
-        "state is what makes scaling out hard",
-        "the cost curve and the ceiling of vertical scaling",
-        "a case where up is genuinely the right call",
+        "the symptom described before the cause is guessed",
+        "the multimeter, clamp meter or megger you put on it",
+        "narrowing it down instead of replacing parts",
+        "what you altered so the same fault would not return",
       ],
     },
     {
-      text: "Your deploy pipeline takes forty minutes and the team has quietly stopped deploying on Fridays. What do you do?",
+      text: "Which tools and instruments do you own, and which one do you reach for first on a job you have not seen before?",
+      type: "technical",
+      keyPoints: [
+        "instruments named individually, not just a tool kit",
+        "the clamp meter, earth tester or insulation tester and its use",
+        "calibration and the condition your tools are in",
+        "the instrument missing from your kit and the job it would unlock",
+      ],
+    },
+    {
+      text: "Which standard or specification governs the work you do, and where do you actually look it up?",
+      type: "technical",
+      keyPoints: [
+        "a named standard, code or specification and not company practice",
+        "the earthing, cable size or clearance value it fixes",
+        "how you tell a genuine material from a counterfeit one",
+        "what you record and hand over when the job is closed",
+      ],
+    },
+    {
+      text: "Last one. A customer wants the job finished today and asks you to skip a step you know matters. Walk me through the conversation.",
       type: "situational",
       keyPoints: [
-        "measuring where the forty minutes actually goes",
-        "parallelising or caching the slow stage",
-        "treating the fear of deploying as the real problem",
-        "rollback confidence and blast radius",
-      ],
-    },
-    {
-      text: "Last one. How do you decide what deserves an alert, versus what should only ever be a log line?",
-      type: "technical",
-      keyPoints: [
-        "an alert needs a human action attached to it",
-        "symptom-based alerting over cause-based",
-        "alert fatigue and what it does to a team",
-        "a concrete example of each",
+        "the skipped step named, and the failure it prevents",
+        "the risk put in the customer's own terms",
+        "what you offer instead of a flat refusal",
+        "putting it in writing before you leave the site",
       ],
     },
   ],
   closing:
-    "That is everything. You kept coming back to what you would measure, which is the difference between an engineer and somebody reciting architecture diagrams. Submit when you are ready.",
+    "That is the whole viva. You led with the safety check rather than with the fix, which is exactly what a trade test examiner is grading. Submit when you are ready.",
 };
 
-const SQL_SCRIPT: Script = {
+/**
+ * An enterprise readiness panel.
+ *
+ * The panel a candidate faces before a unit is recommended for credit: what the unit
+ * is, what one piece of it costs and sells for, who buys it, and what happens when the
+ * money runs short. It is friendlier than a board and harder to bluff.
+ */
+const ENTERPRISE_PANEL: Script = {
   questions: [
     {
-      text: "Tell me about a schema you designed or inherited. What did it get right, and what would you change now?",
+      text: "Describe the unit you want to start, or the one you already run. What does it make, who works in it, and where does it sit?",
       type: "behavioral",
       keyPoints: [
-        "the entities and the relationships between them",
-        "a normalisation or denormalisation decision",
-        "the consequence you then had to live with",
-        "how it changed as the requirements moved",
+        "the product and the quantity per day or per month",
+        "the premises, the power and the machinery it needs",
+        "the labour you employ and what each of them does",
+        "the stage it has reached today, told plainly",
       ],
     },
     {
-      text: "A query that used to take fifty milliseconds now takes nine seconds. Walk me through the investigation.",
+      text: "Take one unit of what you sell. What does it cost you to make, what do you sell it for, and how much do you have to sell in a month before you stop losing money?",
       type: "technical",
       keyPoints: [
-        "reading the query plan",
-        "whether an index exists and whether it is being used",
-        "table growth or stale statistics",
-        "changing one thing at a time and measuring",
+        "the material cost separated from the labour cost",
+        "rent, power and interest counted as fixed cost",
+        "the selling price and the margin per piece",
+        "the break-even reached as a monthly quantity of pieces",
       ],
     },
     {
-      text: "When is adding an index the wrong answer?",
-      type: "technical",
-      keyPoints: [
-        "write amplification on inserts and updates",
-        "low cardinality columns",
-        "the planner ignoring it anyway",
-        "storage and maintenance cost",
-      ],
-    },
-    {
-      text: "Explain the difference between an INNER JOIN and a LEFT JOIN, and give me a case where picking the wrong one is a silent bug.",
-      type: "technical",
-      keyPoints: [
-        "inner drops unmatched rows",
-        "left keeps the left side and nulls the right",
-        "a concrete counting or reporting bug",
-        "filtering in WHERE versus in the ON clause",
-      ],
-    },
-    {
-      text: "Last one. Model something that needs history, where you have to answer what a record looked like last March.",
+      text: "Who buys from you, and why do they buy from you rather than from the person doing the same thing two villages away?",
       type: "situational",
       keyPoints: [
-        "versioned rows or a separate audit table",
-        "valid-from and valid-to columns",
-        "the query complexity you are taking on",
-        "how deletes are handled",
+        "a named buyer or channel, not everybody in the area",
+        "the price, quality or delivery difference you offer",
+        "how you found the first customers you had",
+        "what happens when your largest buyer stops buying",
+      ],
+    },
+    {
+      text: "You need working capital. Walk me through where you would go, what the bank will ask you for, and what you would do if the answer is no.",
+      type: "technical",
+      keyPoints: [
+        "the loan scheme or lender you would approach, and why that one",
+        "the project report, quotation and bank statement asked for",
+        "repayment shown from the unit's own cash flow",
+        "what you do about a rejection instead of stopping",
+      ],
+    },
+    {
+      text: "Last one. The unit runs for six months and then a machine breaks and an order is cancelled in the same week. What actually happens to the business, and what do you do?",
+      type: "situational",
+      keyPoints: [
+        "the cash reserve, or the lack of one, told plainly",
+        "who you pay first when you cannot pay everybody",
+        "telling the bank early rather than after the instalment",
+        "the change you make so that week does not repeat",
       ],
     },
   ],
   closing:
-    "That is the last question. Reading the plan before touching the query is the habit worth keeping. Submit when you are ready and your feedback is on the next screen.",
+    "That is everything the panel wanted. You gave numbers where you had them and said so where you did not, which is the answer a credit committee trusts. Submit when you are ready.",
 };
 
-const BEHAVIOURAL: Script = {
-  questions: [
-    {
-      text: "Tell me about a time you disagreed with a decision your team made. What did you actually do?",
-      type: "behavioral",
-      keyPoints: [
-        "a concrete situation rather than a general policy",
-        "what you did, not what you believe",
-        "the outcome, told honestly",
-        "what you would do differently now",
-      ],
-    },
-    {
-      text: "Describe something you shipped that did not work out. What did you take from it?",
-      type: "behavioral",
-      keyPoints: [
-        "owning the part that was yours",
-        "explaining without blaming other people",
-        "a specific lesson, not a slogan",
-        "evidence the lesson changed later behaviour",
-      ],
-    },
-    {
-      text: "How do you decide what to work on when everything on the list is urgent?",
-      type: "situational",
-      keyPoints: [
-        "a method you actually use, named",
-        "who you consult before deciding",
-        "what you say no to",
-        "how you communicate the trade-off",
-      ],
-    },
-    {
-      text: "Tell me about a time you had to explain something technical to someone who did not share your background.",
-      type: "behavioral",
-      keyPoints: [
-        "adapting the language to the listener",
-        "an analogy or a worked example",
-        "checking they had followed you",
-        "the outcome of the conversation",
-      ],
-    },
-    {
-      text: "Last one. What feedback has been hardest for you to hear, and what did you do with it?",
-      type: "behavioral",
-      keyPoints: [
-        "a real example rather than a humble brag",
-        "showing it was genuinely uncomfortable",
-        "an action you took afterwards",
-        "evidence the change stuck",
-      ],
-    },
-  ],
-  closing:
-    "That is all of my questions. Your answers were specific, which is the whole game in a behavioural round. Submit when you are ready.",
-};
-
-/** Fallback for a topic a prospect typed themselves in Quick Start. */
+/** Fallback for a topic an aspirant typed themselves in Quick Start. */
 function generalScript(topic: string): Script {
-  const t = topic.trim() || "this area";
+  const t = topic.trim() || "this subject";
   return {
     questions: [
       {
-        text: `Let's start broadly. What drew you to ${t}, and what have you built or studied in it so far?`,
+        text: `Let's start broadly. What brought you to ${t}, and what have you studied or practised in it so far?`,
         type: "behavioral",
         keyPoints: [
-          "a specific project or piece of work",
-          "a decision you made inside it",
-          "genuine motivation rather than a slogan",
-          "what you found hard",
+          "a piece of training, work or preparation you can name",
+          "a decision you took yourself, and what it cost you",
+          "a motive you can defend rather than a rehearsed line",
+          "what you struggled with and how you got past it",
         ],
       },
       {
-        text: `Pick one idea in ${t} that people usually get wrong, and explain it the way you wish somebody had explained it to you.`,
+        text: `Pick one thing in ${t} that people usually get wrong, and explain it the way you wish somebody had explained it to you.`,
         type: "technical",
         keyPoints: [
-          "naming the misconception precisely",
-          "the correct model, explained clearly",
-          "an example that makes it concrete",
-          "why the wrong model is tempting",
+          "the misconception named precisely",
+          "the correct version, in plain words",
+          "an everyday illustration the listener can hold on to",
+          "why the wrong version is tempting",
         ],
       },
       {
-        text: `Walk me through how you would approach a problem in ${t} that you had never seen before.`,
+        text: `Walk me through how you would handle something in ${t} that you had not come across before.`,
         type: "situational",
         keyPoints: [
-          "clarifying the problem before solving it",
-          "breaking it into steps",
-          "stating your assumptions out loud",
-          "how you would check the answer",
+          "reading it properly before answering it",
+          "breaking it into parts you can handle",
+          "the assumption you would state out loud",
+          "how you would verify the result before committing to it",
         ],
       },
       {
         text: `Tell me about a trade-off you have had to make in ${t}. What did you give up, and why was that right?`,
         type: "technical",
         keyPoints: [
-          "both sides of the trade-off",
-          "the factor that decided it",
-          "acknowledging what it cost",
-          "the outcome",
+          "both sides of it, stated fairly",
+          "the one thing that finally decided it",
+          "the cost you accepted knowingly",
+          "how it turned out, told without polishing",
         ],
       },
       {
-        text: `Last one. If you had a month to get significantly better at ${t}, what would you actually do?`,
+        text: `Last one. If you had one month to get significantly better at ${t}, what would you actually do?`,
         type: "behavioral",
         keyPoints: [
-          "a plan rather than a wish",
-          "how you would measure progress",
-          "what you would stop doing",
-          "self-awareness about the current gap",
+          "a weekly routine rather than a wish",
+          "the test or number you would measure progress against",
+          "what you would stop doing to make room",
+          "an honest sense of the gap between today and ready",
         ],
       },
     ],
-    closing: `That is everything on ${t}. Thanks for thinking out loud rather than reaching for the tidy answer. Submit when you are ready and your feedback appears immediately.`,
+    closing: `That is everything on ${t}. Thank you for thinking it through out loud rather than reaching for the prepared answer. Submit when you are ready and your feedback appears immediately.`,
   };
 }
 
 /**
- * Pick the script for a topic string.
+ * Pick the panel for a topic string.
  *
- * Topics arrive from three places with three vocabularies: a course title
- * ("SQL & Database Design"), the Quick Start picker ("Cloud Architecture"), and a
- * free-typed custom topic. Matching on substrings rather than an exact map means a
- * prospect who types "react hooks" still gets the full-stack script instead of the
- * generic one.
+ * Topics arrive from three places with three vocabularies: a course tag ("TGPSC",
+ * "Solar PV"), the Quick Start picker, and a free-typed custom topic. Matching on
+ * substrings rather than an exact map means an aspirant who types "sub inspector"
+ * still reaches the police board instead of the generic conversation.
+ *
+ * Order matters. Enterprise is tested before banking because "SHG bank linkage" is an
+ * enterprise topic that contains the word bank, and the two panels ask for opposite
+ * things: one wants unit economics, the other wants counter judgement.
  */
 function scriptFor(topic: string, subtopic = ""): Script {
   const hay = `${topic} ${subtopic}`.toLowerCase();
   const has = (...words: string[]) => words.some((w) => hay.includes(w));
 
-  if (has("algorithm", "data structure", "dsa", "problem solving", "complexity")) return ALGORITHMS;
-  if (has("sql", "database", "postgres", "data modelling", "data modeling")) return SQL_SCRIPT;
-  if (has("cloud", "aws", "devops", "system design", "infrastructure", "docker", "kubernetes")) return CLOUD;
-  if (has("data science", "pandas", "machine learning", "statistics", "python")) return DATA;
-  if (has("behavioral", "behavioural", "leadership", "management", "communication")) return BEHAVIOURAL;
-  if (has("full-stack", "full stack", "react", "javascript", "typescript", "node", "web", "frontend", "backend", "api"))
-    return FULLSTACK;
+  if (has("police", "tglprb", "constable", "sub-inspector", "sub inspector", "law and order"))
+    return POLICE_BOARD;
+  if (
+    has(
+      "enterprise", "entrepreneur", "micro-enterprise", "business plan", "break-even", "udyam",
+      "mudra", "shg", "pmegp", "cgtmse", "fpo", "producer company", "aggregation", "enam",
+      "bookkeeping", "subsidy", "self-help", "digital marketing", "ondc", "online selling",
+    )
+  )
+    return ENTERPRISE_PANEL;
+  if (
+    has(
+      "bank", "ibps", "sbi", "rbi", "nabard", "probationary officer", "junior associate",
+      "financial inclusion", "data interpretation", "economic and social issues", "insurance",
+    )
+  )
+    return BANK_PANEL;
+  if (
+    has(
+      "tgpsc", "group-i", "group-ii", "group-iii", "group i", "group ii", "civil service",
+      "public service", "general studies", "telangana movement", "mains answer writing",
+      "polity", "ethics",
+    )
+  )
+    return GROUP_BOARD;
+  if (
+    has(
+      "solar", "rooftop", "net metering", "electrician", "electrical", "wiring", "earthing",
+      "motor control", "installer", "installation", "technician", "soldering", "board level",
+      "mobile repair", "trade test", "workshop", "maintenance",
+    )
+  )
+    return TRADE_VIVA;
   return generalScript(topic);
 }
 
@@ -512,23 +527,73 @@ export interface DemoTemplate {
   createdDaysAgo: number;
 }
 
-const SEED_TEMPLATES: DemoTemplate[] = COURSES.map((course, index) => ({
-  id: 8100 + index,
-  courseId: course.id,
-  title: `${course.title}: exit interview`,
-  topic: course.tags[0] ?? course.title,
-  subtopic: course.tags.slice(1, 3).join(", "),
-  difficulty: course.difficulty === "Advanced" ? "Hard" : course.difficulty === "Beginner" ? "Easy" : "Medium",
-  duration_minutes: 20,
-  description:
-    `A five-question interview on ${course.title}. The interviewer works through the ideas the ` +
-    `course actually taught, and your answers are scored on structure and specificity as well as ` +
-    `on being right.`,
-  is_active: true,
-  num_coding_questions: 0,
-  num_mcq_questions: 0,
-  createdDaysAgo: 34 - index * 4,
-}));
+/**
+ * What to call the practice, in the words the candidate's own selection uses.
+ *
+ * Derived from the panel the topic actually routes to rather than from the course
+ * category, so the label can never promise a stage the selection does not have. A
+ * Group-II candidate practises a board and a solar trainee practises a viva, but the
+ * SSC and railway selections in this catalogue do not end at a panel at all, so they
+ * fall through to the neutral word. Calling them boards would be the demo asserting
+ * something about a real recruitment that is not so.
+ */
+const PANEL_NOUNS = new Map<Script, string>([
+  [GROUP_BOARD, "board"],
+  [POLICE_BOARD, "board"],
+  [BANK_PANEL, "interview"],
+  [TRADE_VIVA, "viva"],
+  [ENTERPRISE_PANEL, "panel"],
+]);
+
+function panelNoun(topic: string, subtopic: string): string {
+  // generalScript builds a fresh object every call, so it never matches and lands on
+  // the fallback, which is the intended answer for a selection with no final panel.
+  return PANEL_NOUNS.get(scriptFor(topic, subtopic)) ?? "interview";
+}
+
+/**
+ * One practice interview attached to each course.
+ *
+ * `num_coding_questions: 0` and `num_mcq_questions: 0` on every one of them, and that
+ * zero is the whole reason this module is safe to leave switched on for this tenant.
+ * The module ships a Monaco coding round and an MCQ round, neither of which belongs in
+ * a catalogue of recruitment exams and vocational trades: a coding editor in front of a
+ * solar trainee is the single most obvious way to reveal that the product was ported
+ * from a software LMS. Both rounds are data rather than structure, so seeding them at
+ * zero means no aspirant is ever handed an editor, and what is left is the one stage
+ * these candidates are most afraid of. Group-I ends at a board, bank probationary
+ * officer selection ends at an interview, sub-inspector selection ends at a board, and
+ * a trade course ends at a viva. `coding_time_budget_seconds` is returned as 0 from
+ * /next-question/ for exactly the same reason. If either number is ever raised here,
+ * keeping the module on stops being safe.
+ *
+ * `createdDaysAgo` counts backwards in twos rather than in fours, because with
+ * nineteen courses a step of four ran past today and dated the last few templates into
+ * the future.
+ */
+const SEED_TEMPLATES: DemoTemplate[] = COURSES.map((course, index): DemoTemplate => {
+  const topic = course.tags[0] ?? course.title;
+  const subtopic = course.tags.slice(1, 3).join(", ");
+  const noun = panelNoun(topic, subtopic);
+  return {
+    id: 8100 + index,
+    courseId: course.id,
+    title: `Practice ${noun} for ${course.title}`,
+    topic,
+    subtopic,
+    difficulty:
+      course.difficulty === "Advanced" ? "Hard" : course.difficulty === "Beginner" ? "Easy" : "Medium",
+    duration_minutes: 20,
+    description:
+      `A five-question practice ${noun} on ${course.title}. The panel works through what the course ` +
+      `actually teaches, and your answers are scored on structure and specificity as well as on ` +
+      `being right. There is no written round and no coding round in it.`,
+    is_active: true,
+    num_coding_questions: 0,
+    num_mcq_questions: 0,
+    createdDaysAgo: 46 - index * 2,
+  };
+});
 
 /** Templates the admin created during this demo session. */
 function customTemplates(): DemoTemplate[] {
@@ -686,114 +751,121 @@ interface SeedTranscript {
   narrative: string;
 }
 
-const BACKEND_QUESTIONS: ScriptQuestion[] = [
+/**
+ * The board that interviewed the aspirant persona ten days ago.
+ *
+ * Deliberately not `GROUP_BOARD.questions`: a prospect who reads this transcript and
+ * then takes a Group-II board from the courses tab should get a different set, so the
+ * second interview is not a rehearsal of the one they just finished reading.
+ */
+const GROUP_II_BOARD_QUESTIONS: ScriptQuestion[] = [
   {
-    text: "Walk me through the last API you designed. What were the resources, and what did you get wrong the first time?",
+    text: "Your form says Kakatiya University, and that this is your second attempt at Group-II. Take the board through what you changed between the first attempt and this one.",
     type: "behavioral",
     keyPoints: [
-      "the resources and their relationships",
-      "the request and response contract",
-      "a mistake you found and corrected",
-      "how consumers of the API found out about changes",
+      "the paper or section that actually cost you the first time",
+      "a change of method rather than a change of effort",
+      "evidence from mock tests or marks that it worked",
+      "the weakness that is still not fixed",
     ],
   },
   {
-    text: "Where would you put a cache in a read-heavy service, and what breaks when you do?",
-    type: "technical",
+    text: "Warangal is on your form as your home district. What is it known for, and if you were posted there tomorrow, what would you take up first?",
+    type: "behavioral",
     keyPoints: [
-      "the specific layer you are caching",
-      "invalidation, and who is responsible for it",
-      "staleness the product can tolerate",
-      "the failure mode when the cache is cold or gone",
+      "the district's own history, industry or institution",
+      "one local problem, put concretely",
+      "what a Group-II post can do about it, and what it cannot",
+      "the office or department you would need on your side",
     ],
   },
   {
-    text: "Two requests update the same row at the same time. Walk me through what actually happens and how you make it safe.",
-    type: "technical",
-    keyPoints: [
-      "the lost-update problem stated clearly",
-      "optimistic versus pessimistic locking",
-      "transaction boundaries and isolation level",
-      "what the losing request sees",
-    ],
-  },
-  {
-    text: "This service now has to handle a hundred times the traffic. What breaks first?",
+    text: "Give me your opinion on one welfare scheme you have seen operate in your own mandal. Not what it promises, what you have watched it do.",
     type: "situational",
     keyPoints: [
-      "naming the bottleneck before naming the fix",
-      "the metric that would prove it",
-      "connection pools, queueing or fan-out",
-      "what you would deliberately not fix yet",
+      "the scheme described accurately before it is judged",
+      "what you personally observed rather than were told",
+      "the gap between the design and the delivery",
+      "one change you would make, with its cost attached",
     ],
   },
   {
-    text: "Last one. How do you decide what belongs in the database versus what belongs in application code?",
+    text: "You have written the Telangana movement as an interest. Tell me why the Mulki rules mattered, in three sentences.",
     type: "technical",
     keyPoints: [
-      "constraints that must hold no matter who writes",
-      "portability and testability of application logic",
-      "performance of doing it close to the data",
-      "a concrete example on each side",
+      "employment for local residents at the heart of the rule",
+      "employment as the grievance rather than language alone",
+      "the link forward to the later phase of the movement",
+      "three sentences, not a prepared essay",
+    ],
+  },
+  {
+    text: "Last one. You are a Group-II officer and a file on your table would benefit a relative. Nobody else knows. What do you do?",
+    type: "situational",
+    keyPoints: [
+      "declaring the connection and putting it in writing",
+      "handing the file to somebody else to decide",
+      "why nobody knowing is not the test",
+      "what you do if the relative comes back a second time",
     ],
   },
 ];
 
 const SEED_TRANSCRIPTS: Record<number, SeedTranscript> = {
   801: {
-    questions: BACKEND_QUESTIONS,
+    questions: GROUP_II_BOARD_QUESTIONS,
     answers: [
-      "The last one was a booking API for a studio scheduling tool. The resources were rooms, slots and bookings, and a booking pointed at exactly one slot. The first version let you POST a booking with a start and end time directly, which meant two people could describe overlapping bookings that the server had no way to compare. I changed it so slots were created up front and a booking could only reference a slot id, so the overlap question became a uniqueness question. We versioned the path when we made that change and kept the old route alive for two weeks while the mobile client caught up.",
-      "I would cache the read model rather than the raw rows, so the thing in the cache is the same shape the endpoint returns and there is no assembly cost on a hit. The hard part is invalidation. I would have the write path publish the id that changed and evict on that, rather than relying on a time to live alone, because a five minute TTL means five minutes of wrong prices. Some staleness is fine for a listing page and not fine for a balance. The failure mode I worry about is a cold cache after a deploy, where every request goes to the database at once, so I would warm the popular keys before shifting traffic.",
-      "Without care you get a lost update: both requests read the same version, both compute from it, and the second write silently overwrites the first. The cheap fix is optimistic locking, where the row carries a version column and the update says where version equals what I read. If it updates zero rows, someone beat you and you retry or surface a conflict. Pessimistic locking with select for update is simpler to reason about but it holds the row for the length of the transaction, which is fine for a short update and bad if there is a network call inside it. Whichever you pick, the losing request has to get a real answer, not a success.",
-      "Honestly I would want to know which part is read heavy before answering. If reads dominate, the first thing to fall over is usually the database connection pool rather than the database itself, because every app instance opens its own and they multiply. I would look at pool saturation and query wait time first. After that it is the N+1 queries that were invisible at low volume. I would add caching and a read replica, and I would deliberately not shard yet, because sharding is expensive to undo and we would not have proven we need it.",
-      "Anything that has to be true no matter which service writes belongs in the database, so foreign keys, uniqueness and not-null constraints. I have been burned by a uniqueness rule that lived only in application code and was bypassed by a data migration. Business logic that changes often, and that I want to unit test quickly, belongs in application code. The exception is when doing it in the database avoids pulling a large amount of data across the wire, like an aggregate over millions of rows, where a view or a well-written query wins.",
+      "The first time I lost the paper on Telangana history and the movement, which I had assumed I already knew because I grew up with those stories. My general studies section was fine and that one was not. What I changed was method rather than hours. I stopped reading and started writing: one fifteen mark answer a day, timed, and a senior at the study circle corrected it against the key instead of me marking my own. My mock marks in that paper moved from the low forties to the high sixties over four months. The weakness that is still not fixed is my speed in the arithmetic section, where I finish about six questions short every time.",
+      "Warangal was the Kakatiya capital, so it carries the fort and the Thousand Pillar temple, with Ramappa close by, and there is a working history of handloom and cotton around it along with the railway junction at Kazipet. The local problem I would take up is that much of the cotton leaves the district unginned, so the value is added somewhere else and the grower sees none of it. A Group-II post in a revenue or municipal role cannot build an industry, but it can move land conversion and trade licences for a ginning or warehousing unit in weeks instead of months, and it can keep the market yard weighment honest. What it cannot do is set the price.",
+      "I have watched the pension delivery in my mandal. The scheme is a fixed monthly amount credited to an account, and the credit is genuinely reliable for anybody who has a working account and a biometric that reads. The people who miss out are the very old, whose fingerprints do not register, and widows whose branch is twenty kilometres away with no bus after noon. The design assumes a functioning account and the delivery fails exactly where the account is weakest. The one change I would make is a certified doorstep payment through the postal network for the oldest beneficiaries, which costs more per payment and reaches the person the scheme was actually written for.",
+      "The Mulki rules mattered because they tied government employment in the Hyderabad state to people who were residents of it, so employment, and not language, was the grievance a household could feel directly. When the safeguards were read as having been set aside after the states were reorganised, the demand stopped being administrative and became political. That is the link forward: a rule about jobs turned into a question about who the state belongs to, and it runs through 1969 into the later phase of the movement.",
+      "I would record the connection on the file itself, in writing, and put a note to my superior asking for the file to be dealt with by another officer. I would not decide it either way, because approving it and rejecting it are both decisions I should not be the one making. Nobody knowing is not the test. The test is whether the decision would survive being read out in front of the people it affects.",
     ],
     marks: [17, 16, 15, 16, 14],
     notes: [
-      "A strong opening. You named the resources, the contract and a real mistake you corrected, and the versioning answer showed you have actually had to migrate a client.",
-      "You separated the read model from the raw rows and were specific about invalidation, which most candidates skip. You did not say how you would detect that the cache had gone stale in production.",
-      "Correct on the mechanism and clear about what the losing request sees. The isolation level itself never came up, and that is where the follow-up would have gone.",
-      "The best answer of the interview: you named the bottleneck and the metric before proposing anything, and you named something you would deliberately not do yet.",
-      "You gave a real example on the database side. The application side stayed abstract, and the answer would have been stronger with one concrete rule you deliberately kept out of the schema.",
+      "A strong opening. You named the paper that actually cost you, you changed method rather than hours, and you had the mock marks to show for it. Leaving the arithmetic weakness in the answer rather than hiding it is what a board reads as self-knowledge.",
+      "Real content: the history, the crop, the workshop, and a problem tied to value leaving the district rather than a general complaint. You did not say which office or department you would need on your side to move it, and that is the follow-up a board asks.",
+      "You described what you had watched rather than what the scheme promises, and the change you proposed came with its cost attached. You did not separate what you saw yourself from what you were told, and on a welfare question a board tests that line.",
+      "Employment as the grievance, and the link forward from the rules to the later movement, is exactly the shape this answer needed. It was asked for in three sentences and ran to five, and on a board a long answer is not a full answer, it is one fewer question.",
+      "The declaration and the handover were right, and the point about the decision surviving being read out is the sentence a board remembers. You did not say what you would do if the relative came back a second time, which is where this question usually goes.",
     ],
     narrative:
-      "You explain your reasoning as you go, which is the single most valuable habit in a technical interview, and you corrected yourself once without being prompted.\n\n" +
-      "Where you lost marks: when asked how the design changes at a hundred times the traffic you led with the diagnosis, which was right, but on the caching and locking questions you reached for the fix before naming what you would measure. Interviewers are listening for the diagnosis first, every time.\n\n" +
-      "One concrete thing to practise: for any design question, say out loud what the bottleneck is and how you would measure it, before proposing a solution.",
+      "You answered as yourself rather than out of a coaching handout, and a board notices that inside the first two minutes. The district answer and the scheme answer both had things in them that only somebody who has actually been there would say.\n\n" +
+      "Where you lost marks: length. Three of the five answers carried on past the point where you had made your case, and the Mulki question was asked for in three sentences. On a board that is not thoroughness, it is a smaller number of questions and less of you on the record.\n\n" +
+      "One concrete thing to practise: answer in one sentence, stop, and let the board ask for the rest. Rehearse the stopping, not only the matter.",
   },
   802: {
-    questions: ALGORITHMS.questions,
+    questions: BANK_PANEL.questions,
     answers: [
-      "I read it twice and then say it back in my own words, because half the time I have already assumed something that is not in the problem. Then I ask about size. If the input is a thousand elements I will happily write something quadratic and move on; if it is ten million that is off the table. I try to write a small example on paper before I write any code.",
-      "The obvious one is checking every pair, which is quadratic. You can sort the array and walk two pointers inward, which is n log n and constant extra space. The fastest is one pass with a hash map: for each number, check whether target minus that number has already been seen. That is linear time and linear space.",
-      "If the input is small the constant factors can make the log n version faster in practice. Sorting is also very well optimised in most standard libraries.",
-      "It is when two different keys hash to the same bucket. You handle it either by chaining, so the bucket holds a list, or by probing to the next free slot. If collisions get bad the lookup starts walking the whole bucket, so it drifts toward linear.",
-      "I would look at the constraints again first, since a hidden failure is usually the case I decided not to think about. Then I would try an empty input, a single element, and duplicates, because those three catch most of it. If none of that reproduces it, I would go back to the loop bounds rather than keep guessing.",
+      "I took the IBPS exam because banking is the one government post where the work on day one is the work later on: you are at a counter and you are handling somebody else's money. My district has a lot of first time account holders and the branch is where a scheme stops being an announcement and becomes a payment. I know a probationary officer spends the first two years on the counter, at the loan desk and on field verification, and that the posting can be anywhere.",
+      "An asset stops being performing when the borrower has not paid interest or principal for a fixed period, and the bank then has to set money aside against it, so the profit falls before any money has actually been lost. In the branch the early warning signals are cheque returns, an account that sits at its limit every month, and a borrower who stops answering the phone. If it is caught at that stage the account can usually be brought back.",
+      "I would say first that the money is hers and that it is coming back, before I explain anything about the system, because she is not angry about the process. Then I would raise the complaint at the counter in front of her, give her the reference number, and tell her the reversal timeline the bank is actually bound by rather than the one that sounds better. I would not promise her a date I do not control.",
+      "When the repo rate goes up, the bank's own borrowing costs more, so lending rates follow and the borrower's instalment rises on a floating loan. Deposit rates go up as well, usually later than the lending rates do, so the saver gains a little and gains it slowly.",
+      "I would not push it. If he does not want the policy then the sale is mis-selling, the regulator treats it as that, and the complaint comes back against my name and not against the target sheet. I would tell my manager that I offered it, that he declined and that I recorded the refusal, and I would ask what else is counting towards the target that I can actually do.",
     ],
     marks: [14, 13, 12, 13, 12],
     notes: [
-      "Restating the problem and asking about input size are exactly the right first two minutes. You did not mention stating a brute force out loud, which is what buys you credit early.",
-      "All three approaches, in the right order, with the complexities attached. The space cost of the hash map was mentioned but not weighed against the two-pointer version.",
-      "You named constant factors and library quality, which is the honest reason. Memory pressure and readability never came up, and one concrete example from your own work would have carried this further.",
-      "Correct on the definition and on both resolution strategies. Load factor and resizing are the missing half of the answer.",
-      "A systematic answer with real boundary cases. It stopped one step short of reasoning about the invariant, which is what separates narrowing down from guessing.",
+      "You gave a reason specific to banking rather than to any government post, and you knew what a probationary officer actually does in the first two years. Nothing came from the sector itself, and a panel expects a candidate to have followed something in banking over the last month.",
+      "The definition, the provisioning consequence and the branch level early warnings were all there, which is more than this question usually gets. Recovery and restructuring never came up as separate routes, and that is the half that decides what the branch does next.",
+      "Handling the person before the process is the right order, and giving the complaint reference in front of her is the detail that shows counter sense. You did not say what you would leave on record for the next officer, which is what protects the customer after you go home.",
+      "Correct and in the right sequence: borrowing cost, lending rate, instalment, deposit rate. It stopped at the mechanism. Why the rate was moved at all, and the delay before it bites, is the part that separates understanding the policy from reciting the plumbing.",
+      "You named mis-selling and took it to the regulator rather than to your own discomfort, which is the right level to answer at. There was no alternative offered to the farmer, and a panel is listening for the candidate who can meet a target without harming a customer.",
     ],
     narrative:
-      "Your final answers were correct, and you handled the follow-up on hash collisions well.\n\n" +
-      "The gap was pace and depth under pressure. Several answers stopped at the first correct sentence rather than going one level further, and on a live call that reads as thin rather than concise.\n\n" +
-      "Practise stating a brute-force approach within the first two minutes, then optimising out loud. It buys you credit early and gives the interviewer something to work with.",
+      "Your banking knowledge is solid and your instinct on the counter question was better than your knowledge answers.\n\n" +
+      "The pattern across the five was the same: you answered the question and stopped, without the one further sentence that turns a correct answer into a memorable one. On four of the five, the thing you left out was the consequence, what it means for the customer, for the branch or for the policy.\n\n" +
+      "Before the next panel, practise adding one closing sentence to every answer that says what it means for the person on the other side of the counter.",
   },
 };
 
-/** The three interviews a returning learner already has on their account. */
+/** The three interviews the aspirant persona already has on her account. */
 const SEED_ATTEMPTS: Attempt[] = [
   {
     id: 801,
     templateId: null,
-    title: "Backend fundamentals: systems and APIs",
-    topic: "Backend Engineering",
-    subtopic: "APIs, data modelling, caching",
+    title: "TGPSC Group-II: interview board practice",
+    topic: "TGPSC",
+    subtopic: "Group-II, home district, ethics",
     difficulty: "Medium",
     duration_minutes: 30,
     status: "completed",
@@ -819,9 +891,9 @@ const SEED_ATTEMPTS: Attempt[] = [
   {
     id: 802,
     templateId: null,
-    title: "Data structures: arrays, hashing and complexity",
-    topic: "Algorithms",
-    subtopic: "Arrays, hashing, complexity analysis",
+    title: "IBPS PO: bank interview panel",
+    topic: "IBPS",
+    subtopic: "Banking awareness, customer handling, economy",
     difficulty: "Hard",
     duration_minutes: 30,
     status: "completed",
@@ -847,10 +919,10 @@ const SEED_ATTEMPTS: Attempt[] = [
   {
     id: 803,
     templateId: null,
-    title: "Full-stack: end-to-end feature design",
-    topic: "Full-Stack Engineering",
-    subtopic: "Schema, API, interface, trade-offs",
-    difficulty: "Medium",
+    title: "Solar PV: trade test viva practice",
+    topic: "Solar PV",
+    subtopic: "Safety, fault finding, standards",
+    difficulty: "Easy",
     duration_minutes: 30,
     status: "scheduled",
     created_at: isoDaysAgo(2),
@@ -894,7 +966,9 @@ function questionsFor(attempt: Attempt): ScriptQuestion[] {
 
 function closingFor(attempt: Attempt): string {
   const seeded = SEED_TRANSCRIPTS[attempt.id];
-  if (seeded) return FULLSTACK.closing;
+  // Seeded attempts are all completed or scheduled, so this branch is a fallback
+  // rather than a path a candidate walks. The board closing is the neutral one.
+  if (seeded) return GROUP_BOARD.closing;
   return scriptFor(attempt.topic, attempt.subtopic).closing;
 }
 
@@ -904,13 +978,14 @@ function questionId(attemptId: number, index: number): number {
 }
 
 function apiQuestions(attempt: Attempt) {
-  return questionsFor(attempt).map((q, i) => ({
+  const script = questionsFor(attempt);
+  return script.map((q, i) => ({
     id: questionId(attempt.id, i),
     type: q.type,
     question_text: q.text,
     question: q.text,
     expected_key_points: q.keyPoints,
-    ...(i > 0 ? { follows_up_on: questionsFor(attempt)[i - 1].text } : {}),
+    ...(i > 0 ? { follows_up_on: script[i - 1].text } : {}),
   }));
 }
 
@@ -1013,8 +1088,8 @@ export function gradeAnswer(answer: string, question: ScriptQuestion): QuestionM
       max_score: MAX_PER_QUESTION,
       percentage: 0,
       feedback:
-        "No answer was recorded for this question. In a live interview, saying what you do know " +
-        "and where you would start is always worth more than silence.",
+        "No answer was recorded for this question, so it scores zero. In front of a board, " +
+        "saying what you do know and where you would start is always worth more than silence.",
       strengths: [],
       improvements: question.keyPoints.slice(0, 3),
     };
@@ -1077,15 +1152,15 @@ function listOf(items: string[]): string {
 
 function bandAdvice(percentage: number): string {
   if (percentage >= 80) {
-    return "You are interview-ready on this topic. The next gain is pace: answer in a headline sentence, then expand, so the interviewer can steer you.";
+    return "You are ready for the panel on this topic. The next gain is pace: answer in one sentence, then expand, so the board can steer you instead of waiting for you to finish.";
   }
   if (percentage >= 60) {
-    return "The knowledge is there and the gap is habit. Before answering, take two seconds to decide the three things you want to land, then say them in that order.";
+    return "The matter is there and the gap is habit. Before you answer, take two seconds to decide the three things you want to land, then say them in that order.";
   }
   if (percentage >= 40) {
-    return "Work on finishing answers. Several of yours stopped at the first correct sentence, and an interviewer reads that as thin rather than concise.";
+    return "Work on finishing answers. Several of yours stopped at the first correct sentence, and a board reads that as thin rather than as concise.";
   }
-  return "Start with structure rather than recall. Say what the question is really asking, what you would check first, and what you would do about it. That shape alone lifts a weak answer to an average one.";
+  return "Start with structure rather than with recall. Say what the question is really asking, what you would check or consider first, and what you would do about it. That shape alone lifts a weak answer to an average one.";
 }
 
 /** The full `evaluation_score` object the result page renders. */
@@ -1254,9 +1329,9 @@ export function attemptDetail(attempt: Attempt) {
             points: 5,
           })),
           max_score: MAX_PER_QUESTION,
-          excellent_answer: "Every key point covered, with a worked example and the trade-off named.",
-          good_answer: "Most key points covered, with reasoning attached to at least one of them.",
-          average_answer: "The right idea, stated once, without the reasoning or an example.",
+          excellent_answer: "Every point covered, with one concrete example and the difficulty named.",
+          good_answer: "Most points covered, with a reason attached to at least one of them.",
+          average_answer: "The right idea, said once, without the reason or the example.",
           poor_answer: "A general statement that would fit almost any question on this topic.",
         },
       ]),
@@ -1278,7 +1353,7 @@ export function attemptDetail(attempt: Attempt) {
         multiple_face_detections: attempt.metadata.multiple_face_detections ?? 0,
         looking_away_count: attempt.metadata.looking_away_count ?? 0,
         screenResolution: "1512 x 982",
-        userAgent: "AI Linc proctored session",
+        userAgent: "TSEM proctored session",
         timestamp: Date.parse(attempt.submitted_at ?? attempt.created_at),
       },
     },
@@ -1309,7 +1384,7 @@ function normaliseDifficulty(value: unknown): "Easy" | "Medium" | "Hard" {
 }
 
 function titleFor(topic: string, subtopic: string): string {
-  const t = topic.trim() || "Software engineering";
+  const t = topic.trim() || "General studies";
   const s = subtopic.trim();
   return s && s.toLowerCase() !== t.toLowerCase() ? `${t}: ${s}` : `${t} interview`;
 }
@@ -1417,7 +1492,7 @@ defineRoutes(MODULE, {
    */
   "POST /mock-interview/api/clients/:clientId/mock-interviews/": (req) => {
     const body = (req.body ?? {}) as Record<string, unknown>;
-    const topic = String(body.topic ?? body.job_role ?? "Software Engineering").trim();
+    const topic = String(body.topic ?? body.job_role ?? "General Studies").trim();
     const subtopic = String(body.subtopic ?? topic).trim();
     const duration = Number(body.duration_minutes);
     const attempt = newAttempt({
@@ -1542,6 +1617,9 @@ defineRoutes(MODULE, {
         is_closing_remark: true,
         closing_remark: closingFor(attempt),
         bonus_seconds: 0,
+        // Zero on purpose, and it stays zero. See the note on SEED_TEMPLATES: a
+        // non-zero budget here is what opens the Monaco coding round, which has no
+        // place in front of an aspirant sitting a recruitment board or a trade viva.
         coding_time_budget_seconds: 0,
       };
     }
@@ -1644,7 +1722,7 @@ defineRoutes(MODULE, {
     return {
       id,
       superseded: true,
-      message: "Reattempt granted. The interview is back in the student's pending list.",
+      message: "Reattempt granted. The interview is back in the aspirant's pending list.",
     };
   },
 
@@ -1660,7 +1738,7 @@ defineRoutes(MODULE, {
       id,
       result_visible_to_student: true as const,
       result_released_at: releasedAt,
-      message: "Result released. The student can see their score and feedback now.",
+      message: "Result released. The aspirant can see their score and feedback now.",
     };
   },
 
@@ -1678,7 +1756,7 @@ defineRoutes(MODULE, {
       ? (body.adaptive_course_ids as unknown[])
       : [];
     const courseId = Number(courseIds[0] ?? adaptiveIds[0] ?? COURSES[0].id);
-    const topic = String(body.topic ?? "Software Engineering").trim();
+    const topic = String(body.topic ?? "General Studies").trim();
     const template: DemoTemplate = {
       id: nextDemoId("interview-template"),
       courseId,
@@ -1760,8 +1838,8 @@ defineRoutes(MODULE, {
       released: pending,
       message:
         pending > 0
-          ? `Released ${pending} result${pending === 1 ? "" : "s"} to students.`
-          : "Every scored attempt on this interview was already visible to its student.",
+          ? `Released ${pending} result${pending === 1 ? "" : "s"} to aspirants.`
+          : "Every scored attempt on this interview was already visible to its aspirant.",
     };
   },
 
@@ -1783,7 +1861,7 @@ defineRoutes(MODULE, {
       template_id: id,
       scope,
       granted: rows.length,
-      message: `Reattempt granted to ${rows.length} student${rows.length === 1 ? "" : "s"}.`,
+      message: `Reattempt granted to ${rows.length} aspirant${rows.length === 1 ? "" : "s"}.`,
     };
   },
 

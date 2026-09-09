@@ -14,15 +14,17 @@
 
 import { defineRoutes } from "../router";
 import { notFound } from "../types";
-import {
-  INSTRUCTOR_PERSONA,
-  STUDENTS,
-  STUDENT_PERSONA,
-  rankedLearners,
-  type DemoPerson,
-} from "../../db/people";
+import { INSTRUCTOR_PERSONA, rankedLearners, type DemoPerson } from "../../db/people";
 import { COURSES } from "../../db/courses";
-import { facultyCode } from "./admin";
+import {
+  COHORTS,
+  MID_PROGRAMME_PAPER,
+  atRiskReasons,
+  batchMembers,
+  facultyCode,
+  sessionTitle,
+  syllabusCovered,
+} from "./admin";
 import { nextDemoId } from "../../db/overlay";
 import { DEMO_TENANT } from "../../config";
 import { iso, isoDaysAgo, isoDaysAhead, minutesAgo, nowMs, ymdDaysAgo, ymdDaysAhead } from "../../clock";
@@ -31,39 +33,15 @@ import { seededInt, seededPick } from "../../random";
 const MODULE = "instructor";
 
 /**
- * The batches this faculty member teaches.
+ * The batches this faculty member is answerable for.
  *
- * Named the way the mission names a batch: the notification or trade it
- * prepares for, the centre that runs it, and the intake it belongs to. An
- * officer asks for "the Warangal January intake", never for a cohort number,
- * and a batch whose name does not carry its centre cannot be read on a district
- * report. Ids 11 to 13 are shared with `admin.ts` and `details.ts`, which
- * project the same batches for the programme officer, so the three lists must
- * agree name for name.
+ * Not a second list. `admin.ts` owns every batch the mission runs, and this is
+ * the subset led by the signed-in faculty member, so a batch cannot carry one
+ * name in the programme officer's table and another in the gradebook. The three
+ * exam batches came out of that filter; the trade and enterprise batches are led
+ * by the centre trainers and are not this workspace's to show.
  */
-const COHORTS = [
-  {
-    id: 11,
-    name: "TGPSC Group-II, Warangal centre, Jan intake",
-    courseIds: [302],
-    size: 28,
-    status: "active",
-  },
-  {
-    id: 12,
-    name: "TGLPRB Constable, Karimnagar centre, Feb intake",
-    courseIds: [305],
-    size: 22,
-    status: "active",
-  },
-  {
-    id: 13,
-    name: "TGPSC Group-II, Warangal centre, Jul intake",
-    courseIds: [302],
-    size: 24,
-    status: "completed",
-  },
-];
+const MY_COHORTS = COHORTS.filter((c) => c.leadId === INSTRUCTOR_PERSONA.id);
 
 /**
  * The courses this faculty member owns, read off the catalogue rather than
@@ -75,28 +53,51 @@ function myCourses() {
   return COURSES.filter((c) => c.instructor.id === INSTRUCTOR_PERSONA.id);
 }
 
-/** Members of a batch, drawn deterministically from the roster. */
+/**
+ * Members of a batch.
+ *
+ * Delegated to `admin.ts` so a batch that says 28 members opens onto the same 28
+ * people in the gradebook and in the programme officer's batch page. The version
+ * this replaced sliced a fixed window off the roster and ran off the end, so the
+ * completed batch claimed 24 members and listed five, and it appended the
+ * signed-in aspirant to every batch, which put her in three at once.
+ */
 function cohortMembers(cohortId: number, size: number): DemoPerson[] {
-  const start = (cohortId - 11) * 20;
-  return [...STUDENTS.slice(start, start + size), STUDENT_PERSONA].slice(0, size);
+  return batchMembers(cohortId, size);
 }
 
 /** Everyone this faculty member teaches, deduplicated across their batches. */
 function taughtStudents(): DemoPerson[] {
   const seen = new Map<number, DemoPerson>();
-  for (const c of COHORTS) {
+  for (const c of MY_COHORTS) {
     for (const p of cohortMembers(c.id, c.size)) seen.set(p.id, p);
   }
   return [...seen.values()];
 }
 
-/** Syllabus covered, stable per person. */
+/**
+ * Syllabus covered, stable per person.
+ *
+ * Read from `admin.ts`, which owns the figure, rather than seeded again here.
+ * It used to be course 302's completion in this file and a flat 56 in the
+ * officer's table, and then a second seeded key of its own, so the same aspirant
+ * was a different percentage on every screen that named her. A centre in-charge
+ * being rung about a trainee has to be looking at the number the caller is
+ * reading out.
+ */
 function progressOf(p: DemoPerson): number {
-  return p.id === STUDENT_PERSONA.id
-    ? COURSES.find((c) => c.id === 302)?.completion ?? 56
-    : seededInt(`iprog:${p.id}`, 8, 96);
+  return syllabusCovered(p);
 }
 
+/**
+ * The band a faculty member triages by.
+ *
+ * Deliberately wider than the programme officer's at-risk rules, and it stays a
+ * separate judgement: an officer escalates a trainee whose documents are pending
+ * at the district office, and a faculty member watches one who is behind on the
+ * syllabus whether or not any rule has fired. Both are shown here, the band in
+ * this column and the officer's rule as the reason beside it.
+ */
 function statusOf(progress: number, streak: number): "on_track" | "watch" | "at_risk" {
   if (progress < 30 || streak === 0) return "at_risk";
   if (progress < 55) return "watch";
@@ -105,7 +106,7 @@ function statusOf(progress: number, streak: number): "on_track" | "watch" | "at_
 
 function studentRow(p: DemoPerson) {
   const progress = progressOf(p);
-  const cohort = COHORTS.find((c) => cohortMembers(c.id, c.size).some((m) => m.id === p.id));
+  const cohort = MY_COHORTS.find((c) => cohortMembers(c.id, c.size).some((m) => m.id === p.id));
   return {
     student_id: p.id,
     name: p.full_name,
@@ -138,6 +139,20 @@ function statStudent(p: DemoPerson) {
  * much as the ones to come. They are what fills the Ended tab, the attendance
  * figures and the recording links, and a faculty member with no history reads as
  * one who has never taken a class.
+ *
+ * Ids 501 to 507 belong to the schedule in `live-sessions.ts`, which every
+ * aspirant also sees. The three rows here that carry those ids take their topic
+ * from `sessionTitle`, and their day, hour and batch are copied from the same
+ * place: one class showing at 6:30 AM on the aspirant's timetable and 6 PM on
+ * the faculty member's is read as two classes, and the ids say they are one.
+ * This file must therefore never mint a NEW id in that band. The classes this
+ * faculty member has already taken are numbered in the 4xx block below, which
+ * is the mission's earlier series and is his alone.
+ *
+ * `mine` is whether he scheduled the class. He leads these batches, so he can
+ * open any room in them, but Group-II polity and the Telangana movement classes
+ * are taken by the subject faculty member the aspirant's card names, and this
+ * workspace must not offer to delete another person's class.
  */
 interface ScheduleRow {
   id: number;
@@ -145,74 +160,106 @@ interface ScheduleRow {
   /** Signed offset from today. Negative is the past. */
   dayOffset: number;
   hour: number;
+  minute: number;
+  durationMinutes: number;
   status: "live" | "scheduled" | "ended";
-  cohort: string;
+  cohortId: number;
   provider: "meeting" | "webinar";
   recorded: boolean;
+  /** Scheduled by this faculty member, so his to edit and to cancel. */
+  mine: boolean;
 }
 
 const SCHEDULE: ScheduleRow[] = [
   {
     id: 501,
-    topic: "Doubt clearing: the Telangana movement and statehood",
+    topic: sessionTitle(501),
     dayOffset: 0,
-    hour: 18,
+    hour: 6,
+    minute: 30,
+    durationMinutes: 60,
     status: "live",
-    cohort: "TGPSC Group-II, Warangal centre, Jan intake",
+    cohortId: 11,
     provider: "meeting",
     recorded: false,
+    mine: false,
   },
   {
     id: 502,
-    topic: "Revision class: Telangana economy and state schemes",
+    topic: sessionTitle(502),
     dayOffset: 2,
-    hour: 19,
+    hour: 20,
+    minute: 0,
+    durationMinutes: 90,
     status: "scheduled",
-    cohort: "TGPSC Group-II, Warangal centre, Jan intake",
+    cohortId: 11,
     provider: "meeting",
     recorded: false,
+    mine: false,
   },
   {
     id: 504,
-    topic: "Written test to physical events: how the constable stages fit together",
+    topic: sessionTitle(504),
     dayOffset: 7,
     hour: 20,
+    minute: 0,
+    durationMinutes: 75,
     status: "scheduled",
-    cohort: "TGLPRB Constable, Karimnagar centre, Feb intake",
+    cohortId: 12,
     provider: "webinar",
     recorded: false,
+    mine: true,
   },
   {
-    id: 497,
-    topic: "Polity: fundamental rights and the writs",
+    id: 481,
+    topic: "Polity revision: fundamental rights, the writs and the questions they carry",
     dayOffset: -3,
-    hour: 18,
+    hour: 6,
+    minute: 30,
+    durationMinutes: 60,
     status: "ended",
-    cohort: "TGPSC Group-II, Warangal centre, Jan intake",
+    cohortId: 11,
     provider: "meeting",
     recorded: true,
+    mine: true,
   },
   {
-    id: 494,
+    id: 476,
     topic: "Previous paper walkthrough: general studies, question by question",
     dayOffset: -8,
-    hour: 19,
+    hour: 20,
+    minute: 0,
+    durationMinutes: 90,
     status: "ended",
-    cohort: "TGPSC Group-II, Warangal centre, Jan intake",
+    cohortId: 11,
     provider: "meeting",
     recorded: true,
+    mine: true,
   },
   {
-    id: 490,
-    topic: "Current affairs revision: state schemes of the last quarter",
+    id: 470,
+    topic: "Banking awareness revision: the last quarter, and what a panel asks about it",
     dayOffset: -14,
     hour: 20,
+    minute: 0,
+    durationMinutes: 60,
     status: "ended",
-    cohort: "TGLPRB Constable, Karimnagar centre, Feb intake",
+    cohortId: 12,
     provider: "webinar",
     recorded: false,
+    mine: true,
   },
 ];
+
+/** The batch a class belongs to, named once, in `admin.ts`. */
+function batchName(cohortId: number): string {
+  return COHORTS.find((c) => c.id === cohortId)?.name ?? "Not in a batch";
+}
+
+/** How many people the batch has, which is how many are registered for its class. */
+function batchSize(cohortId: number): number {
+  return COHORTS.find((c) => c.id === cohortId)?.size ?? 0;
+}
 
 /**
  * A row in the shape `InstructorLiveSession` actually declares.
@@ -222,15 +269,21 @@ const SCHEDULE: ScheduleRow[] = [
  * threw and rendered "Couldn't load your live sessions." Same rule as the ticket
  * handler: a wrong shape takes the route down, a missing one only empties it.
  */
+/** How long the class marked live has been running. Matches `live-sessions.ts`. */
+const LIVE_STARTED_MINUTES_AGO = 22;
+
 function liveSession(s: ScheduleRow) {
   const ended = s.status === "ended";
-  const registered = seededInt(`reg:${s.id}`, 18, 40);
+  // Registered is the batch, not a number of its own. A class for a batch of 28
+  // cannot have 40 people registered for it, and the turnout underneath is a
+  // division of these two.
+  const registered = batchSize(s.cohortId) || seededInt(`reg:${s.id}`, 18, 40);
   // Nobody has "attended" a class that has not happened, so a scheduled row
   // reports zero and the page hides its turnout block rather than showing 0%.
   const attendance = ended
     ? seededInt(`att:${s.id}`, Math.round(registered * 0.5), Math.round(registered * 0.9))
     : s.status === "live"
-      ? seededInt(`live:${s.id}`, 12, Math.min(30, registered))
+      ? Math.min(registered, seededInt(`live:${s.id}`, Math.round(registered * 0.4), registered))
       : 0;
   const hasRecording = ended && s.recorded;
 
@@ -238,12 +291,14 @@ function liveSession(s: ScheduleRow) {
     id: s.id,
     topic_name: s.topic,
     // The live row is anchored to NOW. This page derives live/scheduled/ended
-    // from the clock rather than trusting a status field, so a fixed evening hour
-    // read as "Scheduled" for all but one hour of the day.
+    // from the clock rather than trusting a status field, so a fixed hour read
+    // as "Scheduled" for all but one hour of the day.
     class_datetime:
-      s.status === "live" ? iso(minutesAgo(20)) : isoDaysAhead(s.dayOffset, s.hour, 0),
+      s.status === "live"
+        ? iso(minutesAgo(LIVE_STARTED_MINUTES_AGO))
+        : isoDaysAhead(s.dayOffset, s.hour, s.minute),
     timezone: "Asia/Kolkata",
-    duration_minutes: 60,
+    duration_minutes: s.durationMinutes,
     join_link: `/instructor/live-sessions?session=${s.id}`,
     is_upcoming: !ended,
     provider: s.provider,
@@ -251,19 +306,71 @@ function liveSession(s: ScheduleRow) {
     is_zoom: s.provider === "meeting" || s.provider === "webinar",
     is_webinar: s.provider === "webinar",
     is_google_meet: false,
-    cohort_name: s.cohort,
+    cohort_name: batchName(s.cohortId),
     password: "",
-    // This faculty member owns their own timetable, so every row is hostable and
-    // editable. A read-only row would show controls a prospect cannot click.
+    // He leads these batches and is on every room as an alternative host, so any
+    // class in them can be opened from here. Editing and cancelling are narrower:
+    // a subject faculty member's class is not his to move or to delete, and a
+    // workspace that offers both is offering an action that should fail.
     hostable: !ended,
-    created_by_me: true,
-    editable: !ended,
+    created_by_me: s.mine,
+    editable: !ended && s.mine,
     registered,
     attendance,
     turnout: registered > 0 ? Math.round((attendance / registered) * 100) : null,
     has_recording: hasRecording,
     recording_url: hasRecording ? `/instructor/live-sessions?session=${s.id}&recording=1` : "",
   };
+}
+
+/**
+ * The papers this faculty member has set.
+ *
+ * One list, read by the gradebook route and by the recent-submissions strip, so
+ * a submission can never name a paper that is not on the paper list. Durations
+ * are the real ones: an IBPS PO prelims paper is 100 questions in 60 minutes
+ * with sectional timing, and a mock that says 45 minutes is teaching the wrong
+ * clock. `admin.ts` sends the invitation and result emails for the same two ids.
+ */
+function assessments() {
+  return [
+    {
+      // Named off the record in `admin.ts`, which the result emails, the officer's
+      // drill-down and the aspirant's own scorecard all read, so the gradebook
+      // cannot be the one screen calling this paper something else.
+      id: MID_PROGRAMME_PAPER.id,
+      title: MID_PROGRAMME_PAPER.title,
+      slug: "tgpsc-group-2-mid-programme",
+      is_draft: false,
+      duration_minutes: 90,
+      submissions: 24,
+      pending_grading: 2,
+      avg_score: 71 as number | null,
+      created_at: isoDaysAgo(30),
+    },
+    {
+      id: 903,
+      title: "IBPS PO Prelims: full mock 3",
+      slug: "ibps-po-prelims-full-mock-3",
+      is_draft: false,
+      duration_minutes: 60,
+      submissions: 18,
+      pending_grading: 0,
+      avg_score: 68 as number | null,
+      created_at: isoDaysAgo(22),
+    },
+    {
+      id: 905,
+      title: "Current affairs: weekly test 6",
+      slug: "current-affairs-weekly-6",
+      is_draft: true,
+      duration_minutes: 60,
+      submissions: 0,
+      pending_grading: 0,
+      avg_score: null as number | null,
+      created_at: isoDaysAgo(4),
+    },
+  ];
 }
 
 function dashboard() {
@@ -279,7 +386,7 @@ function dashboard() {
     // three different codes for one person.
     instructor_code: facultyCode(INSTRUCTOR_PERSONA.id),
     is_admin_view: false,
-    batches: COHORTS.filter((c) => c.status === "active").length,
+    batches: MY_COHORTS.filter((c) => c.status === "active").length,
     courses: myCourses().length,
     students: rows.length,
     active_students: rows.filter((r) => r.status !== "at_risk").length,
@@ -288,14 +395,32 @@ function dashboard() {
     at_risk_count: atRisk.length,
     upcoming_sessions: SCHEDULE.filter((s) => s.status === "scheduled").length,
     live_now: SCHEDULE.filter((s) => s.status === "live").length,
-    at_risk: atRisk
-      .slice(0, 6)
-      .map((r) => ({ student_id: r.student_id, name: r.name, email: r.email, progress: r.progress })),
+    at_risk: atRisk.slice(0, 6).map((r) => {
+      const person = students.find((p) => p.id === r.student_id);
+      return {
+        student_id: r.student_id,
+        name: r.name,
+        email: r.email,
+        progress: r.progress,
+        // The rules that flagged them, not just the flag, and the same rules the
+        // programme officer's at-risk table applies, so a trainee is not "missed
+        // the last two classes" on one screen and "no activity for a week" on
+        // the other. A faculty member can act on either of those today; nobody
+        // can act on the word "risk" on its own.
+        //
+        // Someone this workspace bands as at risk on syllabus alone trips no
+        // rule, and says so plainly rather than borrowing one that did not fire.
+        reason: person
+          ? atRiskReasons(person, r.progress).join("; ") ||
+            `Only ${r.progress}% of the syllabus covered`
+          : `Only ${r.progress}% of the syllabus covered`,
+      };
+    }),
     top_performers: rankedLearners()
       .filter((p) => students.some((s) => s.id === p.id))
       .slice(0, 5)
       .map(statStudent),
-    cohorts_detailed: COHORTS.map((c) => {
+    cohorts_detailed: MY_COHORTS.map((c) => {
       const members = cohortMembers(c.id, c.size).map(studentRow);
       return {
         id: c.id,
@@ -313,26 +438,36 @@ function dashboard() {
         at_risk: members.filter((m) => m.status === "at_risk").length,
       };
     }),
-    schedule: SCHEDULE.map((s) => ({
-      id: s.id,
-      topic: s.topic,
-      datetime: s.dayOffset === 0 ? isoDaysAhead(0, s.hour, 0) : isoDaysAhead(s.dayOffset, s.hour, 0),
-      duration_minutes: 60,
-      status: s.status,
-      registered: seededInt(`reg:${s.id}`, 18, 40),
-      cohort_name: s.cohort,
-      join_link: `/instructor/live-sessions?session=${s.id}`,
-    })),
+    // Projected through `liveSession` rather than re-derived, so the strip on
+    // the dashboard and the row on the live-sessions page cannot disagree about
+    // when a class starts, how long it runs or how many people are registered.
+    schedule: SCHEDULE.map((s) => {
+      const row = liveSession(s);
+      return {
+        id: row.id,
+        topic: row.topic_name,
+        datetime: row.class_datetime,
+        duration_minutes: row.duration_minutes,
+        status: row.status,
+        registered: row.registered,
+        cohort_name: row.cohort_name,
+        join_link: row.join_link,
+      };
+    }),
+    // Papers picked from the two that are actually published. The list used to
+    // name a "foundation diagnostic" that is on no paper list in this build, so
+    // a submission opened onto a paper that does not exist.
     recent_submissions: taughtStudents()
       .slice(0, 6)
       .map((p, i) => ({
         submission_id: 9000 + i,
         student_name: p.full_name,
-        assessment_title: seededPick(`sub:${p.id}`, [
-          "TGPSC Group-II: mid-programme test",
-          "TGPSC Group-II: foundation diagnostic",
-          "TGLPRB Constable: general studies unit test",
-        ]),
+        assessment_title: seededPick(
+          `sub:${p.id}`,
+          assessments()
+            .filter((a) => !a.is_draft)
+            .map((a) => a.title),
+        ),
         // Two awaiting review, so the gradebook has something to do.
         score: i < 2 ? null : seededInt(`subs:${p.id}`, 48, 96),
         review_status: i < 2 ? "pending" : "reviewed",
@@ -349,7 +484,7 @@ defineRoutes(MODULE, {
     courses: myCourses().length,
     adaptive_courses: myCourses().length,
     classic_courses: 0,
-    cohorts: COHORTS.filter((c) => c.status === "active").length,
+    cohorts: MY_COHORTS.filter((c) => c.status === "active").length,
     students: taughtStudents().length,
     is_admin_view: false,
   }),
@@ -369,7 +504,7 @@ defineRoutes(MODULE, {
     })),
 
   "GET /instructor/api/cohorts/": () =>
-    COHORTS.map((c) => ({
+    MY_COHORTS.map((c) => ({
       id: c.id,
       name: c.name,
       status: c.status,
@@ -380,8 +515,8 @@ defineRoutes(MODULE, {
     })),
 
   "GET /instructor/api/cohorts/:cohortId/students/": (req) => {
-    const c = COHORTS.find((x) => x.id === Number(req.params.cohortId));
-    if (!c) throw notFound("Cohort not found");
+    const c = MY_COHORTS.find((x) => x.id === Number(req.params.cohortId));
+    if (!c) throw notFound("No batch with that record");
     const members = cohortMembers(c.id, c.size);
     return {
       cohort_id: c.id,
@@ -430,7 +565,7 @@ defineRoutes(MODULE, {
 
   "GET /instructor/api/students/:studentId/": (req) => {
     const p = taughtStudents().find((x) => x.id === Number(req.params.studentId));
-    if (!p) throw notFound("Student not found");
+    if (!p) throw notFound("No aspirant with that record");
     const row = studentRow(p);
     return {
       ...row,
@@ -439,7 +574,7 @@ defineRoutes(MODULE, {
       courses: COURSES.filter((c) => c.enrolled).map((c) => ({
         id: c.id,
         title: c.title,
-        progress: seededInt(`sc:${p.id}:${c.id}`, 5, 98),
+        progress: seededInt(`sc:${p.id}:${c.id}`, 4, 98),
       })),
       recent_activity: Array.from({ length: 5 }, (_, i) => ({
         label: seededPick(`act:${p.id}:${i}`, [
@@ -467,41 +602,7 @@ defineRoutes(MODULE, {
    * Both were missing, so the gradebook rendered a bare " min" with no number
    * and reported every paper as "up to date" because `undefined` is falsy.
    */
-  "GET /instructor/api/assessments/": () => [
-    {
-      id: 901,
-      title: "TGPSC Group-II: mid-programme test",
-      slug: "tgpsc-group-2-mid-programme",
-      is_draft: false,
-      duration_minutes: 90,
-      submissions: 24,
-      pending_grading: 2,
-      avg_score: 71,
-      created_at: isoDaysAgo(30),
-    },
-    {
-      id: 903,
-      title: "TGLPRB Constable: general studies unit test",
-      slug: "tglprb-constable-general-studies-2",
-      is_draft: false,
-      duration_minutes: 45,
-      submissions: 18,
-      pending_grading: 0,
-      avg_score: 68,
-      created_at: isoDaysAgo(22),
-    },
-    {
-      id: 905,
-      title: "Current affairs: weekly test 6",
-      slug: "current-affairs-weekly-6",
-      is_draft: true,
-      duration_minutes: 60,
-      submissions: 0,
-      pending_grading: 0,
-      avg_score: null,
-      created_at: isoDaysAgo(4),
-    },
-  ],
+  "GET /instructor/api/assessments/": () => assessments(),
 
   /** `{ upcoming, past, past_total }`: the page destructures all three. */
   "GET /instructor/api/live-sessions/": () => {
@@ -523,7 +624,11 @@ defineRoutes(MODULE, {
     const id = Number(req.params.sessionId);
     const row = SCHEDULE.find((s) => s.id === id);
     const session = row ? liveSession(row) : null;
-    const members = cohortMembers(11, 28);
+    // The batch this class was actually for. It used to be batch 11 whichever
+    // class you opened, so the banking batch's attendance dialog listed the
+    // Group-II roster.
+    const cohortId = row?.cohortId ?? MY_COHORTS[0].id;
+    const members = cohortMembers(cohortId, batchSize(cohortId));
     const attendance = session?.attendance ?? 0;
     return {
       registered: session?.registered ?? members.length,
@@ -555,11 +660,15 @@ defineRoutes(MODULE, {
       id: nextDemoId("instructor-session"),
       topic: String(body.topic_name ?? "New class"),
       dayOffset: 1,
-      hour: 18,
+      hour: 19,
+      minute: 0,
+      durationMinutes: Number(body.duration_minutes ?? 60),
       status: "scheduled",
-      cohort: COHORTS[0].name,
+      cohortId: MY_COHORTS[0].id,
       provider,
       recorded: false,
+      // Scheduled here, in this session, so it is his to edit and to cancel.
+      mine: true,
     });
     return {
       ...created,
@@ -575,7 +684,7 @@ defineRoutes(MODULE, {
 
   "PATCH /instructor/api/live-sessions/:sessionId/": (req) => {
     const row = SCHEDULE.find((s) => s.id === Number(req.params.sessionId));
-    if (!row) throw notFound("Session not found");
+    if (!row) throw notFound("No class with that record");
     const body = (req.body ?? {}) as Record<string, unknown>;
     return {
       ...liveSession(row),

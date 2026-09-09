@@ -95,414 +95,766 @@ function fromAdaptiveBank(m: DemoMcq, topic: string): BankQuestion {
 }
 
 /**
- * Course banks this file draws paper questions from.
+ * Questions this mission already owns, taken from a course's own bank.
  *
- * These were QUIZ_BANK[201] to QUIZ_BANK[205], the five software courses this fork
- * replaced. Those ids no longer exist, so every one of them was `undefined` and the
- * first `FS[1]` below threw at module load and took the whole demo transport down with
- * it: the sign-in screen rendered blank.
+ * Every course in `db/quiz-bank.ts` carries an authored MCQ bank, and a recruiting
+ * body building a mock does not write a fresh question when it has one on the
+ * shelf. `pickFromBank` walks a course's bank ONCE and hands each question to the
+ * first group whose skills claim it, so two sections of the same paper can never
+ * be handed the same question, and a group whose skills have been renamed simply
+ * gets fewer rather than borrowing another group's.
  *
- * Read through a helper that falls back to an empty bank, and indexed through `pick`,
- * so a course whose bank is ever missing or shorter than this file expects degrades to
- * one fewer question on a paper rather than to a white screen. A seeded assessment is
- * not worth an outage.
+ * The bank is read as `QUIZ_BANK[courseId] ?? []` and never by index. It is
+ * authored per course by whoever owns that course, and a paper that indexed into
+ * it would break silently the day a question was inserted: the answer key would
+ * still be there, attached to a different question. Every section below also
+ * carries questions authored in this file, so no section can empty out even if a
+ * bank disappears entirely.
  */
-const bank = (courseId: number): DemoMcq[] => QUIZ_BANK[courseId] ?? [];
-
-/**
- * The nth question of a bank, or the last one it has.
- *
- * Never undefined, because every call site passes the result straight into
- * `fromAdaptiveBank`, which reads `.question` off it.
- */
-function pick(list: DemoMcq[], index: number): DemoMcq {
-  return list[index] ?? list[list.length - 1];
+function pickFromBank(
+  courseId: number,
+  groups: Array<{ topic: string; skills: string[]; limit: number }>,
+): BankQuestion[][] {
+  const bank = QUIZ_BANK[courseId] ?? [];
+  const out: BankQuestion[][] = groups.map(() => []);
+  for (const item of bank) {
+    const skill = item.skill.trim().toLowerCase();
+    const index = groups.findIndex(
+      (group, i) =>
+        out[i].length < group.limit && group.skills.some((s) => s.toLowerCase() === skill),
+    );
+    if (index >= 0) out[index].push(fromAdaptiveBank(item, groups[index].topic));
+  }
+  return out;
 }
 
-const GS = bank(302);       // TGPSC Group-II and Group-III: general studies
-const BANKING = bank(307);  // IBPS PO and Clerk
-const APTITUDE = bank(303); // SSC CGL and CHSL: aptitude, reasoning, English
-const TRADE = bank(311);    // Solar PV: trade theory
-const ENTERPRISE = bank(316); // Rural micro-enterprise
+// ── Paper 901: TGPSC Group-II Mains ─────────────────────────────────────────
 
-// Full-Stack paper -----------------------------------------------------------
+const [TG_GS_BANK, TG_HISTORY_BANK, TG_ECONOMY_BANK, TG_MOVEMENT_BANK] = pickFromBank(302, [
+  {
+    topic: "General Studies and General Abilities",
+    skills: ["Science", "Data", "Disaster"],
+    limit: 3,
+  },
+  {
+    topic: "History, Polity and Society",
+    skills: ["Ancient", "Kakatiya", "Fundamental", "Parliament", "Constitutional", "Tribe", "Education"],
+    limit: 3,
+  },
+  { topic: "Economy and Development", skills: ["Agriculture", "Revenue"], limit: 2 },
+  {
+    topic: "Telangana Movement and State Formation",
+    skills: ["Hyderabad", "Mulki", "Formula", "Reorganisation"],
+    limit: 4,
+  },
+]);
 
-const FS_HTTP: BankQuestion[] = [
-  fromAdaptiveBank(pick(GS, 1), "Telangana movement"),
-  fromAdaptiveBank(pick(GS, 7), "Polity and governance"),
+const TG_GENERAL_STUDIES: BankQuestion[] = [
   q(
-    "A POST returns 201 with a Location header. What is the client expected to do with it?",
+    "Which statement places the physiography of Telangana correctly?",
     [
-      "Retry the POST against that URL",
-      "Treat it as the address of the resource that was just created",
-      "Use it as a redirect target and nothing else",
-      "Ignore it, because 201 already means success",
-    ],
-    1,
-    "Easy",
-    "HTTP",
-    "HTTP",
-    "201 Created says a new resource exists; Location says where. A client that ignores it has to guess the new id or refetch the whole collection.",
-  ),
-  q(
-    "Your API answers 200 with a body of {\"error\": \"not found\"}. Why is that a problem?",
-    [
-      "It wastes bandwidth",
-      "Every generic client, cache and monitor reads 200 as success, so the failure becomes invisible",
-      "JSON cannot carry error text",
-      "200 responses cannot be logged",
-    ],
-    1,
-    "Medium",
-    "HTTP",
-    "REST",
-    "The status line is the part of a response that infrastructure understands. Returning 200 for a failure means retries, caches and alerting all behave as if nothing went wrong.",
-  ),
-  q(
-    "The browser blocks your fetch with a CORS error even though the server logged a 200. What actually failed?",
-    [
-      "The request never left the browser",
-      "The response arrived, but it carried no Access-Control-Allow-Origin the browser would accept",
-      "The server rejected the credentials",
-      "The response body was malformed JSON",
-    ],
-    1,
-    "Medium",
-    "HTTP",
-    "CORS",
-    "CORS is enforced by the browser after the response arrives. The server saw a normal request; the browser refused to hand the body to your JavaScript because the headers did not permit the origin.",
-  ),
-];
-
-const FS_LANGUAGE: BankQuestion[] = [
-  fromAdaptiveBank(pick(GS, 4), "Economy and development"),
-  q(
-    "What does awaiting inside a for loop over an array of promises actually do?",
-    [
-      "Runs them in parallel and waits once at the end",
-      "Runs them one at a time, so the total wait is the sum of all of them",
-      "Throws if any promise rejects before the loop starts",
-      "Nothing: await is ignored inside a loop",
-    ],
-    1,
-    "Medium",
-    "JavaScript",
-    "Async",
-    "Each iteration suspends until its own promise settles. If the calls are independent, start them all and await Promise.all instead, which turns a sum into a maximum.",
-  ),
-  q(
-    "0.1 + 0.2 === 0.3 is false in JavaScript because:",
-    [
-      "=== compares numbers by reference",
-      "Numbers are IEEE-754 doubles and 0.1 has no exact binary representation",
-      "The engine rounds every result to 15 digits",
-      "Floating point addition is not commutative",
-    ],
-    1,
-    "Easy",
-    "JavaScript",
-    "JavaScript",
-    "0.1 and 0.2 are stored as the nearest representable binary fractions, so their sum is very slightly off 0.3. Compare with a tolerance, or work in integers such as paise or cents.",
-  ),
-  q(
-    "In TypeScript, what is the practical difference between an interface and a type alias for an object shape?",
-    [
-      "Interfaces exist at runtime, type aliases do not",
-      "Interfaces can be reopened and merged by a later declaration; a type alias cannot",
-      "Type aliases cannot describe functions",
-      "There is no difference in any situation",
-    ],
-    1,
-    "Medium",
-    "TypeScript",
-    "TypeScript",
-    "Declaration merging is the one behavioural difference that matters day to day. It is why library authors expose interfaces: consumers can extend them without patching the package.",
-  ),
-  q(
-    "A callback inside setTimeout logs the wrong counter in a var loop. Why does let fix it?",
-    [
-      "let is faster than var",
-      "let creates a fresh binding per iteration, so each callback closes over its own value",
-      "let hoists the declaration to the top of the function",
-      "let makes the callback run synchronously",
-    ],
-    1,
-    "Medium",
-    "JavaScript",
-    "JavaScript",
-    "var has one function-scoped binding that every callback shares, so all of them read the final value. let is block scoped and the loop creates a new binding each pass.",
-  ),
-];
-
-const FS_REACT: BankQuestion[] = [
-  fromAdaptiveBank(pick(GS, 0), "Telangana history"),
-  fromAdaptiveBank(pick(GS, 3), "Telangana history"),
-  fromAdaptiveBank(pick(GS, 5), "Telangana history"),
-  q(
-    "A useEffect with no dependency array refetches on every render, in a loop. What is the fix?",
-    [
-      "Wrap the fetch in useMemo",
-      "Give it a dependency array listing exactly what the effect reads",
-      "Move the fetch into the component body",
-      "Delay the fetch with setTimeout",
-    ],
-    1,
-    "Easy",
-    "React",
-    "React",
-    "No array means the effect runs after every render, and setting state from it schedules the next render. The dependency array is what tells React when the effect is actually stale.",
-  ),
-  q(
-    "Why can lifting state up make an application slower?",
-    [
-      "A parent state change re-renders the whole subtree, not just the component that needed the value",
-      "State held in a parent is written to disk",
-      "Child components stop batching their updates",
-      "It forces a full page reload",
+      "The state sits almost entirely on the Deccan plateau and is drained by the Godavari in the north and the Krishna in the south",
+      "The state lies in the coastal plain and has a long shoreline",
+      "The state is drained mainly by the Cauvery system",
+      "The state's highest relief is formed by the Western Ghats",
     ],
     0,
-    "Medium",
-    "React",
-    "React",
-    "State should live at the lowest common ancestor of the components that read it. Lifted too far, every keystroke re-renders siblings that do not care about the value.",
+    "Easy",
+    "General Studies and General Abilities",
+    "Geography",
+    "Telangana is a landlocked plateau state and its two major basins are the Godavari and the Krishna. The coastal answer is the one candidates pick from memory of undivided Andhra Pradesh, which did have a coastline; the state formed in 2014 does not.",
   ),
+  q(
+    "The National Green Tribunal was set up to do what?",
+    [
+      "Advise the Union government on forest policy",
+      "Hear and decide cases involving substantial questions relating to the environment and the enforcement of environmental legal rights",
+      "Prosecute polluting industries in place of the criminal courts",
+      "Frame the emission and effluent standards that industries must meet",
+    ],
+    1,
+    "Medium",
+    "General Studies and General Abilities",
+    "Environment",
+    "The tribunal is a specialised judicial body with its own jurisdiction over environmental disputes. Framing standards is the work of the pollution control boards, and that is the option that catches candidates who remember only that the tribunal deals with pollution.",
+  ),
+  q(
+    "In a certain code each letter is replaced by the letter that follows it in the alphabet. What is the code for WARANGAL?",
+    ["XBSBOHBM", "VZQZMFZK", "XBTBOHBM", "XBSBNHBM"],
+    0,
+    "Medium",
+    "General Studies and General Abilities",
+    "Mental Ability",
+    "W becomes X, A becomes B, R becomes S, and so on to L becoming M, which gives XBSBOHBM. The second option applies the same rule backwards, which is the commonest way this question is lost: the rule is read correctly and then run in the wrong direction.",
+  ),
+  q(
+    "Why does a person feel colder in wet clothes than in dry ones at the same air temperature?",
+    [
+      "Water conducts heat away from the body far faster than air does, and the evaporation that follows removes more heat still",
+      "Wet cloth reflects the body's own heat away from the skin",
+      "Water lowers the temperature of the air immediately around the body",
+      "Wet cloth has a higher specific heat, so it absorbs and stores the body's heat",
+    ],
+    0,
+    "Easy",
+    "General Studies and General Abilities",
+    "General Science",
+    "Two mechanisms act together: conduction through water, which is many times better than through still air, and evaporative cooling. The specific heat answer sounds technical and is the attractive wrong one, but a body loses heat because water carries it away, not because the cloth stores it.",
+  ),
+  ...TG_GS_BANK,
 ];
 
-// DSA diagnostic -------------------------------------------------------------
-
-const DSA_COMPLEXITY: BankQuestion[] = [
-  fromAdaptiveBank(pick(APTITUDE, 2), "Quantitative aptitude"),
-  fromAdaptiveBank(pick(APTITUDE, 7), "Quantitative aptitude"),
-  fromAdaptiveBank(pick(APTITUDE, 6), "Quantitative aptitude"),
+const TG_HISTORY_POLITY: BankQuestion[] = [
   q(
-    "What is the time complexity of binary search on a sorted array of n elements?",
-    ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+    "The Election Commission of India functions today as a three-member body. What decides how many Election Commissioners there are?",
+    [
+      "A schedule to the Constitution fixes the number at three",
+      "The President fixes the number from time to time under Article 324",
+      "Parliament fixes it by resolution whenever a Commissioner retires",
+      "The Chief Election Commissioner co-opts members as the work requires",
+    ],
     1,
-    "Easy",
-    "Complexity",
-    "Complexity",
-    "Each comparison discards half the remaining range, so the number of steps is the number of times n can be halved before reaching one.",
+    "Medium",
+    "History, Polity and Society",
+    "Indian Polity",
+    "Article 324 names only the Chief Election Commissioner and leaves the number of other Commissioners to the President. That is why the Commission has been a single-member body at some periods and a multi-member one at others. The schedule answer is attractive because most fixed numbers in the Constitution do sit in one.",
   ),
   q(
-    "Two nested loops, where the inner loop runs to i rather than to n, give which complexity?",
-    ["O(n)", "O(n log n)", "O(n squared)", "O(2^n)"],
+    "Public order and police appear in which of the three legislative lists?",
+    ["The Union List", "The State List", "The Concurrent List", "Neither list, they fall under residuary powers"],
+    1,
+    "Easy",
+    "History, Polity and Society",
+    "Indian Polity",
+    "Both entries sit in the State List, which is why a state recruitment board and not a central commission fills constable and sub-inspector posts. The Concurrent List is the tempting answer because criminal law and criminal procedure genuinely are there, and candidates carry that across to policing.",
+  ),
+  q(
+    "The Qutb Shahi dynasty is associated above all with the founding of which city?",
+    ["Warangal", "Hyderabad", "Bidar", "Nizamabad"],
+    1,
+    "Medium",
+    "History, Polity and Society",
+    "Medieval History",
+    "The dynasty ruled first from the fort at Golconda and laid out Hyderabad on the Musi when the fort settlement outgrew its water supply. Warangal is the Kakatiya capital, and it is the answer chosen by candidates who file every Telangana dynasty under one city.",
+  ),
+  ...TG_HISTORY_BANK,
+];
+
+const TG_ECONOMY: BankQuestion[] = [
+  q(
+    "India's national income aggregates are compiled and published by",
+    [
+      "the Reserve Bank of India",
+      "the National Statistical Office",
+      "NITI Aayog",
+      "the Comptroller and Auditor General",
+    ],
+    1,
+    "Easy",
+    "Economy and Development",
+    "Indian Economy",
+    "National accounts are the statutory work of the National Statistical Office under the statistics ministry. The Reserve Bank is the attractive wrong answer because its bulletins reproduce the same series, but reproducing a number is not compiling it.",
+  ),
+  q(
+    "In a government budget, what does the fiscal deficit measure?",
+    [
+      "The gap between revenue receipts and revenue expenditure",
+      "Total expenditure less all receipts other than borrowings, that is, how much the government must borrow in the year",
+      "The excess of imports over exports",
+      "The interest payable on borrowing already outstanding",
+    ],
+    1,
+    "Medium",
+    "Economy and Development",
+    "Public Finance",
+    "The fiscal deficit is the borrowing requirement, which is why it is quoted as a share of GDP. The first option is the revenue deficit, and swapping the two is the single commonest error on this topic.",
+  ),
+  q(
+    "Which of these is a state's own tax revenue?",
+    [
+      "The state's share of central taxes devolved on the Finance Commission's formula",
+      "Grants-in-aid received from the Union",
+      "State goods and services tax, stamp duty and state excise",
+      "Market borrowing raised by the state",
+    ],
+    2,
+    "Medium",
+    "Economy and Development",
+    "Public Finance",
+    "Own tax revenue is what the state raises under its own taxing powers. The first two are transfers and the last is a liability, so none of them is revenue the state has itself raised, however large they are in the accounts.",
+  ),
+  q(
+    "Mission Kakatiya, as a programme, was built around which asset?",
+    [
+      "Minor irrigation tanks",
+      "Rural link roads",
+      "Household drinking water connections",
+      "Lift irrigation from the Godavari",
+    ],
+    0,
+    "Easy",
+    "Economy and Development",
+    "Telangana Development",
+    "The programme is the restoration of minor irrigation tanks: desilting, bund repair and the recovery of feeder channels. Mission Bhagiratha is the drinking water programme, and the two names are the pair most often exchanged for each other in an answer sheet.",
+  ),
+  ...TG_ECONOMY_BANK,
+];
+
+const TG_MOVEMENT: BankQuestion[] = [
+  q(
+    "The Gentlemen's Agreement of 1956 was entered into at the time of",
+    [
+      "the merger of Hyderabad State into the Indian Union",
+      "the formation of Andhra Pradesh by joining Telangana to Andhra State",
+      "the announcement of the Six Point Formula",
+      "the bifurcation of Andhra Pradesh",
+    ],
+    1,
+    "Medium",
+    "Telangana Movement and State Formation",
+    "Telangana Movement",
+    "The agreement set out safeguards for the Telangana region inside the new state, covering employment, education and the spending of the region's surpluses. The 1948 merger is the attractive wrong answer because it is the other famous date in the same decade, but the agreement belongs to the formation of Andhra Pradesh.",
+  ),
+  q(
+    "The 1969 agitation began as a demand for what, before it became a demand for statehood?",
+    [
+      "The implementation of the safeguards already promised to Telangana, the service rules above all",
+      "The abolition of the jagirdari system",
+      "A separate high court for the region",
+      "The transfer of Hyderabad city to central administration",
+    ],
+    0,
+    "Hard",
+    "Telangana Movement and State Formation",
+    "Telangana Movement",
+    "The trigger was non-implementation: posts reserved for local candidates were held by others and the safeguards had no machinery behind them. Statehood became the demand only once that route was seen to have failed. Jagirdari abolition belongs to the years immediately after the 1948 merger.",
+  ),
+  ...TG_MOVEMENT_BANK,
+];
+
+// ── Paper 902: IBPS PO prelims ──────────────────────────────────────────────
+
+const [IBPS_ENGLISH_BANK, IBPS_QUANT_BANK, IBPS_REASONING_BANK] = pickFromBank(307, [
+  { topic: "English Language", skills: ["Error", "Comprehension"], limit: 2 },
+  {
+    topic: "Quantitative Aptitude",
+    skills: ["Approximation", "Series", "Quadratic", "Graphs", "Caselet"],
+    limit: 4,
+  },
+  { topic: "Reasoning Ability", skills: ["Syllogism", "Puzzles", "Inequality"], limit: 3 },
+]);
+
+const IBPS_ENGLISH: BankQuestion[] = [
+  q(
+    "Fill in the blank. The branch manager, along with two field officers, ____ attending the district review meeting.",
+    ["are", "is", "were", "have been"],
+    1,
+    "Easy",
+    "English Language",
+    "Grammar",
+    "A phrase introduced by 'along with' is parenthetical and does not change the subject, which stays the singular 'branch manager'. The plural verbs are attractive because two plural nouns sit immediately before the blank.",
+  ),
+  q(
+    "Choose the word that best completes the sentence. The committee's report was ____ about the delay, naming both the cause and the officer responsible.",
+    ["vague", "candid", "evasive", "tentative"],
+    1,
+    "Medium",
+    "English Language",
+    "Vocabulary",
+    "Naming the cause and the person is the opposite of vague, evasive and tentative, so only 'candid' matches the behaviour the sentence describes. The other three are near-synonyms of one another, which is the signal that they are the distractors.",
+  ),
+  q(
+    "Choose the best replacement for the underlined part. Hardly had the officer reached the counter than the shutter came down.",
+    ["than the shutter came down", "when the shutter came down", "then the shutter came down", "No improvement required"],
+    1,
+    "Medium",
+    "English Language",
+    "Sentence Improvement",
+    "The fixed pairs are 'hardly ... when' and 'no sooner ... than'. Mixing them is exactly the error this question is set to catch, and it survives a quick reading because the sentence still sounds ordinary.",
+  ),
+  q(
+    "A passage says that a scheme 'did not fail for want of money'. What does the sentence imply?",
+    [
+      "The scheme did not fail",
+      "The scheme failed, and the cause was something other than funding",
+      "The scheme had more money than it could use",
+      "The scheme's funds were withheld",
+    ],
+    1,
+    "Hard",
+    "English Language",
+    "Comprehension",
+    "The sentence concedes the failure and rules out one cause for it. The first option ignores the concession, and it is the commonest misreading in inference questions: the candidate answers the half of the sentence that is easier to hold in mind.",
+  ),
+  ...IBPS_ENGLISH_BANK,
+];
+
+const IBPS_QUANT: BankQuestion[] = [
+  q(
+    "A candidate scores 45 marks and fails by 15 marks. The pass mark is 30 per cent of the total. What is the total?",
+    ["150", "180", "200", "240"],
+    2,
+    "Medium",
+    "Quantitative Aptitude",
+    "Percentages",
+    "The pass mark is 45 plus 15, that is 60, and 60 is 30 per cent of the total, so the total is 200. Treating the 45 as the 30 per cent gives 150, which is why that number is placed first.",
+  ),
+  q(
+    "A can finish a task in 12 days and B in 18 days. Working together, how long do they take?",
+    ["6 days", "7 and 1/5 days", "7 and 1/2 days", "15 days"],
+    1,
+    "Medium",
+    "Quantitative Aptitude",
+    "Time and Work",
+    "Add the rates and not the days: one twelfth plus one eighteenth is five thirty-sixths, so the pair finish in thirty-six fifths of a day. Averaging the two times gives 15, which is the answer this question exists to catch.",
+  ),
+  q(
+    "The candidates who cleared a screening test and those who did not are in the ratio 3 to 7. If 1,200 candidates appeared, how many cleared?",
+    ["300", "360", "420", "840"],
+    1,
+    "Easy",
+    "Quantitative Aptitude",
+    "Ratio and Proportion",
+    "The ratio divides the whole into ten parts, so those who cleared are three tenths of 1,200, that is 360. The 840 is the other side of the same ratio and is what a candidate reports after reading the two terms in the wrong order.",
+  ),
+  ...IBPS_QUANT_BANK,
+];
+
+const IBPS_REASONING: BankQuestion[] = [
+  q(
+    "A candidate walks 5 km north, turns right and walks 3 km, then turns right again and walks 5 km. How far is he from the starting point and in which direction?",
+    ["3 km east", "3 km west", "13 km east", "5 km south"],
+    0,
+    "Easy",
+    "Reasoning Ability",
+    "Direction Sense",
+    "The two 5 km legs are in opposite directions and cancel, leaving only the 3 km leg to the east. The 13 km option is the total distance walked, which is what the question deliberately does not ask for.",
+  ),
+  q(
+    "Pointing at a photograph, a candidate said, 'He is the only son of my mother's only brother.' How is the man in the photograph related to her?",
+    ["Her brother", "Her cousin", "Her nephew", "Her maternal uncle"],
+    1,
+    "Medium",
+    "Reasoning Ability",
+    "Blood Relations",
+    "Her mother's only brother is her maternal uncle, and his only son is her cousin. Reading the sentence as though it described her mother's son produces 'brother', which is the slip the phrasing is built to invite.",
+  ),
+  q(
+    "In a row of 40 candidates, Ravi stands 12th from the left. What is his position from the right?",
+    ["28th", "29th", "30th", "31st"],
+    1,
+    "Easy",
+    "Reasoning Ability",
+    "Ranking",
+    "The two counts both include Ravi, so his position from the right is 40 minus 12 plus 1, that is 29th. Dropping the plus one gives 28, which is the standard wrong answer in this family of questions.",
+  ),
+  q(
+    "Which of these does not belong with the others?",
+    ["Godavari", "Krishna", "Musi", "Nagarjuna Sagar"],
+    3,
+    "Medium",
+    "Reasoning Ability",
+    "Classification",
+    "Three are rivers and the fourth is a reservoir built on one of them, so the odd one out is Nagarjuna Sagar. The Musi is the tempting answer because it is much the smallest of the three, but size is not what the classification turns on.",
+  ),
+  ...IBPS_REASONING_BANK,
+];
+
+// ── Paper 903: Telangana police preliminary written test ────────────────────
+
+const [POLICE_ARITHMETIC_BANK, POLICE_GS_BANK] = pickFromBank(305, [
+  {
+    topic: "Arithmetic and Reasoning",
+    skills: ["Averages", "Interest", "Speed", "Data", "Series"],
+    limit: 5,
+  },
+  { topic: "General Studies", skills: ["Polity", "Telangana", "Geography"], limit: 3 },
+]);
+
+const POLICE_ARITHMETIC: BankQuestion[] = [
+  q(
+    "A patrol vehicle covers 210 km in 3 hours 30 minutes. What is its average speed?",
+    ["55 km/h", "60 km/h", "65 km/h", "70 km/h"],
+    1,
+    "Easy",
+    "Arithmetic and Reasoning",
+    "Speed and Distance",
+    "Convert the time to hours first: 210 divided by 3.5 is 60. Dividing by 3 and ignoring the half hour gives 70, which is the number this question is set to collect.",
+  ),
+  q(
+    "Of 2,500 candidates who appeared for a written test, 8 per cent were absent from the second session. How many attended the second session?",
+    ["200", "2,300", "2,308", "2,400"],
+    1,
+    "Easy",
+    "Arithmetic and Reasoning",
+    "Percentages",
+    "Eight per cent of 2,500 is 200, so 2,300 attended. The 200 is the number absent, and it is placed first because a candidate reading in a hurry answers the calculation rather than the question.",
+  ),
+  q(
+    "One term in this series is wrong: 5, 11, 23, 47, 96, 191. Which one?",
+    ["11", "23", "96", "191"],
+    2,
+    "Medium",
+    "Arithmetic and Reasoning",
+    "Number Series",
+    "Each term is twice the previous one plus one, which gives 5, 11, 23, 47, 95, 191. So the wrong term is 96 and not 191: 191 follows correctly from 95, which is what makes the last term look guilty at first glance.",
+  ),
+  ...POLICE_ARITHMETIC_BANK,
+];
+
+const POLICE_GENERAL_STUDIES: BankQuestion[] = [
+  q(
+    "Recruitment to the posts of Constable and Sub-Inspector in Telangana is conducted by",
+    [
+      "the Telangana Public Service Commission",
+      "the state level police recruitment board",
+      "the office of the Director General of Police",
+      "the Staff Selection Commission",
+    ],
+    1,
+    "Easy",
+    "General Studies",
+    "Recruitment Structure",
+    "Police recruitment is separated from the general state services examination and given to a dedicated board, which is why its notification, its physical events and its calendar are all its own. The Public Service Commission conducts the Group services, and that is the body candidates name by default.",
+  ),
+  q(
+    "The Quit India resolution was passed in which year?",
+    ["1930", "1935", "1942", "1947"],
     2,
     "Easy",
-    "Complexity",
-    "Complexity",
-    "The total work is 1 + 2 + ... + n, which is n(n+1)/2. Constants and lower-order terms drop, leaving O(n squared).",
+    "General Studies",
+    "Modern History",
+    "The resolution was adopted at the Bombay session in 1942. The other three dates crowd the same span of memory: 1930 is the Salt Satyagraha and 1935 the Government of India Act, and a candidate who has revised them together often reaches for the wrong one.",
   ),
   q(
-    "An algorithm does O(n) work and then calls itself twice on half the input. What does it cost?",
-    ["O(n)", "O(n log n)", "O(n squared)", "O(log n)"],
-    1,
-    "Medium",
-    "Complexity",
-    "Algorithms",
-    "Every level of the recursion does O(n) total work and there are log n levels. Merge sort is the canonical example of this shape.",
-  ),
-  q(
-    "Why is appending to a dynamic array described as amortised O(1)?",
-    [
-      "Appending never copies anything",
-      "A resize costs O(n), but doublings are rare enough that the average over any run of appends stays constant",
-      "The array is preallocated to its maximum size",
-      "The copy happens on a background thread",
-    ],
-    1,
-    "Medium",
-    "Complexity",
-    "Data Structures",
-    "Because capacity doubles, the total copying across n appends is bounded by 2n. Any single append can be expensive; the average never is.",
-  ),
-  q(
-    "Which sort has an O(n log n) worst case AND uses O(1) extra space?",
-    ["Merge sort", "Quicksort", "Heapsort", "Insertion sort"],
+    "Which vitamin does the human body produce in the skin on exposure to sunlight?",
+    ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin K"],
     2,
-    "Hard",
-    "Complexity",
-    "Algorithms",
-    "Merge sort needs O(n) scratch space and quicksort degrades to O(n squared) in the worst case. Heapsort sorts in place with a guaranteed bound, which is why it is the safe answer.",
+    "Easy",
+    "General Studies",
+    "General Science",
+    "Ultraviolet light converts a cholesterol derivative in the skin into vitamin D. Vitamin K is the usual wrong answer because it is the other fat soluble vitamin candidates remember, but it comes from diet and from gut bacteria, not from sunlight.",
   ),
+  q(
+    "Which is the longest river flowing through Telangana?",
+    ["The Krishna", "The Godavari", "The Musi", "The Manjeera"],
+    1,
+    "Easy",
+    "General Studies",
+    "Geography",
+    "The Godavari crosses the northern districts and is the larger of the state's two major basins. The Musi and the Manjeera are tributaries within those basins rather than basins of their own, which is why neither can be the answer.",
+  ),
+  q(
+    "The Comptroller and Auditor General submits audit reports relating to the accounts of the Union to",
+    [
+      "the Prime Minister",
+      "the President, who causes them to be laid before each House of Parliament",
+      "the Finance Ministry",
+      "the Supreme Court",
+    ],
+    1,
+    "Medium",
+    "General Studies",
+    "Indian Polity",
+    "The reports go to the President and from there to Parliament, and that route is what keeps the auditor outside the executive it audits. The Finance Ministry is the attractive wrong answer precisely because it is among the departments whose accounts are being audited.",
+  ),
+  q(
+    "One hectare is equal to",
+    ["100 square metres", "1,000 square metres", "10,000 square metres", "1,00,000 square metres"],
+    2,
+    "Medium",
+    "General Studies",
+    "Measurement",
+    "A hectare is a square 100 metres on a side, so 10,000 square metres, which is about two and a half acres. The 100 square metre answer is an are, and the two units are confused because the names look related.",
+  ),
+  ...POLICE_GS_BANK,
 ];
 
-const DSA_ARRAYS: BankQuestion[] = [
-  fromAdaptiveBank(pick(APTITUDE, 0), "Reasoning"),
-  fromAdaptiveBank(pick(APTITUDE, 1), "Reasoning"),
-  fromAdaptiveBank(pick(APTITUDE, 5), "Reasoning"),
+// ── Paper 904: SSC CGL Tier-I ───────────────────────────────────────────────
+
+const [SSC_REASONING_BANK, SSC_AWARENESS_BANK, SSC_QUANT_BANK, SSC_ENGLISH_BANK] = pickFromBank(
+  303,
+  [
+    { topic: "General Intelligence and Reasoning", skills: ["Series", "Syllogism"], limit: 2 },
+    { topic: "General Awareness", skills: ["Polity", "Chemistry", "Hardware"], limit: 3 },
+    {
+      topic: "Quantitative Aptitude",
+      skills: ["Discount", "Alligation", "Compound", "Algebra", "Circles", "Heights"],
+      limit: 4,
+    },
+    { topic: "English Comprehension", skills: ["Grammar", "Jumbles"], limit: 2 },
+  ],
+);
+
+const SSC_REASONING: BankQuestion[] = [
   q(
-    "You need to know whether any value repeats in an array. What is the cheapest correct approach?",
+    "Complete the analogy. CAT is to DBU as DOG is to",
+    ["EPH", "EPI", "DPH", "CNF"],
+    0,
+    "Easy",
+    "General Intelligence and Reasoning",
+    "Analogy",
+    "Every letter moves one place forward, so DOG becomes EPH. CNF applies the same rule backwards, which is the mistake a candidate makes after checking the pattern on only the first letter.",
+  ),
+  q(
+    "In a certain month the 3rd falls on a Monday. What day is the 24th of the same month?",
+    ["Sunday", "Monday", "Tuesday", "Wednesday"],
+    1,
+    "Medium",
+    "General Intelligence and Reasoning",
+    "Calendars",
+    "The gap is 21 days, which is exactly three weeks, so the day repeats and the 24th is also a Monday. Counting the 21 days and then adding one more is the usual slip, and it produces Tuesday.",
+  ),
+  q(
+    "Which of these does not belong with the others?",
+    ["Square", "Rectangle", "Rhombus", "Cube"],
+    3,
+    "Easy",
+    "General Intelligence and Reasoning",
+    "Classification",
+    "Three are plane figures and the fourth is a solid, so the cube is the odd one out. The rhombus attracts the eye because it is the only one of the four without right angles, but that is a property of a figure and not a change of class.",
+  ),
+  ...SSC_REASONING_BANK,
+];
+
+const SSC_AWARENESS: BankQuestion[] = [
+  q(
+    "How often does the Constitution require a Finance Commission to be constituted?",
+    ["Every third year", "Every fifth year, or earlier if the President considers it necessary", "Every seventh year", "Every tenth year"],
+    1,
+    "Medium",
+    "General Awareness",
+    "Indian Polity",
+    "Article 280 requires the President to constitute one at the expiration of every fifth year or earlier. The five year plan is a different instrument from a different body, and the shared number is what makes candidates answer from the wrong memory.",
+  ),
+  q(
+    "Which of these is listed as a fundamental duty rather than as a fundamental right?",
     [
-      "Sort, then scan neighbouring pairs",
-      "Insert into a hash set and stop at the first value already present",
-      "Compare every pair of elements",
-      "Binary search for each element in turn",
+      "Freedom of speech and expression",
+      "Equality before the law",
+      "To protect and improve the natural environment",
+      "Protection of life and personal liberty",
+    ],
+    2,
+    "Medium",
+    "General Awareness",
+    "Indian Polity",
+    "Protecting the environment is one of the duties in Article 51A, which are not enforceable in the way the Part III rights are. The confusion is genuine and not careless: the courts have read a right to a healthy environment into Article 21, so the subject appears on both sides.",
+  ),
+  ...SSC_AWARENESS_BANK,
+];
+
+const SSC_QUANT: BankQuestion[] = [
+  q(
+    "A train 180 m long crosses a pole in 9 seconds. What is its speed in km/h?",
+    ["54", "64", "72", "80"],
+    2,
+    "Medium",
+    "Quantitative Aptitude",
+    "Speed and Distance",
+    "Crossing a pole means covering the train's own length, so the speed is 20 metres a second, and multiplying by 18/5 gives 72 km/h. Converting with 5/18 instead runs the change of units the wrong way and produces a speed far too small to be a train.",
+  ),
+  ...SSC_QUANT_BANK,
+];
+
+const SSC_ENGLISH: BankQuestion[] = [
+  q(
+    "Choose the word closest in meaning to MITIGATE.",
+    ["aggravate", "lessen", "postpone", "conceal"],
+    1,
+    "Easy",
+    "English Comprehension",
+    "Vocabulary",
+    "To mitigate is to make less severe. 'Aggravate' is its opposite and is placed first because it looks and sounds related, which is enough for a candidate moving at Tier-I pace to pick it.",
+  ),
+  q(
+    "What does the idiom 'to turn a blind eye' mean?",
+    ["To lose one's sight", "To pretend not to notice", "To refuse an offer outright", "To look away in fear"],
+    1,
+    "Easy",
+    "English Comprehension",
+    "Idioms",
+    "The idiom is about ignoring something deliberately, usually something one has a duty to act on. The literal reading about sight is the distractor, and idiom questions are set precisely to separate the two readings.",
+  ),
+  q(
+    "One word for 'government by officials' is",
+    ["aristocracy", "bureaucracy", "democracy", "autocracy"],
+    1,
+    "Medium",
+    "English Comprehension",
+    "One Word Substitution",
+    "Bureau plus cracy is rule from the desk, that is, by officials. 'Autocracy' is rule by a single person and is the answer a candidate gives after reading only the ending of the word.",
+  ),
+  ...SSC_ENGLISH_BANK,
+];
+
+// ── Paper 905: solar PV trade theory ────────────────────────────────────────
+
+const [SOLAR_SURVEY_BANK, SOLAR_EQUIPMENT_BANK, SOLAR_SAFETY_BANK] = pickFromBank(311, [
+  {
+    topic: "Site survey and sizing",
+    skills: ["Power", "Survey", "Bill", "MPPT", "Temperature", "Ratio"],
+    limit: 4,
+  },
+  {
+    topic: "Modules, inverters and balance of system",
+    skills: ["Nameplate", "Microinverters", "Connectors", "Batteries"],
+    limit: 3,
+  },
+  {
+    topic: "Mounting, earthing and safety",
+    skills: ["Ballasted", "Wind", "Harness", "Fuses", "RCCB", "Earthing"],
+    limit: 4,
+  },
+]);
+
+const SOLAR_SURVEY: BankQuestion[] = [
+  q(
+    "A rooftop array is being planned on the assumption of about 4 units per kW on a clear day. On that assumption, roughly how many units should a 3 kW array make on such a day?",
+    ["3 units", "4 units", "12 units", "30 units"],
+    2,
+    "Easy",
+    "Site survey and sizing",
+    "Sizing",
+    "The yield figure is per kW of installed capacity, so it is multiplied by the size of the array: three times four is twelve. Reading the 4 units as the whole plant's output makes a 3 kW array look no better than a 1 kW one, which is the error that produces an unhappy owner three months later.",
+  ),
+  q(
+    "Why are the roof's true orientation and tilt measured during the survey rather than assumed?",
+    [
+      "Because the distribution company asks for them on the application form",
+      "Because the annual yield changes with orientation and tilt, and both the sizing and the payback quoted to the owner are calculated from that yield",
+      "Because the modules have to face the road",
+      "Because tilt decides which make of inverter can be used",
+    ],
+    1,
+    "Medium",
+    "Site survey and sizing",
+    "Survey",
+    "Orientation and tilt decide how much of the available radiation the array actually collects, so an assumption made at survey stage travels straight through to the generation estimate and the payback. The form does ask for them, but a form is a consequence of the reason and not the reason itself.",
+  ),
+  ...SOLAR_SURVEY_BANK,
+];
+
+const SOLAR_EQUIPMENT: BankQuestion[] = [
+  q(
+    "Two modules with different current ratings are wired into the same series string. What happens?",
+    [
+      "The string current settles at the higher of the two ratings",
+      "The string current is held down to what the lower-rated module can pass, so the better module cannot deliver what it is capable of",
+      "The two module voltages cancel each other",
+      "The inverter compensates and nothing is lost",
+    ],
+    1,
+    "Medium",
+    "Modules, inverters and balance of system",
+    "Strings",
+    "Elements in series carry one common current, so the weakest module in the string sets it, which is the whole reason a string is built from identical modules. The inverter tracks the maximum power point of what it is given; it cannot recover current the string never produced.",
+  ),
+  q(
+    "Why is the DC cable between the array and the inverter sized on voltage drop and not on current rating alone?",
+    [
+      "Because a longer cable carries more current",
+      "Because the drop along the run is lost generation every day the plant works, and a cable that is thermally adequate can still drop more than the design allows",
+      "Because the inverter will not start on a thin cable",
+      "Because the voltage drop decides the fuse rating",
+    ],
+    1,
+    "Hard",
+    "Modules, inverters and balance of system",
+    "Cabling",
+    "A conductor can be perfectly safe on temperature and still waste output over a long roof run, and that waste repeats every day for the life of the plant. The fuse is selected against fault current, which is a separate calculation with a separate purpose.",
+  ),
+  ...SOLAR_EQUIPMENT_BANK,
+];
+
+const SOLAR_SAFETY: BankQuestion[] = [
+  q(
+    "Before working on the DC side of an installed array in daylight, what must the technician do first?",
+    [
+      "Isolate the AC side alone, since that is where the mains voltage is",
+      "Isolate at the DC isolator and then prove with an instrument that the conductors are dead, because modules generate whenever light falls on them",
+      "Cover the modules with a cloth and begin work",
+      "Wait until the inverter display goes blank",
     ],
     1,
     "Easy",
-    "Arrays and hashing",
-    "Hashing",
-    "The set answers in O(n) time and O(n) space. Sorting first is O(n log n), and is only preferable when you are not allowed the extra memory.",
+    "Mounting, earthing and safety",
+    "Safety",
+    "An array cannot be switched off at source, so isolation has to be proved and not assumed. A blank inverter display tells you the inverter has stopped, which is not the same statement as the DC conductors being dead, and that is the assumption behind most DC side accidents.",
   ),
   q(
-    "The two-pointer walk from both ends solves two-sum only when:",
+    "Why is a rooftop array bonded into the building's existing earthing system rather than given an electrode of its own?",
     [
-      "The array is sorted",
-      "Every value is positive",
-      "The array has even length",
-      "There are no duplicate values",
-    ],
-    0,
-    "Medium",
-    "Arrays and hashing",
-    "Algorithms",
-    "The move is chosen by comparing the current sum with the target, and that decision is only meaningful if moving inward changes the sum in a known direction.",
-  ),
-  q(
-    "After O(n) preprocessing, a prefix-sum array answers which question in O(1)?",
-    [
-      "The maximum value in a range",
-      "The sum of any contiguous range",
-      "The number of distinct values in a range",
-      "The median of a range",
-    ],
-    1,
-    "Medium",
-    "Arrays and hashing",
-    "Algorithms",
-    "The sum of the range [i, j] is prefix[j+1] minus prefix[i]. Maximum and median do not decompose by subtraction, so they need different structures.",
-  ),
-  q(
-    "Why does grouping anagrams by their sorted letters work?",
-    [
-      "Sorting is faster than counting letters",
-      "Two words are anagrams exactly when their sorted letters are identical, so the sorted string is a canonical form",
-      "Sorted strings hash more evenly",
-      "It removes the possibility of collisions",
-    ],
-    1,
-    "Medium",
-    "Arrays and hashing",
-    "Hashing",
-    "Any canonical form works. A 26-slot count vector is the same idea in O(k) rather than O(k log k) per word.",
-  ),
-  q(
-    "At each element, what decision does Kadane's algorithm make?",
-    [
-      "Whether to sort the rest of the array",
-      "Whether to extend the current subarray or start a new one here",
-      "Whether to move the left pointer of a window",
-      "Whether to recurse on the left or the right half",
-    ],
-    1,
-    "Medium",
-    "Arrays and hashing",
-    "Algorithms",
-    "If the running sum has gone negative it can only hurt, so the best subarray ending here is the element itself. That single comparison is the whole algorithm.",
-  ),
-  q(
-    "You must return the k most frequent values from n elements, with k much smaller than n. What is best?",
-    [
-      "Sort all the counts, O(n log n)",
-      "Count with a hash map, then keep a size-k min-heap, O(n log k)",
-      "Compare every pair of elements",
-      "Binary search over the frequency values",
+      "To save the cost of a second electrode",
+      "Because two separate earths can sit at different potentials during a fault or a surge, and anyone touching both becomes the path between them",
+      "Because the distribution company does not permit a second electrode",
+      "Because a single electrode carries lightning current better",
     ],
     1,
     "Hard",
-    "Arrays and hashing",
-    "Data Structures",
-    "The heap holds only the k best seen so far, so each of the n counts costs at most log k. Bucket sort by frequency does it in O(n) when the counts are bounded by n.",
+    "Mounting, earthing and safety",
+    "Earthing",
+    "Equipotential bonding is the point of the rule: separate electrodes can differ in potential exactly when it matters most, and the person bridging them completes the circuit. The saving in cost is real but it is a consequence, not the reason the standard is written that way.",
   ),
+  ...SOLAR_SAFETY_BANK,
 ];
 
-const DSA_GRAPHS: BankQuestion[] = [
-  fromAdaptiveBank(pick(APTITUDE, 4), "English language"),
-  fromAdaptiveBank(pick(APTITUDE, 3), "English language"),
+// ── Paper 906: rural enterprise readiness ───────────────────────────────────
+
+const [ENTERPRISE_IDEA_BANK, ENTERPRISE_RECORDS_BANK] = pickFromBank(316, [
+  { topic: "Enterprise idea and costing", skills: ["Demand", "Enterprises", "Costing", "Break-even", "Plan"], limit: 4 },
+  { topic: "Registration, records and finance", skills: ["Udyam", "Proprietorship", "Separating", "Cash"], limit: 2 },
+]);
+
+const [ENTERPRISE_FINANCE_BANK] = pickFromBank(317, [
+  { topic: "Registration, records and finance", skills: ["SHG", "Linkage", "Bankable", "Collateral"], limit: 3 },
+]);
+
+const ENTERPRISE_IDEA: BankQuestion[] = [
   q(
-    "An in-order traversal of a binary search tree produces:",
-    [
-      "The values in sorted order",
-      "The values level by level",
-      "The root first, then each subtree",
-      "The leaves first",
-    ],
+    "You sell 400 packets a month at ₹50 each. The variable cost is ₹30 a packet and the fixed costs are ₹6,000 a month. What is the monthly profit?",
+    ["₹2,000", "₹6,000", "₹8,000", "₹14,000"],
     0,
+    "Medium",
+    "Enterprise idea and costing",
+    "Costing",
+    "Each packet contributes ₹20, so 400 packets contribute ₹8,000, and the ₹6,000 of fixed cost comes out of that, leaving ₹2,000. The ₹8,000 is the contribution and not the profit, and reporting it as profit is the commonest reason a unit believes it is doing better than it is.",
+  ),
+  q(
+    "Why does a bank ask a first-time borrower for a cash flow statement and not only a profit projection?",
+    [
+      "Because profit is taxed and cash is not",
+      "Because a unit can be profitable over the year and still be unable to meet an instalment in a month when the money has not yet come in",
+      "Because cash flow is easier for the branch to verify",
+      "Because profit projections are not accepted by any bank",
+    ],
+    1,
+    "Medium",
+    "Enterprise idea and costing",
+    "Working Capital",
+    "An instalment is paid out of cash, not out of profit, and the gap between making a sale and collecting it is where a small unit runs aground. Profit projections are accepted; they simply do not answer the question of timing, which is what the repayment schedule turns on.",
+  ),
+  ...ENTERPRISE_IDEA_BANK,
+];
+
+const ENTERPRISE_RECORDS: BankQuestion[] = [
+  q(
+    "Keeping the household's money and the enterprise's money in separate books matters most because",
+    [
+      "the law requires every enterprise to hold two bank accounts",
+      "without it you cannot tell whether the unit is earning or the household is simply spending less, and neither can a lender",
+      "it reduces the tax payable by the enterprise",
+      "it is a condition for registering the enterprise",
+    ],
+    1,
     "Easy",
-    "Trees and graphs",
-    "Data Structures",
-    "Left subtree, node, right subtree is exactly the ordering invariant of a BST, so the traversal reads the values in ascending order.",
+    "Registration, records and finance",
+    "Record Keeping",
+    "Mixing the two hides the unit's own result, which is the first thing a lender looks for and the first thing an owner stops being able to see. Registration asks for details of the enterprise; it does not audit the household, so the compliance answer is a guess dressed as a rule.",
   ),
-  q(
-    "What makes a binary search tree degrade to O(n) lookups?",
-    [
-      "Storing duplicate values",
-      "Inserting already-sorted data, which builds what is effectively a linked list",
-      "Using recursion rather than iteration",
-      "Storing strings instead of numbers",
-    ],
-    1,
-    "Medium",
-    "Trees and graphs",
-    "Data Structures",
-    "Every insert goes down the same side, so the height becomes n. Self-balancing variants such as AVL and red-black trees exist precisely to stop this.",
-  ),
-  q(
-    "Which traversal order do you need in order to compute the height of a tree?",
-    [
-      "Level order only",
-      "One that visits both children before the parent, so post-order",
-      "Pre-order only",
-      "In-order only",
-    ],
-    1,
-    "Medium",
-    "Trees and graphs",
-    "Algorithms",
-    "A node's height is one more than the taller of its children, so the children's answers must already exist when the parent is visited.",
-  ),
-  q(
-    "To detect a cycle in a DIRECTED graph with depth-first search you must track:",
-    [
-      "Only the visited set",
-      "Visited nodes plus the nodes currently on the recursion stack",
-      "The parent of each node",
-      "The in-degree of every node",
-    ],
-    1,
-    "Hard",
-    "Trees and graphs",
-    "Graphs",
-    "Reaching a visited node is fine if it was finished on another branch. A cycle exists only when you reach a node that is still open on the current path. The parent trick works for undirected graphs only.",
-  ),
-  q(
-    "A topological ordering is defined for:",
-    ["Any graph", "A directed acyclic graph", "An undirected connected graph", "A weighted graph"],
-    1,
-    "Medium",
-    "Trees and graphs",
-    "Graphs",
-    "A cycle makes the ordering impossible, since each node in it would have to come before itself. Kahn's algorithm reports the cycle by finishing with nodes left over.",
-  ),
-  q(
-    "Dijkstra's algorithm gives the wrong answer when the graph contains:",
-    [
-      "Self loops",
-      "Negative edge weights",
-      "More than 100000 nodes",
-      "Disconnected components",
-    ],
-    1,
-    "Hard",
-    "Trees and graphs",
-    "Graphs",
-    "Dijkstra settles a node the first time it is popped, assuming no later path can be shorter. A negative edge breaks that assumption. Use Bellman-Ford instead.",
-  ),
+  ...ENTERPRISE_RECORDS_BANK,
+  ...ENTERPRISE_FINANCE_BANK,
 ];
-
-// Python paper ---------------------------------------------------------------
-
-const PY_PANDAS: BankQuestion[] = BANKING.map((m) => fromAdaptiveBank(m, "Banking awareness"));
 
 export interface WrittenQuestion {
   id: number;
@@ -537,43 +889,60 @@ function written(
   };
 }
 
+/**
+ * The descriptive bank.
+ *
+ * This is the replacement for the coding round the software build seeded here. A
+ * descriptive answer marked against a rubric is what Group-I mains and the second
+ * phase of the RBI Grade-B examination actually set, and it is the only part of
+ * this module that a faculty member marks by hand, which is what gives the manual
+ * evaluation queue something real to hold.
+ *
+ * Every evaluation prompt below tells the marker NOT to credit a quoted scheme
+ * amount, interest rate or subsidy figure. Those are revised by notification, a
+ * candidate who memorises them is being taught to fail, and a rubric that rewards
+ * them would put this platform on the wrong side of the same problem.
+ */
 const WRITTEN_BANK: WrittenQuestion[] = [
   written(
-    "Explain when you would reach for a left join rather than an inner join, and give one example from data you have actually worked with.",
-    "Look for a correct statement that a left join preserves unmatched rows from the left table, and for a concrete example where losing those rows would change a conclusion (for instance customers with no orders disappearing from a churn count). Full marks require both the rule and the consequence.",
-    14,
-    "Joins",
-    "pandas, SQL",
+    "A woman in your mandal wants to start a millet processing unit and borrow from her branch. Set out, in order, the questions you would answer before the proposal is worth putting to the bank.",
+    "Award marks for starting with demand and the price actually realised rather than with the machine, for a working capital cycle that says how long money stays tied up between buying grain and collecting payment, and for a repayment schedule tied to cash rather than to profit. A list of documents with no reasoning about the enterprise is half marks. Do not credit a quoted subsidy amount, margin percentage or rate of interest: those change with every notification and the candidate is not being examined on them.",
+    10,
+    "Enterprise proposal",
+    "Enterprise planning, Working capital",
   ),
   written(
-    "You are handed a dataset where 18% of the salary column is missing. Describe how you would choose between dropping those rows, imputing the values, or modelling the missingness, and say what evidence would change your mind.",
-    "Award marks for testing whether the missingness is related to other columns rather than assuming it is random, for naming a specific imputation with its distortion (mean imputation shrinking variance), and for stating a decision rule tied to evidence. A bare list of three options with no reasoning is half marks.",
-    14,
-    "Missing data",
-    "pandas, Statistics",
+    "Your self-help group has been saving regularly for a year. Explain what has to be true before the bank will consider a credit limit for the group, and what the group itself can do about each condition.",
+    "Look for the savings record, the record of internal lending and the grading exercise, named in that order, and for a clear distinction between the group's own corpus and the limit the bank sanctions against it. Full marks need a practical action against each condition rather than a restatement of the condition. Naming a subsidy or a rate earns nothing.",
+    10,
+    "Credit linkage",
+    "SHG linkage, Access to finance",
   ),
   written(
-    "A stakeholder asks why the weekly active user chart moved but the monthly one did not. Walk through how you would investigate before answering.",
-    "Look for separating a real change from a definitional or pipeline one: checking the metric definition, the window boundaries, a backfill or late-arriving events, and segment-level movement before claiming a behavioural cause.",
-    14,
-    "Analysis",
-    "Statistics",
+    "A trainee tells you his unit made a profit last year but he could not pay two instalments. Explain how both statements can be true at once, and say what you would change in the way he runs the unit.",
+    "Full marks require the distinction between profit and cash, a concrete mechanism for the gap (sales on credit, stock built ahead of a season, an advance paid to a supplier), and at least one change inside the owner's own control, such as collection terms or the order in which stock is bought. An answer that only says 'he needs more capital' is a quarter of the marks, because it moves the problem rather than diagnosing it.",
+    15,
+    "Cash and profit",
+    "Record keeping, Working capital",
+  ),
+  written(
+    "Telangana's minor irrigation tanks carried its agrarian economy long before canal and lift systems arrived. Examine why they declined, and assess what a restoration programme can and cannot put back.",
+    "Marks for the mechanism of decline (siltation, encroachment of the tank bed and the feeder channels, and the shift of the command area to borewells) and for the groundwater consequence of that shift. The assessment half needs a genuine limit: a desilted tank does not by itself restore the village institution that once maintained it, nor the rainfall that fills it. A descriptive list of tank types with no argument is a third of the marks.",
+    15,
+    "Telangana development",
+    "Economy and development, Irrigation",
+  ),
+  written(
+    "Transmission of a change in the policy repo rate to the rates borrowers actually pay has been described as slow and incomplete. Explain the channels through which transmission is expected to work, and why the cost of deposits slows it.",
+    "Look for the distinction between the policy rate and the cost of funds a bank actually carries, for at least two channels named and described correctly, and for the central point that a large share of deposits is contracted at a fixed rate for a fixed term, so the liability side re-prices later than the asset side. The marks are for the mechanism. A candidate who quotes a current policy rate should not be credited for it, and should be told why in the feedback.",
+    15,
+    "Monetary policy",
+    "Banking awareness, Economy",
   ),
 ];
 
-const PY_WRITTEN = [WRITTEN_BANK[0], WRITTEN_BANK[1]];
-
-// Comprehensive paper --------------------------------------------------------
-
-const COMP_SYSTEMS: BankQuestion[] = [
-  fromAdaptiveBank(pick(GS, 2), "General science"),
-  fromAdaptiveBank(pick(GS, 6), "General science"),
-  ...ENTERPRISE.map((m) => fromAdaptiveBank(m, "Enterprise finance")),
-];
-
-const COMP_CLOUD: BankQuestion[] = TRADE.map((m) => fromAdaptiveBank(m, "Trade theory"));
-
-const COMP_WEB: BankQuestion[] = [FS_HTTP[2], FS_HTTP[3], FS_HTTP[4]];
+/** The descriptive section of paper 906. */
+const ENTERPRISE_WRITTEN = [WRITTEN_BANK[0], WRITTEN_BANK[1], WRITTEN_BANK[2]];
 
 /** Every MCQ this institution owns, keyed by id. The answer key and the library. */
 const MCQ_BY_ID = new Map<number, BankQuestion>();

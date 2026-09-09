@@ -186,14 +186,41 @@ interface SeedThread {
   pinned?: boolean;
 }
 
+/**
+ * The seeded forum.
+ *
+ * Every thread is a question one of these nineteen courses actually produces,
+ * asked in the words the person would use. Two of them are faults with a real
+ * diagnosis and a real answer (the inverter that trips at noon, the earth
+ * leakage device that only trips on two loads at once), because a forum whose
+ * technical threads resolve to "check your connections" tells a trainer that
+ * nobody who knows the trade has ever posted here.
+ *
+ * Faculty answers are deliberately the better ones. A peer gets the shape of the
+ * answer right and the faculty member supplies the reason underneath it, the
+ * caveat, or the sentence that wins the argument with a customer. That contrast
+ * is the claim the product is making, so it has to be visible in the seed and
+ * not asserted in a marketing line.
+ *
+ * `STUDENT_PERSONA` really did write 3001 and really did answer on 3003. The XP
+ * ledger below cites both, and a ledger that credits the signed-in learner for
+ * work the seed does not contain is the kind of thing an evaluator checks.
+ *
+ * Nothing here states a vacancy count, a fee, a cut-off or an exam date. Where
+ * an answer needs a number that a notification sets, it says so and points the
+ * reader at the notification instead of inventing one.
+ */
 const SEED_THREADS: SeedThread[] = [
   {
     id: 3001,
-    title: "Why does my state update not re-render, but only sometimes?",
+    title: "Is 1969 asked as history or as polity, and how deep does Group-II go?",
     body:
-      "I have a list of tasks and I'm doing `tasks.push(newTask)` then `setTasks(tasks)`. It works " +
-      "when I also change a filter at the same time, and does nothing when I don't. What am I missing?",
-    by: STUDENTS[0],
+      "One of the Group-II papers is entirely Telangana movement and state formation, but 1969 keeps " +
+      "turning up in the general studies questions too, and a previous paper asked about Article " +
+      "371-D, which is polity. I cannot tell whether to prepare the agitation as a sequence of events " +
+      "or as a constitutional consequence, and this is my second attempt so I do not have a year to " +
+      "spend finding out. How deep does the paper actually go?",
+    by: STUDENT_PERSONA,
     tags: [1, 2],
     upvotes: 34,
     daysAgo: 2,
@@ -202,26 +229,44 @@ const SEED_THREADS: SeedThread[] = [
       {
         by: STUDENTS[4],
         body:
-          "You are mutating the array, so the reference never changes and React concludes nothing " +
-          "happened. It looks like it works when you change the filter because THAT state change " +
-          "triggers the re-render, and your mutated array gets rendered along the way. Use " +
-          "`setTasks([...tasks, newTask])`.",
+          "Both, and they are not the same preparation. The dedicated paper wants the sequence: what " +
+          "triggered the agitation, who led it, what it demanded, what was conceded and in what order. " +
+          "The general studies and polity questions want the consequence, which is Article 371-D and " +
+          "the Presidential order behind it. I keep two pages, one timeline and one list of " +
+          "provisions, and I revise them separately.",
         upvotes: 41,
         daysAgo: 2,
-        accepted: true,
       },
       {
         by: INSTRUCTOR_PERSONA,
         body:
-          "Exactly right. Worth internalising the general rule: never mutate anything someone else " +
-          "can already see. Local mutation inside a function you just allocated is fine, it is " +
-          "publishing the mutated value that causes this.",
-        upvotes: 28,
+          "Rajkumar has the split right. Two things worth adding, because this is where the marks " +
+          "usually go.\n\n" +
+          "First, the chain matters more than any single date. Non-implementation of the safeguards " +
+          "agreed at the time of states reorganisation is what the agitation was about. The agitation " +
+          "is what produced the negotiated formulas that followed it. Those formulas are what produced " +
+          "the constitutional amendment that inserted Article 371-D. And 371-D is what produced the " +
+          "Presidential order on public employment and the administrative tribunal that goes with it. " +
+          "If you can say that chain in five sentences you can answer a question on 1969 from either " +
+          "paper.\n\n" +
+          "Second, do not learn 371-D as a heading. Learn what it does: it lets the President provide " +
+          "for equitable opportunities in public employment and education by local area within the " +
+          "state, and it is the reason zonal and local cadre rules exist here at all. The question " +
+          "asks what it enables, never what number it carries.\n\n" +
+          "For depth, work backwards from the question papers rather than forwards from a reading " +
+          "list. Take three years of papers, mark every question that touches 1969, and you will find " +
+          "the range is narrower than the books suggest. Then read the syllabus annexure attached to " +
+          "the notification you are actually sitting, because the paper split is set there and not by " +
+          "anything you read on a forum.",
+        upvotes: 52,
         daysAgo: 1,
+        accepted: true,
       },
       {
-        by: STUDENTS[0],
-        body: "That fixed it, and it also explains the bug I had in the filter bar last week. Thank you both.",
+        by: STUDENT_PERSONA,
+        body:
+          "The chain is what I was missing. I had the timeline and the article on separate pages and " +
+          "never joined them. Rewriting both as one page tonight.",
         upvotes: 6,
         daysAgo: 1,
         replyTo: 1,
@@ -230,29 +275,47 @@ const SEED_THREADS: SeedThread[] = [
   },
   {
     id: 3002,
-    title: "Group-by totals are lower than the raw sum and I cannot find the missing rows",
+    title: "Reasoning eats my whole prelims clock and I never reach the easy quant marks",
     body:
-      "Summing revenue directly gives 4.82M. Grouping by region and summing gives 4.61M. Same " +
-      "dataframe, no filtering in between. Where are the other 210k going?",
+      "IBPS PO prelims practice. The section timer gives me twenty minutes for reasoning and I spend " +
+      "fourteen of them on one seating arrangement set that I then get wrong. By the time quant opens " +
+      "I am rattled and I attempt eighteen sums instead of twenty-five. The knowledge is not the " +
+      "problem. Something about how I spend those twenty minutes is.",
     by: STUDENTS[9],
-    tags: [3, 10],
+    tags: [5, 6],
     upvotes: 27,
     daysAgo: 4,
     postType: "question",
     bountyPoints: 150,
     comments: [
       {
-        by: FACULTY[0],
+        by: FACULTY[1],
         body:
-          "Check for NaN in the region column. `groupby` drops those rows by default, so they vanish " +
-          "from every group total while still counting in the raw sum. `df.groupby('region', " +
-          "dropna=False)` will bring them back under a NaN key.",
+          "Sectional timing means you cannot carry minutes across, so the only question is how the " +
+          "twenty are spent. Two changes fix most of this.\n\n" +
+          "One, order the section instead of reading it in order. Inequality, syllogism, direction " +
+          "sense, blood relation, alphanumeric series and coding-decoding are single questions with no " +
+          "set-up cost. Clear those first. That is a block of marks in six or seven minutes and it " +
+          "settles you before anything hard.\n\n" +
+          "Two, treat puzzles and seating arrangement as optional and choose them by reading, not by " +
+          "hope. Read the whole set of conditions once. If after that reading you cannot fix at least " +
+          "one position with certainty, leave it and look at the next set. A set you can start is " +
+          "worth five marks. A set you cannot start is worth nothing however long you sit on it. And " +
+          "do not begin a new set after minute fifteen, because an unfinished set scores the same as " +
+          "an untouched one and costs you the review pass as well.\n\n" +
+          "Eighteen sums attempted calmly beat twenty-five attempted in a panic, so do not try to fix " +
+          "the quant number until the reasoning habit has changed. Check the notification for the " +
+          "pattern and the sectional times of the exam you are sitting, since those are set there.",
         upvotes: 33,
         daysAgo: 4,
+        accepted: true,
       },
       {
         by: STUDENTS[9],
-        body: "That was it, 412 rows with a blank region from the older export. Thank you.",
+        body:
+          "Three mocks with the ordering change. Reasoning attempts went from fourteen to twenty-two " +
+          "and I stopped carrying the panic into quant. The rule about not starting a set after minute " +
+          "fifteen is the one that actually did it.",
         upvotes: 9,
         daysAgo: 3,
         replyTo: 0,
@@ -261,12 +324,13 @@ const SEED_THREADS: SeedThread[] = [
   },
   {
     id: 3003,
-    title: "How much DSA is actually enough for product-company interviews?",
+    title: "Third attempt at Group-II. What should I actually change this time?",
     body:
-      "I keep seeing people say 500 problems. That would take me the rest of the year. Is there a " +
-      "point where the returns drop off, or is it genuinely a volume game?",
+      "Cleared prelims twice and did not make the final list either time. My instinct is to start the " +
+      "syllabus again from page one, and I suspect that is exactly the wrong instinct. I am not asking " +
+      "for encouragement. I am asking what a third attempt should be doing differently from a second.",
     by: STUDENTS[13],
-    tags: [5, 7, 6],
+    tags: [7, 1, 3],
     upvotes: 58,
     daysAgo: 6,
     postType: "discussion",
@@ -275,83 +339,176 @@ const SEED_THREADS: SeedThread[] = [
       {
         by: INSTRUCTOR_PERSONA,
         body:
-          "Volume is the wrong axis. There are roughly a dozen patterns that generate most interview " +
-          "questions: two pointers, sliding window, monotonic stack, BFS/DFS, topological sort, " +
-          "binary search on the answer, and the DP families. Once you can look at a new question and " +
-          "name the pattern within a minute, more problems stop teaching you anything.\n\n" +
-          "Concretely: 100-150 problems chosen to cover the patterns beats 500 chosen at random. " +
-          "Track which pattern each one was, and go back to whichever column stays empty.",
+          "Starting from page one is the wrong instinct and you already know why: it is the " +
+          "comfortable part. A third attempt fails for one of three reasons and they need different " +
+          "work, so the first job is to find out which one you are.\n\n" +
+          "Take your last attempt and sort every question you lost into three piles. Never studied. " +
+          "Studied and could not recall. Knew it and still marked wrong.\n\n" +
+          "If the first pile is largest you have a coverage problem, and finishing the syllabus really " +
+          "is the job. That is the only case where starting again is right, and even then you start " +
+          "from the list of what is missing.\n\n" +
+          "If the second pile is largest you have a revision problem, not a knowledge problem. Reading " +
+          "it again will not touch it. What works is closed-book recall and a revision schedule that " +
+          "returns to a topic on a date rather than when you happen to feel uneasy about it.\n\n" +
+          "If the third pile is largest the problem is paper craft: misreading the question, changing " +
+          "a right answer, guessing where you should have left it. You fix that with rules written " +
+          "down before the exam and followed on the day without renegotiating them.\n\n" +
+          "One more thing, since you cleared prelims twice. If you reach mains and not the list, the " +
+          "marks are going in answer writing and in the interview, and neither is fixed by more " +
+          "reading. Write eight answers a week and have them read by someone who will mark them down. " +
+          "That is the least comfortable advice in this thread and it is the one that moves a third " +
+          "attempt.",
         upvotes: 71,
         daysAgo: 6,
         accepted: true,
       },
       {
+        by: STUDENT_PERSONA,
+        body:
+          "Second attempt here, so one behind you. The three piles took me an evening and it was " +
+          "uncomfortable in a useful way. Mine was almost entirely the second pile, which meant the " +
+          "year I spent re-reading the standard books did very little. What changed it was writing the " +
+          "recall down: closed book, one page a topic, then checking against the book afterwards. I " +
+          "also stopped keeping current affairs by date and started keeping one page per syllabus " +
+          "heading, which is the only reason I can find anything now.",
+        upvotes: 24,
+        daysAgo: 4,
+        accepted: true,
+      },
+      {
         by: STUDENTS[20],
         body:
-          "Seconding this. I did about 130 and cleared three onsites. The thing that moved the needle " +
-          "was explaining my approach out loud before writing anything, which is also what the mock " +
-          "interviewer here drills.",
-        upvotes: 24,
+          "Third attempt as well. The thing nobody says out loud is that the timetable has to fit the " +
+          "job you have now and not the one you had as a student. I get two hours on a weekday and I " +
+          "stopped pretending otherwise. Two honest hours beat six planned ones.",
+        upvotes: 18,
         daysAgo: 5,
       },
     ],
   },
   {
     id: 3004,
-    title: "Sliding window: why is it still O(n) if there is a loop inside a loop?",
+    title: "Rooftop inverter trips around noon on a clear day and runs fine all morning",
     body:
-      "The shrink step is a while loop inside a for loop, which looks quadratic to me, but everyone " +
-      "says it is linear. What am I misreading?",
+      "Three kilowatt rooftop system at a house in Warangal, commissioned four months ago. On a clear " +
+      "day it runs from morning without trouble and then trips somewhere between twelve and two. It " +
+      "reconnects on its own after a few minutes and then trips again. On a cloudy day it never trips. " +
+      "The owner is convinced the panels are faulty. I do not think they are, because the fault " +
+      "follows the time of day and not the panels. Where should I be looking?",
     by: STUDENTS[6],
-    tags: [5],
+    tags: [8],
     upvotes: 45,
     daysAgo: 8,
     postType: "question",
     comments: [
       {
-        by: STUDENTS[2],
+        by: FACULTY[2],
         body:
-          "The left pointer only ever moves forward, and it can move at most n times across the whole " +
-          "run. So the inner loop's total work over the entire algorithm is bounded by n, not by n " +
-          "per iteration. That is amortised analysis: you count the total, not the worst single step.",
+          "You are right that it is not the panels, and the time of day is the clue. Work through it " +
+          "in this order.\n\n" +
+          "Start with the inverter's own event log. It records a reason for every disconnection and " +
+          "you should not be guessing at a fault the machine has already named. In this pattern it " +
+          "almost always reads as an AC over-voltage trip.\n\n" +
+          "Why noon and not morning. At noon every rooftop on that feeder is exporting at once, so the " +
+          "grid voltage at your point of connection is at its highest for the day. Your own system " +
+          "pushes it higher still: current flowing out through the AC cable raises the voltage at the " +
+          "inverter terminals above the voltage at the meter, and the longer or thinner that cable, " +
+          "the larger the rise. When the sum crosses the upper limit the inverter is set to, it has to " +
+          "disconnect. That is the inverter obeying the grid code, not failing.\n\n" +
+          "How to confirm it in one visit. Put a meter on the AC terminals at the inverter and take a " +
+          "second reading at the supply meter at the same moment, at the hour it usually trips. If the " +
+          "inverter terminals read clearly higher than the meter, the rise is in your cable and the " +
+          "fix is a larger cross section or a shorter run. If both read equally high, the feeder " +
+          "itself is high, which is a distribution company matter, so raise it in writing with the " +
+          "readings attached.\n\n" +
+          "Two things to rule out while you are there. Check the inverter is not on a closed wall in " +
+          "direct sun, because heat derating shows at the same hour and looks similar. And check the " +
+          "grid protection settings are the ones approved for the connection, since a factory default " +
+          "meant for somewhere else is a fault I have seen twice.\n\n" +
+          "One thing not to chase. A DC over-voltage trip is the opposite pattern: string open circuit " +
+          "voltage is highest when the cells are cold, so that fault turns up on a cold clear morning " +
+          "and not at noon. If the log says DC, the string length is wrong and the whole diagnosis " +
+          "changes.",
         upvotes: 52,
         daysAgo: 8,
         accepted: true,
+      },
+      {
+        by: STUDENTS[2],
+        body:
+          "Had the heat version of this at a site in Nizamabad. Inverter on a west-facing wall, no " +
+          "shade and no clearance above it. It never tripped, it just quietly cut output every " +
+          "afternoon and the owner only noticed it on the generation report. We moved it under the " +
+          "stair landing and the afternoon dip went away.",
+        upvotes: 18,
+        daysAgo: 7,
       },
     ],
   },
   {
     id: 3005,
-    title: "Anyone else getting a wrong answer only on the 'dvdf' test case?",
+    title: "What should I charge for a blouse with lining? I keep quoting below my own cost",
     body:
-      "Longest substring without repeating characters. Passes everything except 'dvdf', where I get " +
-      "2 instead of 3.",
+      "I have been stitching from home for four months. I quote for a plain blouse, the customer then " +
+      "asks for lining, and I add a little for the cloth and stitch it at the same rate. Yesterday I " +
+      "worked out that a lined blouse takes me nearly twice as long, so I am earning less an hour on " +
+      "it than on a plain one. How do people price this properly without losing the customer?",
     by: STUDENTS[17],
-    tags: [5, 2],
+    tags: [10],
     upvotes: 19,
     daysAgo: 1,
     postType: "question",
     bountyPoints: 100,
     comments: [
       {
-        by: STUDENTS[0],
+        by: STUDENTS[15],
         body:
-          "Your left pointer is jumping backwards. When you hit the second 'd', its stored index is " +
-          "behind your current left edge, so `left = seen[ch] + 1` moves left back into territory you " +
-          "already left. Guard it: `left = max(left, seen[ch] + 1)`.",
+          "You are not alone in this. Two things I changed. I stopped quoting one price for a blouse " +
+          "and started quoting by the work: plain, lined, with piping, with cups, with a designed " +
+          "back. Each has its own rate written in a small notebook the customer can see, and nobody " +
+          "has argued with a written rate yet. And I count hooks, canvas, thread and lining as " +
+          "material, because that is what they are. Before that I was giving away about thirty rupees " +
+          "of material on every piece without noticing it.",
         upvotes: 31,
         daysAgo: 1,
+      },
+      {
+        by: FACULTY[3],
+        body:
+          "Shirisha's notebook is the right instinct. Put a number under it and the argument goes away " +
+          "for good.\n\n" +
+          "Make a cost sheet for one lined blouse, once. Three lines.\n\n" +
+          "Material. Lining, canvas or interlining, hooks, thread and any piping, counted for one " +
+          "piece and not for a bolt, plus a small share for cutting wastage.\n\n" +
+          "Labour. Your own hours at a rate you decide in advance. Take the daily earning you would " +
+          "accept for a day at a unit, divide it by the hours you would work there, and that is your " +
+          "hourly rate. Then time a lined blouse with a clock, twice, because your estimate of it will " +
+          "be wrong. This is the line most people leave blank, and leaving it blank is the same as " +
+          "working free.\n\n" +
+          "Overhead. Machine, electricity, needles, oil and rent if you pay any. Add them for a month, " +
+          "divide by the pieces you finish in a month, and carry that per-piece figure into every " +
+          "quotation.\n\n" +
+          "Those three added together are your cost. The price is that plus the margin you want. Now " +
+          "you can see the thing you already suspected: a lined blouse is close to double the " +
+          "stitching time because of the second layer, the turning and the finishing, so pricing it as " +
+          "plain plus cloth hands the customer your labour for nothing.\n\n" +
+          "Two practical points. Price the design and not the person, or you will end up with a " +
+          "different rate for every customer and no way to defend either of them. And redo the sheet " +
+          "when material rates move, because a cost sheet is only useful while it is current.",
+        upvotes: 44,
+        daysAgo: 1,
+        accepted: true,
       },
     ],
   },
   {
     id: 3006,
-    title: "Poll: how many hours a week are you actually putting in?",
+    title: "Poll: how many hours did you actually study last week?",
     body:
-      "Not how many you planned. How many you actually did last week, honestly. I want to know if " +
-      "I am behind or if everyone is quietly in the same boat.",
+      "Not how many you planned. How many you actually sat down for last week, honestly. I want to " +
+      "know whether I am behind or whether everyone is quietly in the same position.",
     by: STUDENTS[3],
-    tags: [6],
+    tags: [7],
     upvotes: 22,
     daysAgo: 3,
     postType: "poll",
@@ -359,19 +516,23 @@ const SEED_THREADS: SeedThread[] = [
     pollResults: [14, 47, 58, 21],
     comments: [
       {
-        by: STUDENTS[15],
+        by: STUDENTS[25],
         body:
-          "Twelve on a good week, four on a week with two submissions due. The average is a lie in " +
-          "both directions, but the streak counter keeps me from dropping to zero.",
+          "Twelve on a good week and four on a week the shop is busy. The average is a lie in both " +
+          "directions. What keeps me from dropping to nothing is the streak counter, which is a small " +
+          "thing but it works on me.",
         upvotes: 12,
         daysAgo: 3,
       },
       {
         by: FACULTY[1],
         body:
-          "The distribution here matches what we see in the progress data almost exactly. Consistency " +
-          "beats intensity: four sessions of ninety minutes outperform one Sunday marathon on every " +
-          "retention measure we track.",
+          "The shape of this poll matches the progress data on the mission dashboard almost exactly, " +
+          "so nobody reading it is unusual. What the data also shows is that consistency beats " +
+          "intensity by a wide margin. Four sessions of ninety minutes across a week move a score more " +
+          "than one long Sunday, because recall is built by returning to material and not by sitting " +
+          "with it. If you have forty minutes on a weekday, spend them on one timed sectional rather " +
+          "than on reading, and keep the reading for the day you have three hours.",
         upvotes: 19,
         daysAgo: 2,
       },
@@ -379,18 +540,31 @@ const SEED_THREADS: SeedThread[] = [
   },
   {
     id: 3007,
-    title: "Resource: the EXPLAIN checklist I run before shipping any query",
+    title: "Which newspaper to read, and what to do with it once you have",
     body:
-      "Sharing the checklist I use when a query is slow, in the order I actually go through it.\n\n" +
-      "1. Read the plan bottom up, not top down. The deepest node is where the time is spent.\n" +
-      "2. Look for a sequential scan on a table you expected to be indexed, then check whether the " +
-      "filter is wrapped in a function. `WHERE lower(email) = ...` cannot use an index on `email`.\n" +
-      "3. Compare estimated rows with actual rows. A factor of a hundred means the planner is working " +
-      "from stale statistics.\n" +
-      "4. Nested loop over a large outer relation is usually a missing join index.\n" +
-      "5. Only then consider rewriting the query.",
-    by: FACULTY[1],
-    tags: [4],
+      "The question comes up in every batch, so here is the answer in full.\n\n" +
+      "The masthead matters far less than people think. One daily read properly beats three read " +
+      "partly, and most candidates who tell me they read three are spending ninety minutes and " +
+      "retaining a headline. Pick one and stay with it.\n\n" +
+      "What matters is which pages. For a state recruitment: the state edition for district " +
+      "administration, schemes and appointments; the national pages for policy decisions, bills and " +
+      "constitutional matters; the editorial and opinion page for the argument on both sides; and the " +
+      "business page for the economy vocabulary. Skip crime, sport and film. Thirty to forty minutes, " +
+      "not two hours.\n\n" +
+      "Then the part that decides whether the reading was worth anything. Do not keep a date-wise " +
+      "diary. The exam asks by topic and never by date, so a diary is a file you cannot search. Keep " +
+      "one page per syllabus heading and add a line to the right page. A month later everything you " +
+      "have read about irrigation is in one place and you revise it in ten minutes instead of hunting " +
+      "through thirty entries.\n\n" +
+      "Two more things. When a question is about a scheme or an order, the government's own release is " +
+      "the primary source and the report is a summary of it, so read the release when the topic " +
+      "matters to your paper. And if English is not the language you think in, read a Telugu daily for " +
+      "state affairs and the English one for the national pages. Reading slowly in a second language " +
+      "is not a virtue.\n\n" +
+      "What not to do: highlighting. It feels like work and produces nothing you can revise from. If a " +
+      "paragraph is worth keeping, write one line about it in your own words on the right page.",
+    by: FACULTY[0],
+    tags: [3, 4],
     upvotes: 63,
     daysAgo: 5,
     postType: "resource",
@@ -398,14 +572,15 @@ const SEED_THREADS: SeedThread[] = [
       {
         by: STUDENTS[12],
         body:
-          "Point two just explained a report that took eleven seconds for a year. The index existed, " +
-          "the query was calling `date_trunc` on the column. Rewrote it as a range filter, now 40ms.",
+          "The topic page instead of a date diary is the single change that rescued a year of notes " +
+          "for me. I had eleven months of a dated notebook and could not find anything in it two weeks " +
+          "before the paper.",
         upvotes: 27,
         daysAgo: 4,
       },
       {
         by: STUDENTS[33],
-        body: "Saved. The estimated-versus-actual row check is the one I always forget to look at.",
+        body: "Saved. The line about highlighting is uncomfortable and correct.",
         upvotes: 8,
         daysAgo: 4,
       },
@@ -413,27 +588,31 @@ const SEED_THREADS: SeedThread[] = [
   },
   {
     id: 3008,
-    title: "My laptop fan has become the progress bar for model training",
+    title: "Half an hour on a ceiling fan and the fault was upstream of me",
     body:
-      "Fan quiet: still loading data. Fan loud: training. Fan silent again: either finished or the " +
-      "kernel died, and there is only one way to find out.",
+      "Checked the capacitor. Checked the regulator. Checked the connections at the ceiling rose. " +
+      "Rewired the switch. The circuit was fed from a switch in the next room that nobody had turned " +
+      "on. The customer told me this at the start and I had already decided it was the capacitor.",
     by: STUDENTS[24],
-    tags: [11],
+    tags: [9],
     upvotes: 51,
     daysAgo: 2,
     postType: "humorous",
     comments: [
       {
         by: STUDENTS[29],
-        body: "The kernel-died silence and the finished silence sound exactly the same and that is the joke.",
+        body:
+          "Rule one at the centre: listen to what the customer says happened before you decide what " +
+          "happened. We all learn it the same way and most of us learn it twice.",
         upvotes: 18,
         daysAgo: 2,
       },
       {
         by: STUDENTS[35],
         body:
-          "Put a print statement at the end of the loop and one in the exception handler. Now the fan is " +
-          "decorative and you have logs.",
+          "The other one worth writing on the board: prove the tester on a known live point, test the " +
+          "circuit, then prove the tester again. A dead tester reads the same as a dead circuit and " +
+          "only one of the two is safe to touch.",
         upvotes: 22,
         daysAgo: 1,
       },
@@ -441,17 +620,16 @@ const SEED_THREADS: SeedThread[] = [
   },
   {
     id: 3009,
-    title: "Interview experience: three rounds at a payments company, what they actually asked",
+    title: "The branch asked our group for two things we did not have. Writing them down here",
     body:
-      "Writing this down while it is fresh, because the prep advice I read did not match the rounds.\n\n" +
-      "Round 1, 60 minutes, one array question and one string question, both medium. They cared more " +
-      "about my dry run than my code, and stopped me twice to ask what a variable held.\n\n" +
-      "Round 2, 60 minutes, a small design question: build the retry layer for a payment webhook. " +
-      "Idempotency keys, at-least-once delivery and what happens when the same event arrives twice.\n\n" +
-      "Round 3, 45 minutes with a manager, entirely about a project on my resume. They asked what I " +
-      "would change if I rebuilt it, and I think that answer decided the outcome.",
-    by: STUDENTS[18],
-    tags: [7, 6, 12],
+      "Our group is eleven members in a village near Khammam. We have been saving for a year and we " +
+      "went to the branch about a credit limit. We carried the savings passbook and the members' " +
+      "identity documents. The manager asked for the minutes book with the borrowing resolution signed " +
+      "by the members present, and the internal lending register showing what the group has lent from " +
+      "its own savings and how much has come back. We had written up neither. We were sent back, and I " +
+      "am putting this here so the next group does not lose a month the way we did.",
+    by: STUDENTS[21],
+    tags: [11],
     upvotes: 88,
     daysAgo: 7,
     postType: "discussion",
@@ -459,24 +637,47 @@ const SEED_THREADS: SeedThread[] = [
       {
         by: STUDENTS[41],
         body:
-          "The third round question is the one nobody prepares for. Writing down two things I would " +
-          "change about each project on my resume tonight.",
+          "The same thing happened to our group last year. What we did was ask the community " +
+          "coordinator to sit with us for one afternoon and write the minutes book up from the meeting " +
+          "registers we did have, meeting by meeting, with the attendance signatures. Eight months of " +
+          "meetings took one afternoon because we had kept the attendance sheets. If you have not kept " +
+          "those either, the honest answer is that you start writing from today and go back in three " +
+          "months.",
         upvotes: 31,
         daysAgo: 7,
       },
       {
-        by: INSTRUCTOR_PERSONA,
+        by: FACULTY[3],
         body:
-          "This matches what hiring managers tell us. The design round at this level is not about " +
-          "scale, it is about correctness under retries. If you can explain why an idempotency key " +
-          "must be chosen by the sender and stored by the receiver, you are already ahead.",
+          "This is not the branch being difficult, and it is worth understanding why, because it " +
+          "changes how you prepare.\n\n" +
+          "A bank lending to a group is not lending against a business idea. It is lending against the " +
+          "group's own conduct, and the way it reads that conduct is a grading exercise: how regularly " +
+          "the group meets, whether every member attends, whether savings come in on the same day each " +
+          "month, whether the group lends its own money out, and whether it gets it back. The minutes " +
+          "book and the internal lending register are the only evidence of all five. With no books " +
+          "there is nothing to grade, and with nothing to grade there is nothing to sanction.\n\n" +
+          "The borrowing resolution matters for a separate reason. It is what tells the branch that " +
+          "the group decided to borrow, how much, and who may sign for it. No branch can take that " +
+          "from one member standing at the counter.\n\n" +
+          "So before you go: ask for the grading to be done and take the sheet, write the books up to " +
+          "date, pass the resolution in a meeting with everyone present and record it, and check that " +
+          "every member's details at the branch are current. Carry the books themselves and not " +
+          "photocopies, because the manager will want to see the handwriting run continuously.\n\n" +
+          "One expectation to set. What a branch sanctions is worked out against the group's own " +
+          "savings and its grading under that bank's policy, so the savings record does more for your " +
+          "limit than the strength of any one member's plan. Do not walk in with a number in mind, and " +
+          "do ask the branch what its own norms are, because they differ.",
         upvotes: 44,
         daysAgo: 6,
         accepted: true,
       },
       {
-        by: STUDENTS[18],
-        body: "Offer came through this morning. Happy to answer anything for whoever interviews there next.",
+        by: STUDENTS[21],
+        body:
+          "We went back with the books written up, the resolution passed in front of everyone and the " +
+          "grading sheet. The limit was sanctioned last week. Posting this so the thread has an " +
+          "ending.",
         upvotes: 67,
         daysAgo: 1,
       },
@@ -484,12 +685,14 @@ const SEED_THREADS: SeedThread[] = [
   },
   {
     id: 3010,
-    title: "Why does git rebase keep asking me to resolve the same conflict?",
+    title: "Udyam registration before I approach the bank, or after?",
     body:
-      "Rebasing a branch with nine commits onto main. I resolve the same conflict in the same file " +
-      "four times before it finishes. Am I doing something wrong or is that expected?",
-    by: STUDENTS[11],
-    tags: [9],
+      "Setting up a small unit grading and packing turmeric. One person told me to register first, " +
+      "another said the bank does it for you, and a website has quoted me a fee for it. I do not want " +
+      "to pay for something I should not be paying for, and I do not want to be sent back for a paper " +
+      "I could have carried with me.",
+    by: STUDENTS[0],
+    tags: [12],
     upvotes: 29,
     daysAgo: 4,
     postType: "question",
@@ -497,17 +700,21 @@ const SEED_THREADS: SeedThread[] = [
       {
         by: STUDENTS[22],
         body:
-          "Expected. A rebase replays each commit one at a time, so a file that every commit touched " +
-          "conflicts once per commit. Two ways out: squash the branch first so there is one commit to " +
-          "replay, or turn on `git config --global rerere.enabled true` so git remembers how you " +
-          "resolved it and reapplies that resolution.",
+          "Before, and do it yourself. Registration on the official portal is self-declared, needs " +
+          "your identity number and the PAN of the business, and takes a few minutes. It carries no " +
+          "fee. Any site asking money for it is not the portal, and that is the most common way a new " +
+          "unit loses its first thousand rupees.\n\n" +
+          "Doing it first is also just practical. The registration number is what identifies you as an " +
+          "MSME on paper and it is asked for by most of the credit and subsidy routes you will " +
+          "approach afterwards, so walking in with it saves a visit. What it does not do is get you a " +
+          "loan by itself. Treat it as a document, not as an approval.",
         upvotes: 40,
         daysAgo: 4,
         accepted: true,
       },
       {
-        by: STUDENTS[11],
-        body: "rerere was the missing piece. Nine conflicts became one.",
+        by: STUDENTS[0],
+        body: "Done, and it took eleven minutes without paying anybody. Thank you.",
         upvotes: 7,
         daysAgo: 3,
         replyTo: 0,
@@ -516,12 +723,13 @@ const SEED_THREADS: SeedThread[] = [
   },
   {
     id: 3011,
-    title: "A flex child with a long line makes the whole row overflow instead of wrapping",
+    title: "The ELCB trips only when the geyser and the pump are on together",
     body:
-      "The container is `display: flex`, the child is `flex: 1` and contains a long code snippet. " +
-      "Instead of the child shrinking, the entire row grows and the page scrolls sideways.",
+      "Either one alone runs all day without a problem. Switch on both and the ELCB drops within a " +
+      "minute or two. The owner wants me to fit a higher rated one and be done with it. That does not " +
+      "feel right to me but I cannot explain why well enough to argue with him.",
     by: STUDENTS[7],
-    tags: [8, 1],
+    tags: [9],
     upvotes: 24,
     daysAgo: 3,
     postType: "question",
@@ -529,9 +737,24 @@ const SEED_THREADS: SeedThread[] = [
       {
         by: FACULTY[2],
         body:
-          "A flex item has `min-width: auto`, which means it refuses to shrink below its content. Your " +
-          "unbreakable snippet is the content. Add `min-width: 0` to the flex child and it will shrink " +
-          "as expected, then `overflow-x: auto` on the snippet so the scrollbar lands where you want it.",
+          "Your instinct is correct, and here is the sentence to argue with.\n\n" +
+          "An earth leakage device does not measure how much current an appliance draws. It measures " +
+          "the difference between what goes out on the live and what comes back on the neutral, which " +
+          "is the current leaking to earth. That difference adds up across everything connected at " +
+          "that moment. A water heater with a slightly degraded element leaks a little. A pump with a " +
+          "damp winding leaks a little. Each on its own stays under the trip threshold. Run both and " +
+          "the sum crosses it. The device is doing exactly what it was fitted to do.\n\n" +
+          "Fitting a higher rated one raises the threshold until no combination reaches it. The " +
+          "leakage is still there, and it is still available to pass through somebody's hand on a wet " +
+          "floor. That is not a repair, it is removing the protection.\n\n" +
+          "To find it: switch every circuit off, bring them back one at a time and note which " +
+          "combinations trip. Then clamp the live and neutral of the suspect circuit together and read " +
+          "the leakage directly. In this pattern it is usually the heater element or the pump winding, " +
+          "and both live in wet places, so it is not a surprise. Repair the appliance and the device " +
+          "stops tripping on its own.\n\n" +
+          "One caution before you start. Isolate at the board and prove it dead before you open " +
+          "anything, and if the pump sits in a pit or a sump, treat it as live until you have proved " +
+          "otherwise.",
         upvotes: 38,
         daysAgo: 3,
         accepted: true,
@@ -540,12 +763,13 @@ const SEED_THREADS: SeedThread[] = [
   },
   {
     id: 3012,
-    title: "Set or dictionary when all I need is a membership check?",
+    title: "Is it worth guessing when the paper has negative marking?",
     body:
-      "I only ever ask `if x in collection`. A colleague said to use a set, but I already have the " +
-      "values in a dict and it feels wasteful to build a second structure.",
+      "I leave every question I am not sure about and I finish with about fifteen blank. A friend " +
+      "marks everything and says the arithmetic is on his side. One of us is losing marks and I would " +
+      "like to know which one.",
     by: STUDENTS[30],
-    tags: [3, 5],
+    tags: [6, 5],
     upvotes: 21,
     daysAgo: 9,
     postType: "question",
@@ -553,16 +777,28 @@ const SEED_THREADS: SeedThread[] = [
       {
         by: STUDENTS[27],
         body:
-          "If you already have the dict, `x in d` checks the keys in O(1) and builds nothing. Only " +
-          "build a set when the values are what you are testing, because `x in d.values()` is a linear " +
-          "scan and that is the mistake worth avoiding.",
+          "Do the arithmetic once and then stop arguing about it. Where the penalty is a quarter of a " +
+          "mark for a wrong answer, which is what most of these papers apply, a blind guess between " +
+          "four options gives you a one in four chance of plus one and a three in four chance of minus " +
+          "a quarter. That comes out slightly positive. Eliminate one option and it is clearly " +
+          "positive. Eliminate two and it is not really a guess any more.\n\n" +
+          "So your friend is right about the arithmetic and wrong about the conclusion, because the " +
+          "arithmetic assumes the guess is free. It is not. Every question you stop to guess at is a " +
+          "question you did not spend on one you could have solved, and in a sectionally timed paper " +
+          "that is where the marks actually go.\n\n" +
+          "The rule that falls out of it: guess when you have eliminated at least one option and it " +
+          "costs you no extra time. Do not sit down at the end of a section and fill the blanks by " +
+          "pattern. And check the notification for the penalty in the exam you are sitting, because it " +
+          "is set there and it is not the same everywhere.",
         upvotes: 33,
         daysAgo: 9,
         accepted: true,
       },
       {
         by: STUDENTS[38],
-        body: "Also worth knowing: `d.keys()` supports set operations directly, so you can intersect without copying.",
+        body:
+          "The elimination point is the whole thing. A blind guess and an educated guess look " +
+          "identical on the answer sheet and are completely different decisions.",
         upvotes: 14,
         daysAgo: 8,
       },
@@ -570,12 +806,14 @@ const SEED_THREADS: SeedThread[] = [
   },
   {
     id: 3013,
-    title: "Design a URL shortener: what does a good answer sound like at two years of experience?",
+    title: "What does a good mains answer look like at fifteen marks?",
     body:
-      "Every write-up I find jumps straight to sharding and consistent hashing. That cannot be what " +
-      "an interviewer expects from someone two years in. What does a good answer actually cover?",
+      "Every model answer I find is either three lines or two pages, and neither is what I can write " +
+      "in the time I have. I have put a bounty on this because I want a description of the thing " +
+      "rather than a link to a book. What does a fifteen mark answer look like when the clock is " +
+      "running?",
     by: STUDENTS[2],
-    tags: [12, 7],
+    tags: [1, 7],
     upvotes: 46,
     daysAgo: 11,
     postType: "discussion",
@@ -583,15 +821,29 @@ const SEED_THREADS: SeedThread[] = [
     bountyClaimedComment: 0,
     comments: [
       {
-        by: FACULTY[1],
+        by: FACULTY[0],
         body:
-          "Start with the interface and the numbers, not the storage. What is the read to write ratio, " +
-          "how long do links live, are they guessable. Then the id: base62 of an incrementing counter " +
-          "is fine and you should be able to say why a hash of the URL is worse (collisions and no " +
-          "reuse for the same input). Then one cache in front of one database, and only then, if there " +
-          "is time left, what breaks at ten times the traffic.\n\n" +
-          "An answer that reaches sharding in minute three without stating the read/write ratio reads " +
-          "as memorised. An answer that never gets there but reasons cleanly about the cache does not.",
+          "Start from the time and work backwards, because that is what fixes the length. These papers " +
+          "give you roughly a minute a mark, and part of every minute goes on reading and deciding. So " +
+          "a fifteen mark answer is about a minute of planning and eight to ten of writing, which is a " +
+          "couple of hundred words. Anything longer is taken from the last two questions on the paper, " +
+          "and that is where most people lose marks without ever noticing.\n\n" +
+          "Then read the instruction word and answer that word. Examine wants both sides and your " +
+          "judgement at the end. Discuss wants the dimensions of the issue. Explain wants the " +
+          "mechanism, how one thing produces another. Critically evaluate wants a position, held. An " +
+          "answer that recites everything known about the topic scores below an answer half its length " +
+          "that does what the verb asked for.\n\n" +
+          "The shape that works, in order. One line that defines or locates the thing being asked " +
+          "about, not a paragraph of background. Then three or four points, each with an anchor under " +
+          "it: a provision, a committee, a year, a scheme, or a Telangana example. A point with no " +
+          "anchor reads as opinion and is marked as opinion. Then one closing line that answers the " +
+          "question rather than summarising your own answer.\n\n" +
+          "What loses marks reliably: an introduction that restates the question in other words, four " +
+          "points that are the same point in different clothes, and a conclusion that begins with the " +
+          "words thus we can say.\n\n" +
+          "Practise it by writing one answer and then cutting it by a third without losing a point. " +
+          "That exercise teaches more than three fresh answers, and it is the skill the paper is " +
+          "actually testing.",
         upvotes: 58,
         daysAgo: 10,
         accepted: true,
@@ -599,8 +851,8 @@ const SEED_THREADS: SeedThread[] = [
       {
         by: STUDENTS[2],
         body:
-          "This is the framing I was missing. I was treating it as a storage question when it is a " +
-          "requirements question with storage attached.",
+          "The verb is the part I have been ignoring for two years. I have been writing the same essay " +
+          "whether the question said examine or explain. Bounty awarded.",
         upvotes: 11,
         daysAgo: 10,
         replyTo: 0,
@@ -609,12 +861,13 @@ const SEED_THREADS: SeedThread[] = [
   },
   {
     id: 3014,
-    title: "Weekly check-in: what did you ship this week?",
+    title: "Weekly check-in: what did you finish this week?",
     body:
-      "One line each. Something you finished, something you got stuck on, and one thing you want a " +
-      "second pair of eyes on. Nothing is too small to post here.",
+      "One line each. Something you finished, something you are stuck on, and one thing you would like " +
+      "a second pair of eyes on. Nothing is too small to post here, and faculty read this thread on " +
+      "Thursday.",
     by: ADMIN_PERSONA,
-    tags: [6],
+    tags: [7],
     upvotes: 37,
     daysAgo: 1,
     postType: "discussion",
@@ -623,25 +876,30 @@ const SEED_THREADS: SeedThread[] = [
       {
         by: STUDENTS[19],
         body:
-          "Finished the SQL module. Stuck on window functions, specifically when to use RANGE instead " +
-          "of ROWS. Would like someone to look at my running-total query.",
+          "Finished the polity module. Stuck on the difference between a money bill and a financial " +
+          "bill, which I can state and cannot apply. Would like someone to read the four lines I wrote " +
+          "on it.",
         upvotes: 9,
         daysAgo: 1,
       },
       {
         by: STUDENTS[5],
         body:
-          "Shipped the first version of my portfolio site and got two coding problems done. Stuck on " +
-          "deploying it, the build passes locally and fails in CI with a case-sensitivity error.",
+          "Finished module three of the solar course and did the first practical assessment at the " +
+          "centre. Stuck on the net metering application, which asks for a copy of the sanctioned load " +
+          "and I do not know where that comes from.",
         upvotes: 12,
         daysAgo: 1,
       },
       {
         by: FACULTY[2],
         body:
-          "The CI failure is almost always an import whose file name differs in case. macOS does not " +
-          "care, the build container does. Post the failing import and we will read it together in " +
-          "the frontend room on Thursday.",
+          "The sanctioned load is the load already approved on the existing service connection at that " +
+          "address. It has nothing to do with the solar system. It is printed on the electricity bill " +
+          "in most formats, and where it is not, the section office will give you a copy of the " +
+          "service agreement. The portal asks for it first because the rooftop capacity you may apply " +
+          "for is set against that sanctioned load, so the number decides what can go on the roof. " +
+          "Bring the bill on Thursday and we will fill the form together.",
         upvotes: 15,
         daysAgo: 0,
         replyTo: 1,
@@ -1150,17 +1408,27 @@ export interface XpEvent {
   created_at: string;
 }
 
-/** History earned before the demo started, newest last. */
+/**
+ * History earned before the demo started, newest last.
+ *
+ * Every row that names a thread names one the learner is really in: she asked
+ * 3001, she answered on 3003 and that answer carries 24 upvotes and a helpful
+ * mark in the seed, 3007 is in `DEFAULT_BOOKMARKS`, and 3009 is a thread she
+ * could plausibly have upvoted. A ledger that credits the signed-in learner for
+ * work the seed does not contain is checkable in two clicks, because the
+ * profile page prints the post and answer counts computed from `statsFor`
+ * directly beside it.
+ */
 function seedXpEvents(): XpEvent[] {
   const rows: Array<[string, string, number, string, number | null, number]> = [
-    ["signup", "Joined the community", 50, "Welcome to the AI Linc community", null, 42],
-    ["thread", "Posted a question", 20, "Asked about React state updates", 3001, 2],
-    ["comment", "Answered a question", 15, "Answered the 'dvdf' test case question", 3005, 1],
-    ["upvote_received", "Answer upvoted", 62, "Your answer collected 31 upvotes", 3005, 1],
-    ["accepted", "Answer marked helpful", 25, "Your answer was marked helpful", 3005, 1],
-    ["bookmark", "Saved a post", 1, "Saved the EXPLAIN checklist", 3007, 4],
+    ["signup", "Joined the community", 50, "Welcome to the mission community", null, 42],
+    ["thread", "Posted a question", 20, "Asked how deep Group-II goes on 1969", 3001, 2],
+    ["comment", "Answered a question", 15, "Answered the third-attempt question", 3003, 4],
+    ["upvote_received", "Answer upvoted", 48, "Your answer collected 24 upvotes", 3003, 3],
+    ["accepted", "Answer marked helpful", 25, "Your answer was marked helpful", 3003, 3],
+    ["bookmark", "Saved a post", 1, "Saved the newspaper routine", 3007, 4],
     ["streak", "Seven day streak", 40, "Seven days active in the community", null, 3],
-    ["vote", "Voted on a post", 2, "Upvoted an interview write-up", 3009, 1],
+    ["vote", "Voted on a post", 2, "Upvoted the SHG credit linkage write-up", 3009, 1],
   ];
   return rows.map(([source, label, amount, description, threadId, daysAgo], i) => {
     const record = threadId === null ? undefined : SEED_THREADS.find((t) => t.id === threadId);
@@ -1200,13 +1468,18 @@ export function xpBalance(): number {
  */
 const DEFAULT_FOLLOWING = [
   INSTRUCTOR_PERSONA.id,
+  FACULTY[0].id,
   FACULTY[1].id,
   STUDENTS[0].id,
   STUDENTS[3].id,
   STUDENTS[13].id,
-  STUDENTS[18].id,
+  STUDENTS[21].id,
 ];
+// tgpsc, ibps-po and exam-strategy: the three the Group-II persona would follow.
 const DEFAULT_FOLLOWED_TAGS = [1, 5, 7];
+// The third-attempt discussion and the newspaper routine, both of which the
+// seeded XP ledger cites. Every id here has to be a live thread, or the
+// bookmarks tab opens empty on a fresh demo.
 const DEFAULT_BOOKMARKS = [3003, 3007];
 
 export function followedUserIds(): number[] {
@@ -1298,11 +1571,11 @@ function seedRooms(): RoomRecord[] {
   return [
     {
       id: 5001,
-      title: "Sliding window drills, bring a problem you are stuck on",
+      title: "Mains answer writing: bring one answer you wrote this week",
       description:
-        "Open working session. We take one problem at a time, name the pattern, then write it together. No slides.",
+        "Open working session. We read answers out loud, mark them against what the question actually asked, and cut them by a third. No slides.",
       hostId: INSTRUCTOR_PERSONA.id,
-      slug: "sliding-window-drills",
+      slug: "mains-answer-writing",
       status: "live",
       maxParticipants: 25,
       audioOnly: false,
@@ -1314,11 +1587,11 @@ function seedRooms(): RoomRecord[] {
     },
     {
       id: 5002,
-      title: "Pandas clinic: group-by, joins and the NaN traps",
+      title: "Quant speed clinic: bring the sum you could not finish in time",
       description:
-        "Audio only. Bring a dataframe that is not behaving and we will read the shape of it together.",
-      hostId: FACULTY[0].id,
-      slug: "pandas-clinic",
+        "Audio only. One sum at a time, timed, and we work out where the seconds went rather than only how to solve it.",
+      hostId: FACULTY[1].id,
+      slug: "quant-speed-clinic",
       status: "live",
       maxParticipants: 20,
       audioOnly: true,
@@ -1326,15 +1599,15 @@ function seedRooms(): RoomRecord[] {
       startedAt: iso(minutesAgo(12)),
       endedAt: null,
       createdAt: isoDaysAgo(2, 15, 30),
-      participants: participantsFrom("5002", FACULTY[0], 4, { active: true, minutesIn: 12 }),
+      participants: participantsFrom("5002", FACULTY[1], 4, { active: true, minutesIn: 12 }),
     },
     {
       id: 5003,
-      title: "Frontend pairing: rebuilding a dashboard layout live",
+      title: "Rooftop site survey: reading a roof before you quote for it",
       description:
-        "We start from a blank file and end with a responsive grid. Bring questions about flexbox and grid.",
+        "Shade through the day, orientation, roof condition, cable route and where the inverter will sit. Bring photographs of a roof you have been asked to quote for.",
       hostId: FACULTY[2].id,
-      slug: "frontend-pairing",
+      slug: "rooftop-site-survey",
       status: "scheduled",
       maxParticipants: 30,
       audioOnly: false,
@@ -1346,11 +1619,11 @@ function seedRooms(): RoomRecord[] {
     },
     {
       id: 5004,
-      title: "Placement prep: resume and LinkedIn teardown",
+      title: "Interview clinic: how a selection board reads your answer",
       description:
-        "Send your resume in the thread beforehand. We review as many as we can get through, out loud.",
+        "Post your bio-data in the thread beforehand. We take as many candidates as the hour allows, out loud, and the panel says what it actually heard.",
       hostId: ADMIN_PERSONA.id,
-      slug: "resume-teardown",
+      slug: "interview-clinic",
       status: "scheduled",
       maxParticipants: 40,
       audioOnly: false,
@@ -1362,11 +1635,11 @@ function seedRooms(): RoomRecord[] {
     },
     {
       id: 5005,
-      title: "SQL window functions, problem set walkthrough",
+      title: "Peer revision: the Telangana movement timeline, in order",
       description:
-        "Recording of last week's session. We covered ROWS against RANGE, running totals and the frame clause.",
+        "Recording of last week's session. We went through the timeline in sequence and marked the years that keep coming back in previous papers.",
       hostId: STUDENTS[18].id,
-      slug: "sql-window-functions",
+      slug: "telangana-movement-timeline",
       status: "ended",
       maxParticipants: 25,
       audioOnly: false,
@@ -1403,7 +1676,6 @@ function seedRooms(): RoomRecord[] {
     },
   ];
 }
-
 /** What the visitor changed about a room during this session. */
 export interface RoomOverride {
   status?: RoomStatus;

@@ -1,10 +1,10 @@
 /**
- * The journey board — a course's week-by-week map, plus its points wallet,
+ * The journey board: a course's week-by-week map, plus its points wallet,
  * leaderboard and streak.
  *
  * One deliberate product choice for the demo: `contentLocked` is false, so every
  * step is open. The real product can gate a week until its predecessor passes,
- * and that is a genuine selling point — but a prospect exploring unsupervised who
+ * and that is a genuine selling point, but a prospect exploring unsupervised who
  * clicks a locked node has been shown a wall instead of a feature. Progression is
  * still visible (done / current / available reflect real progress); nothing is
  * unreachable.

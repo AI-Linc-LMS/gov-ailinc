@@ -30,6 +30,7 @@ import { applyRoster, enrollmentJobs, isRosterActive } from "./account-actions";
 import { adaptiveCourseList, legacyAdminCourseList } from "./course-builder";
 import { overlay } from "../../db/overlay";
 import { DEMO_TENANT } from "../../config";
+import { overallProgress } from "../../db/learner";
 import { iso, isoDaysAgo, nowMs, ymd, ymdDaysAgo, ymdDaysAhead, daysAgo } from "../../clock";
 import { seededInt, seededPick, seededBool } from "../../random";
 
@@ -76,8 +77,22 @@ export function batchMembers(cohortId: number, size: number): DemoPerson[] {
   return members.slice(0, Math.min(size, members.length));
 }
 
-function progressOf(p: DemoPerson): number {
-  return p.id === STUDENT_PERSONA.id ? 56 : seededInt(`aprog:${p.id}`, 4, 98);
+/**
+ * Syllabus covered, as a percentage, stable per person.
+ *
+ * The signed-in aspirant's figure is not a literal. It is the same
+ * `overallProgress()` her own dashboard ring shows, so this table, the faculty
+ * gradebook and her dashboard cannot print three different numbers for one
+ * person. Everyone else is seeded, because the seed holds no per-person
+ * progress record to derive from.
+ *
+ * Exported, and read by the faculty workspace and every drill-down, because it
+ * is the one figure a programme officer quotes down a phone line. Each surface
+ * used to seed it under its own key, so a trainee the officer's table put at 21%
+ * was at 63% in the gradebook the centre in-charge was reading from.
+ */
+export function syllabusCovered(p: DemoPerson): number {
+  return p.id === STUDENT_PERSONA.id ? overallProgress() : seededInt(`aprog:${p.id}`, 4, 98);
 }
 
 const RANGES: Record<string, { label: string; days: number; grain: "day" | "week" | "month" }> = {
@@ -103,6 +118,24 @@ function resolveRange(key: string | null) {
 
 const SCOPE = { course_id: null, label: "All courses" };
 
+const DAY_PLURAL: Record<string, string> = {
+  Mon: "Mondays",
+  Tue: "Tuesdays",
+  Wed: "Wednesdays",
+  Thu: "Thursdays",
+  Fri: "Fridays",
+  Sat: "Saturdays",
+  Sun: "Sundays",
+};
+
+/** A 0-23 hour as the tenant reads a clock. 19 becomes "7 PM". */
+function clockLabel(hour: number): string {
+  const h = ((hour % 24) + 24) % 24;
+  if (h === 0) return "12 AM";
+  if (h === 12) return "12 PM";
+  return h < 12 ? `${h} AM` : `${h - 12} PM`;
+}
+
 function deltaTile(value: number, previous: number, definition: string, extra: Record<string, number> = {}) {
   const diff = value - previous;
   return {
@@ -125,7 +158,7 @@ function deltaTile(value: number, previous: number, definition: string, extra: R
  * centre, ask the in-charge to follow up at home, or send the pending papers to
  * the district office. A rule an officer cannot act on is a badge, not a rule.
  */
-const AT_RISK_RULES = {
+export const AT_RISK_RULES = {
   low_progress: "Under a quarter of the syllabus covered",
   inactive: "No activity for a week",
   missed_classes: "Missed the last two classes at the centre",
@@ -133,16 +166,30 @@ const AT_RISK_RULES = {
   documents_pending: "Enrolment documents pending verification",
 } as const;
 
+/**
+ * Which rules an aspirant trips, in one function.
+ *
+ * Exported because the faculty workspace flags the same people on the same
+ * screens the officer reads, and a trainee whose centre is told "missed the last
+ * two classes" while the district report says "documents pending" is two records
+ * as far as anyone acting on either is concerned. Progress is passed in rather
+ * than recomputed so the caller's figure and the rule agree.
+ */
+export function atRiskReasons(p: DemoPerson, progress: number): string[] {
+  const rules: string[] = [];
+  if (progress < 25) rules.push(AT_RISK_RULES.low_progress);
+  if (p.streak === 0) rules.push(AT_RISK_RULES.inactive);
+  if (seededBool(`risk:missed:${p.id}`, 0.18)) rules.push(AT_RISK_RULES.missed_classes);
+  if (seededBool(`risk:mock:${p.id}`, 0.12)) rules.push(AT_RISK_RULES.mock_declining);
+  if (seededBool(`risk:docs:${p.id}`, 0.08)) rules.push(AT_RISK_RULES.documents_pending);
+  return rules;
+}
+
 function atRiskRows() {
   return allStudents()
     .map((p) => {
-      const progress = progressOf(p);
-      const rules: string[] = [];
-      if (progress < 25) rules.push(AT_RISK_RULES.low_progress);
-      if (p.streak === 0) rules.push(AT_RISK_RULES.inactive);
-      if (seededBool(`risk:missed:${p.id}`, 0.18)) rules.push(AT_RISK_RULES.missed_classes);
-      if (seededBool(`risk:mock:${p.id}`, 0.12)) rules.push(AT_RISK_RULES.mock_declining);
-      if (seededBool(`risk:docs:${p.id}`, 0.08)) rules.push(AT_RISK_RULES.documents_pending);
+      const progress = syllabusCovered(p);
+      const rules = atRiskReasons(p, progress);
       if (rules.length === 0) return null;
       return {
         student_id: p.id,
@@ -158,21 +205,178 @@ function atRiskRows() {
 }
 
 /**
- * Batches, named the way the mission names them: the notification or trade the
- * batch prepares for, the centre running it, and the intake. A batch called
- * "Autumn 2026" cannot be placed on a district report; "Solar PV batch 04,
- * Nizamabad centre" can. `size` is how many people are actually enrolled and
- * `capacity` how many seats the centre sanctioned, so the fill percentage is a
- * real division rather than an assertion. Ids match `instructor.ts` (which sees
- * only the three exam batches its faculty member teaches) and `details.ts`.
+ * Every batch the mission runs, and the only list of them.
+ *
+ * Named the way a mission names a batch: the notification or trade it prepares
+ * for, the centre and district running it, and the intake. A batch called
+ * "Autumn 2026" cannot be placed on a district report; "Solar PV Batch S-12,
+ * Warangal centre" can.
+ *
+ * Batches 11 and 12 are the two exam batches the schedule in `live-sessions.ts`
+ * names, and 21 to 23 are its three skill centre batches. The names are copied
+ * from there rather than written again, because one batch carrying two names on
+ * two screens is read as two batches, and a district report cannot reconcile
+ * them afterwards.
+ *
+ * `size` is how many people are actually enrolled and `capacity` how many seats
+ * the centre sanctioned, so a fill percentage is a real division rather than an
+ * assertion. `leadId` is the faculty member answerable for the batch, which is
+ * not always the person who takes a given class in it.
+ *
+ * Exported because `instructor.ts` (which sees only the exam batches its faculty
+ * member leads) and `details.ts` (which opens one) have to read these rows and
+ * not their own copies.
  */
-const COHORTS = [
-  { id: 11, name: "TGPSC Group-II, Warangal centre, Jan intake", status: "active", size: 28, capacity: 35 },
-  { id: 12, name: "TGLPRB Constable, Karimnagar centre, Feb intake", status: "active", size: 22, capacity: 30 },
-  { id: 13, name: "TGPSC Group-II, Warangal centre, Jul intake", status: "completed", size: 24, capacity: 30 },
-  { id: 14, name: "Solar PV batch 04, Nizamabad centre", status: "active", size: 26, capacity: 30 },
-  { id: 15, name: "Tailoring batch 02, Khammam centre", status: "active", size: 28, capacity: 30 },
+export const COHORTS = [
+  {
+    id: 11,
+    name: "TGPSC Group-II Batch 2026, Warangal",
+    courseIds: [302],
+    leadId: INSTRUCTOR_PERSONA.id,
+    centre: "Warangal centre",
+    district: "Warangal",
+    intake: "January intake",
+    status: "active",
+    size: 28,
+    capacity: 35,
+  },
+  {
+    id: 12,
+    name: "Banking Batch B-07, Hyderabad",
+    courseIds: [307],
+    leadId: INSTRUCTOR_PERSONA.id,
+    centre: "Hyderabad centre",
+    district: "Hyderabad",
+    intake: "February intake",
+    status: "active",
+    size: 22,
+    capacity: 30,
+  },
+  {
+    id: 13,
+    name: "TGPSC Group-II Batch 2025, Warangal",
+    courseIds: [302],
+    leadId: INSTRUCTOR_PERSONA.id,
+    centre: "Warangal centre",
+    district: "Warangal",
+    intake: "July intake",
+    status: "completed",
+    size: 24,
+    capacity: 30,
+  },
+  {
+    id: 21,
+    name: "Solar PV Batch S-12, Warangal centre",
+    courseIds: [311],
+    leadId: FACULTY[2].id,
+    centre: "Warangal centre",
+    district: "Warangal",
+    intake: "rolling intake",
+    status: "active",
+    size: 26,
+    capacity: 30,
+  },
+  {
+    id: 22,
+    name: "Enterprise Batch E-04, Khammam centre",
+    courseIds: [316, 317],
+    leadId: FACULTY[3].id,
+    centre: "Khammam centre",
+    district: "Khammam",
+    intake: "March intake",
+    status: "active",
+    size: 28,
+    capacity: 30,
+  },
+  {
+    id: 23,
+    name: "Digital Literacy Batch D-09, Suryapet centre",
+    courseIds: [315],
+    leadId: FACULTY[4].id,
+    centre: "Suryapet centre",
+    district: "Suryapet",
+    intake: "rolling intake",
+    status: "active",
+    size: 24,
+    capacity: 30,
+  },
 ];
+
+/**
+ * The batch the signed-in aspirant sits in. `batchMembers` seats her in it, her
+ * dashboard names it, and the faculty gradebook lists her under it.
+ */
+export const STUDENT_BATCH_ID = 11;
+
+/**
+ * The batch a person is counted under, found rather than assigned.
+ *
+ * This cell used to be a seeded pick over the batch names, so the table could
+ * put an aspirant in a batch whose roster does not contain her, and the batch
+ * page opened onto a list she was not on. Batches overlap in this seed, so the
+ * first one holding her wins, which is also how a mission reports someone who
+ * attends two.
+ */
+function batchOf(p: DemoPerson): string {
+  const hit = COHORTS.find((c) => batchMembers(c.id, c.size).some((m) => m.id === p.id));
+  return hit ? hit.name : "Not in a batch";
+}
+
+/**
+ * Who takes which class, mirrored from `live-sessions.ts`.
+ *
+ * That module owns the schedule and exports nothing, so the ids and titles are
+ * repeated here, in one place, and read from here by every surface in this
+ * build that names a class. Rename a session there and it is renamed here in
+ * the same commit. The row this replaced handed every session to whoever sat
+ * first in the staff list and called it "Live doubt-clearing: React rendering
+ * and effects", a class that is on no timetable in this build.
+ */
+const STAFF_SESSIONS: Record<number, ReadonlyArray<{ id: number; title: string }>> = {
+  [INSTRUCTOR_PERSONA.id]: [
+    {
+      id: 504,
+      title: "Mock interview panel briefing: how the board scores you, and answering what you do not know",
+    },
+  ],
+  [FACULTY[0].id]: [
+    { id: 501, title: "Group-II polity: the amendment procedure, and how the paper asks it" },
+    {
+      id: 502,
+      title: "Telangana movement doubt-clearing: Mulki rules, the Six Point Formula and GO 610",
+    },
+  ],
+  [FACULTY[1].id]: [
+    { id: 505, title: "IBPS Prelims speed drill: quantitative aptitude under sectional timing" },
+  ],
+  [FACULTY[2].id]: [
+    {
+      id: 503,
+      title:
+        "Solar PV practical: rooftop survey, string sizing and commissioning, live from the Warangal centre",
+    },
+  ],
+  [FACULTY[3].id]: [
+    {
+      id: 506,
+      title: "SHG credit linkage: building a proposal a branch will read, with a visiting bank officer",
+    },
+  ],
+  [FACULTY[4].id]: [
+    { id: 507, title: "Digital Seva counter: services, records and the end-of-day reconciliation" },
+  ],
+};
+
+/** The title `live-sessions.ts` gives a class, so no other screen renames it. */
+export function sessionTitle(id: number): string {
+  for (const rows of Object.values(STAFF_SESSIONS)) {
+    const hit = rows.find((s) => s.id === id);
+    if (hit) return hit.title;
+  }
+  // Only the ids above are ever asked for. A miss is a programming error rather
+  // than a content gap, so it says so instead of rendering an empty card.
+  return `Class ${id}`;
+}
 
 /**
  * Everyone in the faculty directory, with the approval state each one is in.
@@ -264,7 +468,7 @@ function instructorDirectory() {
         ? COURSES.filter((c) => c.instructor.id === r.person.id).map((c) => ({ id: c.id, title: c.title }))
         : [],
     // Null everywhere on purpose. There is no PDF in this repo to serve, and the
-    // table renders a dash for null — better than a CV link that 404s in front of
+    // table renders a dash for null, which is better than a CV link that 404s in front of
     // a prospect.
     instructor_cv_url: null,
     };
@@ -340,6 +544,32 @@ const EMAIL_JOBS: EmailJobSeed[] = [
   },
 ];
 
+/**
+ * The mid-programme test, and what one aspirant scored on it.
+ *
+ * Paper 901 is the paper the faculty gradebook lists, the invitation and result
+ * emails below announce, the learning journey drill-down opens onto and the
+ * aspirant's own scorecard reports. Four screens, one sitting, so the record is
+ * minted once here instead of being asserted on each of them: her scorecard read
+ * 76 while an officer opening her journey read 90, for the same paper on the
+ * same day.
+ *
+ * The signed-in aspirant's mark is authored, the way her streak and her points
+ * are authored in the roster, because it is quoted in her achievements and in
+ * her percentile. Everyone else is seeded, because the seed holds no per-person
+ * result to derive from.
+ */
+export const MID_PROGRAMME_PAPER = {
+  id: 901,
+  title: "TGPSC Group-II: mid-programme test",
+  totalMarks: 100,
+  daysAgo: 18,
+} as const;
+
+export function midProgrammeScore(p: DemoPerson): number {
+  return p.id === STUDENT_PERSONA.id ? 76 : seededInt(`as:${p.id}`, 48, 94);
+}
+
 const ASSESSMENT_EMAIL_JOBS: EmailJobSeed[] = [
   {
     taskId: "aeml-2d41f7",
@@ -349,21 +579,29 @@ const ASSESSMENT_EMAIL_JOBS: EmailJobSeed[] = [
     daysAgo: 8,
     recipients: 28,
     failed: 0,
-    assessmentId: 901,
-    assessmentTitle: "TGPSC Group-II: mid-programme test",
+    assessmentId: MID_PROGRAMME_PAPER.id,
+    assessmentTitle: MID_PROGRAMME_PAPER.title,
     body: "You have 90 minutes and one attempt. Run the device check before you start, it takes about a minute.",
   },
   {
+    // Paper 903 is the IBPS PO prelims mock the faculty gradebook lists, and the
+    // eighteen recipients are its eighteen submissions. This row used to name a
+    // constable general studies test under the same id, so one paper had two
+    // titles across two screens and neither screen could say which sitting the
+    // eighteen results belonged to.
     taskId: "aeml-8c0e35",
-    subject: "Results published: general studies unit test",
+    subject: "Results published: IBPS PO Prelims full mock 3",
     taskName: "Result notification",
     status: "completed",
     daysAgo: 3,
     recipients: 18,
     failed: 0,
     assessmentId: 903,
-    assessmentTitle: "TGLPRB Constable: general studies unit test",
-    body: "Your score and the question by question breakdown are on your test page.",
+    assessmentTitle: "IBPS PO Prelims: full mock 3",
+    body:
+      "Your sectional scores and the question by question breakdown are on your test page. " +
+      "The sectional timing is the part to read first: a section left short of time costs more " +
+      "than a wrong answer inside it.",
   },
   {
     taskId: "aeml-4a6b19",
@@ -373,8 +611,8 @@ const ASSESSMENT_EMAIL_JOBS: EmailJobSeed[] = [
     daysAgo: 5,
     recipients: 6,
     failed: 2,
-    assessmentId: 901,
-    assessmentTitle: "TGPSC Group-II: mid-programme test",
+    assessmentId: MID_PROGRAMME_PAPER.id,
+    assessmentTitle: MID_PROGRAMME_PAPER.title,
     body: "The window closes Sunday at midnight. If something is stopping you, reply to this email or tell your centre in-charge.",
   },
 ];
@@ -417,16 +655,28 @@ export function emailJobDetail(taskId: string) {
 }
 
 /**
- * Doubt categories, using the labels `tickets.ts` actually issues. They used to
- * be a separate set of four ("Content", "Account", "Live session"), so the
- * insights chart and the doubts queue disagreed about what a doubt can be
- * about. The four values still sum to the 51 opened below.
+ * Doubt categories, in the six labels `tickets.ts` actually issues.
+ *
+ * That module lays the mission's own categories over the six category slugs the
+ * API declares, so a doubt filed under the `video` slug is shown to everyone as
+ * "Certificate" and one under `navigation` as "Skill centre". This chart has to
+ * use the same six words, because an officer reads it and then opens the queue
+ * to work the rows it counts. It used to name four of the raw slugs instead
+ * ("Course content", "Technical", "Navigation", "Quiz"), so two of the four
+ * slices named a category no ticket in the queue is ever labelled with.
+ *
+ * The order and the relative weight follow the queue: technical faults and
+ * course content are the two biggest, certificate uploads next, and scheme
+ * requests the tail. The six values sum to the doubts opened in the range, which
+ * is what the block below divides and subtracts rather than asserting again.
  */
 const TICKET_CATEGORIES = [
-  { label: "Course content", value: 14 },
-  { label: "Technical", value: 21 },
-  { label: "Navigation", value: 7 },
-  { label: "Quiz", value: 9 },
+  { label: "Technical", value: 13 },
+  { label: "Course content", value: 12 },
+  { label: "Certificate", value: 10 },
+  { label: "Enrolment", value: 7 },
+  { label: "Skill centre", value: 5 },
+  { label: "Scheme and other requests", value: 4 },
 ];
 
 defineRoutes(MODULE, {
@@ -522,19 +772,31 @@ defineRoutes(MODULE, {
 
   "GET /admin-dashboard/api/clients/:clientId/insights/engagement/": (req) => {
     const range = resolveRange(req.query.get("range"));
-    const keys = ["Lessons", "Quizzes", "Coding", "Live sessions"];
+    // "Assignments", not "Coding". There is no code judge in this product line
+    // and no coding item anywhere in the catalogue, so a slice of the mix
+    // labelled Coding is a share of nothing.
+    const keys = ["Lessons", "Quizzes", "Assignments", "Live sessions"];
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
     const matrix = days.map((day) => ({
       day,
       hours: Array.from({ length: 24 }, (_, h) => {
-        // Evenings are busiest, which is what a part-time cohort actually looks like.
-        const evening = h >= 18 && h <= 22 ? 3 : h >= 9 && h <= 17 ? 1.4 : 0.3;
-        return Math.round(seededInt(`hm:${day}:${h}`, 0, 12) * evening);
+        // Two peaks, because that is when these aspirants are free: an early
+        // morning block before work or college, and the evening. The middle of
+        // the day is the quietest stretch of the week for a mission whose
+        // candidates are working, farming or sitting in a degree college.
+        const weight =
+          h >= 18 && h <= 22 ? 3 : h >= 5 && h <= 8 ? 2.4 : h >= 9 && h <= 17 ? 1.1 : 0.3;
+        return Math.round(seededInt(`hm:${day}:${h}`, 0, 12) * weight);
       }),
     }));
     const flat = matrix.flatMap((r) => r.hours);
     const max = Math.max(...flat);
+    // Found in the matrix, not asserted beside it. The label used to name a
+    // fixed day and hour next to a count taken from the data, so the two agreed
+    // only by luck, and the heatmap's brightest cell was somewhere else.
+    const peakRow = matrix.find((r) => r.hours.includes(max)) ?? matrix[0];
+    const peakHour = peakRow.hours.indexOf(max);
 
     return {
       scope: SCOPE,
@@ -545,7 +807,7 @@ defineRoutes(MODULE, {
           bucket: `W${i + 1}`,
           Lessons: seededInt(`mix:l:${i}`, 40, 120),
           Quizzes: seededInt(`mix:q:${i}`, 20, 80),
-          Coding: seededInt(`mix:c:${i}`, 15, 70),
+          Assignments: seededInt(`mix:c:${i}`, 15, 70),
           "Live sessions": seededInt(`mix:s:${i}`, 5, 30),
         })),
       },
@@ -557,20 +819,34 @@ defineRoutes(MODULE, {
       hour_matrix: {
         matrix,
         max,
-        peak: { day: "Tue", hour: 19, count: max, label: "Tuesdays, 7-8pm" },
+        peak: {
+          day: peakRow.day,
+          hour: peakHour,
+          count: max,
+          label: `${DAY_PLURAL[peakRow.day] ?? peakRow.day}, ${clockLabel(peakHour)} to ${clockLabel(peakHour + 1)}`,
+        },
         timezone: DEMO_TENANT.timezone,
       },
-      consistency: {
-        bins: [
-          { label: "1-2 days", students: 9 },
-          { label: "3-5 days", students: 14 },
-          { label: "6-10 days", students: 12 },
-          { label: "11+ days", students: 10 },
-        ],
-        median_active_days: 6,
-        students: 45,
-        of_days: range.days,
-      },
+      consistency: (() => {
+        // The bins are a partition of the roster, so the last one is the
+        // remainder rather than a fourth independent number. A histogram whose
+        // bars sum to something other than the population it names is the tile
+        // an officer catches first.
+        const total = allStudents().length;
+        const head = [
+          { label: "1-2 days", students: Math.round(total * 0.2) },
+          { label: "3-5 days", students: Math.round(total * 0.31) },
+          { label: "6-10 days", students: Math.round(total * 0.27) },
+        ];
+        const counted = head.reduce((sum, b) => sum + b.students, 0);
+        return {
+          bins: [...head, { label: "11+ days", students: total - counted }],
+          median_active_days: 6,
+          students: total,
+          of_days: range.days,
+          definition: "Aspirants grouped by how many separate days they were active in the range.",
+        };
+      })(),
     };
   },
 
@@ -601,9 +877,9 @@ defineRoutes(MODULE, {
       })),
     ),
     definitions: {
-      activation: "Share of enrolled students who completed at least one item.",
-      completion: "Mean completion across enrolled students, not across items.",
-      dropoff: "Students still active in each week since their enrolment.",
+      activation: "Share of enrolled aspirants who completed at least one item.",
+      completion: "Mean completion across enrolled aspirants, not across items.",
+      dropoff: "Aspirants still active in each week since their enrolment.",
     },
   }),
 
@@ -617,50 +893,72 @@ defineRoutes(MODULE, {
       status: c.status,
       start_date: c.status === "completed" ? ymdDaysAgo(210) : ymdDaysAgo(120),
       end_date: c.status === "completed" ? ymdDaysAgo(40) : ymdDaysAhead(90),
-      members: c.members,
-      active: Math.round(c.members * 0.74),
-      completed: c.status === "completed" ? c.members : Math.round(c.members * 0.12),
+      members: c.size,
+      active: Math.round(c.size * 0.74),
+      completed: c.status === "completed" ? c.size : Math.round(c.size * 0.12),
       capacity: c.capacity,
-      fill_pct: Math.round((c.members / c.capacity) * 100),
+      fill_pct: Math.round((c.size / c.capacity) * 100),
     })),
-    tickets: {
-      opened: 51,
-      resolved: 44,
-      open_now: 7,
-      median_resolution_hours: 19,
-      by_category: TICKET_CATEGORIES,
-      by_status: [
-        { label: "Open", value: 7 },
-        { label: "In progress", value: 5 },
-        { label: "Resolved", value: 44 },
-      ],
-      definitions: {
-        median_resolution_hours: "Median hours from a ticket being opened to being marked resolved.",
-        open_now: "Tickets not yet resolved, regardless of when they were opened.",
-      },
-    },
-    instructors: {
+    tickets: (() => {
+      // Derived from the categories above instead of asserted alongside them.
+      // The status split used to sum to 56 beside an "opened" of 51, so a doubt
+      // existed on one row of the same card and not on the other. `in progress`
+      // and the open remainder are the counts the doubts queue itself shows.
+      const opened = TICKET_CATEGORIES.reduce((sum, c) => sum + c.value, 0);
+      const resolved = 44;
+      const inProgress = 3;
+      return {
+        opened,
+        resolved,
+        open_now: opened - resolved,
+        median_resolution_hours: 19,
+        by_category: TICKET_CATEGORIES,
+        by_status: [
+          { label: "Open", value: opened - resolved - inProgress },
+          { label: "In progress", value: inProgress },
+          { label: "Resolved", value: resolved },
+        ],
+        definitions: {
+          median_resolution_hours: "Median hours from a doubt being raised to being marked resolved.",
+          open_now: "Doubts not yet resolved, regardless of when they were raised.",
+        },
+      };
+    })(),
+    instructors: (() => {
       // All FOUR ratings, plus suppressed/min_responses/note.
       //
       // Omitting pace_rating and overall_rating crashed the whole admin
       // dashboard: RatingCell calls .toFixed() on the value with no guard, so a
       // missing field is a TypeError during render rather than a blank cell.
-      // The type declares them nullable — null renders as "no data", undefined
-      // throws — so a field that has no value must be explicitly null.
-      rows: [INSTRUCTOR_PERSONA, ...FACULTY].map((p, i) => ({
+      // The type declares them nullable, null renders as "no data" and
+      // undefined throws, so a field with no value must be explicitly null.
+      const minResponses = 5;
+      // The trainer who joined most recently has three responses. The card used
+      // to print every staff member and then claim underneath that one was
+      // hidden, which is a legend describing a rule the table is not applying.
+      const all = TEACHING_STAFF.map((p, i) => ({
         instructor: p.full_name,
         instructor_profile_id: p.id,
-        responses: seededInt(`ir:${p.id}`, 14, 62),
+        responses: i === TEACHING_STAFF.length - 1 ? 3 : seededInt(`ir:${p.id}`, 14, 62),
         instructor_rating: Number((4.1 + (i % 3) * 0.25).toFixed(1)),
         content_rating: Number((3.9 + (i % 4) * 0.2).toFixed(1)),
         pace_rating: Number((3.8 + (i % 3) * 0.3).toFixed(1)),
         overall_rating: Number((4.0 + (i % 4) * 0.22).toFixed(1)),
-      })),
-      suppressed: 1,
-      min_responses: 5,
-      note: "One instructor is hidden: fewer than 5 responses is too few to average fairly.",
-      definition: "Averages of end-of-session feedback, only from sessions with at least five responses.",
-    },
+      }));
+      const rows = all.filter((r) => r.responses >= minResponses);
+      const suppressed = all.length - rows.length;
+      return {
+        rows,
+        suppressed,
+        min_responses: minResponses,
+        note:
+          suppressed === 1
+            ? `One faculty member is hidden: fewer than ${minResponses} responses is too few to average fairly.`
+            : `${suppressed} faculty members are hidden: fewer than ${minResponses} responses is too few to average fairly.`,
+        definition:
+          "Averages of end-of-class feedback from aspirants and trainees, counting only classes with at least five responses.",
+      };
+    })(),
   }),
 
   // ── People and content management ───────────────────────────────────────
@@ -668,7 +966,7 @@ defineRoutes(MODULE, {
    * Shape is `{ students, pagination, filters_applied }`, not `{ results, count }`.
    *
    * The page reads `data.students.length` directly, so the wrong envelope does
-   * not render an empty table — it takes the page down. Worth stating plainly:
+   * not render an empty table: it takes the page down. Worth stating plainly:
    * a handler returning the wrong shape is worse than no handler at all, since
    * a missing one degrades to an empty state and a wrong one crashes.
    */
@@ -697,29 +995,35 @@ defineRoutes(MODULE, {
           is_active: isRosterActive(p.id),
           date_joined: isoDaysAgo(seededInt(`dj:${p.id}`, 20, 200)),
           last_login: isoDaysAgo(seededInt(`ll:${p.id}`, 0, 12)),
-          progress: progressOf(p),
+          progress: syllabusCovered(p),
           points: p.points,
           streak: p.streak,
           courses_enrolled: enrolled,
-          cohort: seededPick(`co:${p.id}`, COHORTS.map((c) => c.name)),
+          cohort: batchOf(p),
           // The rest of the `Student` type. These render as blank cells and an
           // empty CSV column when omitted, which reads as a broken table rather
           // than an unused one.
           total_marks: p.points,
           most_active_course: seededPick(`mac:${p.id}`, COURSES.map((c) => c.title)),
           total_time_spent: { value: seededInt(`tts:${p.id}`, 6, 180), unit: "hours" },
-          last_activity_date: isoDaysAgo(seededInt(`lad:${p.id}`, 0, 14)),
+          // Same record as the faculty gradebook's "last active" column and the
+          // learning journey's `last_activity_date`, so one aspirant does not
+          // read as four days idle on one screen and eleven on the next.
+          last_activity_date: isoDaysAgo(seededInt(`ilast:${p.id}`, 0, 9)),
           current_streak: p.streak,
           streak_data: Array.from({ length: 7 }, (_, d) => seededBool(`sd:${p.id}:${d}`, 0.55)),
           enrollment_count: enrolled,
           has_saved_resume: true,
           assessment_submissions: seededInt(`sas:${p.id}`, 0, 4),
+          // `coding` stays in the shape (the CSV export writes a column for it)
+          // and stays at zero: this catalogue has no coding item in it, so any
+          // other number is a count of something that does not exist.
           activity_summary: {
             total_activities: seededInt(`sact:${p.id}`, 30, 260),
             by_type: {
               article: seededInt(`sact:a:${p.id}`, 4, 60),
               quiz: seededInt(`sact:q:${p.id}`, 2, 40),
-              coding: seededInt(`sact:c:${p.id}`, 0, 30),
+              coding: 0,
               assessment: seededInt(`sact:s:${p.id}`, 0, 6),
             },
           },
@@ -781,7 +1085,7 @@ defineRoutes(MODULE, {
     COURSES.flatMap((c) =>
       c.modules.slice(0, 2).map((m) => ({
         id: m.id,
-        title: `${m.title} — check your understanding`,
+        title: `${m.title}: check your understanding`,
         course_id: c.id,
         course_title: c.title,
         question_count: seededInt(`aq:${m.id}`, 8, 20),
@@ -801,7 +1105,7 @@ defineRoutes(MODULE, {
       status: c.status,
       start_date: c.status === "completed" ? ymdDaysAgo(210) : ymdDaysAgo(120),
       end_date: c.status === "completed" ? ymdDaysAgo(40) : ymdDaysAhead(90),
-      member_count: c.members,
+      member_count: c.size,
       capacity: c.capacity,
       artifact_count: 1,
       created_at: isoDaysAgo(150),
@@ -814,7 +1118,7 @@ defineRoutes(MODULE, {
    * where `InstructorRow` declares `full_name` / `phone_number` / `created_at`, so
    * the table printed the email in the name column and dashes everywhere else. And
    * the `status` query parameter was ignored, so Pending, Approved and Rejected
-   * each showed the same list — the same "stale data in every tab" the ticket page
+   * each showed the same list, the same "stale data in every tab" the ticket page
    * had.
    */
   "GET /admin-dashboard/api/clients/:clientId/instructors/": (req) => {
@@ -823,31 +1127,46 @@ defineRoutes(MODULE, {
     return status === "all" ? rows : rows.filter((r) => r.pending_status === status);
   },
 
+  /**
+   * The staff directory the live-class module reads: what each faculty member
+   * owns, leads and takes classes for.
+   *
+   * Every column is derived. Courses come from the catalogue, batches from the
+   * `leadId` on the batch itself, and classes from `STAFF_SESSIONS`, which
+   * mirrors the schedule. The row this replaced minted an `MIT-` staff code from
+   * a fictional institute that is not this tenant, gave every batch and every
+   * class to whoever sat first in the list, and titled that class "Live
+   * doubt-clearing: React rendering and effects".
+   */
   "GET /instructor/api/admin/instructors/": () =>
-    [INSTRUCTOR_PERSONA, ...FACULTY].map((p, i) => ({
+    TEACHING_STAFF.map((p) => ({
       profile_id: p.id,
       name: p.full_name,
       email: p.email,
-      instructor_code: `MIT-${p.first_name.slice(0, 2).toUpperCase()}-0${i + 1}`,
+      instructor_code: facultyCode(p.id),
       courses: COURSES.filter((c) => c.instructor.id === p.id).map((c) => ({
         id: c.id,
         title: c.title,
         role: "owner",
       })),
-      cohorts: i === 0 ? COHORTS.slice(0, 2).map((c) => ({ id: c.id, name: c.name, role: "lead" })) : [],
-      live_sessions: i === 0 ? [{ id: 501, title: "Live doubt-clearing: React rendering and effects" }] : [],
+      cohorts: COHORTS.filter((c) => c.leadId === p.id).map((c) => ({
+        id: c.id,
+        name: c.name,
+        role: "lead",
+      })),
+      live_sessions: (STAFF_SESSIONS[p.id] ?? []).map((sn) => ({ id: sn.id, title: sn.title })),
     })),
 
   /**
    * The approval queue's actions. Without these the buttons were live but every
-   * click failed — worse than a disabled button, because the prospect tries it.
+   * click failed, which is worse than a disabled button, because the prospect tries it.
    * Each writes to the overlay, so the row really does move tabs.
    */
   "POST /admin-dashboard/api/clients/:clientId/instructors/:profileId/approve/": (req) => {
     const id = Number(req.params.profileId);
     decideInstructor(id, { status: "approved", reason: null });
     return {
-      detail: "Instructor approved.",
+      detail: "Approved. They can take classes and open rooms for the batches they are put on.",
       profile: instructorDirectory().find((r) => r.id === id),
     };
   },
@@ -857,7 +1176,7 @@ defineRoutes(MODULE, {
     const reason = String(req.body?.reason ?? "").trim() || null;
     decideInstructor(id, { status: "rejected", reason });
     return {
-      detail: "Instructor rejected.",
+      detail: "Application rejected. They keep their learner account and can reapply.",
       profile: instructorDirectory().find((r) => r.id === id),
     };
   },
@@ -866,7 +1185,7 @@ defineRoutes(MODULE, {
     const id = Number(req.params.profileId);
     decideInstructor(id, { status: "pending", reason: null });
     return {
-      detail: "Application reopened.",
+      detail: "Application reopened and back in the pending queue.",
       profile: instructorDirectory().find((r) => r.id === id),
     };
   },
@@ -881,10 +1200,10 @@ defineRoutes(MODULE, {
   }),
 
   "POST /admin-dashboard/api/clients/:clientId/instructors/:profileId/remove/": () => ({
-    detail: "Instructor removed. They keep their account as a student.",
+    detail: "Removed from the teaching roster. Their own learner account is untouched.",
   }),
 
-  /** `{ managed_courses, assigned_courses, all_scoped }` — the "view courses" dialog. */
+  /** `{ managed_courses, assigned_courses, all_scoped }`: the "view courses" dialog. */
   "GET /admin-dashboard/api/clients/:clientId/instructors/:profileId/courses/": (req) => {
     const id = Number(req.params.profileId);
     const owned = COURSES.filter((c) => c.instructor.id === id).map((c) => ({ id: c.id, title: c.title }));
@@ -907,8 +1226,8 @@ defineRoutes(MODULE, {
   /**
    * Sent mail, for both tabs of /admin/emails.
    *
-   * These returned empty, so the module read as "nothing has ever been sent here"
-   * — which for a communications tool is indistinguishable from it not working.
+   * These returned empty, so the module read as "nothing has ever been sent here",
+   * which for a communications tool is indistinguishable from it not working.
    * The spread is deliberate: a completed send, one still going out, and one that
    * partly failed, because the failure card is the interesting one.
    */
@@ -977,12 +1296,26 @@ defineRoutes(MODULE, {
         total_time_spent_minutes: completed.length * 27,
         interviews_with_time_data: completed.length,
       },
-      difficulty_distribution: {
-        Easy: { total: 4, completed: 4, average_score: 78 },
-        Medium: { total: 6, completed: 4, average_score: 70 },
-        Hard: { total: 2, completed: 1, average_score: 61 },
-      },
-      topic_breakdown: ["Backend Engineering", "Algorithms", "Full-Stack Engineering"].map((topic) => {
+      // Counted off the same rows the table below lists. These were three
+      // literals that happened to total twelve, so a difficulty an officer
+      // filtered by returned a different number of rows than the tile promised.
+      difficulty_distribution: Object.fromEntries(
+        ["Easy", "Medium", "Hard"].map((level) => {
+          const inLevel = rows.filter((r) => r.difficulty === level);
+          const done = inLevel.filter((r) => r.status === "completed");
+          return [
+            level,
+            {
+              total: inLevel.length,
+              completed: done.length,
+              average_score: done.length
+                ? Math.round(done.reduce((a, b) => a + (b.score ?? 0), 0) / done.length)
+                : 0,
+            },
+          ];
+        }),
+      ),
+      topic_breakdown: INTERVIEW_BOARDS.map(({ topic }) => {
         const inTopic = rows.filter((r) => r.topic === topic);
         const done = inTopic.filter((r) => r.status === "completed");
         return {
@@ -1000,14 +1333,19 @@ defineRoutes(MODULE, {
         created: seededInt(`mitr:c:${i}`, 0, 5),
         completed: seededInt(`mitr:d:${i}`, 0, 4),
       })),
-      top_performers: completed.slice(0, 5).map((r) => ({
-        student_id: r.student_id,
-        student_name: r.student_name,
-        student_email: r.student_email,
-        interviews_completed: 2,
-        average_score: r.score ?? 0,
-        highest_score: Math.min(100, (r.score ?? 0) + 6),
-      })),
+      top_performers: [...completed]
+        .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+        .slice(0, 5)
+        .map((r) => ({
+          student_id: r.student_id,
+          student_name: r.student_name,
+          student_email: r.student_email,
+          // One sitting each in this seed. It used to claim two, on a list where
+          // each aspirant appears exactly once.
+          interviews_completed: completed.filter((x) => x.student_id === r.student_id).length,
+          average_score: r.score ?? 0,
+          highest_score: r.score ?? 0,
+        })),
       recent_interviews: rows.slice(0, 8),
     };
   },
@@ -1067,12 +1405,14 @@ defineRoutes(MODULE, {
       "comparative",
       "achievements",
     ],
-    enabled_content_types_for_skills: ["quiz", "coding", "assessment"],
+    // No "coding": there is no coding item in this catalogue, so scoring a
+    // skill from coding activity would score it from an empty set.
+    enabled_content_types_for_skills: ["article", "quiz", "assessment"],
   }),
 
   "GET /admin-dashboard/api/clients/:clientId/students/:studentId/": (req) => {
     const p = allStudents().find((x) => x.id === Number(req.params.studentId));
-    if (!p) throw notFound("Student not found");
+    if (!p) throw notFound("No aspirant with that record");
     return {
       id: p.id,
       name: p.full_name,
@@ -1081,43 +1421,111 @@ defineRoutes(MODULE, {
       profile_pic_url: p.profile_pic_url,
       college: p.college,
       is_active: true,
-      progress: progressOf(p),
+      progress: syllabusCovered(p),
       points: p.points,
       streak: p.streak,
       date_joined: isoDaysAgo(seededInt(`dj:${p.id}`, 20, 200)),
       last_login: isoDaysAgo(seededInt(`ll:${p.id}`, 0, 12)),
+      // `sc:`, the key the faculty workspace and the learning journey both read.
+      // It used to be a key of its own, so an officer opening an aspirant saw one
+      // per-course figure and the faculty member opening the same aspirant saw
+      // another.
       courses: COURSES.filter((c) => c.enrolled).map((c) => ({
         id: c.id,
         title: c.title,
-        progress: seededInt(`asc:${p.id}:${c.id}`, 4, 98),
+        progress: seededInt(`sc:${p.id}:${c.id}`, 4, 98),
       })),
     };
   },
 });
 
+/**
+ * The interview boards this mission's candidates actually sit.
+ *
+ * A recruitment interview, a bank's selection interview and the panel a skill
+ * centre runs before a placement drive. The list this replaced offered
+ * "Backend Engineering" and "Full-Stack Engineering", which is the clearest
+ * possible signal that the module was ported from a software LMS and never
+ * read again.
+ *
+ * The titles carry what the board actually asks about and no year-specific
+ * claim about any of them.
+ */
+const INTERVIEW_BOARDS = [
+  {
+    topic: "TGPSC interview board",
+    title: "TGPSC interview board: your background, your district and current affairs",
+  },
+  {
+    topic: "Banking selection interview",
+    title: "Banking selection interview: banking awareness, and why this bank",
+  },
+  {
+    topic: "Trade placement panel",
+    title: "Trade placement panel: your trade test, safety and readiness for site",
+  },
+] as const;
+
+/**
+ * The mock interview one aspirant has sat, as a record rather than a row.
+ *
+ * One sitting per person in this seed. Exported because three surfaces count and
+ * name the same sittings: this module's list, the learning journey drill-down in
+ * `details.ts` and the aspirant's own scorecard in `dashboard.ts`. Each used to
+ * assert its own, so a trainee whose row here said "Trade placement panel"
+ * opened onto a journey claiming she had sat a TGPSC board, and her scorecard
+ * quoted a third score for it.
+ *
+ * Title and topic come off one record, so a row cannot be a banking interview
+ * filed under the trade panel, and the id is derived from the person so one
+ * sitting carries one id wherever it is shown.
+ */
+export function interviewSittingFor(p: DemoPerson) {
+  const board = seededPick(`mi:${p.id}`, INTERVIEW_BOARDS);
+  // Three of the twelve aspirants on the officer's list have a board still to
+  // sit, so the status filter and the breakdown tile have something to separate.
+  // Whether a person's board has met is decided here rather than by their row
+  // number on that list, so the journey drill-down cannot report a completed
+  // sitting for someone the list shows as still waiting.
+  const index = allStudents().findIndex((x) => x.id === p.id);
+  const pending = index >= 9 && index < 12;
+  return {
+    id: 82_000 + p.id,
+    title: board.title,
+    topic: board.topic,
+    difficulty: seededPick(`mid:${p.id}`, ["Easy", "Medium", "Hard"]),
+    status: pending ? ("scheduled" as const) : ("completed" as const),
+    // Always a number, so a caller reading it never has to guard. A board that
+    // has not met carries no score on screen, which is the `status` check the
+    // rows below make: nobody has marked it yet.
+    score: seededInt(`mis:${p.id}`, 48, 92),
+    duration_minutes: 30,
+  };
+}
+
 function adminMockInterviews() {
   return allStudents()
     .slice(0, 12)
-    .map((p, i) => ({
-      id: 8200 + i,
-      student_id: p.id,
-      student_name: p.full_name,
-      student_email: p.email,
-      title: seededPick(`mi:${p.id}`, [
-        "Backend fundamentals — systems and APIs",
-        "Data structures — arrays, hashing and complexity",
-        "Full-stack — end-to-end feature design",
-      ]),
-      topic: seededPick(`mit:${p.id}`, ["Backend Engineering", "Algorithms", "Full-Stack Engineering"]),
-      difficulty: seededPick(`mid:${p.id}`, ["Easy", "Medium", "Hard"]),
-      status: i < 9 ? "completed" : "scheduled",
-      score: i < 9 ? seededInt(`mis:${p.id}`, 48, 92) : null,
-      duration_minutes: 30,
-      created_at: isoDaysAgo(i + 2),
-    }));
+    .map((p, i) => {
+      const sitting = interviewSittingFor(p);
+      const done = sitting.status === "completed";
+      return {
+        id: sitting.id,
+        student_id: p.id,
+        student_name: p.full_name,
+        student_email: p.email,
+        title: sitting.title,
+        topic: sitting.topic,
+        difficulty: sitting.difficulty,
+        status: sitting.status,
+        score: done ? sitting.score : null,
+        duration_minutes: sitting.duration_minutes,
+        created_at: isoDaysAgo(i + 2),
+      };
+    });
 }
 
-/** `{ interviews, pagination, filters_applied }` — the envelope the admin list expects. */
+/** `{ interviews, pagination, filters_applied }`: the envelope the admin list expects. */
 function interviewList(req: { query: URLSearchParams }) {
   const rows = adminMockInterviews();
   const page = Number(req.query.get("page") ?? 1);

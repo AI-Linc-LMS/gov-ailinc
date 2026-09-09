@@ -170,7 +170,7 @@ defineRoutes(MODULE, {
    */
   // POST, not GET: re-rendering a tier is a write on the server (it can generate
   // and cache the rewritten body). Registered as GET first, which the reader
-  // silently ignored — the tier buttons did nothing and the body never changed.
+  // silently ignored: the tier buttons did nothing and the body never changed.
   // Both verbs are served so neither call style can miss.
   "POST /adaptive-quiz/api/articles/:articleId/tier/:tier/": (req) => articleTier(req),
   "GET /adaptive-quiz/api/articles/:articleId/tier/:tier/": (req) => articleTier(req),

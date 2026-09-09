@@ -152,7 +152,7 @@ defineRoutes(MODULE, {
    * Course DETAIL is a different shape from the list item: `CourseDetail`, with
    * course_id/course_title/modules rather than id/title/stats. Returning the
    * list shape here crashed the page with "Objects are not valid as a React
-   * child" — the component rendered a field it expected to be a string and got
+   * child": the component rendered a field it expected to be a string and got
    * one of the list's nested objects instead.
    */
   "GET /lms/clients/:clientId/courses/:courseId/": (req) => {
