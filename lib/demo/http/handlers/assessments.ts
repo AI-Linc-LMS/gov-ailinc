@@ -1,10 +1,11 @@
 /**
- * The learner's assessment hub.
+ * The aspirant's assessment hub.
  *
- * Deliberately a mix of states: one open, one already submitted with a report to
- * open, one scheduled for a future window, one proctored. A hub where every card
- * says "Start" shows the button but not the lifecycle, and the lifecycle is most
- * of what an institution is buying.
+ * Deliberately a mix of states: mocks open now, two already submitted with a
+ * report to open, one scheduled for a window nine days out, one waiting on a
+ * faculty member's marking. A hub where every card says "Start" shows the button
+ * but not the lifecycle, and the lifecycle is most of what a mission evaluating
+ * this platform is actually buying.
  *
  * The cards themselves are projected from the catalogue in `assessment-admin.ts`
  * rather than restated here. This file used to hold a parallel copy, and the two
@@ -19,7 +20,7 @@ import { allAssessments, assessmentBy, learnerAssessmentApi } from "./assessment
 
 const MODULE = "assessments";
 
-/** Drafts are authoring state; a learner must never see one on the hub. */
+/** Drafts are authoring state; an aspirant must never see one on the hub. */
 function visibleToLearners() {
   return allAssessments().filter((a) => !a.isDraft);
 }

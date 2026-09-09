@@ -24,6 +24,7 @@ import part3 from "./parts/course-316-part-3";
 import part4 from "./parts/course-316-part-4";
 import part6 from "./parts/course-316-part-6";
 import part7 from "./parts/course-316-part-7";
+import part8 from "./parts/course-316-part-8";
 
 const CURRICULUM: CourseCurriculum = {
   ...part1,
@@ -32,6 +33,7 @@ const CURRICULUM: CourseCurriculum = {
   ...part4,
   ...part6,
   ...part7,
+  ...part8,
 };
 
 export default CURRICULUM;

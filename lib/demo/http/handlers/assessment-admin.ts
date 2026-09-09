@@ -1,17 +1,25 @@
 /**
  * Assessments, both sides of the desk.
  *
- * The student side and the admin side of an assessment are the same object seen
- * from two chairs, and they have to agree: the paper an administrator builds is
- * the paper a learner sits, the score a learner sees is the row an administrator
- * grades, and the 76% on the scorecard is the same 76% on the report. So there is
- * exactly one catalogue in this file (`ASSESSMENTS`) and every endpoint below is
- * a projection of it. The learner hub imports the same record.
+ * The candidate side and the officer side of an assessment are the same object
+ * seen from two chairs, and they have to agree: the paper a programme officer
+ * builds is the paper an aspirant sits, the score an aspirant sees is the row an
+ * officer grades, and the 76% on the dashboard is the same 76% on the report. So
+ * there is exactly one catalogue in this file (`BASE_ASSESSMENTS`) and every
+ * endpoint below is a projection of it. The aspirant's hub imports the same
+ * record.
  *
- * Scoring is COMPUTED, never asserted. The seeded DSA attempt is a real response
- * sheet run through the same scorer a live submission goes through, which is why
- * it lands on 76 and not on a number someone typed. If the questions change, the
- * report changes with them, and nothing on screen can quietly drift apart.
+ * Scoring is COMPUTED, never asserted. The seeded Group-II attempt is a real
+ * response sheet run through the same scorer a live submission goes through,
+ * which is why it lands on 76 and not on a number someone typed. If the questions
+ * change, the report changes with them, and nothing on screen can quietly drift
+ * apart.
+ *
+ * The marking is part of that contract. A recruitment paper is defined as much by
+ * what a wrong answer costs as by what a right one earns, so marks per question
+ * and the negative marking penalty live on the SECTION and are read by the
+ * scorer, by the take payload and by the export, rather than being a single
+ * constant that made every paper look the same.
  */
 
 import { defineRoutes } from "../router";
@@ -23,6 +31,7 @@ import { ADMIN_PERSONA, STUDENTS, STUDENT_PERSONA, type DemoPerson } from "../..
 import { QUIZ_BANK, type DemoMcq } from "../../db/quiz-bank";
 import { CODING_PROBLEMS, type DemoCodingProblem } from "../../db/coding-bank";
 import { COURSES } from "../../db/courses";
+import { DEMO_TENANT } from "../../config";
 
 const MODULE = "assessment-admin";
 
@@ -77,7 +86,7 @@ function q(
   };
 }
 
-/** Reuse of the adaptive bank: the same questions an institution already owns. */
+/** Reuse of a course bank: the same question, on the paper and in the course. */
 function fromAdaptiveBank(m: DemoMcq, topic: string): BankQuestion {
   return {
     id: m.id,
@@ -204,6 +213,27 @@ const TG_GENERAL_STUDIES: BankQuestion[] = [
   ...TG_GS_BANK,
 ];
 
+/**
+ * One question, two papers.
+ *
+ * Public order and police sit in the State List, which makes this a Group-II
+ * polity question and a police general studies question at the same time. A
+ * recruiting body vets a question once and then uses it wherever it fits, and the
+ * officer's library reports that as a usage count above one, which is the reason
+ * the library carries the count at all. Hoisted into its own const rather than
+ * referenced by position out of the array below, so adding a question above it
+ * cannot silently put a different question on the police paper.
+ */
+const STATE_LIST_POLICING = q(
+  "Public order and police appear in which of the three legislative lists?",
+  ["The Union List", "The State List", "The Concurrent List", "Neither list, they fall under residuary powers"],
+  1,
+  "Easy",
+  "History, Polity and Society",
+  "Indian Polity",
+  "Both entries sit in the State List, which is why a state recruitment board and not a central commission fills constable and sub-inspector posts. The Concurrent List is the tempting answer because criminal law and criminal procedure genuinely are there, and candidates carry that across to policing.",
+);
+
 const TG_HISTORY_POLITY: BankQuestion[] = [
   q(
     "The Election Commission of India functions today as a three-member body. What decides how many Election Commissioners there are?",
@@ -219,15 +249,7 @@ const TG_HISTORY_POLITY: BankQuestion[] = [
     "Indian Polity",
     "Article 324 names only the Chief Election Commissioner and leaves the number of other Commissioners to the President. That is why the Commission has been a single-member body at some periods and a multi-member one at others. The schedule answer is attractive because most fixed numbers in the Constitution do sit in one.",
   ),
-  q(
-    "Public order and police appear in which of the three legislative lists?",
-    ["The Union List", "The State List", "The Concurrent List", "Neither list, they fall under residuary powers"],
-    1,
-    "Easy",
-    "History, Polity and Society",
-    "Indian Polity",
-    "Both entries sit in the State List, which is why a state recruitment board and not a central commission fills constable and sub-inspector posts. The Concurrent List is the tempting answer because criminal law and criminal procedure genuinely are there, and candidates carry that across to policing.",
-  ),
+  STATE_LIST_POLICING,
   q(
     "The Qutb Shahi dynasty is associated above all with the founding of which city?",
     ["Warangal", "Hyderabad", "Bidar", "Nizamabad"],
@@ -536,13 +558,18 @@ const POLICE_GENERAL_STUDIES: BankQuestion[] = [
     "Ultraviolet light converts a cholesterol derivative in the skin into vitamin D. Vitamin K is the usual wrong answer because it is the other fat soluble vitamin candidates remember, but it comes from diet and from gut bacteria, not from sunlight.",
   ),
   q(
-    "Which is the longest river flowing through Telangana?",
-    ["The Krishna", "The Godavari", "The Musi", "The Manjeera"],
+    "The Right to Information Act works through an officer designated in every public authority. Who is that officer?",
+    [
+      "The District Collector for the area",
+      "The Public Information Officer, to whom a request is addressed and who is answerable for the reply",
+      "The Chief Vigilance Officer",
+      "The head of the department, in every case",
+    ],
     1,
-    "Easy",
+    "Medium",
     "General Studies",
-    "Geography",
-    "The Godavari crosses the northern districts and is the larger of the state's two major basins. The Musi and the Manjeera are tributaries within those basins rather than basins of their own, which is why neither can be the answer.",
+    "Indian Polity",
+    "Every public authority has to designate a Public Information Officer, and a request is made to that officer rather than to the department at large. The appellate authority sits above that officer and hears an appeal against the reply, and confusing the two is what sends a request to the wrong desk and costs the applicant a month.",
   ),
   q(
     "The Comptroller and Auditor General submits audit reports relating to the accounts of the Union to",
@@ -567,6 +594,7 @@ const POLICE_GENERAL_STUDIES: BankQuestion[] = [
     "Measurement",
     "A hectare is a square 100 metres on a side, so 10,000 square metres, which is about two and a half acres. The 100 square metre answer is an are, and the two units are confused because the names look related.",
   ),
+  STATE_LIST_POLICING,
   ...POLICE_GS_BANK,
 ];
 
@@ -710,13 +738,18 @@ const [SOLAR_SURVEY_BANK, SOLAR_EQUIPMENT_BANK, SOLAR_SAFETY_BANK] = pickFromBan
 
 const SOLAR_SURVEY: BankQuestion[] = [
   q(
-    "A rooftop array is being planned on the assumption of about 4 units per kW on a clear day. On that assumption, roughly how many units should a 3 kW array make on such a day?",
-    ["3 units", "4 units", "12 units", "30 units"],
-    2,
+    "You survey a roof at eleven in the morning and find it clear of shadow. Why is that not enough to record it as shadow free?",
+    [
+      "Because a survey has to be done at noon to be valid",
+      "Because the shadow falls differently later in the day and in the winter months, when the sun sits lower and shadows run longest",
+      "Because shading does not affect a grid connected plant in any case",
+      "Because the inverter cannot be sized from a morning reading",
+    ],
+    1,
     "Easy",
     "Site survey and sizing",
-    "Sizing",
-    "The yield figure is per kW of installed capacity, so it is multiplied by the size of the array: three times four is twelve. Reading the 4 units as the whole plant's output makes a 3 kW array look no better than a 1 kW one, which is the error that produces an unhappy owner three months later.",
+    "Survey",
+    "The sun's path moves through the day and through the year, so a roof that is clear at eleven in June can sit under a parapet's shadow at three in December. A shadow survey is a statement about a whole year, which is why it is done with a sun path diagram or a shade analyser rather than by looking up once.",
   ),
   q(
     "Why are the roof's true orientation and tilt measured during the survey rather than assumed?",
@@ -944,18 +977,34 @@ const WRITTEN_BANK: WrittenQuestion[] = [
 /** The descriptive section of paper 906. */
 const ENTERPRISE_WRITTEN = [WRITTEN_BANK[0], WRITTEN_BANK[1], WRITTEN_BANK[2]];
 
-/** Every MCQ this institution owns, keyed by id. The answer key and the library. */
+/**
+ * Every MCQ this mission owns, keyed by id. The answer key and the library.
+ *
+ * A question reused across two papers appears once here and twice in the papers,
+ * which is the point: the administrator's library shows a usage count above one
+ * and an officer can see that the same vetted question is doing work in more than
+ * one place.
+ */
 const MCQ_BY_ID = new Map<number, BankQuestion>();
 for (const list of [
-  FS_HTTP,
-  FS_LANGUAGE,
-  FS_REACT,
-  DSA_COMPLEXITY,
-  DSA_ARRAYS,
-  DSA_GRAPHS,
-  PY_PANDAS,
-  COMP_SYSTEMS,
-  COMP_CLOUD,
+  TG_GENERAL_STUDIES,
+  TG_HISTORY_POLITY,
+  TG_ECONOMY,
+  TG_MOVEMENT,
+  IBPS_ENGLISH,
+  IBPS_QUANT,
+  IBPS_REASONING,
+  POLICE_ARITHMETIC,
+  POLICE_GENERAL_STUDIES,
+  SSC_REASONING,
+  SSC_AWARENESS,
+  SSC_QUANT,
+  SSC_ENGLISH,
+  SOLAR_SURVEY,
+  SOLAR_EQUIPMENT,
+  SOLAR_SAFETY,
+  ENTERPRISE_IDEA,
+  ENTERPRISE_RECORDS,
 ]) {
   for (const item of list) MCQ_BY_ID.set(item.id, item);
 }
@@ -1002,9 +1051,33 @@ function codingProblemApi(id: number) {
 
 // ── The catalogue ───────────────────────────────────────────────────────────
 
-const MCQ_MARKS = 4;
+/**
+ * Default marks for one objective question, where a section does not set its own.
+ *
+ * One mark, because that is what a recruitment paper carries. The software build
+ * this fork replaced used four, which made every paper a round hundred and made
+ * every section's marks meaningless as a number an aspirant could recognise. SSC
+ * CGL Tier-I really does carry two marks a question and IBPS prelims really does
+ * carry one, so the figure belongs on the section and not on the module.
+ */
+const MCQ_MARKS = 1;
 const CODING_MARKS = 20;
 
+/**
+ * `coding` survives in this union although nothing seeds one any more.
+ *
+ * There is no code judge in this product line and not one course in the catalogue
+ * declares a coding topic, so a paper with a coding section would be a paper
+ * nobody can sit. The seeded papers therefore use descriptive written sections,
+ * which is what Group-I mains and RBI Grade-B phase two actually set.
+ *
+ * The member stays because removing it would ripple straight into the take page,
+ * which reads `codingProblemSection` off the payload, into the administrator's
+ * create and edit forms, which post one, and into `CODING_PROBLEMS`, which still
+ * populates the question-bank picker. An administrator who deliberately builds a
+ * coding section still gets a working one, executed in the browser, so the path
+ * is live rather than vestigial.
+ */
 export type SectionType = "quiz" | "coding" | "subjective";
 
 export interface SectionSpec {
@@ -1017,7 +1090,25 @@ export interface SectionSpec {
   timeLimitMinutes: number | null;
   /** MCQ ids for a quiz section, coding ids for a coding one, written ids for a subjective one. */
   questionIds: number[];
+  /** Marks for a correct answer here. A government paper marks a whole section alike. */
+  marksPerQuestion?: number;
+  /**
+   * Marks taken off for a wrong answer: 0.25 in IBPS prelims, 0.5 in SSC CGL
+   * Tier-I, nothing at all in TGPSC and in the police written test. Left unset
+   * where the body sets none, because a penalty invented for a mock changes how a
+   * candidate should attempt it and would teach the wrong habit.
+   */
+  negativeMarks?: number;
 }
+
+const sectionMarks = (section: SectionSpec): number =>
+  section.type === "coding" ? CODING_MARKS : (section.marksPerQuestion ?? MCQ_MARKS);
+
+const sectionPenalty = (section: SectionSpec): number =>
+  section.type === "quiz" ? Math.max(0, section.negativeMarks ?? 0) : 0;
+
+/** Marks carry quarters and halves once a penalty applies, so keep two places. */
+const roundMarks = (value: number): number => Math.round(value * 100) / 100;
 
 export interface AssessmentSpec {
   id: number;
@@ -1045,18 +1136,20 @@ export interface AssessmentSpec {
   sections: SectionSpec[];
 }
 
-const marksForQuestion = (sectionType: SectionType, questionId: number): number => {
-  if (sectionType === "coding") return CODING_MARKS;
-  if (sectionType === "subjective") return lookupWritten(questionId)?.max_marks ?? 10;
-  return MCQ_MARKS;
+const marksForQuestion = (section: SectionSpec, questionId: number): number => {
+  if (section.type === "coding") return CODING_MARKS;
+  if (section.type === "subjective") return lookupWritten(questionId)?.max_marks ?? 10;
+  return sectionMarks(section);
 };
 
 export function sectionMaxMarks(section: SectionSpec): number {
-  return section.questionIds.reduce((sum, id) => sum + marksForQuestion(section.type, id), 0);
+  return roundMarks(
+    section.questionIds.reduce((sum, id) => sum + marksForQuestion(section, id), 0),
+  );
 }
 
 export function assessmentMaxMarks(spec: AssessmentSpec): number {
-  return spec.sections.reduce((sum, s) => sum + sectionMaxMarks(s), 0);
+  return roundMarks(spec.sections.reduce((sum, s) => sum + sectionMaxMarks(s), 0));
 }
 
 export function assessmentQuestionCount(spec: AssessmentSpec): number {
@@ -1065,145 +1158,111 @@ export function assessmentQuestionCount(spec: AssessmentSpec): number {
 
 const ids = (list: BankQuestion[] | WrittenQuestion[]) => list.map((x) => x.id);
 
+/**
+ * Six papers, each one set the way the body that owns it sets it.
+ *
+ * The marking is the part that has to be right. TGPSC and the police written test
+ * carry no negative marking, IBPS prelims takes a quarter mark and locks each
+ * section to its own clock, SSC CGL Tier-I carries two marks a question and takes
+ * half of one back. Those rules change how a candidate should attempt a paper, so
+ * a mock that gets them wrong trains the wrong habit, and an officer who sets
+ * these examinations for a living reads the marking line before anything else.
+ *
+ * Every mock here is shorter than the paper it models, and each one says so in its
+ * own instructions rather than implying a length it does not have. The blueprint,
+ * the section order and the marking are what a mock has to reproduce; the count is
+ * what a demo cannot.
+ */
 const BASE_ASSESSMENTS: AssessmentSpec[] = [
   {
     id: 901,
-    slug: "full-stack-mid-programme",
-    title: "Full-Stack Engineering — Mid-Programme Assessment",
+    slug: "tgpsc-group-2-mains-mock",
+    title: "TGPSC Group-II Mains: Full-Length Mock",
     description:
-      "A timed paper covering the first half of the Full-Stack track: HTTP and the request " +
-      "lifecycle, JavaScript and TypeScript mechanics, React's rendering model, and a short " +
-      "applied coding round.",
+      "One paper drawn across all four Mains papers: general studies and general abilities, " +
+      "history and polity and society, economy and development, and the Telangana movement and " +
+      "state formation. Marked one mark a question with no negative marking, as the Commission " +
+      "marks it.",
     instructions:
-      "60 minutes, 17 questions across 4 sections. You may move freely between sections and flag " +
-      "questions to revisit. The coding round runs your JavaScript against real test cases. The " +
-      "paper submits itself when the timer ends, so there is no penalty for running out of time " +
-      "on the last question.",
-    durationMinutes: 60,
+      "25 questions across 4 sections, 30 minutes. One mark for a correct answer and nothing " +
+      "deducted for a wrong one, so there is no reason to leave a question blank. You may move " +
+      "between sections and flag a question to come back to. The live Mains sets 150 questions in " +
+      "150 minutes for each of its four papers; this mock keeps the blueprint and the marking and " +
+      "samples all four, so it fits one sitting at the centre.",
+    durationMinutes: 30,
     proctoringEnabled: true,
     evaluationMode: "auto",
     allowMovement: true,
     isDraft: false,
     isActive: true,
-    certificateAvailable: true,
+    certificateAvailable: false,
     passLower: "40",
-    passUpper: "75",
+    passUpper: null,
     tabSwitchLimit: 5,
     aiGenerated: false,
-    courseIds: [201],
+    courseIds: [302],
     startTime: null,
     endTime: null,
-    cohortSize: 24,
+    cohortSize: 27,
     sections: [
       {
         id: 9011,
         type: "quiz",
-        title: "HTTP and the request lifecycle",
-        description: "Status codes, idempotency, CORS and where a token check belongs.",
+        title: "Paper-I: General Studies and General Abilities",
+        description:
+          "Current affairs, general science, environment and disaster management, geography, and " +
+          "the data and mental ability set.",
         order: 1,
         timeLimitMinutes: null,
-        questionIds: ids(FS_HTTP),
+        questionIds: ids(TG_GENERAL_STUDIES),
       },
       {
         id: 9012,
         type: "quiz",
-        title: "JavaScript and TypeScript mechanics",
-        description: "Closures, the event loop, floating point, and what the type system buys you.",
+        title: "Paper-II: History, Polity and Society",
+        description: "Socio-cultural history, the Constitution and its institutions, and social policy.",
         order: 2,
         timeLimitMinutes: null,
-        questionIds: ids(FS_LANGUAGE),
+        questionIds: ids(TG_HISTORY_POLITY),
       },
       {
         id: 9013,
         type: "quiz",
-        title: "React's rendering model",
-        description: "Reference identity, keys, effects and where state should live.",
+        title: "Paper-III: Economy and Development",
+        description: "The Indian economy, public finance, and the development record of the state.",
         order: 3,
         timeLimitMinutes: null,
-        questionIds: ids(FS_REACT),
+        questionIds: ids(TG_ECONOMY),
       },
       {
         id: 9014,
-        type: "coding",
-        title: "Applied coding round",
-        description: "Two problems, graded on the test cases your solution actually passes.",
+        type: "quiz",
+        title: "Paper-IV: Telangana Movement and State Formation",
+        description: "The idea of Telangana, the mobilisational phase, and the road to 2014.",
         order: 4,
-        timeLimitMinutes: 25,
-        questionIds: [codingId(0), codingId(3)],
+        timeLimitMinutes: null,
+        questionIds: ids(TG_MOVEMENT),
       },
     ],
   },
   {
     id: 902,
-    slug: "dsa-diagnostic",
-    title: "Data Structures & Algorithms — Diagnostic",
+    slug: "ibps-po-prelims-mock",
+    title: "IBPS PO Prelims: Sectional-Timed Mock",
     description:
-      "Placement diagnostic used to set your starting difficulty in the DSA track. Complexity, " +
-      "arrays and hashing, trees and graphs.",
+      "English language, quantitative aptitude and reasoning ability, each locked to its own " +
+      "clock. One mark for a correct answer and a quarter mark off for a wrong one, which is what " +
+      "makes the guessing decision on this paper an arithmetic one rather than a matter of nerve.",
     instructions:
-      "40 minutes, 25 questions across 3 sections. This paper is not graded for your transcript. " +
-      "It exists to calibrate what the platform gives you next, so answer what you know and leave " +
-      "what you do not.",
-    durationMinutes: 40,
+      "20 questions across 3 sections, 20 minutes in all. Each section has its own timer and " +
+      "closes when that timer ends, so you cannot come back to it: finish what you can inside the " +
+      "window. A wrong answer costs a quarter mark, an unanswered one costs nothing. The live " +
+      "prelims gives 20 minutes to each of its three sections; this mock keeps the sectional lock " +
+      "and the penalty at a shorter length.",
+    durationMinutes: 20,
     proctoringEnabled: false,
     evaluationMode: "auto",
-    allowMovement: true,
-    isDraft: false,
-    isActive: true,
-    certificateAvailable: true,
-    passLower: "40",
-    passUpper: "75",
-    tabSwitchLimit: null,
-    aiGenerated: false,
-    courseIds: [203],
-    startTime: null,
-    endTime: null,
-    cohortSize: 50,
-    sections: [
-      {
-        id: 9021,
-        type: "quiz",
-        title: "Complexity",
-        description: "Reading the cost of an algorithm rather than reciting it.",
-        order: 1,
-        timeLimitMinutes: null,
-        questionIds: ids(DSA_COMPLEXITY),
-      },
-      {
-        id: 9022,
-        type: "quiz",
-        title: "Arrays and hashing",
-        description: "Windows, pointers, prefix sums and when a map is the whole answer.",
-        order: 2,
-        timeLimitMinutes: null,
-        questionIds: ids(DSA_ARRAYS),
-      },
-      {
-        id: 9023,
-        type: "quiz",
-        title: "Trees and graphs",
-        description: "Traversal order, balance, cycles and shortest paths.",
-        order: 3,
-        timeLimitMinutes: null,
-        questionIds: ids(DSA_GRAPHS),
-      },
-    ],
-  },
-  {
-    id: 903,
-    slug: "python-ds-unit-2",
-    title: "Python for Data Science — Unit 2 Test",
-    description:
-      "pandas, reshaping, joins and missing data, plus two written answers marked by your " +
-      "instructor.",
-    instructions:
-      "45 minutes, 10 questions across 2 sections. The written section is marked by a human, so " +
-      "your score appears once your instructor has finished grading. Notes are allowed: the " +
-      "questions are about judgement rather than recall.",
-    durationMinutes: 45,
-    proctoringEnabled: false,
-    evaluationMode: "manual",
-    allowMovement: true,
+    allowMovement: false,
     isDraft: false,
     isActive: true,
     certificateAvailable: false,
@@ -1211,7 +1270,68 @@ const BASE_ASSESSMENTS: AssessmentSpec[] = [
     passUpper: null,
     tabSwitchLimit: null,
     aiGenerated: false,
-    courseIds: [202],
+    courseIds: [307],
+    startTime: null,
+    endTime: null,
+    cohortSize: 42,
+    sections: [
+      {
+        id: 9021,
+        type: "quiz",
+        title: "English Language",
+        description: "Grammar, vocabulary in context, sentence improvement and inference.",
+        order: 1,
+        timeLimitMinutes: 6,
+        questionIds: ids(IBPS_ENGLISH),
+        negativeMarks: 0.25,
+      },
+      {
+        id: 9022,
+        type: "quiz",
+        title: "Quantitative Aptitude",
+        description: "Approximation, series, percentages, ratio, time and work, and data interpretation.",
+        order: 2,
+        timeLimitMinutes: 7,
+        questionIds: ids(IBPS_QUANT),
+        negativeMarks: 0.25,
+      },
+      {
+        id: 9023,
+        type: "quiz",
+        title: "Reasoning Ability",
+        description: "Puzzles and seating, syllogism, inequality, direction sense and blood relations.",
+        order: 3,
+        timeLimitMinutes: 7,
+        questionIds: ids(IBPS_REASONING),
+        negativeMarks: 0.25,
+      },
+    ],
+  },
+  {
+    id: 903,
+    slug: "tglprb-constable-pwt-mock",
+    title: "Telangana Police Constable: Preliminary Written Test Mock",
+    description:
+      "The two parts the preliminary written test is built from: arithmetic with the test of " +
+      "reasoning, and general studies including current affairs and Telangana. One mark a " +
+      "question and no negative marking, so every question is worth an attempt.",
+    instructions:
+      "18 questions across 2 sections, 20 minutes, proctored. One mark for a correct answer and " +
+      "nothing deducted for a wrong one. The preliminary written test is a single objective paper " +
+      "and the two parts share one clock, so this mock does the same: move between them as you " +
+      "like and finish the arithmetic while you are fresh.",
+    durationMinutes: 20,
+    proctoringEnabled: true,
+    evaluationMode: "auto",
+    allowMovement: true,
+    isDraft: false,
+    isActive: true,
+    certificateAvailable: false,
+    passLower: "40",
+    passUpper: null,
+    tabSwitchLimit: 4,
+    aiGenerated: false,
+    courseIds: [305],
     startTime: null,
     endTime: null,
     cohortSize: 18,
@@ -1219,84 +1339,213 @@ const BASE_ASSESSMENTS: AssessmentSpec[] = [
       {
         id: 9031,
         type: "quiz",
-        title: "pandas in practice",
-        description: "Grouping, alignment, joins and the warnings people learn to ignore.",
+        title: "Arithmetic and test of reasoning",
+        description: "Averages, percentages, speed and distance, interest, series and coding-decoding.",
         order: 1,
         timeLimitMinutes: null,
-        questionIds: ids(PY_PANDAS),
+        questionIds: ids(POLICE_ARITHMETIC),
       },
       {
         id: 9032,
-        type: "subjective",
-        title: "Judgement and communication",
-        description: "Two written answers. Marked against a rubric, not a keyword list.",
+        type: "quiz",
+        title: "General studies, current affairs and Telangana",
+        description: "Polity, history, general science, geography and the state's institutions.",
         order: 2,
         timeLimitMinutes: null,
-        questionIds: ids(PY_WRITTEN),
+        questionIds: ids(POLICE_GENERAL_STUDIES),
       },
     ],
   },
   {
     id: 904,
-    slug: "end-of-programme-comprehensive",
-    title: "End-of-Programme Comprehensive",
+    slug: "ssc-cgl-tier-1-mock",
+    title: "SSC CGL Tier-I: Timed Mock",
     description:
-      "The final graded paper across every track you are enrolled in. Opens on the scheduled " +
-      "date for the whole cohort at once.",
+      "The four Tier-I sections in the order the Commission sets them, at two marks a question " +
+      "with half a mark off for a wrong answer. Opens for the whole batch at one time, so the " +
+      "ranking a candidate sees afterwards is against people who sat the same paper on the same " +
+      "clock.",
     instructions:
-      "90 minutes, 17 questions across 4 sections, proctored. Your certificate grade is " +
-      "calculated from this paper together with your coursework.",
-    durationMinutes: 90,
+      "20 questions across 4 sections, 15 minutes, proctored. Two marks for a correct answer and " +
+      "half a mark deducted for a wrong one, so a blind guess loses more than it wins and a guess " +
+      "narrowed to two options does not. There is no sectional timing in Tier-I: the clock runs " +
+      "across the whole paper and how you spend it is part of what is being tested.",
+    durationMinutes: 15,
     proctoringEnabled: true,
     evaluationMode: "auto",
-    allowMovement: false,
+    allowMovement: true,
     isDraft: false,
     isActive: true,
-    certificateAvailable: true,
-    passLower: "50",
-    passUpper: "80",
+    certificateAvailable: false,
+    passLower: "40",
+    passUpper: null,
     tabSwitchLimit: 3,
     aiGenerated: false,
-    courseIds: [201, 203, 205],
-    startTime: isoDaysAhead(24, 10, 0),
-    endTime: isoDaysAhead(24, 13, 30),
+    courseIds: [303],
+    startTime: isoDaysAhead(9, 10, 0),
+    endTime: isoDaysAhead(9, 12, 0),
     cohortSize: 0,
     sections: [
       {
         id: 9041,
         type: "quiz",
-        title: "Systems and data",
-        description: "Relational modelling, query plans and the cost of getting them wrong.",
+        title: "General Intelligence and Reasoning",
+        description: "Analogy, classification, series, syllogism and calendars.",
         order: 1,
         timeLimitMinutes: null,
-        questionIds: ids(COMP_SYSTEMS),
+        questionIds: ids(SSC_REASONING),
+        marksPerQuestion: 2,
+        negativeMarks: 0.5,
       },
       {
         id: 9042,
         type: "quiz",
-        title: "Cloud and delivery",
-        description: "Least privilege, image layers, networking and what to check first.",
+        title: "General Awareness",
+        description: "Polity, history, everyday science and current affairs.",
         order: 2,
         timeLimitMinutes: null,
-        questionIds: ids(COMP_CLOUD),
+        questionIds: ids(SSC_AWARENESS),
+        marksPerQuestion: 2,
+        negativeMarks: 0.5,
       },
       {
         id: 9043,
         type: "quiz",
-        title: "Web fundamentals",
-        description: "The request lifecycle, end to end.",
+        title: "Quantitative Aptitude",
+        description: "Percentage and discount, mixtures, interest, algebra, geometry and mensuration.",
         order: 3,
         timeLimitMinutes: null,
-        questionIds: ids(COMP_WEB),
+        questionIds: ids(SSC_QUANT),
+        marksPerQuestion: 2,
+        negativeMarks: 0.5,
       },
       {
         id: 9044,
-        type: "coding",
-        title: "Coding round",
-        description: "Two problems, graded on passed test cases.",
+        type: "quiz",
+        title: "English Comprehension",
+        description: "Vocabulary, idioms, one word substitution, grammar and para jumbles.",
         order: 4,
-        timeLimitMinutes: 35,
-        questionIds: [codingId(2), codingId(4)],
+        timeLimitMinutes: null,
+        questionIds: ids(SSC_ENGLISH),
+        marksPerQuestion: 2,
+        negativeMarks: 0.5,
+      },
+    ],
+  },
+  {
+    id: 905,
+    slug: "solar-pv-trade-theory-test",
+    title: "Solar PV Installer: Trade Theory Test",
+    description:
+      "The theory paper behind the rooftop technician certificate: survey and sizing, modules and " +
+      "inverters and the balance of system, and mounting with earthing and safety. Passing this " +
+      "and the practical is what the trade certificate is issued against.",
+    instructions:
+      "17 questions across 3 sections, 30 minutes. One mark a question and no negative marking. " +
+      "You need 60 per cent to pass and 85 per cent for the certificate to be issued with " +
+      "distinction. The safety section is not weighted differently, but a trainee who cannot " +
+      "answer it should not be on a roof, and your trainer will read that section first.",
+    durationMinutes: 30,
+    proctoringEnabled: false,
+    evaluationMode: "auto",
+    allowMovement: true,
+    isDraft: false,
+    isActive: true,
+    certificateAvailable: true,
+    passLower: "60",
+    passUpper: "85",
+    tabSwitchLimit: null,
+    aiGenerated: false,
+    courseIds: [311],
+    startTime: null,
+    endTime: null,
+    cohortSize: 26,
+    sections: [
+      {
+        id: 9051,
+        type: "quiz",
+        title: "Site survey and sizing",
+        description: "Shading, orientation and tilt, specific yield, and sizing a string to the inverter.",
+        order: 1,
+        timeLimitMinutes: null,
+        questionIds: ids(SOLAR_SURVEY),
+      },
+      {
+        id: 9052,
+        type: "quiz",
+        title: "Modules, inverters and balance of system",
+        description: "Nameplate ratings, string behaviour, connectors, cabling and storage.",
+        order: 2,
+        timeLimitMinutes: null,
+        questionIds: ids(SOLAR_EQUIPMENT),
+      },
+      {
+        id: 9053,
+        type: "quiz",
+        title: "Mounting, earthing and safety",
+        description: "Ballast and wind load, harnesses, protection devices, earthing and isolation.",
+        order: 3,
+        timeLimitMinutes: null,
+        questionIds: ids(SOLAR_SAFETY),
+      },
+    ],
+  },
+  {
+    id: 906,
+    slug: "rural-enterprise-readiness",
+    title: "Rural Enterprise Readiness Assessment",
+    description:
+      "Taken before a trainee's proposal goes to a branch. Two objective sections on the idea, the " +
+      "costing, the records and the route to finance, and a descriptive section marked by the " +
+      "faculty member who will sit with the trainee afterwards.",
+    instructions:
+      "15 questions across 3 sections, 45 minutes. The first two sections are marked one mark a " +
+      "question with no negative marking. The third is written, marked by hand against a rubric, " +
+      "so your total appears once your faculty member has finished. Write in your own words: " +
+      "quoting a subsidy figure or a rate of interest earns nothing, because those change with " +
+      "every notification and what is being assessed is whether you can reason about the unit.",
+    durationMinutes: 45,
+    proctoringEnabled: false,
+    evaluationMode: "manual",
+    allowMovement: true,
+    isDraft: false,
+    isActive: true,
+    certificateAvailable: false,
+    passLower: "65",
+    passUpper: null,
+    tabSwitchLimit: null,
+    aiGenerated: false,
+    courseIds: [316, 317],
+    startTime: null,
+    endTime: null,
+    cohortSize: 14,
+    sections: [
+      {
+        id: 9061,
+        type: "quiz",
+        title: "Enterprise idea, market and costing",
+        description: "Demand, the choice of activity, contribution and break-even, and the cash cycle.",
+        order: 1,
+        timeLimitMinutes: null,
+        questionIds: ids(ENTERPRISE_IDEA),
+      },
+      {
+        id: 9062,
+        type: "quiz",
+        title: "Registration, records and access to finance",
+        description: "Registration, separating the books, group savings records and credit linkage.",
+        order: 2,
+        timeLimitMinutes: null,
+        questionIds: ids(ENTERPRISE_RECORDS),
+      },
+      {
+        id: 9063,
+        type: "subjective",
+        title: "The proposal, in your own words",
+        description: "Three written answers, marked against a rubric rather than a keyword list.",
+        order: 3,
+        timeLimitMinutes: null,
+        questionIds: ids(ENTERPRISE_WRITTEN),
       },
     ],
   },
@@ -1447,47 +1696,120 @@ function openAttempt(assessmentId: number): Attempt | null {
 }
 
 /**
- * The DSA diagnostic the learner sat eighteen days ago.
+ * The two papers this aspirant has already sat.
  *
- * Written as a real response sheet rather than a stored score: the wrong answers
- * are named per section (7/8, 7/9, 5/8) and the scorer below turns them into
- * 76 marks out of 100. That is the same 76 the scorecard reports, and it stays
- * true if the question bank is edited, which a hard-coded number would not.
+ * Both are written as a real response sheet and run through the same scorer a
+ * live submission goes through, so the number on the report is arithmetic and not
+ * decoration. The dashboard's recent-activity row has carried "76 per cent, 72nd
+ * percentile, eighteen days ago" on the Group-II mock since before this module
+ * existed, and the only way to make that claim true is to produce it here.
+ *
+ * A target accuracy and a per-section weighting, rather than a list of positions.
+ * Positions were what this held before, and they break the day a question is added
+ * to a section: the wrong-answer index falls off the end, the learner silently
+ * scores higher, and the report stops agreeing with the dashboard. A target
+ * survives an edit to the paper, which is exactly the property this file exists
+ * to protect.
  */
-const SEEDED_WRONG: Record<number, number[]> = {
-  9021: [5],
-  9022: [2, 7],
-  9023: [1, 4, 6],
-};
+interface SeededAttemptSeed {
+  attemptId: number;
+  assessmentId: number;
+  daysAgo: number;
+  startHour: number;
+  minutesSpent: number;
+  /** Percentage of the paper's marks this sheet has to actually score. */
+  targetPercent: number;
+  /** Relative strength per section id. Above one is a strong section, below one is weak. */
+  sectionWeights: Record<number, number>;
+}
+
+const SEEDED_ATTEMPTS: SeededAttemptSeed[] = [
+  {
+    attemptId: 70_901,
+    assessmentId: 901,
+    daysAgo: 18,
+    startHour: 10,
+    minutesSpent: 27,
+    targetPercent: 76,
+    // Economy and development is where her marks go, which is what the report's
+    // feedback then tells her without anyone having written that sentence.
+    sectionWeights: { 9011: 1.05, 9012: 1.0, 9013: 0.62, 9014: 1.05 },
+  },
+  {
+    attemptId: 70_905,
+    assessmentId: 905,
+    daysAgo: 32,
+    startHour: 15,
+    minutesSpent: 21,
+    targetPercent: 88,
+    sectionWeights: { 9051: 1.0, 9052: 0.85, 9053: 1.1 },
+  },
+];
+
+/**
+ * How many questions of each section the sheet answers correctly.
+ *
+ * Distributed by weight and then reconciled against the target, because four
+ * independent roundings do not add up to the number they were rounded from, and a
+ * report that says 75 where the dashboard says 76 is the same defect as a
+ * hard-coded score.
+ */
+function seededCorrectCounts(spec: AssessmentSpec, seed: SeededAttemptSeed): Map<number, number> {
+  const sizes = spec.sections.map((s) => s.questionIds.length);
+  const total = sizes.reduce((sum, n) => sum + n, 0);
+  const wanted = Math.round((seed.targetPercent / 100) * total);
+
+  const weighted = spec.sections.map((s, i) => (seed.sectionWeights[s.id] ?? 1) * sizes[i]);
+  const weightedTotal = weighted.reduce((sum, n) => sum + n, 0) || 1;
+  const counts = weighted.map((value, i) =>
+    Math.max(0, Math.min(sizes[i], Math.round((value / weightedTotal) * wanted))),
+  );
+
+  let drift = wanted - counts.reduce((sum, n) => sum + n, 0);
+  for (let pass = 0; drift !== 0 && pass < counts.length * 4; pass++) {
+    const i = pass % counts.length;
+    if (drift > 0 && counts[i] < sizes[i]) {
+      counts[i] += 1;
+      drift -= 1;
+    } else if (drift < 0 && counts[i] > 0) {
+      counts[i] -= 1;
+      drift += 1;
+    }
+  }
+
+  return new Map(spec.sections.map((s, i) => [s.id, counts[i]]));
+}
 
 function seededAttempt(assessmentId: number): Attempt | null {
-  if (assessmentId !== 902) return null;
-  const spec = assessmentBy(902);
+  const seed = SEEDED_ATTEMPTS.find((s) => s.assessmentId === assessmentId);
+  if (!seed) return null;
+  const spec = assessmentBy(assessmentId);
   if (!spec) return null;
 
+  const counts = seededCorrectCounts(spec, seed);
   const quiz: SheetBlock = spec.sections.map((section) => {
     const answers: SectionAnswers = {};
-    const wrong = new Set(SEEDED_WRONG[section.id] ?? []);
+    const correctCount = counts.get(section.id) ?? 0;
     section.questionIds.forEach((questionId, index) => {
       const question = lookupMcq(questionId);
       if (!question) return;
-      const correct = LETTERS.indexOf(question.correct_option);
-      const chosen = wrong.has(index) ? (correct + 1) % 4 : correct;
+      const key = LETTERS.indexOf(question.correct_option);
+      const chosen = index < correctCount ? key : (key + 1) % 4;
       answers[String(questionId)] = LETTERS[chosen].toLowerCase();
     });
     return { [String(section.id)]: answers };
   });
 
   return {
-    id: 70_902,
-    assessmentId: 902,
+    id: seed.attemptId,
+    assessmentId: seed.assessmentId,
     attemptNumber: 1,
-    startedAt: isoDaysAgo(18, 10, 0),
-    submittedAt: isoDaysAgo(18, 10, 34),
+    startedAt: isoDaysAgo(seed.daysAgo, seed.startHour, 0),
+    submittedAt: isoDaysAgo(seed.daysAgo, seed.startHour, seed.minutesSpent),
     status: "submitted",
     sheet: { quizSectionId: quiz },
     autoSubmittedReason: null,
-    minutesSpent: 34,
+    minutesSpent: seed.minutesSpent,
   };
 }
 
@@ -1601,18 +1923,27 @@ export function scoreSheet(spec: AssessmentSpec, sheet: ResponseSheet): ScoreRes
 
     if (section.type === "quiz") {
       const answers = readSheetSection(sheet.quizSectionId, section.id);
+      const marks = sectionMarks(section);
+      const penalty = sectionPenalty(section);
       for (const questionId of section.questionIds) {
         const question = lookupMcq(questionId);
         if (!question) continue;
         const picked = chosenLetters(answers[String(questionId)]);
         const isCorrect = picked.length === 1 && picked[0] === question.correct_option;
-        if (picked.length > 0) attempted += 1;
+        // An unanswered question is not a wrong one. That distinction is the whole
+        // reason negative marking changes how a paper should be attempted, so the
+        // scorer has to make it before anything else.
+        const attemptedThis = picked.length > 0;
+        let awarded = 0;
+        if (attemptedThis) attempted += 1;
         if (isCorrect) {
           correct += 1;
-          earned += MCQ_MARKS;
-        } else if (picked.length > 0) {
+          awarded = marks;
+        } else if (attemptedThis) {
           incorrect += 1;
+          awarded = -penalty;
         }
+        earned += awarded;
         quiz.push({
           question_id: question.id,
           question_text: question.question_text,
@@ -1627,8 +1958,8 @@ export function scoreSheet(spec: AssessmentSpec, sheet: ResponseSheet): ScoreRes
           selected_answer: picked[0] ?? null,
           is_correct: isCorrect,
           explanation: question.explanation,
-          awarded_marks: isCorrect ? MCQ_MARKS : 0,
-          max_marks: MCQ_MARKS,
+          awarded_marks: roundMarks(awarded),
+          max_marks: marks,
           difficulty_level: question.difficulty_level,
           topic: question.topic,
           skills: question.skills,
@@ -1720,7 +2051,11 @@ export function scoreSheet(spec: AssessmentSpec, sheet: ResponseSheet): ScoreRes
       }
     }
 
-    sectionScores[section.title] = earned;
+    // A section keeps its true figure even when the penalty has taken it below
+    // zero, because the per-question column on the report is exact and an officer
+    // who adds that column up has to reach the section total. Only the PAPER total
+    // is floored, below.
+    sectionScores[section.title] = roundMarks(earned);
     autoScore += earned;
   }
 
@@ -1728,7 +2063,13 @@ export function scoreSheet(spec: AssessmentSpec, sheet: ResponseSheet): ScoreRes
     quiz,
     coding,
     written,
-    autoScore,
+    // The floor is at the paper level and nowhere else. For any sheet that scores
+    // at or above zero, which is every realistic one, the total is exactly the sum
+    // of the awards printed beside each question. Below zero the report shows a
+    // nought, because a negative percentage, a negative bar and a negative
+    // percentile are three things no scorecard should be asked to draw, and the
+    // penalty has already done its work by the time a candidate is there.
+    autoScore: Math.max(0, roundMarks(autoScore)),
     maximumMarks: assessmentMaxMarks(spec),
     totalQuestions: assessmentQuestionCount(spec),
     attemptedQuestions: attempted,
@@ -1742,19 +2083,22 @@ export function scoreSheet(spec: AssessmentSpec, sheet: ResponseSheet): ScoreRes
 // ── The rest of the cohort ──────────────────────────────────────────────────
 
 /**
- * The DSA cohort, as an explicit distribution rather than a random one.
+ * The Group-II batch, written out rather than drawn at random.
  *
- * The learner's scorecard has claimed "76%, 72nd percentile" since long before
- * this module existed. Percentile is computed here as the share of the cohort
- * scoring strictly below, so the only way to make that claim TRUE is for the
- * cohort to actually have 36 of its 50 members below 76. Hence a written-out
- * spread: it reads like a real bell around the mid sixties, and the number the
- * report prints is arithmetic, not decoration.
+ * The dashboard has claimed "76 per cent, 72nd percentile" on this paper since
+ * long before this module existed. Percentile is computed below as the share of
+ * the batch scoring strictly less, so the only way to make that claim true is for
+ * the batch to actually contain 18 of its 25 finished sheets below 76. Hence a
+ * written-out spread rather than a seeded range.
+ *
+ * Every value is a multiple of four because the paper is 25 questions of one mark,
+ * so no other percentage is reachable. The first two entries belong to the two
+ * candidates still writing and are excluded from the percentile by the status
+ * filter, which is why the array has 27 entries and the arithmetic uses 25.
  */
-const DSA_COHORT_PERCENTS = [
-  32, 36, 40, 40, 44, 44, 48, 48, 52, 52, 52, 56, 56, 56, 60, 60, 60, 60, 64, 64,
-  64, 64, 68, 68, 68, 68, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 76, 76, 76, 80,
-  80, 80, 84, 84, 84, 88, 88, 92, 92, 96,
+const GROUP_II_BATCH_PERCENTS = [
+  56, 60, 32, 36, 40, 44, 44, 48, 48, 52, 52, 56, 56, 60, 60, 64, 64, 68, 68, 72,
+  76, 76, 80, 80, 84, 88, 92,
 ];
 
 export interface CohortSubmission {
@@ -1777,12 +2121,20 @@ function cohortFor(spec: AssessmentSpec): CohortSubmission[] {
   const roster = seededSample(`cohort:${spec.id}`, STUDENTS, spec.cohortSize);
 
   return roster.map((person, index) => {
+    // A competitive recruitment mock is not marked like a training test. On the
+    // Group-II, banking, police and SSC papers a batch spreads from around a third
+    // to a little over three quarters, which is what makes the pass rate on the
+    // officer's dashboard worth reading. A paper that qualifies at 60 per cent or
+    // more is one the candidates have just been trained for, so its band sits
+    // higher, and reading that off the paper's own pass mark keeps the rule in one
+    // place instead of in a list of ids.
+    const [floor, ceiling] = Number(spec.passLower) >= 60 ? [52, 96] : [30, 84];
     const percent =
-      spec.id === 902
-        ? DSA_COHORT_PERCENTS[index % DSA_COHORT_PERCENTS.length]
-        : seededInt(`score:${spec.id}:${person.id}`, 38, 96);
-    // Two learners on the biggest paper are still writing, so the admin hub has a
-    // live row and the analytics status breakdown is not a single bar.
+      spec.id === 901
+        ? GROUP_II_BATCH_PERCENTS[index % GROUP_II_BATCH_PERCENTS.length]
+        : seededInt(`score:${spec.id}:${person.id}`, floor, ceiling);
+    // Two candidates on the Group-II mock are still writing, so the officer's hub
+    // has a live row and the analytics status breakdown is not a single bar.
     const inProgress = spec.id === 901 && index < 2;
     const daysBack = seededInt(`when:${spec.id}:${person.id}`, 1, 16);
     const startHour = seededInt(`hour:${spec.id}:${person.id}`, 9, 17);
@@ -1809,7 +2161,7 @@ function marksFor(spec: AssessmentSpec, percent: number): number {
   return Math.round((percent / 100) * assessmentMaxMarks(spec));
 }
 
-/** Share of the cohort this learner beat. The report's percentile, computed. */
+/** Share of the batch this candidate beat. The report's percentile, computed. */
 function percentileAmongCohort(spec: AssessmentSpec, percent: number): number {
   const scored = cohortFor(spec).filter((c) => c.status === "submitted");
   if (scored.length === 0) return 0;
@@ -2088,7 +2440,7 @@ function feedbackFor(spec: AssessmentSpec, scored: ScoreResult, stats: ReturnTyp
   }
   if (scored.written.length > 0 && spec.evaluationMode === "manual") {
     lines.push(
-      "Your written answers are with your instructor. The score above covers the marked sections only.",
+      "Your written answers are with the faculty member marking this paper. The score above covers the sections marked so far.",
     );
   }
   if (stats.percentage_time_taken < 60) {
@@ -2246,16 +2598,28 @@ function writtenForTake(id: number) {
   };
 }
 
+/**
+ * The section header every take, admin and export payload shares.
+ *
+ * The three difficulty scores carry the same figure because a government paper
+ * marks every question in a section alike: an easy general awareness question in
+ * SSC CGL Tier-I is worth the same two marks as a hard one. The three fields stay
+ * because the administrator's create form posts them and the export reads them
+ * back, and collapsing them to one would break a round trip nobody asked us to
+ * change.
+ */
 function sectionEnvelope(section: SectionSpec) {
+  const marks = sectionMarks(section);
   return {
     id: section.id,
     title: section.title,
     description: section.description,
     order: section.order,
     time_limit_minutes: section.timeLimitMinutes,
-    easy_score: MCQ_MARKS,
-    medium_score: MCQ_MARKS,
-    hard_score: MCQ_MARKS,
+    easy_score: marks,
+    medium_score: marks,
+    hard_score: marks,
+    negative_marks_per_question: sectionPenalty(section),
     number_of_questions: section.questionIds.length,
   };
 }
@@ -2493,9 +2857,10 @@ function questionsExport(spec: AssessmentSpec) {
       section_description: s.description,
       section_type: s.type,
       order: s.order,
-      easy_score: MCQ_MARKS,
-      medium_score: MCQ_MARKS,
-      hard_score: MCQ_MARKS,
+      easy_score: sectionMarks(s),
+      medium_score: sectionMarks(s),
+      hard_score: sectionMarks(s),
+      negative_marks_per_question: sectionPenalty(s),
       number_of_questions: s.questionIds.length,
       time_limit_minutes: s.timeLimitMinutes,
       section_cutoff_marks: null,
@@ -3136,89 +3501,158 @@ function composerJobs(): Record<string, ComposerJob> {
   return overlay.get<Record<string, ComposerJob>>(KEY_COMPOSER, {});
 }
 
-/** The curated hiring-round catalogue the composer's company picker reads. */
+/**
+ * The curated catalogue the composer's picker reads.
+ *
+ * For this tenant the entries are recruiting bodies rather than employers: an
+ * officer building a mock does not start from a job description, they start from
+ * a notification and the pattern it prescribes. Each round below is a real stage
+ * of a real selection, described by its structure, and nothing here states a
+ * vacancy count, a fee, a cut-off or a date. `pattern_year` carries a label rather
+ * than a year for the same reason: the pattern is stable, the year is not, and a
+ * stale year on screen is a claim nobody at the mission has checked.
+ *
+ * No round declares a coding stage. There is no code judge in this product line
+ * and none of these selections has ever had one.
+ */
 const COMPANY_CATALOG = [
   {
-    id: "cognizant",
-    name: "Cognizant",
-    short_name: "Cognizant",
-    category: "IT services",
-    exam_name: "GenC Next",
-    pattern_year: "2026",
+    id: "tgpsc",
+    name: "Telangana Public Service Commission",
+    short_name: "TGPSC",
+    category: "State services",
+    exam_name: "Group-II and Group-III",
+    pattern_year: "Current notified pattern",
     rounds: [
       {
-        key: "aptitude",
-        title: "Aptitude and reasoning",
-        summary: "Quantitative aptitude, logical reasoning and a short verbal set, timed per section.",
+        key: "prelims",
+        title: "Screening test",
+        summary:
+          "General studies and mental ability in one objective paper, used to shortlist for the Mains.",
         duration_minutes: 60,
         has_coding: false,
         question_count: 20,
-        section_titles: ["Quantitative aptitude", "Logical reasoning"],
+        section_titles: ["General studies", "General mental ability"],
       },
       {
-        key: "technical",
-        title: "Technical screening",
-        summary: "Data structures, databases and one coding problem in the language of your choice.",
-        duration_minutes: 75,
-        has_coding: true,
-        question_count: 17,
-        section_titles: ["Data structures", "Databases", "Coding round"],
+        key: "mains",
+        title: "Mains, paper-wise mock",
+        summary:
+          "Four papers: general studies, history and polity and society, economy and development, " +
+          "and the Telangana movement and state formation.",
+        duration_minutes: 45,
+        has_coding: false,
+        question_count: 24,
+        section_titles: [
+          "General studies and general abilities",
+          "History, polity and society",
+          "Economy and development",
+          "Telangana movement and state formation",
+        ],
       },
     ],
   },
   {
-    id: "tcs",
-    name: "Tata Consultancy Services",
-    short_name: "TCS",
-    category: "IT services",
-    exam_name: "NQT",
-    pattern_year: "2026",
+    id: "ibps",
+    name: "Institute of Banking Personnel Selection",
+    short_name: "IBPS",
+    category: "Banking",
+    exam_name: "Probationary Officer and Clerk",
+    pattern_year: "Current notified pattern",
     rounds: [
       {
-        key: "nqt-foundation",
-        title: "NQT foundation section",
-        summary: "Numerical ability, verbal ability and reasoning, in the NQT pattern.",
-        duration_minutes: 75,
+        key: "prelims",
+        title: "Prelims, sectional timing",
+        summary:
+          "English language, quantitative aptitude and reasoning ability, each locked to its own " +
+          "clock, with a quarter mark off for a wrong answer.",
+        duration_minutes: 20,
         has_coding: false,
         question_count: 20,
-        section_titles: ["Numerical ability", "Reasoning ability"],
+        section_titles: ["English language", "Quantitative aptitude", "Reasoning ability"],
       },
       {
-        key: "nqt-advanced",
-        title: "NQT advanced coding",
-        summary: "Two coding problems with hidden test cases, plus an advanced quantitative set.",
-        duration_minutes: 90,
-        has_coding: true,
-        question_count: 12,
-        section_titles: ["Advanced quantitative", "Coding round"],
+        key: "mains",
+        title: "Mains, including awareness",
+        summary:
+          "Data analysis and interpretation, reasoning and computer aptitude, general and banking " +
+          "awareness, and English.",
+        duration_minutes: 45,
+        has_coding: false,
+        question_count: 24,
+        section_titles: [
+          "Data analysis and interpretation",
+          "Reasoning and computer aptitude",
+          "Banking awareness and economy",
+        ],
       },
     ],
   },
   {
-    id: "zoho",
-    name: "Zoho",
-    short_name: "Zoho",
-    category: "Product",
-    exam_name: "Zoho hiring test",
-    pattern_year: "2026",
+    id: "ssc",
+    name: "Staff Selection Commission",
+    short_name: "SSC",
+    category: "Central services",
+    exam_name: "Combined Graduate Level",
+    pattern_year: "Current notified pattern",
     rounds: [
       {
-        key: "round-1",
-        title: "Round 1: aptitude and basics",
-        summary: "Pattern recognition, series and programming fundamentals with no calculator.",
-        duration_minutes: 60,
+        key: "tier-1",
+        title: "Tier-I, four sections",
+        summary:
+          "Reasoning, general awareness, quantitative aptitude and English comprehension at two " +
+          "marks a question, with half a mark deducted for a wrong answer and no sectional timing.",
+        duration_minutes: 15,
+        has_coding: false,
+        question_count: 20,
+        section_titles: [
+          "General intelligence and reasoning",
+          "General awareness",
+          "Quantitative aptitude",
+          "English comprehension",
+        ],
+      },
+    ],
+  },
+  {
+    id: "tglprb",
+    name: "State police recruitment board",
+    short_name: "Police board",
+    category: "Police recruitment",
+    exam_name: "Constable and Sub-Inspector",
+    pattern_year: "Current notified pattern",
+    rounds: [
+      {
+        key: "preliminary-written",
+        title: "Preliminary written test",
+        summary:
+          "One objective paper in two parts, arithmetic with the test of reasoning and general " +
+          "studies, used to shortlist for the physical events.",
+        duration_minutes: 25,
         has_coding: false,
         question_count: 18,
-        section_titles: ["Aptitude", "Programming fundamentals"],
+        section_titles: ["Arithmetic and test of reasoning", "General studies and current affairs"],
       },
+    ],
+  },
+  {
+    id: "rrb",
+    name: "Railway Recruitment Board",
+    short_name: "RRB",
+    category: "Railways",
+    exam_name: "NTPC and Group-D",
+    pattern_year: "Current notified pattern",
+    rounds: [
       {
-        key: "round-2",
-        title: "Round 2: programming",
-        summary: "Two implementation-heavy problems judged on correctness and edge cases.",
-        duration_minutes: 90,
-        has_coding: true,
-        question_count: 8,
-        section_titles: ["Programming", "Coding round"],
+        key: "cbt-1",
+        title: "First computer based test",
+        summary:
+          "Mathematics, general intelligence and reasoning, and general awareness, in one paper " +
+          "with a third of a mark deducted for a wrong answer.",
+        duration_minutes: 30,
+        has_coding: false,
+        question_count: 21,
+        section_titles: ["Mathematics", "General intelligence and reasoning", "General awareness"],
       },
     ],
   },
@@ -3231,24 +3665,27 @@ function blueprintFor(brief: string, preset: string, company?: string, roundKey?
   const companyName = company ? COMPANY_CATALOG.find((c) => c.id === company)?.name : undefined;
 
   const proctored = preset === "proctored_screening" || Boolean(round);
-  const coding = preset === "coding_challenge" || round?.has_coding === true;
   const title = round && companyName ? `${companyName}: ${round.title}` : briefTitle(brief);
   const titles = round?.section_titles ?? sectionTitlesFor(brief);
 
+  // Every generated section is objective, whatever the brief asks for. The
+  // `coding_challenge` preset still reaches this function from the composer's
+  // starter chips, and honouring it would build a paper with a coding round that
+  // no course in this catalogue teaches and no candidate here can sit. The union
+  // keeps its `coding` member so an administrator can still add one by hand; the
+  // generator simply never chooses it.
   const sections = titles.map((sectionTitle, index) => {
-    const isCoding = coding && index === titles.length - 1;
-    const count = isCoding ? 2 : Math.max(3, Math.round((round?.question_count ?? 15) / titles.length));
+    const count = Math.max(3, Math.round((round?.question_count ?? 15) / titles.length));
     const easy = Math.round(count * 0.3);
     const hard = Math.round(count * 0.2);
     return {
       id: `s${index + 1}`,
-      type: (isCoding ? "coding" : "mcq") as "coding" | "mcq",
+      type: "mcq" as "coding" | "mcq",
       title: sectionTitle,
       topic: sectionTitle,
       count,
       difficulty_split: { easy, medium: Math.max(0, count - easy - hard), hard },
-      time_limit_minutes: isCoding ? 30 : null,
-      ...(isCoding ? { programming_language: "javascript" } : {}),
+      time_limit_minutes: null as number | null,
     };
   });
 
@@ -3273,27 +3710,45 @@ function briefTitle(brief: string): string {
   return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
 }
 
-/** Section headings inferred from the brief, falling back to a sensible screen. */
+/**
+ * Section headings inferred from the brief, falling back to a sensible screen.
+ *
+ * The needles are the words an officer at this mission actually types: a paper
+ * name, a subject, a trade. Order matters, because the first two or three matches
+ * become the paper, so the more specific words sit above the general ones.
+ */
 function sectionTitlesFor(brief: string): string[] {
   const lower = brief.toLowerCase();
   const candidates: Array<[string, string]> = [
-    ["react", "React and the browser"],
-    ["javascript", "JavaScript mechanics"],
-    ["typescript", "TypeScript and types"],
-    ["python", "Python and pandas"],
-    ["sql", "SQL and data modelling"],
-    ["data structure", "Data structures"],
-    ["algorithm", "Algorithms and complexity"],
-    ["aws", "Cloud and delivery"],
-    ["cloud", "Cloud and delivery"],
-    ["api", "APIs and the request lifecycle"],
-    ["http", "APIs and the request lifecycle"],
+    ["telangana movement", "Telangana movement and state formation"],
+    ["telangana", "Telangana: history, geography and institutions"],
+    ["polity", "Indian polity and governance"],
+    ["constitution", "Indian polity and governance"],
+    ["history", "History and culture"],
+    ["economy", "Economy and development"],
+    ["banking", "Banking awareness and economy"],
+    ["quant", "Quantitative aptitude"],
+    ["aptitude", "Quantitative aptitude"],
+    ["arithmetic", "Quantitative aptitude"],
+    ["reasoning", "Reasoning ability"],
+    ["english", "English language"],
+    ["comprehension", "English language"],
+    ["science", "General science"],
+    ["current affairs", "Current affairs"],
+    ["geography", "Geography and environment"],
+    ["computer", "Computer awareness"],
+    ["solar", "Trade theory: solar PV"],
+    ["electric", "Trade theory: electrical"],
+    ["wiring", "Trade theory: electrical"],
+    ["enterprise", "Enterprise, costing and records"],
+    ["business", "Enterprise, costing and records"],
+    ["finance", "Access to finance"],
   ];
   const hits = candidates.filter(([needle]) => lower.includes(needle)).map(([, title]) => title);
   const unique = [...new Set(hits)];
   if (unique.length >= 2) return unique.slice(0, 3);
-  if (unique.length === 1) return [unique[0], "General reasoning"];
-  return ["Core concepts", "Applied reasoning"];
+  if (unique.length === 1) return [unique[0], "General studies"];
+  return ["General studies", "Quantitative aptitude and reasoning"];
 }
 
 /**
@@ -3336,6 +3791,9 @@ function composerView(job: ComposerJob) {
     if (questions.length >= completedQuestions) break;
     const room = completedQuestions - questions.length;
     const take = Math.min(section.count, room);
+    // `blueprintFor` never emits a coding section for this tenant, so this branch
+    // is here for a job that is already sitting in a visitor's browser storage
+    // from an earlier build, not for one this build can create.
     if (section.type === "coding") {
       generatedCoding(take, section.programming_language ?? "javascript").forEach((problem, i) => {
         questions.push({
@@ -3490,6 +3948,13 @@ function sectionsFromPayload(body: Record<string, unknown>, assessmentId: number
       order: Number(block.order) || out.length + 1,
       timeLimitMinutes: Number(block.time_limit_minutes) || null,
       questionIds: [...referenced, ...inline],
+      // The create form posts a per-difficulty score and this file marks a whole
+      // section alike, so the first figure it carries is the section's mark. An
+      // officer who types 2 into that field and then sees a 20 question paper
+      // worth 20 marks has watched the product ignore what they entered.
+      marksPerQuestion:
+        Number(block.easy_score) || Number(block.medium_score) || Number(block.hard_score) || undefined,
+      negativeMarks: Number(block.negative_marks_per_question) || undefined,
     });
   }
 
@@ -3611,7 +4076,7 @@ function certificateArt(title: string, learner: string): string {
       <text x="480" y="150" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#ffffff" opacity="0.72">Certificate of Achievement</text>
       <text x="480" y="250" text-anchor="middle" font-family="Georgia, serif" font-size="46" fill="#ffffff">${safe(learner)}</text>
       <text x="480" y="320" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#ffffff" opacity="0.82">${safe(title)}</text>
-      <text x="480" y="430" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#ffffff" opacity="0.6">AI Linc</text>
+      <text x="480" y="430" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#ffffff" opacity="0.6">${safe(DEMO_TENANT.name)}</text>
     </svg>`;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg.replace(/\s+/g, " ").trim())}`;
 }
@@ -3783,7 +4248,7 @@ defineRoutes(MODULE, {
     return {
       id: closed.id,
       score: scored.autoScore,
-      offered_scholarship_percentage: scholarshipPercent(spec, scored),
+      offered_scholarship_percentage: scholarshipPercent(),
       status: "submitted",
       submitted_at: closed.submittedAt,
       review_status: reviewStatusFor(spec, closed),
@@ -3841,7 +4306,7 @@ defineRoutes(MODULE, {
     return {
       has_submitted: true,
       score: scored.autoScore,
-      offered_scholarship_percentage: scholarshipPercent(spec, scored),
+      offered_scholarship_percentage: scholarshipPercent(),
       is_redeemed: overlay.get<number[]>(KEY_SCHOLARSHIP, []).includes(spec.id),
       referral_code: referralCode(spec),
     };
@@ -3856,7 +4321,7 @@ defineRoutes(MODULE, {
       list.includes(spec.id) ? list : [...list, spec.id],
     );
     return {
-      scholarship_percentage: scholarshipPercent(spec, scored),
+      scholarship_percentage: scholarshipPercent(),
       referral_code: referralCode(spec),
       message: "Your scholarship has been applied to your account.",
     };
@@ -3903,20 +4368,30 @@ defineRoutes(MODULE, {
 });
 
 /**
- * Scholarship band. Only papers that carry an upper band offer one, so the
- * success page stays quiet for an ordinary unit test instead of inventing an
- * award nobody at the institution has approved.
+ * Fee concession band, and why it is silent for this tenant.
+ *
+ * The product can attach a concession to a paper's upper band and show it on the
+ * submission-success page with a code the candidate quotes at their centre. No
+ * paper here offers one, and the function returns zero for every paper rather
+ * than reading the band.
+ *
+ * This mission's training is sponsored and its fees are fixed by scheme order,
+ * not by how a candidate did on a mock, and the build brief is explicit that a
+ * fee or subsidy amount must never appear on screen as a current fact. Inventing
+ * a "25 per cent scholarship" on a practice paper would be exactly that, and it
+ * is the kind of number an officer reading this screen would be asked to justify.
+ *
+ * The upper band itself still does real work: `passUpper` is what the result page
+ * reads to decide between a participation certificate and one issued with
+ * distinction on the trade test. Only the concession is switched off, and the
+ * path stays intact for a tenant that does price this way.
  */
-function scholarshipPercent(spec: AssessmentSpec, scored: ScoreResult): number {
-  if (!spec.passUpper) return 0;
-  const percent = scored.maximumMarks ? (scored.autoScore / scored.maximumMarks) * 100 : 0;
-  if (percent >= Number(spec.passUpper)) return 25;
-  if (percent >= Number(spec.passLower ?? 40)) return 10;
+function scholarshipPercent(): number {
   return 0;
 }
 
 function referralCode(spec: AssessmentSpec): string {
-  return `AILINC-${spec.slug.slice(0, 6).toUpperCase()}-${STUDENT_PERSONA.id}`;
+  return `${DEMO_TENANT.shortName}-${spec.slug.slice(0, 6).toUpperCase()}-${STUDENT_PERSONA.id}`;
 }
 
 // ── Admin routes ────────────────────────────────────────────────────────────
@@ -4031,7 +4506,7 @@ defineRoutes(MODULE, {
     return {
       task_id: `email-${spec.id}-${nextDemoId("assessment-email")}`,
       status: "queued",
-      message: `Notification queued for ${recipients} learner(s).`,
+      message: `Notification queued for ${recipients} candidate(s).`,
     };
   },
 
@@ -4086,7 +4561,7 @@ defineRoutes(MODULE, {
         (p) => p.email.toLowerCase() === email || p.id === Number(body.user_id),
       ) ?? null;
     if (!person) {
-      throw badRequest({ detail: "No learner at this institution matches that email address." });
+      throw badRequest({ detail: "No candidate on this mission's rolls matches that email address." });
     }
     if (retakesFor(spec.id).some((g) => g.user_id === person.id)) {
       throw badRequest({ detail: `${person.full_name} already holds an unused re-attempt.` });
@@ -4196,7 +4671,7 @@ defineRoutes(MODULE, {
           ? list
           : [...list, evalKey(spec.id, submissionId)],
       );
-      return { message: "Result published to the learner." };
+      return { message: "Result published to the candidate." };
     },
 });
 
@@ -4209,7 +4684,62 @@ defineRoutes(MODULE, {
  * sheet is generated to match the score and then run through the same scorer,
  * which means the two agree by construction.
  */
+/**
+ * How many questions of each quiz section a reconstructed sheet answers correctly.
+ *
+ * Solved for the number that actually SCORES the row's marks once the penalty is
+ * applied, and then reconciled across the paper. Taking the percentage of the
+ * question count is only right where nothing is deducted for a wrong answer; on
+ * the IBPS and SSC mocks it puts the grading screen several marks below the row
+ * next to it, which is the exact disagreement this file exists to prevent. What
+ * is left after the reconcile is one rounding step, because a correct answer moves
+ * the total by a mark plus the penalty and the row's own marks are a whole number.
+ */
+function syntheticCorrectCounts(spec: AssessmentSpec, percent: number): Map<number, number> {
+  const quizSections = spec.sections.filter((s) => s.type === "quiz");
+  const counts = new Map<number, number>();
+  for (const section of quizSections) {
+    const marks = sectionMarks(section);
+    const penalty = sectionPenalty(section);
+    const n = section.questionIds.length;
+    const target = (percent / 100) * sectionMaxMarks(section);
+    counts.set(
+      section.id,
+      Math.max(0, Math.min(n, Math.round((target + n * penalty) / (marks + penalty)))),
+    );
+  }
+
+  const scored = () =>
+    quizSections.reduce((sum, section) => {
+      const c = counts.get(section.id) ?? 0;
+      const n = section.questionIds.length;
+      return sum + c * sectionMarks(section) - (n - c) * sectionPenalty(section);
+    }, 0);
+  const target = quizSections.reduce((sum, s) => sum + (percent / 100) * sectionMaxMarks(s), 0);
+
+  for (let pass = 0; pass < quizSections.length * 2; pass++) {
+    const gap = target - scored();
+    if (Math.abs(gap) < 0.001) break;
+    let best: { id: number; delta: number; error: number } | null = null;
+    for (const section of quizSections) {
+      const c = counts.get(section.id) ?? 0;
+      const step = sectionMarks(section) + sectionPenalty(section);
+      for (const delta of [1, -1]) {
+        if (delta > 0 && c >= section.questionIds.length) continue;
+        if (delta < 0 && c <= 0) continue;
+        const error = Math.abs(gap - delta * step);
+        if (!best || error < best.error) best = { id: section.id, delta, error };
+      }
+    }
+    if (!best || best.error >= Math.abs(gap)) break;
+    counts.set(best.id, (counts.get(best.id) ?? 0) + best.delta);
+  }
+
+  return counts;
+}
+
 function syntheticSheet(spec: AssessmentSpec, person: DemoPerson, percent: number): ResponseSheet {
+  const counts = syntheticCorrectCounts(spec, percent);
   const quizSectionId: SheetBlock = [];
   const codingProblemSectionId: SheetBlock = [];
   const subjectiveQuestionSectionId: SheetBlock = [];
@@ -4223,7 +4753,7 @@ function syntheticSheet(spec: AssessmentSpec, person: DemoPerson, percent: numbe
           seededInt(`sheet:${spec.id}:${person.id}:${a}`, 0, 999) -
           seededInt(`sheet:${spec.id}:${person.id}:${b}`, 0, 999),
       );
-      const correctCount = Math.round((percent / 100) * ranked.length);
+      const correctCount = counts.get(section.id) ?? 0;
       ranked.forEach((questionId, index) => {
         const question = lookupMcq(questionId);
         if (!question) return;
@@ -4254,9 +4784,9 @@ function syntheticSheet(spec: AssessmentSpec, person: DemoPerson, percent: numbe
         const question = lookupWritten(questionId);
         if (!question) continue;
         answers[String(questionId)] = seededPick(`written:${spec.id}:${person.id}:${questionId}`, [
-          "A left join keeps every row on the left even when the right side has no match, which matters when the absence is the finding. On a churn report an inner join quietly dropped every customer with no orders, which was exactly the group we were trying to count.",
-          "I would first check whether the missing values are related to anything else in the table before deciding. If the gaps cluster in one department the missingness is itself information, and imputing a mean would erase the signal and shrink the variance at the same time.",
-          "I start with the definition rather than the behaviour. A weekly number can move while a monthly one does not simply because a late-arriving batch landed inside one window and outside the other, so I check the pipeline before I go looking for a story about users.",
+          "I would start with who buys and at what price, because the machine can be bought any time and the market cannot. Then the working capital: grain is bought at harvest and the money comes back over the months it sells, so the loan has to cover that gap and not only the equipment. The instalment I would fix against the months when collections are actually made.",
+          "Our group has saved every month for a year and kept the internal lending register in the same book. What the branch looks at is that record and the grading that follows from it, and the limit is sanctioned against the group's own corpus rather than replacing it. Where our register is thin, which is the recovery of internal loans, we can correct it before we apply.",
+          "Profit and cash are not the same thing. Last year most of the sales went out on credit to two traders who paid late, and stock for the season was bought before any of it came back, so the books showed a profit while the account had nothing in it on the instalment date. I would shorten the credit given, buy stock in smaller lots, and keep one month of instalments aside before anything else is paid.",
         ]);
       }
       subjectiveQuestionSectionId.push({ [String(section.id)]: answers });
@@ -4418,19 +4948,19 @@ defineRoutes(MODULE, {
       startTime: null,
       endTime: null,
       cohortSize: 0,
+      // Every generated section is objective, because `blueprintFor` never emits a
+      // coding one for this tenant. The draft is built straight from that, with no
+      // branch on the section type: a branch that cannot be reached reads as a
+      // capability the product has, and the next person to touch this file would
+      // have to work out for themselves that it is dead.
       sections: blueprint.sections.map((section, index) => ({
         id: draftId * 10 + index + 1,
-        type: section.type === "coding" ? ("coding" as const) : ("quiz" as const),
+        type: "quiz" as const,
         title: section.title,
         description: `${section.count} question(s) on ${section.topic}.`,
         order: index + 1,
         timeLimitMinutes: section.time_limit_minutes,
-        questionIds:
-          section.type === "coding"
-            ? generatedCoding(section.count, section.programming_language ?? "javascript").map(
-                (p) => p.id,
-              )
-            : generatedMcqs(section.topic, section.count).map((m) => m.id),
+        questionIds: generatedMcqs(section.topic, section.count).map((m) => m.id),
       })),
     });
 

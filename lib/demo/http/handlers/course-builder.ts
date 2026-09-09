@@ -15,14 +15,16 @@
  * and every list reads it back, including deletes of SEEDED rows (recorded as
  * tombstones, since the seed itself is immutable and regenerated each load).
  *
- * The second half of the file is the COURSE GENERATOR: the screen where a
- * programme officer describes a course ("a 6 week course for TGPSC Group-II
- * aspirants on the Telangana movement", "a 40 hour rooftop solar installer
- * course for an ITI batch in Warangal") and watches weeks, topics, articles and
- * quizzes assemble before publishing. It plans from a blueprint per track rather
- * than from a language model, which is what keeps it accurate to the real
- * syllabus and trade instead of plausible-sounding, and it never emits a coding
- * exercise. See the TRACKS table for why.
+ * The middle of the file is the COURSE GENERATOR: the screen where a programme
+ * officer describes a course ("a 6 week course for TGPSC Group-II aspirants on
+ * the Telangana movement", "a 40 hour rooftop solar installer course for an ITI
+ * batch in Warangal") and watches weeks, topics, lessons and quizzes assemble
+ * before publishing. It plans from a blueprint per track rather than from a
+ * language model, which is what keeps it accurate to the real syllabus and trade
+ * instead of plausible-sounding, and it never emits a coding exercise. See the
+ * TRACKS table for the blueprint and for why. The tree is written on the POST
+ * and the job page then reads a projection of it, so a course that was started
+ * gets built whether or not anyone stays on the progress screen.
  *
  * Two id conventions matter here.
  *  - Content ids for seeded topics reuse the namespaces `adaptive-courses.ts`
@@ -2511,6 +2513,8 @@ function trackFor(text: string): Track {
 interface PlanTopic {
   title: string;
   concepts: string[];
+  /** The submodule this topic was built into. Set by `buildPlan`. */
+  submoduleId?: number;
 }
 
 interface PlanWeek {
@@ -2518,6 +2522,8 @@ interface PlanWeek {
   title: string;
   summary: string;
   topics: PlanTopic[];
+  /** The module this week was built into. Set by `buildPlan`. */
+  moduleId?: number;
 }
 
 /**
@@ -2690,11 +2696,16 @@ function buildPlan(
       description: week.summary,
       weekno: existingWeeks + week.week,
     });
+    // Remembered on the plan, so the job never has to find its own work again by
+    // title. An admin who renames a generated week while it is still building
+    // would otherwise make the progress screen report somebody else's topics.
+    week.moduleId = mod.id;
     for (const topic of week.topics) {
       const sub = createSubmodule(mod.id, {
         title: topic.title,
         description: `Work through ${topic.title}, then answer the practice questions on it.`,
       });
+      topic.submoduleId = sub.id;
       attachPlannedContent(track, sub.id, topic, kinds, perQuiz);
     }
   }
@@ -2802,13 +2813,18 @@ function jobTopics(job: GenJobSeed) {
   }> = [];
 
   for (const week of job.plan) {
-    // Match by title rather than by index: an admin who renamed or reordered a
-    // week between polls must not make the job report somebody else's topic.
-    const mod = modules.find((m) => m.title === week.title);
+    // By id where the plan recorded one, by title only for a plan stored before
+    // ids were kept. Never by index: an admin who reordered or deleted a week
+    // between polls would otherwise make the job report somebody else's topics.
+    const mod = modules.find((m) =>
+      week.moduleId != null ? m.id === week.moduleId : m.title === week.title,
+    );
     if (!mod) continue;
     const subs = builderSubmodules(mod.id);
     for (const topic of week.topics) {
-      const sub = subs.find((s) => s.title === topic.title);
+      const sub = subs.find((s) =>
+        topic.submoduleId != null ? s.id === topic.submoduleId : s.title === topic.title,
+      );
       if (!sub) continue;
       rows.push({
         moduleId: mod.id,
@@ -2877,9 +2893,11 @@ function jobDetail(job: GenJobSeed) {
     }
   });
 
+  const doneIds = new Set(rows.slice(0, topicsDone).map((r) => r.submoduleId));
   const tree = job.plan.map((week) => {
-    const weekRows = rows.filter((r) => r.moduleTitle === week.title);
-    const doneIds = new Set(rows.slice(0, topicsDone).map((r) => r.submoduleId));
+    const weekRows = rows.filter((r) =>
+      week.moduleId != null ? r.moduleId === week.moduleId : r.moduleTitle === week.title,
+    );
     return {
       id: weekRows[0]?.moduleId ?? week.week,
       weekno: weekRows[0]?.weekno ?? week.week,
@@ -4097,7 +4115,8 @@ defineRoutes(MODULE, {
         week: mod.weekno,
         title: mod.title,
         summary: mod.description,
-        topics: [{ title: topic, concepts }],
+        moduleId: mod.id,
+        topics: [{ title: topic, concepts, submoduleId: sub.id }],
       },
     ];
 
@@ -4145,10 +4164,16 @@ defineRoutes(MODULE, {
         if (missing.length === 0) continue;
         const concepts = conceptsForPlanTopic(track, mod.weekno, topics.length);
         attachPlannedContent(track, sub.id, { title: sub.title, concepts }, missing, perQuiz);
-        topics.push({ title: sub.title, concepts });
+        topics.push({ title: sub.title, concepts, submoduleId: sub.id });
       }
       if (topics.length > 0) {
-        plan.push({ week: mod.weekno, title: mod.title, summary: mod.description, topics });
+        plan.push({
+          week: mod.weekno,
+          title: mod.title,
+          summary: mod.description,
+          moduleId: mod.id,
+          topics,
+        });
       }
     }
 
