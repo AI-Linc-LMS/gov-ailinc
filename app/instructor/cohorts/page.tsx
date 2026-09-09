@@ -172,7 +172,7 @@ export default function InstructorCohortsPage() {
                 <Typography sx={{ fontWeight: 800, fontSize: "1.1rem" }}>{c.name}</Typography>
                 <Stack direction="row" spacing={0.5} alignItems="center" sx={{ color: "text.secondary", mt: 0.5 }}>
                   <Icon icon="mdi:bookmark-outline" width={14} />
-                  <Typography sx={{ fontSize: "0.82rem" }}>{c.client_name || "AI Linc"}</Typography>
+                  <Typography sx={{ fontSize: "0.82rem" }}>{c.client_name || "TSEM"}</Typography>
                 </Stack>
 
                 {/* What this batch is actually studying. Without it, "My Cohorts" and "My Courses"
@@ -181,7 +181,7 @@ export default function InstructorCohortsPage() {
                   <Icon icon="mdi:book-open-variant" width={14} style={{ color: "var(--font-tertiary)" }} />
                   {(c.courses ?? []).length === 0 ? (
                     <Typography sx={{ fontSize: "0.78rem", color: "var(--font-tertiary)", fontStyle: "italic" }}>
-                      No course assigned yet — ask your admin to map one to this batch.
+                      No course assigned yet. Ask your admin to map one to this batch.
                     </Typography>
                   ) : (
                     (c.courses ?? []).slice(0, 3).map((co) => (

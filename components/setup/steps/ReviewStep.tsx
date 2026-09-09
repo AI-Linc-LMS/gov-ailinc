@@ -118,7 +118,7 @@ export function ReviewStep({ state, data, onJumpToStep }: Props) {
             label={STEP_TITLES[2]}
             value={
               <span className="aw-mono text-[13px]">
-                {state.subdomain}.ailinc.com
+                {state.subdomain}.tsem.gov.in
                 {data.url?.custom_domain ? ` · ${data.url.custom_domain}` : ""}
               </span>
             }
@@ -152,7 +152,7 @@ export function ReviewStep({ state, data, onJumpToStep }: Props) {
               <>
                 {data.course_library?.choice === "import" ? (
                   <>
-                    <span>Import from AI Linc catalogue</span>
+                    <span>Import from the TSEM catalogue</span>
                     {importedCount > 0 ? (
                       <span className="aw-text-mute">
                         {" "}
@@ -189,7 +189,7 @@ export function ReviewStep({ state, data, onJumpToStep }: Props) {
           <span className="aw-text font-semibold">live</span> and learners can
           sign in via{" "}
           <code className="aw-mono rounded bg-white/[0.06] px-1.5 py-0.5 text-[12px] text-[#ffc66d]">
-            {state.subdomain}.ailinc.com
+            {state.subdomain}.tsem.gov.in
           </code>
           . You can edit branding, modules, and team anytime from Settings.
         </p>

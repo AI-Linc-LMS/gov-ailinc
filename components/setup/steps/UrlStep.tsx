@@ -29,7 +29,7 @@ export function UrlStep({ state, data, onChange }: Props) {
   const url = data.url || {};
   const hasCustomDomain = Boolean(url.custom_domain);
   // Default-collapsed so the page leads with the assigned subdomain - most
-  // tenants stay on *.ailinc.com forever. If they're returning to step 3
+  // instances stay on *.tsem.gov.in forever. If they're returning to step 3
   // with a domain already saved, start open so they don't have to dig for
   // their own data.
   const [domainOpen, setDomainOpen] = useState(hasCustomDomain);
@@ -47,7 +47,7 @@ export function UrlStep({ state, data, onChange }: Props) {
       <motion.div variants={itemVariants} className="aw-card aw-card-hover">
         <span className="aw-card-top-line" aria-hidden />
         <p className="aw-mono aw-text-mute text-[10px] uppercase tracking-[0.3em]">
-          Your AI Linc subdomain
+          Your TSEM subdomain
         </p>
         <p
           className="aw-mono mt-4 text-[clamp(20px,3vw,28px)]"
@@ -58,10 +58,10 @@ export function UrlStep({ state, data, onChange }: Props) {
             color: "transparent",
           }}
         >
-          {state.subdomain}.ailinc.com
+          {state.subdomain}.tsem.gov.in
         </p>
         <p className="aw-text-dim mt-3 text-[13px] leading-[1.65]">
-          Assigned by your AI Linc super-admin. This URL is permanent.
+          Assigned by the mission&apos;s platform administrator. This URL is permanent.
         </p>
       </motion.div>
 
@@ -144,7 +144,7 @@ export function UrlStep({ state, data, onChange }: Props) {
                 </div>
 
                 <CustomDomainSteps
-                  slugUrl={`${state.subdomain}.ailinc.com`}
+                  slugUrl={`${state.subdomain}.tsem.gov.in`}
                   customDomain={url.custom_domain || ""}
                 />
               </div>
@@ -281,10 +281,10 @@ function CustomDomainSteps({
               <p className="aw-help mt-4">
                 Not sure where to click?{" "}
                 <a
-                  href="mailto:hello@ailinc.com"
+                  href="mailto:support@tsem.gov.in"
                   className="aw-mono text-[12px] text-[#00e0ff] hover:underline"
                 >
-                  hello@ailinc.com
+                  support@tsem.gov.in
                 </a>{" "}
                 - send a screenshot of your DNS page and we&apos;ll do it
                 with you.

@@ -343,7 +343,7 @@ function WelcomeMessageCard({
             <p className="aw-text-dim text-[12px] font-medium">
               {filled
                 ? "Looks good. You can tweak this from Settings → Branding later."
-                : "Skip to use the AI Linc default."}
+                : "Skip to use the TSEM default."}
             </p>
             <span
               className="aw-mono text-[10px] font-bold uppercase tracking-[0.22em]"

@@ -1,20 +1,24 @@
 /**
- * Lazy, cached loader for the assessment PDF's AiLinc logo mark, rasterized to PNG for jsPDF.
+ * Lazy, cached loader for the assessment PDF's fallback logo mark, rasterized to PNG for jsPDF.
  * The first report download pays the cost once; the All-PDFs zip reuses the cache.
+ *
+ * The fallback is the platform operator's mark, which on this build is the mission's, not the
+ * vendor's. A tenant that has uploaded its own logo never reaches it.
  *
  * Browser-only (fetch / Image / canvas). Resolves to null on the server or on any failure, and
  * the PDF generator degrades gracefully (no logo) so a report always renders.
  */
 
 // White monochrome mark so the logo reads cleanly on the violet→pink header gradient.
-const LOGO_SVG_URL = "/logos/ai-linc-mark-white.svg";
+const LOGO_SVG_URL = "/logos/tsem-mark-white.svg";
 
 export interface PdfLogo {
   dataUrl: string;
   w: number;
   h: number;
-  /** True for the AI Linc mark, which is white-on-transparent and sits directly on the gradient.
-   *  A tenant logo is arbitrary artwork and needs a light plate behind it to stay legible. */
+  /** True for the fallback TSEM mark, which is white-on-transparent and sits directly on the
+   *  gradient. A tenant logo is arbitrary artwork and needs a light plate behind it to stay
+   *  legible. */
   isMonochromeMark: boolean;
 }
 
@@ -24,7 +28,7 @@ let _logoPng: { dataUrl: string; w: number; h: number } | null | undefined;
 const _tenantLogos = new Map<string, PdfLogo | null>();
 let _activeBrand: { name: string; logo: PdfLogo | null } | null = null;
 
-/** The AiLinc logo mark rasterized to a PNG data URL (retina-scaled), or null if unavailable. */
+/** The fallback logo mark rasterized to a PNG data URL (retina-scaled), or null if unavailable. */
 export async function loadLogoPng(): Promise<{ dataUrl: string; w: number; h: number } | null> {
   if (_logoPng !== undefined) return _logoPng;
   try {
@@ -66,8 +70,8 @@ export async function loadLogoPng(): Promise<{ dataUrl: string; w: number; h: nu
 /**
  * Rasterize a tenant's own logo for the report header.
  *
- * Returns null on ANY failure, and the caller falls back to the AI Linc mark rather than dropping
- * the header — a report with no branding is worse than one with ours.
+ * Returns null on ANY failure, and the caller falls back to the mission mark rather than dropping
+ * the header. A report with no branding at all is worse than one carrying the mission's.
  *
  * `crossOrigin` is set because the canvas is read back with toDataURL: without it a logo served
  * from S3 or a CDN taints the canvas and the read throws, which would take the whole PDF down
@@ -122,8 +126,8 @@ export async function loadTenantLogoPng(url: string): Promise<PdfLogo | null> {
 /**
  * Preload branding for the report header (call before a bulk export so each item reuses the cache).
  *
- * Passing the tenant makes the report say who it is from. Without it the export is AI Linc-branded
- * for every institution, which is wrong on a document a learner keeps and may forward.
+ * Passing the tenant makes the report say who it is from. Without it every export carries the
+ * platform-level mark, which is wrong on a document an aspirant keeps and may forward.
  */
 export async function preloadPdfBrandAssets(brand?: {
   name?: string | null;
@@ -139,7 +143,7 @@ export async function preloadPdfBrandAssets(brand?: {
   };
 }
 
-/** The branding the (synchronous) PDF generator should draw. Falls back to the AI Linc mark. */
+/** The branding the (synchronous) PDF generator should draw. Falls back to the TSEM mark. */
 export function getActivePdfBrand(): { name: string; logo: PdfLogo | null } {
   if (_activeBrand) return _activeBrand;
   const fallback = getCachedLogoPng();

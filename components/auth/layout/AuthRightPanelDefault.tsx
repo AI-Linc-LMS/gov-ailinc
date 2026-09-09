@@ -83,7 +83,7 @@ export function AuthRightPanelDefault({
   supportingText,
 }: AuthRightPanelDefaultProps) {
   const heroSrc = loginImgUrl?.trim() || "";
-  const displayName = brandName || "AI Linc";
+  const displayName = brandName || "Telangana Skills & Employment Mission";
 
   return (
     <Box
@@ -272,7 +272,7 @@ export function AuthMobileBrandBar({
   brandName: string;
   clientInfoLoading: boolean;
 }) {
-  const displayName = brandName || "AI Linc";
+  const displayName = brandName || "Telangana Skills & Employment Mission";
 
   return (
     <Box

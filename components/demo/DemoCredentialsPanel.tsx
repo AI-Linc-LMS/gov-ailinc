@@ -6,7 +6,7 @@
  * A prospect is handed a URL and, historically, a paragraph of credentials to
  * type. Every character of that is a chance to fumble on a call, so the three
  * personas are one click each. The password is still shown, because a prospect
- * exploring on their own later needs it — and because a visible, working
+ * exploring on their own later needs it, and because a visible, working
  * credential is a small proof that the sign-in gate is real rather than painted.
  *
  * Deliberately styled from `authTokens` rather than invented values: this panel
@@ -31,7 +31,7 @@ import {
 interface DemoCredentialsPanelProps {
   /** Fill the form with this persona and sign in. */
   onSelect: (persona: DemoPersona) => void;
-  /** True while a sign-in is in flight — blocks double submissions. */
+  /** True while a sign-in is in flight; blocks double submissions. */
   busy?: boolean;
 }
 

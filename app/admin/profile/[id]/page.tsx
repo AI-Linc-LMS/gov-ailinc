@@ -127,7 +127,11 @@ export default function AdminProfilePage() {
         <PublicProfileView
           profile={profile}
           variant="admin"
-          organizationName={clientInfo ? clientInfo.name || "AI-Linc Learning" : undefined}
+          organizationName={
+            clientInfo
+              ? clientInfo.name || "Telangana Skills & Employment Mission"
+              : undefined
+          }
         />
       </Box>
     </MainLayout>

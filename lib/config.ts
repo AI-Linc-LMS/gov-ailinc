@@ -15,7 +15,7 @@ function resolveClientId(): string {
   if (v) return v;
 
   // DEMO REPO ONLY: there is no backend and no other tenant, so the guard below
-  // has nothing to protect against — falling back cannot leak anything, and it
+  // has nothing to protect against. Falling back cannot leak anything, and it
   // means the repo clones and runs with no environment setup at all.
   if (DEMO_MODE) return String(DEMO_CLIENT_ID);
 
@@ -47,11 +47,16 @@ export const config = {
   /**
    * Central Google OAuth proxy origin. One Google Cloud Console entry covers
    * every tenant; the proxy hands a short-lived JWT back to this app via
-   * /auth/handoff. Default points to the production backend that hosts the
-   * /central-auth routes.
+   * /auth/handoff. A real deployment sets NEXT_PUBLIC_AUTH_PROXY_URL to whatever
+   * host serves its /central-auth routes.
+   *
+   * The default below is the mission's own illustrative host, not the vendor's
+   * production backend, which is what used to sit here. Nothing in this build
+   * reaches it: every call site is gated on `tenantSlug`, which is unset here, so
+   * the value only ever documents the shape the env var should take.
    */
   authProxyUrl: (
-    process.env.NEXT_PUBLIC_AUTH_PROXY_URL || "https://be-app.ailinc.com"
+    process.env.NEXT_PUBLIC_AUTH_PROXY_URL || "https://auth.tsem.gov.in"
   ).replace(/\/$/, ""),
   /** Fallback WebSocket URL when token API does not return `livekit_url` */
   livekitUrl: (process.env.NEXT_PUBLIC_LIVEKIT_URL || "").replace(/\/$/, ""),

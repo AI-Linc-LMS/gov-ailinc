@@ -275,7 +275,7 @@ export function AITutorSidecar({
       </Box>
 
       <Typography sx={{ fontSize: "0.66rem", color: "text.secondary", fontStyle: "italic", textAlign: "center", mt: 1 }}>
-        Powered by AI Linc Adaptive Engine
+        Powered by the TSEM Adaptive Engine
       </Typography>
     </Box>
   );

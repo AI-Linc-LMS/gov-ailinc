@@ -1,7 +1,7 @@
 /**
  * Demo mode: public entry point.
  *
- * `installDemoTransport` is the single seam that turns the production AI Linc
+ * `installDemoTransport` is the single seam that turns the production LMS
  * frontend into a self-contained prototype. It swaps the adapter on the app's one
  * axios instance, so every service module is answered locally while keeping its
  * interceptors, retries, error handling and loading states exactly as they behave
@@ -34,7 +34,7 @@ export function installDemoTransport(client: AxiosInstance): void {
   if (typeof window !== "undefined") {
     // Exposed in production too, deliberately. Since the console warning for a
     // missed route is stripped from a production build, this registry is the
-    // only way to audit the bundle that actually ships — and auditing the dev
+    // only way to audit the bundle that actually ships, and auditing the dev
     // build instead is how a whole class of gaps stayed invisible. It is inert
     // and read-only: a visitor has to open devtools and type it to find it.
     (window as unknown as Record<string, unknown>).__demo = {
@@ -46,7 +46,7 @@ export function installDemoTransport(client: AxiosInstance): void {
 
   if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
     console.info(
-      `%c[demo] %cAI Linc prototype — ${registeredRoutes().length} endpoints served locally. ` +
+      `%c[demo] %cTSEM prototype: ${registeredRoutes().length} endpoints served locally. ` +
         `No network calls leave this browser.`,
       "color:#a855f7;font-weight:700",
       "color:inherit",

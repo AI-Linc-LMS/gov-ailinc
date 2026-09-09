@@ -299,7 +299,7 @@ export default function ProfilePage() {
                     ? [
                         {
                           id: 1,
-                          name: clientInfo.name || "AI-Linc Learning",
+                          name: clientInfo.name || "Telangana Skills & Employment Mission",
                           role: t("profile.student"),
                           joinedDate: "Jan 1, 2024",
                         },

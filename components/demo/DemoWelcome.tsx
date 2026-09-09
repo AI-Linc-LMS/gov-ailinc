@@ -24,7 +24,13 @@ import { useTour } from "@/components/community/TourProvider";
 import { DEMO_MODE, DEMO_TENANT } from "@/lib/demo/config";
 import { platformTour, welcomeCopy } from "@/lib/demo/tour";
 
-/** sessionStorage, not localStorage: "this browser tab's visit", not "forever". */
+/**
+ * sessionStorage, not localStorage: "this browser tab's visit", not "forever".
+ *
+ * The key keeps its original prefix. It is an internal identifier that no visitor
+ * ever reads, and renaming it would only throw away the "already offered" flag of
+ * anyone mid-session at the moment of a deploy, to change nothing on screen.
+ */
 const SEEN_KEY = "ailinc-demo-welcome-seen";
 
 /** Home routes where an orientation makes sense. Not mid-quiz. */
@@ -41,7 +47,7 @@ export function DemoWelcome() {
    *
    * "Once per session" was too sticky: signing out and back in as another role
    * inside the same tab skipped the orientation entirely, which is exactly the
-   * moment a prospect most needs it — they are seeing a workspace they have not
+   * moment a prospect most needs it: they are seeing a workspace they have not
    * seen before. Clearing the flag here makes it "once per sign-in", which is
    * what was actually asked for.
    */

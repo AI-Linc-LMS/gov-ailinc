@@ -12,7 +12,7 @@ export default async function Image({ params }: { params: Promise<{ credentialId
   const cred = await fetchCredentialServer(credentialId);
   const recipient = cred?.recipient_name || "Learner";
   const course = cred?.course_title || "Course Completion";
-  const issuer = cred?.issuer_name || "AI Linc";
+  const issuer = cred?.issuer_name || "Telangana Skills & Employment Mission";
   const id = cred?.credential_id || credentialId;
 
   return new ImageResponse(

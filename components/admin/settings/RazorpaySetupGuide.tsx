@@ -77,7 +77,7 @@ export function RazorpaySetupGuide({ webhookUrl }: { webhookUrl: string }) {
           Razorpay activates the account you can only generate <Code>rzp_test_…</Code> keys, which
           take no real money. You must be the account <strong>Owner</strong> or an{" "}
           <strong>Admin</strong> to see Settings → API Keys. Money settles into{" "}
-          <strong>your</strong> bank account, on Razorpay&apos;s own settlement cycle - AI Linc
+          <strong>your</strong> bank account, on Razorpay&apos;s own settlement cycle - TSEM
           never holds it.
         </Typography>
       </Box>
@@ -224,8 +224,8 @@ export function RazorpaySetupGuide({ webhookUrl }: { webhookUrl: string }) {
           <strong>Active Events</strong> - tick exactly these three:
           <Box component="ul" sx={{ mt: 0.5, mb: 0, pl: 2 }}>
             <Box component="li" sx={liSx}>
-              <Code>payment.captured</Code> <em>(the money arrived — this is the one that grants
-              access)</em>
+              <Code>payment.captured</Code> <em>(the money arrived, and this is the one that
+              grants access)</em>
             </Box>
             <Box component="li" sx={liSx}>
               <Code>order.paid</Code> <em>(belt and braces: the order is fully paid)</em>

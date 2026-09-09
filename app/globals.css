@@ -391,15 +391,20 @@ input::placeholder {
   --error-surface: #fecaca;
   --error-strong: #991b1b;
 
-  /* AI Linc brand gradient — matches the gradient stops in the dark-mode mark SVG
-     at /public/logos/ai-linc-mark-darkmode.svg. Used by the AiLincLoader (and any
+  /* Tenant brand gradient. Matches the gradient stops in the dark-mode mark SVG
+     at /public/logos/tsem-mark-darkmode.svg. Used by the AiLincLoader (and any
      future brand-mark renderers) so the brand identity is centralized here and the
-     loader doesn't carry inline hex literals. */
-  --ailinc-brand-gradient-start: #5b86ff;
-  --ailinc-brand-gradient-end: #00e0ff;
+     loader doesn't carry inline hex literals.
+
+     Renamed off the vendor's `--ailinc-` prefix with the government fork. The two
+     consumers are this file and components/common/AiLincLoader.tsx, so the rename
+     is contained; the component's own file name and exported symbol stay as they
+     are, because those are internal identifiers imported from several routes. */
+  --tsem-brand-gradient-start: #818cf8;
+  --tsem-brand-gradient-end: #34d399;
   /* White shimmer that travels along the mark while the loader is alive. Kept as a
      token (rather than a literal #FFFFFF) so any future contrast tweak is one edit. */
-  --ailinc-brand-highlight: #ffffff;
+  --tsem-brand-highlight: #ffffff;
 
   /* Support / ticketing system — brand-color tokens follow the tenant primary.
    * Status colors (yellow/in-progress blue, reopen orange, success green) stay
@@ -556,9 +561,11 @@ body {
 }
 
 /* =========================================================================
- * AI Linc cinematic design system — scoped to the /setup wizard only.
- * Mirrors the tokens & utilities from ailinc-web so the first-login
- * experience matches the marketing site. Wrapper: <div class="ailinc-wizard">.
+ * Cinematic design system for the first-run setup wizard, scoped to /setup only.
+ * The wrapper class stays `.ailinc-wizard`: it is an internal identifier, paired
+ * with the `aw-` utility prefix below and with components/setup/**, and renaming
+ * it would touch a hundred call sites to change nothing a user can see.
+ * Wrapper: <div class="ailinc-wizard">.
  * ======================================================================= */
 .ailinc-wizard {
   /* Theme tokens */

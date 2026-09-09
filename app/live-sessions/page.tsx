@@ -97,7 +97,7 @@ function buildIcs(sessions: StudentLiveSession[]): string {
     events.push(
       [
         "BEGIN:VEVENT",
-        `UID:liveclass-${s.id}@ailinc.com`,
+        `UID:liveclass-${s.id}@tsem.gov.in`,
         `DTSTAMP:${now}`,
         `DTSTART:${icsStamp(start)}`,
         `DTEND:${icsStamp(end)}`,
@@ -116,7 +116,7 @@ function buildIcs(sessions: StudentLiveSession[]): string {
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//AI Linc//Live Sessions//EN",
+    "PRODID:-//Telangana Skills & Employment Mission//Live Sessions//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     ...events,

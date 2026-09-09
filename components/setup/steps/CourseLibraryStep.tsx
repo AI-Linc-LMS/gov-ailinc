@@ -32,8 +32,8 @@ const OPTIONS: {
 }[] = [
   {
     value: "import",
-    label: "Import from AI Linc catalogue",
-    desc: "Cherry-pick from our 425+ curated courses. We'll duplicate each one (modules, submodules, content references) into your tenant on launch - you own the copies and can edit freely.",
+    label: "Import from the TSEM catalogue",
+    desc: "Cherry-pick from the mission's curated catalogue. We'll duplicate each one (modules, submodules, content references) into your tenant on launch - you own the copies and can edit freely.",
   },
   {
     value: "skip",
@@ -151,7 +151,7 @@ export function CourseLibraryStep({ data, onChange }: Props) {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   "Import from AI Linc catalogue" - fetches the master catalogue from
+   "Import from the TSEM catalogue" - fetches the master catalogue from
    /api/tenant/wizard/catalogue/ and lets the user pick courses to duplicate.
    Each card expands to show its modules + submodule counts so the admin
    knows what they're committing to before launch.
@@ -236,7 +236,7 @@ function CatalogueBrowser({
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="aw-mono text-[10px] uppercase tracking-[0.28em] text-[#00e0ff]">
-            AI Linc catalogue
+            TSEM catalogue
           </p>
           <h4 className="aw-text mt-1 text-[16px] font-semibold">
             Pick what to import

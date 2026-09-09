@@ -301,7 +301,7 @@ function CalibrationTakeInner() {
               )}
 
               <Box sx={{ ...CARD_SX, bgcolor: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.25)" }}>
-                <Typography sx={{ fontWeight: 800, color: "#c4b5fd", mb: 1 }}>✦ How AI Linc will adapt to you</Typography>
+                <Typography sx={{ fontWeight: 800, color: "#c4b5fd", mb: 1 }}>✦ How TSEM will adapt to you</Typography>
                 <Stack spacing={1}>
                   {ins.how_ai_helps.map((h, i) => (
                     <Stack key={i} direction="row" spacing={1}>

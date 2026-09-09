@@ -95,7 +95,7 @@ export function ZoomSetupGuide({ webhookUrl }: { webhookUrl: string }) {
           ).
         </Box>
         <Box component="li" sx={liSx}>
-          Choose <strong>Server-to-Server OAuth</strong> → <strong>Create</strong>. Name it e.g. “AI Linc LMS”.
+          Choose <strong>Server-to-Server OAuth</strong> → <strong>Create</strong>. Name it e.g. “TSEM LMS”.
         </Box>
         <Box component="li" sx={liSx}>
           <strong>App Credentials</strong> tab - copy <strong>Account ID</strong>, <strong>Client ID</strong> and{" "}
@@ -114,7 +114,7 @@ export function ZoomSetupGuide({ webhookUrl }: { webhookUrl: string }) {
             </Box>
             <Box component="li" sx={liSx}>
               User - <Code>user:read:admin</Code>{" "}
-              <em>(required — sessions are created as your chosen host user; without it every create fails)</em>
+              <em>(required, because sessions are created as your chosen host user; without it every create fails)</em>
             </Box>
             <Box component="li" sx={liSx}>
               Cloud Recording - <Code>cloud_recording:read:list_recording_files:admin</Code>,{" "}
@@ -126,8 +126,9 @@ export function ZoomSetupGuide({ webhookUrl }: { webhookUrl: string }) {
             </Box>
             <Box component="li" sx={liSx}>
               Dashboard - <Code>dashboard:read:admin</Code>{" "}
-              <em>(the live “N joined” count while a session is running — also needs a Zoom
-              Business plan or higher; on Pro this endpoint is unavailable whatever the scope)</em>
+              <em>(the live “N joined” count while a session is running; also needs a Zoom
+              Business plan or higher, and on Pro this endpoint is unavailable whatever the
+              scope)</em>
             </Box>
             <Box component="li" sx={liSx}>
               Account - <Code>account:read:admin</Code>, <Code>account:write:admin</Code>{" "}
@@ -135,15 +136,15 @@ export function ZoomSetupGuide({ webhookUrl }: { webhookUrl: string }) {
             </Box>
             <Box component="li" sx={liSx}>
               <strong>Webinars (optional)</strong> - <Code>webinar:write:admin</Code>, <Code>webinar:read:admin</Code>{" "}
-              <em>(webinars, panelists and registration — needs the Zoom Webinar add-on)</em>
+              <em>(webinars, panelists and registration; needs the Zoom Webinar add-on)</em>
             </Box>
           </Box>
           <Box sx={{ ...liSx, mt: 0.75, opacity: 0.85 }}>
             Newer Zoom apps use “granular” scope names such as{" "}
             <Code>meeting:read:list_meetings:admin</Code> instead of the classic ones above. If the
-            picker doesn’t show these exact strings, search it for the resource word — <em>meeting</em>,{" "}
+            picker doesn’t show these exact strings, search it for the resource word (<em>meeting</em>,{" "}
             <em>user</em>, <em>report</em>, <em>dashboard</em>, <em>account</em>, <em>recording</em>,{" "}
-            <em>webinar</em> — and add the read/write <Code>:admin</Code> variants.
+            <em>webinar</em>) and add the read/write <Code>:admin</Code> variants.
           </Box>
         </Box>
         <Box component="li" sx={liSx}>

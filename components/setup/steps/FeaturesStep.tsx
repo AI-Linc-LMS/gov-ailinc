@@ -825,7 +825,7 @@ function PairingBanner() {
 // ──────────────────────── Loading ────────────────────────
 
 /**
- * Branded loading panel for the features list - mirrors the AI LINC mark used
+ * Branded loading panel for the features list - mirrors the TSEM mark used
  * on the setup page's initial loader so the wizard feels consistent end-to-end.
  */
 function FeaturesLoading() {
@@ -848,7 +848,7 @@ function FeaturesLoading() {
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/logos/ai-linc-mark-darkmode.svg"
+          src="/logos/tsem-mark-darkmode.svg"
           alt=""
           width={56}
           height={56}

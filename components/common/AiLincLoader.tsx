@@ -1,5 +1,17 @@
 "use client";
 
+/**
+ * The full-bleed brand loader.
+ *
+ * The exported name (and this file's name) are deliberately unchanged: several
+ * routes import `AiLincLoader`, and the symbol is an internal identifier, not
+ * something a user ever reads. What a user does see is the mark and the caption,
+ * and both are now the tenant's. The mark is the TSEM device drawn inline rather
+ * than fetched, so the loader paints before any asset request resolves. It is the
+ * same geometry as /public/logos/tsem-mark-*.svg: three ascending arches on a
+ * common plinth. Keep the two in step if either is redrawn.
+ */
+
 import { Box, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 
@@ -13,7 +25,7 @@ export interface AiLincLoaderProps {
 
 export function AiLincLoader({
   variant = "fullscreen",
-  label = "AI LINC · LOADING",
+  label = "TSEM · LOADING",
   subMessage,
   size,
   hidePercent = false,
@@ -45,8 +57,17 @@ export function AiLincLoader({
 
   const markSize = size ?? (variant === "fullscreen" ? 320 : 180);
 
+  // The three arches, drawn outer-then-inner so evenodd hollows each one out.
   const markPath =
-    "M 200 120 C 150 48.5, 105 48.5, 100 120 C 95 191.5, 150 191.5, 200 120 C 282.5 9.999999999999986, 356.75 9.999999999999986, 365 120 C 373.25 230, 282.5 230, 200 120 Z M 200 120 C 164 69, 129.6 69, 126 120 C 122.4 171, 164 171, 200 120 C 268.5 34, 332.15 34, 339 120 C 345.85 206, 268.5 206, 200 120 Z";
+    "M 66 210 L 66 162 A 34 34 0 0 1 134 162 L 134 210 Z M 86 210 L 86 162 A 14 14 0 0 1 114 162 L 114 210 Z M 148 210 L 148 114 A 40 40 0 0 1 228 114 L 228 210 Z M 168 210 L 168 114 A 20 20 0 0 1 208 114 L 208 210 Z M 242 210 L 242 62 A 46 46 0 0 1 334 62 L 334 210 Z M 262 210 L 262 62 A 26 26 0 0 1 308 62 L 308 210 Z";
+  // The plinth the arches stand on. Kept a separate path rather than a fourth
+  // subpath of `markPath`, because evenodd would punch a notch out of it wherever
+  // it overlaps the feet of the arches.
+  const plinthPath = "M 66 206 L 334 206 L 334 228 L 66 228 Z";
+  // Roughly the outline length of `markPath`. The trace sweep reads as a wipe, so
+  // it only has to be at least the path length; too short and the sweep stalls
+  // mid-mark. Recompute if the geometry above changes.
+  const traceLength = 2200;
 
   const content = (
     <Box
@@ -80,58 +101,61 @@ export function AiLincLoader({
           <defs>
             <linearGradient
               id="ailinc-loader-grad"
-              x1="40"
+              x1="66"
               y1="120"
-              x2="380"
+              x2="334"
               y2="120"
               gradientUnits="userSpaceOnUse"
             >
               <stop
                 offset="0"
-                style={{ stopColor: "var(--ailinc-brand-gradient-start)" }}
+                style={{ stopColor: "var(--tsem-brand-gradient-start)" }}
               />
               <stop
                 offset="1"
-                style={{ stopColor: "var(--ailinc-brand-gradient-end)" }}
+                style={{ stopColor: "var(--tsem-brand-gradient-end)" }}
               />
             </linearGradient>
             <linearGradient
               id="ailinc-loader-trace"
-              x1="40"
+              x1="66"
               y1="120"
-              x2="380"
+              x2="334"
               y2="120"
               gradientUnits="userSpaceOnUse"
             >
               <stop
                 offset="0"
                 style={{
-                  stopColor: "var(--ailinc-brand-highlight)",
+                  stopColor: "var(--tsem-brand-highlight)",
                   stopOpacity: 0,
                 }}
               />
               <stop
                 offset="0.5"
                 style={{
-                  stopColor: "var(--ailinc-brand-highlight)",
+                  stopColor: "var(--tsem-brand-highlight)",
                   stopOpacity: 0.9,
                 }}
               />
               <stop
                 offset="1"
                 style={{
-                  stopColor: "var(--ailinc-brand-highlight)",
+                  stopColor: "var(--tsem-brand-highlight)",
                   stopOpacity: 0,
                 }}
               />
             </linearGradient>
           </defs>
-          <g transform="rotate(-7 200 120)">
+          {/* No rotation. The arches sit square on their plinth; the -7deg tilt
+              that used to be here belonged to the vendor's mark. */}
+          <g>
             <path
               d={markPath}
               fill="url(#ailinc-loader-grad)"
               fillRule="evenodd"
             />
+            <path d={plinthPath} fill="url(#ailinc-loader-grad)" />
             <path
               d={markPath}
               fill="none"
@@ -140,8 +164,8 @@ export function AiLincLoader({
               strokeLinecap="round"
               fillRule="evenodd"
               style={{
-                strokeDasharray: 1600,
-                strokeDashoffset: 1600,
+                strokeDasharray: traceLength,
+                strokeDashoffset: traceLength,
                 mixBlendMode: "screen",
                 animation:
                   "ailinc-mark-trace 2.6s cubic-bezier(.22,1,.36,1) infinite",
@@ -164,9 +188,9 @@ export function AiLincLoader({
               50%      { transform: scale(1.035); }
             }
             @keyframes ailinc-mark-trace {
-              0%   { stroke-dashoffset: 1600; }
+              0%   { stroke-dashoffset: ${traceLength}; }
               60%  { stroke-dashoffset: 0; }
-              100% { stroke-dashoffset: -1600; }
+              100% { stroke-dashoffset: -${traceLength}; }
             }
           `,
         }}
@@ -198,7 +222,7 @@ export function AiLincLoader({
             sx={{
               display: "inline-block",
               minWidth: 24,
-              color: "var(--ailinc-brand-gradient-end)",
+              color: "var(--tsem-brand-gradient-end)",
               fontVariantNumeric: "tabular-nums",
               fontWeight: 600,
               textAlign: "right",

@@ -685,7 +685,7 @@ function drawHorizontalGradient(
 }
 
 /**
- * Signature brand header band on page 1: the violet→pink gradient, the AiLinc logo mark, a
+ * Signature brand header band on page 1: the violet→pink gradient, the logo mark, a
  * cursive "Assessment Report" wordmark, and the assessment name. Returns the y just below it.
  */
 function drawBrandHeader(
@@ -697,8 +697,8 @@ function drawBrandHeader(
   const bandH = 34;
   drawHorizontalGradient(pdf, 0, 0, pageW, bandH, GRADIENT_START, GRADIENT_END);
 
-  // The institution's own mark and name — this is their document, not ours. Falls back to the
-  // AI Linc mark when a tenant has no logo, or when theirs could not be loaded.
+  // The institution's own mark and name: this is their document. Falls back to the platform
+  // mark (the mission's) when a tenant has no logo, or when theirs could not be loaded.
   const brand = getActivePdfBrand();
   const logo = brand.logo;
   let textX = margin;
@@ -707,11 +707,11 @@ function drawBrandHeader(
     const logoW = Math.min((logo.w / logo.h) * logoH, 34);
     try {
       if (logo.isMonochromeMark) {
-        // The AI Linc mark is white-on-transparent and reads as one with the white wordmark, so
-        // it sits directly on the gradient with no plate.
+        // The platform mark is white-on-transparent and reads as one with the white wordmark,
+        // so it sits directly on the gradient with no plate.
         pdf.addImage(logo.dataUrl, "PNG", margin, 8.5, logoW, logoH);
       } else {
-        // A tenant logo is arbitrary artwork — usually dark ink, often on a transparent
+        // A tenant logo is arbitrary artwork, usually dark ink and often on a transparent
         // background. On a violet→pink gradient that is close to invisible, so it gets a light
         // plate. Without this the "branding" a client asked for reads as a smudge.
         const padX = 2.4;
@@ -734,7 +734,7 @@ function drawBrandHeader(
   pdf.setFontSize(9);
   // Upper-cased for the wordmark treatment, and truncated rather than allowed to collide with
   // the assessment name on the right.
-  const wordmark = (brand.name || "AILINC").toUpperCase();
+  const wordmark = (brand.name || "TSEM").toUpperCase();
   pdf.text(pdf.splitTextToSize(wordmark, pageW / 2 - textX)[0] ?? wordmark, textX, 12.5, {
     charSpace: 1.1,
   });

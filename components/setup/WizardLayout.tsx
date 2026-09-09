@@ -68,7 +68,7 @@ export function WizardLayout({
               className="aw-mono text-[10px] uppercase tracking-[0.32em]"
               style={{ color: "rgb(var(--aw-fg) / 0.55)" }}
             >
-              AI Linc
+              TSEM
             </span>
             <span
               className="aw-mono text-[10px] uppercase tracking-[0.32em]"

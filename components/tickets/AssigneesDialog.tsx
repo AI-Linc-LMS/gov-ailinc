@@ -167,8 +167,8 @@ export function AssigneesDialog({ open, clientId, onClose }: Props) {
           variant="body2"
           sx={{ color: "var(--font-muted)", fontWeight: 500, mb: 2 }}
         >
-          Anyone you list here will receive an email from AI Linc each time a
-          student raises a new ticket. The email links straight to the ticket
+          Anyone you list here will receive an email from TSEM each time an
+          aspirant raises a new ticket. The email links straight to the ticket
           so they can jump in and respond.
         </Typography>
 

@@ -45,7 +45,7 @@ export interface PaymentOptions {
 }
 
 const SETTLING_MESSAGE =
-  "Payment received. We're confirming it now — refresh in a moment and it will be there.";
+  "Payment received. We're confirming it now, so refresh in a moment and it will be there.";
 
 export const usePayment = () => {
   const { user } = useAuth();
@@ -91,7 +91,7 @@ export const usePayment = () => {
           key: orderData.key,
           amount: orderData.amount,
           currency: orderData.currency || "INR",
-          name: clientInfo?.name || "AI LINC",
+          name: clientInfo?.name || "Telangana Skills & Employment Mission",
           description: options.description,
           order_id: orderData.order_id,
           handler: async function (response: Record<string, string>) {

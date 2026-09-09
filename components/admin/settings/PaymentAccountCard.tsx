@@ -23,9 +23,10 @@ import { RazorpaySetupGuide } from "./RazorpaySetupGuide";
  * Connect this institution's own Razorpay account.
  *
  * Payments FAIL CLOSED: until an account is connected here, this institution cannot charge for
- * anything. That is deliberate — previously an unconfigured institution still took payments, but
- * they settled into AI Linc's Razorpay account rather than its own, and nothing on any screen said
- * so. The "where the money goes" line exists so that can never be invisible again.
+ * anything. That is deliberate. Previously an unconfigured institution still took payments, but
+ * they settled into the platform's own Razorpay account rather than the institution's, and nothing
+ * on any screen said so. The "where the money goes" line exists so that can never be invisible
+ * again.
  *
  * The secret is write-only. It is sent once and never returned, so the field is always blank on
  * load — that is not a bug, and the helper text says so rather than leaving an admin wondering
@@ -114,7 +115,7 @@ export function PaymentAccountCard() {
     if (!url) return;
     navigator.clipboard.writeText(url).then(
       () => showToast("Webhook URL copied", "success"),
-      () => showToast("Couldn't copy — select the text instead", "error")
+      () => showToast("Couldn't copy. Select the text instead", "error")
     );
   };
 
@@ -194,8 +195,8 @@ export function PaymentAccountCard() {
         >
           {onPlatformAccount ? (
             <>
-              Payments from your learners currently settle into <strong>AI Linc&apos;s</strong>{" "}
-              Razorpay account, not yours. Contact AI Linc to change this arrangement.
+              Payments from your learners currently settle into <strong>TSEM&apos;s</strong>{" "}
+              Razorpay account, not yours. Contact the Programme Office to change this arrangement.
             </>
           ) : (
             <>
@@ -213,7 +214,7 @@ export function PaymentAccountCard() {
           sx={{ borderRadius: 2, fontSize: "0.83rem" }}
         >
           <strong>No webhook is configured.</strong> Your keys will open a checkout, but a learner is
-          only granted access if their browser returns to this site after paying — close the tab or
+          only granted access if their browser returns to this site after paying. Close the tab or
           lose signal and they are charged with nothing to show for it. Follow{" "}
           <strong>Part 3</strong> of the setup guide below.
         </Alert>
@@ -248,7 +249,7 @@ export function PaymentAccountCard() {
             onChange={(e) => setKeySecret(e.target.value)}
             helperText={
               creds?.secret_configured
-                ? "A secret is already stored. It is never shown again — enter it only to replace it."
+                ? "A secret is already stored. It is never shown again, so enter it only to replace it."
                 : "Shown by Razorpay once, when you generate the key."
             }
             sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
@@ -282,7 +283,7 @@ export function PaymentAccountCard() {
                 variant="caption"
                 sx={{ color: "var(--font-tertiary)", mt: 0.5, display: "block" }}
               >
-                Unique to your institution — it settles only your orders.
+                Unique to your institution, and it settles only your orders.
               </Typography>
             </Box>
           )}
@@ -297,8 +298,8 @@ export function PaymentAccountCard() {
             onChange={(e) => setWebhookSecret(e.target.value)}
             helperText={
               creds?.webhook_configured
-                ? "A webhook secret is stored. It is never shown again — enter it only to replace it."
-                : "Razorpay does not generate this — you invent it when creating the webhook, and it must match exactly."
+                ? "A webhook secret is stored. It is never shown again, so enter it only to replace it."
+                : "Razorpay does not generate this. You invent it when creating the webhook, and it must match exactly."
             }
             sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
           />

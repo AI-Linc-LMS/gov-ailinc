@@ -56,7 +56,7 @@ export function WelcomeStep({ state, data, onChange }: Props) {
               Your URL
             </dt>
             <dd className="aw-mono mt-1.5 text-[15px] text-[#00e0ff]">
-              {state.subdomain}.ailinc.com
+              {state.subdomain}.tsem.gov.in
             </dd>
           </div>
           {state.contact_email ? (

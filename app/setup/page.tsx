@@ -18,7 +18,7 @@ export default function SetupPage() {
   const [state, setState] = useState<WizardState | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Inject Fraunces (the AI Linc display serif) only while the wizard is mounted.
+  // Inject Fraunces (the wizard's display serif) only while the wizard is mounted.
   useEffect(() => {
     if (document.querySelector(`link[href="${FRAUNCES_HREF}"]`)) return;
     const link = document.createElement("link");
@@ -84,8 +84,8 @@ export default function SetupPage() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/logos/ai-linc-lockup-darkmode.svg"
-              alt="AI LINC"
+              src="/logos/tsem-lockup-darkmode.svg"
+              alt="Telangana Skills & Employment Mission"
               width={220}
               height={84}
               decoding="async"

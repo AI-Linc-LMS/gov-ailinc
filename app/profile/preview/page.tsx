@@ -158,7 +158,11 @@ export default function ProfilePreviewPage() {
         <PublicProfileView
           profile={profile}
           variant="preview"
-          organizationName={clientInfo ? clientInfo.name || "AI-Linc Learning" : undefined}
+          organizationName={
+            clientInfo
+              ? clientInfo.name || "Telangana Skills & Employment Mission"
+              : undefined
+          }
         />
       </Box>
     </MainLayout>

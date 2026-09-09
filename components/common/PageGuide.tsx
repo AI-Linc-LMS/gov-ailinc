@@ -11,9 +11,10 @@ import { useClientInfo } from "@/lib/contexts/ClientInfoContext";
 /**
  * Substitute `{brand}` with the tenant's own name.
  *
- * This is a white-label platform: an Agileology learner should be welcomed to Agileology, not to
- * AI Linc. Falls back to "AI Linc" when the tenant has no name set, which matches how the rest of
- * the product (emails, auth screens) treats a missing brand.
+ * This is a white-label platform: a learner is welcomed to the mission running their instance,
+ * never to the vendor that built it. Falls back to the mission's name when the tenant record has
+ * none set, which matches how the rest of the product (emails, auth screens) treats a missing
+ * brand.
  */
 function withBrand(text: string, brand: string): string {
   return text.split("{brand}").join(brand);
@@ -44,7 +45,7 @@ export function PageGuide({
   tourStartPath?: string;
 }) {
   const { clientInfo } = useClientInfo();
-  const brandName = clientInfo?.name?.trim() || "AI Linc";
+  const brandName = clientInfo?.name?.trim() || "Telangana Skills & Employment Mission";
   const [open, setOpen] = useState(false);
   const { startTour } = useTour();
   const router = useRouter();
