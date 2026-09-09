@@ -53,7 +53,7 @@ export function AiPromptField({
           },
         }}
       >
-        <Box sx={{ display: "inline-flex", flexShrink: 0, color: "#c4b5fd" }}>
+        <Box sx={{ display: "inline-flex", flexShrink: 0, color: "#b6cde8" }}>
           <IconWrapper icon="mdi:auto-fix" size={20} />
         </Box>
         <TextField
@@ -105,7 +105,7 @@ export function AiPromptField({
             color: "var(--ai-violet)",
             bgcolor: "#fff",
             "&:hover": { bgcolor: "#fff", filter: "brightness(0.96)" },
-            "&.Mui-disabled": { bgcolor: "rgba(255,255,255,0.85)", color: "rgba(124,58,237,0.45)" },
+            "&.Mui-disabled": { bgcolor: "rgba(255,255,255,0.85)", color: "rgba(20, 64, 111,0.45)" },
           }}
           endIcon={
             submitting ? (

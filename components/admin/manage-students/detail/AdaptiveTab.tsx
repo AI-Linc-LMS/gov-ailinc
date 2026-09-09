@@ -84,9 +84,11 @@ export function AdaptiveTab({ adaptive }: { adaptive: JourneyAdaptive }) {
         />
       </Panel>
 
-      <Panel icon="mdi:code-braces" title="Adaptive Coding" accent={ADAPTIVE.pink}>
+      {/* Distinct accents per panel: ADAPTIVE.purple is the same #1b4f8a as ADAPTIVE.indigo,
+          so the Video panel used to be indistinguishable from the Adaptive Quiz one. */}
+      <Panel icon="mdi:code-braces" title="Adaptive Coding" accent="#6b4423">
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, mb: 2 }}>
-          <StatPill label="Sessions" value={coding.session_count} accent={ADAPTIVE.pink} />
+          <StatPill label="Sessions" value={coding.session_count} accent="#6b4423" />
           <StatPill label="Passed" value={coding.passed_count} accent={ADAPTIVE.green} />
         </Box>
         <Typography sx={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--font-secondary)", mb: 1 }}>
@@ -116,7 +118,7 @@ export function AdaptiveTab({ adaptive }: { adaptive: JourneyAdaptive }) {
                       fontSize: "0.72rem",
                       fontWeight: 600,
                       color: ADAPTIVE.red,
-                      bgcolor: "color-mix(in srgb, #ef4444 12%, transparent)",
+                      bgcolor: "color-mix(in srgb, #b32020 12%, transparent)",
                     }}
                   >
                     {label}
@@ -128,9 +130,9 @@ export function AdaptiveTab({ adaptive }: { adaptive: JourneyAdaptive }) {
         )}
       </Panel>
 
-      <Panel icon="mdi:play-circle" title="Video" accent={ADAPTIVE.purple}>
+      <Panel icon="mdi:play-circle" title="Video" accent="#b7791f">
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5 }}>
-          <StatPill label="Sessions" value={video.session_count} accent={ADAPTIVE.purple} />
+          <StatPill label="Sessions" value={video.session_count} accent="#b7791f" />
           <StatPill label="Completed" value={video.completed_count} accent={ADAPTIVE.green} />
           <StatPill
             label="Avg comprehension"

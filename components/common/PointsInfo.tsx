@@ -25,7 +25,7 @@ export function PointsInfo({ size = 15, color = "#94a3b8" }: { size?: number; co
         size="small"
         onClick={open}
         aria-label="How points work"
-        sx={{ p: 0.2, color, "&:hover": { color: "#7c3aed", bgcolor: "transparent" } }}
+        sx={{ p: 0.2, color, "&:hover": { color: "#14406f", bgcolor: "transparent" } }}
       >
         <Icon icon="mdi:information-outline" width={size} />
       </IconButton>
@@ -36,11 +36,11 @@ export function PointsInfo({ size = 15, color = "#94a3b8" }: { size?: number; co
         onClick={(e) => e.stopPropagation()}
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         transformOrigin={{ vertical: "top", horizontal: "left" }}
-        slotProps={{ paper: { sx: { mt: 0.5, borderRadius: 3, border: "1px solid #eef2f7", boxShadow: "0 18px 44px -18px rgba(16,24,40,0.32)", maxWidth: 300 } } }}
+        slotProps={{ paper: { sx: { mt: 0.5, borderRadius: 3, border: "1px solid #eef2f7", boxShadow: "var(--shadow-lg)", maxWidth: 300 } } }}
       >
         <Box sx={{ p: 2 }}>
           <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 0.75 }}>
-            <Box sx={{ width: 26, height: 26, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #7c3aed, #a855f7)" }}>
+            <Box sx={{ width: 26, height: 26, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #14406f, #1b4f8a)" }}>
               <Icon icon="mdi:star-four-points" width={15} />
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: "0.88rem", color: "#0f172a" }}>How points work</Typography>
@@ -51,7 +51,7 @@ export function PointsInfo({ size = 15, color = "#94a3b8" }: { size?: number; co
           </Typography>
           <ButtonBase
             onClick={() => { close(); router.push("/points-system"); }}
-            sx={{ mt: 1.25, fontWeight: 800, fontSize: "0.8rem", color: "#7c3aed", gap: 0.4 }}
+            sx={{ mt: 1.25, fontWeight: 800, fontSize: "0.8rem", color: "#14406f", gap: 0.4 }}
           >
             Know more about the point system <Icon icon="mdi:arrow-right" width={15} />
           </ButtonBase>

@@ -60,7 +60,7 @@ export function AdaptiveQuizLayout({ sessionId }: AdaptiveQuizLayoutProps) {
   if (ctx.error) {
     return (
       <Box sx={{ p: 4, textAlign: "center" }}>
-        <Typography sx={{ color: "#ef4444", fontWeight: 700 }}>{ctx.error}</Typography>
+        <Typography sx={{ color: "#b32020", fontWeight: 700 }}>{ctx.error}</Typography>
       </Box>
     );
   }
@@ -118,7 +118,7 @@ export function AdaptiveQuizLayout({ sessionId }: AdaptiveQuizLayoutProps) {
       <Box
         component="button"
         onClick={() => router.back()}
-        sx={{ all: "unset", cursor: "pointer", color: "#6366f1", fontWeight: 700, fontSize: "0.85rem", display: "inline-flex", alignItems: "center", gap: 0.5, mb: 1.5 }}
+        sx={{ all: "unset", cursor: "pointer", color: "#1b4f8a", fontWeight: 700, fontSize: "0.85rem", display: "inline-flex", alignItems: "center", gap: 0.5, mb: 1.5 }}
       >
         <Icon icon="mdi:arrow-left" width={16} /> Back · your timer keeps running
       </Box>
@@ -177,8 +177,8 @@ export function AdaptiveQuizLayout({ sessionId }: AdaptiveQuizLayoutProps) {
             sx={{
               p: 2,
               borderRadius: 3,
-              bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 60%, transparent)",
-              border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 70%, transparent)",
+              bgcolor: "var(--card-bg, #ffffff)",
+              border: "1px solid var(--border-default, #e5e7eb)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -187,7 +187,7 @@ export function AdaptiveQuizLayout({ sessionId }: AdaptiveQuizLayoutProps) {
           >
             <LiveTimerRing key={`${q.mcq_id}-${notStarted ? "paused" : "run"}`} resetKey={q.mcq_id} running={!notStarted} startedAtMs={ctx.questionStartMs} />
             {/* Running total banked this quiz - always shown, ticks up on every correct answer. */}
-            <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.6, px: 1.5, py: 0.6, borderRadius: 999, bgcolor: "color-mix(in srgb, #7c3aed 12%, transparent)", color: "#6d28d9", fontSize: "0.82rem", fontWeight: 900 }}>
+            <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.6, px: 1.5, py: 0.6, borderRadius: 999, bgcolor: "color-mix(in srgb, #14406f 12%, transparent)", color: "#164274", fontSize: "0.82rem", fontWeight: 900 }}>
               <Icon icon="mdi:star-four-points" width={15} />
               <AnimatedPointsCounter value={ctx.sessionPoints} boltSize={16} />
               <Typography component="span" sx={{ fontSize: "0.66rem", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", opacity: 0.85 }}>
@@ -275,13 +275,12 @@ function BeginGate({ minQ, maxQ, onBegin }: { minQ: number; maxQ: number; onBegi
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 65%, transparent)",
-        border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 60%, transparent)",
-        backdropFilter: "blur(18px) saturate(140%)",
-        boxShadow: "0 1px 0 0 color-mix(in srgb, white 14%, transparent) inset, 0 24px 60px -32px rgba(99, 102, 241, 0.35)",
+        bgcolor: "var(--card-bg, #ffffff)",
+        border: "1px solid var(--border-default, #e5e7eb)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
-      <Box sx={{ width: 64, height: 64, mb: 2, borderRadius: "50%", display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}>
+      <Box sx={{ width: 64, height: 64, mb: 2, borderRadius: "50%", display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}>
         <Icon icon="mdi:lightning-bolt" width={30} />
       </Box>
       <Typography sx={{ fontWeight: 800, fontSize: "1.4rem" }}>Ready when you are</Typography>
@@ -290,14 +289,14 @@ function BeginGate({ minQ, maxQ, onBegin }: { minQ: number; maxQ: number; onBegi
         each answer, and each one is worth more the faster you nail it. Your timer + points start
         when you click begin - take a breath first.
       </Typography>
-      <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, mt: 2, px: 1.5, py: 0.6, borderRadius: 999, bgcolor: "color-mix(in srgb, #6366f1 10%, transparent)", color: "#6366f1", fontSize: "0.74rem", fontWeight: 800 }}>
+      <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, mt: 2, px: 1.5, py: 0.6, borderRadius: 999, bgcolor: "color-mix(in srgb, #1b4f8a 10%, transparent)", color: "#1b4f8a", fontSize: "0.74rem", fontWeight: 800 }}>
         <Icon icon="mdi:timer-sand" width={14} /> Timer starts on “Begin”
       </Box>
       <Button
         variant="contained"
         onClick={onBegin}
         endIcon={<Icon icon="mdi:arrow-right" width={20} />}
-        sx={{ mt: 2.5, px: 4, py: 1.2, borderRadius: 2.5, textTransform: "none", fontWeight: 800, fontSize: "0.95rem", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}
+        sx={{ mt: 2.5, px: 4, py: 1.2, borderRadius: 2.5, textTransform: "none", fontWeight: 800, fontSize: "0.95rem", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}
       >
         Begin quiz
       </Button>

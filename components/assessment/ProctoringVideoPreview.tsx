@@ -163,7 +163,6 @@ export function ProctoringVideoPreview({
         py: 0.5,
         backgroundColor: `${statusColor}E6`, // E6 = 90% opacity
         borderRadius: 1,
-        backdropFilter: "blur(10px)",
         zIndex: 10,
       }}
     >

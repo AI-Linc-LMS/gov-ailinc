@@ -149,7 +149,7 @@ export function AdminResumeViewerModal({
         )}
         {error && (
           <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-            <IconWrapper icon="mdi:file-document-alert-outline" size={48} color="#dc2626" />
+            <IconWrapper icon="mdi:file-document-alert-outline" size={48} color="#991b1b" />
             <Typography variant="body2" color="text.secondary">
               Failed to load resume
             </Typography>

@@ -133,7 +133,7 @@ export function ApplicationQuestionsModal({
         sx: {
           borderRadius: 4,
           overflow: "hidden",
-          boxShadow: "0 32px 64px -12px color-mix(in srgb, var(--font-primary) 24%, transparent)",
+          boxShadow: "var(--shadow-xl)",
         },
       }}
     >
@@ -378,8 +378,8 @@ export function ApplicationQuestionsModal({
             py: 1.25,
             borderRadius: 2,
             bgcolor: "var(--accent-indigo)",
-            boxShadow: "0 1px 3px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
-            "&:hover": { bgcolor: "var(--accent-indigo-dark)", boxShadow: "0 4px 12px color-mix(in srgb, var(--accent-indigo) 40%, transparent)" },
+            boxShadow: "var(--shadow-sm)",
+            "&:hover": { bgcolor: "var(--accent-indigo-dark)", boxShadow: "var(--shadow-md)" },
           }}
         >
           Add question

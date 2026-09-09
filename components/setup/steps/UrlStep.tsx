@@ -52,7 +52,7 @@ export function UrlStep({ state, data, onChange }: Props) {
         <p
           className="aw-mono mt-4 text-[clamp(20px,3vw,28px)]"
           style={{
-            background: "linear-gradient(90deg, #2356d6 0%, #00e0ff 100%)",
+            background: "linear-gradient(90deg, #2356d6 0%, #2f7fbf 100%)",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             color: "transparent",
@@ -186,18 +186,18 @@ function CustomDomainSteps({
     <div
       className="mt-6 overflow-hidden rounded-[14px]"
       style={{
-        border: "1px solid rgba(0, 224, 255, 0.18)",
-        background: "rgba(0, 224, 255, 0.04)",
+        border: "1px solid rgba(133, 170, 214, 0.18)",
+        background: "rgba(133, 170, 214, 0.04)",
       }}
     >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left transition-colors hover:bg-[rgba(0,224,255,0.06)]"
+        className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left transition-colors hover:bg-[rgba(133,170,214,0.06)]"
       >
         <span className="min-w-0">
-          <span className="aw-mono block text-[10px] uppercase tracking-[0.3em] text-[#00e0ff]">
+          <span className="aw-mono block text-[10px] uppercase tracking-[0.3em] text-[#2f7fbf]">
             How to connect your domain
           </span>
           <span className="aw-text-dim mt-1 block text-[13px] leading-relaxed">
@@ -216,7 +216,7 @@ function CustomDomainSteps({
           aria-hidden
           className="shrink-0 transition-transform"
           style={{
-            color: "#00e0ff",
+            color: "#2f7fbf",
             transform: open ? "rotate(180deg)" : "rotate(0deg)",
           }}
         >
@@ -268,7 +268,7 @@ function CustomDomainSteps({
               <div
                 className="mt-5 rounded-[10px] px-4 py-3 text-[12px] leading-relaxed"
                 style={{
-                  background: "rgba(0, 224, 255, 0.06)",
+                  background: "rgba(133, 170, 214, 0.06)",
                   color: "rgb(var(--aw-fg-dim))",
                 }}
               >
@@ -282,7 +282,7 @@ function CustomDomainSteps({
                 Not sure where to click?{" "}
                 <a
                   href="mailto:support@tsem.gov.in"
-                  className="aw-mono text-[12px] text-[#00e0ff] hover:underline"
+                  className="aw-mono text-[12px] text-[#2f7fbf] hover:underline"
                 >
                   support@tsem.gov.in
                 </a>{" "}
@@ -311,7 +311,7 @@ function Step({
       <span
         className="aw-mono grid h-7 w-7 shrink-0 place-items-center rounded-full text-[12px] font-semibold"
         style={{
-          background: "linear-gradient(135deg, #2356d6 0%, #00e0ff 100%)",
+          background: "linear-gradient(135deg, #2356d6 0%, #2f7fbf 100%)",
           color: "#05070f",
         }}
       >
@@ -394,7 +394,7 @@ function Cell({
           <button
             type="button"
             onClick={onCopy}
-            className="aw-mono rounded px-1.5 py-0.5 text-[9px] uppercase tracking-[0.22em] text-[#00e0ff] transition-colors hover:bg-[rgba(0,224,255,0.10)]"
+            className="aw-mono rounded px-1.5 py-0.5 text-[9px] uppercase tracking-[0.22em] text-[#2f7fbf] transition-colors hover:bg-[rgba(133,170,214,0.10)]"
             title="Copy to clipboard"
           >
             {copied ? "Copied" : "Copy"}

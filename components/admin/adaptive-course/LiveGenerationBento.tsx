@@ -10,7 +10,7 @@ import type {
   AdaptiveCourseSkill,
 } from "@/lib/services/admin/admin-adaptive-course.service";
 
-const DIFF: Record<string, string> = { Easy: "#10b981", Medium: "#f59e0b", Hard: "#ef4444" };
+const DIFF: Record<string, string> = { Easy: "#0e7a3c", Medium: "#b7791f", Hard: "#b32020" };
 const WORDS_PER_SEC = 9;
 
 function prettySkill(s: string): string {
@@ -143,7 +143,7 @@ function HeroCard({
   const isArticle = hero?.kind === "article";
   const isCoding = hero?.kind === "coding";
   const isVideo = hero?.kind === "video";
-  const accent = isArticle ? "#a855f7" : isCoding ? "#ec4899" : isVideo ? "#6366f1" : hero ? DIFF[hero.difficulty] ?? "#6366f1" : "#6366f1";
+  const accent = isArticle ? "#1b4f8a" : isCoding ? "#0f6b7a" : isVideo ? "#1b4f8a" : hero ? DIFF[hero.difficulty] ?? "#1b4f8a" : "#1b4f8a";
   return (
     <Box
       sx={{
@@ -160,29 +160,29 @@ function HeroCard({
       }}
     >
       {/* slim accent bar */}
-      <Box aria-hidden sx={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, bgcolor: done ? "#10b981" : accent, opacity: 0.85 }} />
+      <Box aria-hidden sx={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, bgcolor: done ? "#0e7a3c" : accent, opacity: 0.85 }} />
 
       {/* header chips */}
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.75, flexWrap: "wrap" }}>
         <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, px: 1, py: 0.35, borderRadius: 999,
           fontWeight: 800, fontSize: "0.64rem", letterSpacing: "0.1em",
-          color: done ? "#10b981" : "#6366f1",
-          bgcolor: done ? "color-mix(in srgb, #10b981 12%, transparent)" : "color-mix(in srgb, #6366f1 12%, transparent)" }}>
+          color: done ? "#0e7a3c" : "#1b4f8a",
+          bgcolor: done ? "color-mix(in srgb, #0e7a3c 12%, transparent)" : "color-mix(in srgb, #1b4f8a 12%, transparent)" }}>
           <Icon icon={done ? "mdi:check" : isArticle ? "mdi:book-open-variant" : isCoding ? "mdi:robot-happy-outline" : isVideo ? "mdi:play-circle-outline" : "mdi:fountain-pen-tip"} width={12} />
           {done ? "COMPLETE" : isArticle ? "WRITING ARTICLE" : isCoding ? "WRITING CODING PROBLEM" : isVideo ? "BUILDING VIDEO COMPANION" : "WRITING NOW"}
         </Box>
-        {hero && isArticle && hero.title && <Chip label={hero.title} color="#a855f7" subtle />}
-        {hero && isCoding && hero.title && <Chip label={hero.title} color="#ec4899" subtle />}
-        {hero && isVideo && hero.title && <Chip label={hero.title} color="#6366f1" subtle />}
-        {hero && isCoding && <Chip label={hero.difficulty} color="#ec4899" subtle />}
+        {hero && isArticle && hero.title && <Chip label={hero.title} color="#1b4f8a" subtle />}
+        {hero && isCoding && hero.title && <Chip label={hero.title} color="#0f6b7a" subtle />}
+        {hero && isVideo && hero.title && <Chip label={hero.title} color="#1b4f8a" subtle />}
+        {hero && isCoding && <Chip label={hero.difficulty} color="#0f6b7a" subtle />}
         {hero && !isArticle && !isCoding && <Chip label={hero.difficulty} color={accent} subtle />}
-        {hero && !isArticle && !isCoding && hero.skill && <Chip label={hero.skill} color="#6366f1" subtle />}
+        {hero && !isArticle && !isCoding && hero.skill && <Chip label={hero.skill} color="#1b4f8a" subtle />}
       </Box>
 
       {/* body */}
       {done ? (
         <Box sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: 1 }}>
-          <Icon icon="mdi:check-circle-outline" width={48} style={{ color: "#10b981" }} />
+          <Icon icon="mdi:check-circle-outline" width={48} style={{ color: "#0e7a3c" }} />
           <Typography sx={{ fontWeight: 800, fontSize: "1.1rem" }}>All content generated</Typography>
           <Typography sx={{ color: "text.secondary", fontSize: "0.85rem" }}>Every submodule has its adaptive content.</Typography>
         </Box>
@@ -213,7 +213,7 @@ function HeroCard({
         </Box>
       ) : (
         <Box sx={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 1, color: "text.secondary" }}>
-          <Icon icon="mdi:loading" width={20} className="acb-spin" style={{ color: "#6366f1" }} />
+          <Icon icon="mdi:loading" width={20} className="acb-spin" style={{ color: "#1b4f8a" }} />
           <Typography sx={{ fontWeight: 700 }}>Warming up the engine…</Typography>
         </Box>
       )}
@@ -262,8 +262,8 @@ function TreeCard({ tree }: { tree: AdaptiveCourseJobTreeModule[] }) {
       border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 75%, transparent)",
     }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, mb: 1.5 }}>
-        <Icon icon="mdi:file-tree-outline" width={18} style={{ color: "#a855f7" }} />
-        <Typography sx={{ fontWeight: 800, fontSize: "0.78rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#a855f7" }}>
+        <Icon icon="mdi:file-tree-outline" width={18} style={{ color: "#1b4f8a" }} />
+        <Typography sx={{ fontWeight: 800, fontSize: "0.78rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#1b4f8a" }}>
           Course tree · filling in
         </Typography>
       </Box>
@@ -286,13 +286,13 @@ function TreeCard({ tree }: { tree: AdaptiveCourseJobTreeModule[] }) {
             ) : (
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, pl: 0.5 }}>
                 <Icon icon={row.ready ? "mdi:check-circle" : "mdi:loading"} width={15}
-                  className={row.ready ? "" : "acb-spin"} style={{ color: row.ready ? "#10b981" : "#a855f7" }} />
+                  className={row.ready ? "" : "acb-spin"} style={{ color: row.ready ? "#0e7a3c" : "#1b4f8a" }} />
                 <Typography sx={{ fontSize: "0.8rem", color: row.ready ? "text.primary" : "text.secondary",
                   flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {row.title}
                 </Typography>
                 {row.ready && row.count > 0 && (
-                  <Typography sx={{ fontSize: "0.7rem", color: "#6366f1", fontWeight: 800, flexShrink: 0 }}>{row.count}</Typography>
+                  <Typography sx={{ fontSize: "0.7rem", color: "#1b4f8a", fontWeight: 800, flexShrink: 0 }}>{row.count}</Typography>
                 )}
               </Box>
             )}
@@ -313,8 +313,8 @@ function SkillsCard({ skills }: { skills: AdaptiveCourseSkill[] }) {
       border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 75%, transparent)",
     }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, mb: 1.5, flexWrap: "wrap" }}>
-        <Icon icon="mdi:brain" width={18} style={{ color: "#a855f7" }} />
-        <Typography sx={{ fontWeight: 800, fontSize: "0.78rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#a855f7" }}>
+        <Icon icon="mdi:brain" width={18} style={{ color: "#1b4f8a" }} />
+        <Typography sx={{ fontWeight: 800, fontSize: "0.78rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#1b4f8a" }}>
           Skills this course builds
         </Typography>
         <Typography sx={{ fontSize: "0.72rem", color: "text.secondary", fontWeight: 700 }}>
@@ -331,8 +331,8 @@ function SkillsCard({ skills }: { skills: AdaptiveCourseSkill[] }) {
               sx={{
                 display: "inline-flex", alignItems: "center", gap: 0.6, pl: 1.25, pr: 0.5, py: 0.55, borderRadius: 999,
                 color: "white", fontWeight: 800, fontSize: "0.78rem",
-                background: "linear-gradient(135deg, #6366f1 0%, #a855f7 70%, #ec4899 100%)",
-                boxShadow: "0 10px 22px -14px rgba(168, 85, 247, 0.7)",
+                background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 70%, #0f6b7a 100%)",
+                boxShadow: "var(--shadow-sm)",
               }}
             >
               {prettySkill(s.skill)}
@@ -364,7 +364,7 @@ function RecentCard({ entry }: { entry: AdaptiveCourseJobLogEntry }) {
   const isArticle = entry.kind === "article";
   const isCoding = entry.kind === "coding";
   const isVideo = entry.kind === "video";
-  const accent = isArticle ? "#a855f7" : isCoding ? "#ec4899" : isVideo ? "#6366f1" : DIFF[entry.difficulty] ?? "#6366f1";
+  const accent = isArticle ? "#1b4f8a" : isCoding ? "#0f6b7a" : isVideo ? "#1b4f8a" : DIFF[entry.difficulty] ?? "#1b4f8a";
   return (
     <Box sx={{
       height: "100%", borderRadius: 4, p: 1.75, position: "relative", overflow: "hidden",
@@ -373,7 +373,7 @@ function RecentCard({ entry }: { entry: AdaptiveCourseJobLogEntry }) {
     }}>
       <Box sx={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, bgcolor: accent }} />
       <Box sx={{ display: "flex", alignItems: "center", gap: 0.6, mb: 0.6 }}>
-        <Icon icon={isArticle ? "mdi:book-open-variant" : isCoding ? "mdi:robot-happy-outline" : isVideo ? "mdi:play-circle-outline" : "mdi:check"} width={13} style={{ color: isArticle ? "#a855f7" : isCoding ? "#ec4899" : isVideo ? "#6366f1" : "#10b981" }} />
+        <Icon icon={isArticle ? "mdi:book-open-variant" : isCoding ? "mdi:robot-happy-outline" : isVideo ? "mdi:play-circle-outline" : "mdi:check"} width={13} style={{ color: isArticle ? "#1b4f8a" : isCoding ? "#0f6b7a" : isVideo ? "#1b4f8a" : "#0e7a3c" }} />
         {isArticle ? (
           <Chip label="Article" color={accent} small />
         ) : isCoding ? (

@@ -186,15 +186,13 @@ export function CourseCard({
         borderRadius: 2,
         backgroundColor: "var(--card-bg)",
         boxShadow:
-          "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+          "var(--shadow-sm)",
         overflow: "hidden",
         transition: "all 0.2s",
         cursor: editing ? "default" : "pointer",
         "&:hover": {
-          boxShadow: editing
-            ? "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)"
-            : "0 4px 12px color-mix(in srgb, var(--font-primary) 16%, transparent)",
-          transform: editing ? "none" : "translateY(-2px)",
+          boxShadow: editing ? "var(--shadow-sm)" : "var(--shadow-md)",
+          transform: editing ? "none" : "translateY(-1px)",
         },
         maxWidth: 500,
         border: editing

@@ -28,7 +28,7 @@ function trainingInCourseLine(courseName?: string | null): Pick<
       {
         text: trimmed,
         bold: true,
-        color: "#3e3aa5",
+        color: "#1b4f8a",
         fontSizePx: 28,
       },
     ],

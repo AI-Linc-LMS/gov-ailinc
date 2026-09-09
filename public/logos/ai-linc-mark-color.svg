@@ -2,7 +2,7 @@
   <defs>
     <linearGradient id="m-color" x1="40" y1="120" x2="380" y2="120" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#2356D6"></stop>
-      <stop offset="1" stop-color="#00E0FF"></stop>
+      <stop offset="1" stop-color="#2F7FBF"></stop>
     </linearGradient>
   </defs>
   <g transform="rotate(-7 200 120)">

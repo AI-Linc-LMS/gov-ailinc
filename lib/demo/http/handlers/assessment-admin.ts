@@ -4066,9 +4066,9 @@ function certificateArt(title: string, learner: string): string {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540">
       <defs>
         <linearGradient id="certbg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#2b1244"/>
-          <stop offset="55%" stop-color="#3d1663"/>
-          <stop offset="100%" stop-color="#7d2058"/>
+          <stop offset="0%" stop-color="#0a1e37"/>
+          <stop offset="55%" stop-color="#12365f"/>
+          <stop offset="100%" stop-color="#0b5260"/>
         </linearGradient>
       </defs>
       <rect width="960" height="540" fill="url(#certbg)"/>

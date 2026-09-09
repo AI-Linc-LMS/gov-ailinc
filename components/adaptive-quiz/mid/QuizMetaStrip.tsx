@@ -47,7 +47,7 @@ export function QuizMetaStrip({
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, minWidth: 0 }}>
-        <Icon icon="mdi:school-outline" width={18} style={{ color: "#6366f1" }} />
+        <Icon icon="mdi:school-outline" width={18} style={{ color: "#1b4f8a" }} />
         <Typography
           sx={{
             fontSize: "0.86rem",

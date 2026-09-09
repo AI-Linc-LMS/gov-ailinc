@@ -28,7 +28,7 @@ export const EndInterviewDialog = memo(function EndInterviewDialog({
     <Dialog open={open} onClose={onCancel} maxWidth="sm" fullWidth>
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <IconWrapper icon="mdi:alert-circle" size={24} color="var(--error-500, #ef4444)" />
+          <IconWrapper icon="mdi:alert-circle" size={24} color="var(--error-500, #b32020)" />
           <Typography variant="h6" fontWeight={600}>
             End Interview?
           </Typography>
@@ -66,11 +66,11 @@ export const EndInterviewDialog = memo(function EndInterviewDialog({
           onClick={onConfirm}
           variant="contained"
           sx={{
-            backgroundColor: "var(--error-500, #ef4444)",
+            backgroundColor: "var(--error-500, #b32020)",
             color: "var(--font-light)",
             textTransform: "none",
             "&:hover": {
-              backgroundColor: "var(--error-600, #dc2626)",
+              backgroundColor: "var(--error-600, #991b1b)",
             },
           }}
           startIcon={<IconWrapper icon="mdi:check" size={20} />}

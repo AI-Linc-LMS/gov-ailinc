@@ -40,7 +40,7 @@ export function StudentVideoTile({
         transition: "border-color 0.2s, box-shadow 0.2s",
         "&:hover": {
           boxShadow:
-            "0 4px 12px color-mix(in srgb, var(--accent-indigo) 20%, transparent)",
+            "var(--shadow-md)",
         },
       }}
     >

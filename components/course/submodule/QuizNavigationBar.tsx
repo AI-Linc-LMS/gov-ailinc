@@ -111,12 +111,12 @@ export function QuizNavigationBar({
             borderRadius: 2,
             textTransform: "none",
             boxShadow:
-              "0 4px 12px color-mix(in srgb, var(--success-500) 35%, transparent)",
+              "var(--shadow-sm)",
             "&:hover": {
               background:
                 "linear-gradient(135deg, color-mix(in srgb, var(--success-500) 85%, black 15%) 0%, color-mix(in srgb, var(--success-500) 70%, black 30%) 100%)",
               boxShadow:
-                "0 6px 16px color-mix(in srgb, var(--success-500) 45%, transparent)",
+                "var(--shadow-md)",
               transform: "translateY(-1px)",
             },
             "&:active": {

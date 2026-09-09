@@ -77,10 +77,9 @@ export function NarrationComposer({ status, onRetry }: NarrationComposerProps) {
             overflow: "hidden",
             p: { xs: 2, md: 2.25 },
             borderRadius: 4,
-            bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 72%, transparent)",
-            border: "1px solid color-mix(in srgb, #6366f1 22%, transparent)",
-            backdropFilter: "blur(18px) saturate(140%)",
-            boxShadow: "0 1px 0 0 color-mix(in srgb, white 18%, transparent) inset, 0 24px 50px -36px color-mix(in srgb, #a855f7 60%, transparent)",
+            bgcolor: "var(--card-bg, #ffffff)",
+            border: "1px solid color-mix(in srgb, #1b4f8a 22%, transparent)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           {/* Ambient drifting gradient wash */}
@@ -93,7 +92,7 @@ export function NarrationComposer({ status, onRetry }: NarrationComposerProps) {
               position: "absolute",
               inset: 0,
               backgroundImage:
-                "linear-gradient(120deg, color-mix(in srgb, #6366f1 7%, transparent) 0%, color-mix(in srgb, #a855f7 9%, transparent) 35%, color-mix(in srgb, #ec4899 7%, transparent) 70%, color-mix(in srgb, #6366f1 7%, transparent) 100%)",
+                "linear-gradient(120deg, color-mix(in srgb, #1b4f8a 7%, transparent) 0%, color-mix(in srgb, #1b4f8a 9%, transparent) 35%, color-mix(in srgb, #0f6b7a 7%, transparent) 70%, color-mix(in srgb, #1b4f8a 7%, transparent) 100%)",
               backgroundSize: "220% 100%",
               pointerEvents: "none",
             }}
@@ -109,7 +108,7 @@ export function NarrationComposer({ status, onRetry }: NarrationComposerProps) {
                   fontWeight: 800,
                   letterSpacing: "0.18em",
                   textTransform: "uppercase",
-                  color: "#6366f1",
+                  color: "#1b4f8a",
                   lineHeight: 1,
                 }}
               >
@@ -150,7 +149,7 @@ export function NarrationComposer({ status, onRetry }: NarrationComposerProps) {
                 sx={{
                   fontSize: "1.35rem",
                   fontWeight: 900,
-                  color: "#6366f1",
+                  color: "#1b4f8a",
                   lineHeight: 1,
                   fontVariantNumeric: "tabular-nums",
                   letterSpacing: "-0.02em",
@@ -205,7 +204,7 @@ export function NarrationComposer({ status, onRetry }: NarrationComposerProps) {
               right: 0,
               bottom: 0,
               height: 2,
-              bgcolor: "color-mix(in srgb, #6366f1 12%, transparent)",
+              bgcolor: "color-mix(in srgb, #1b4f8a 12%, transparent)",
             }}
           >
             <Box
@@ -215,8 +214,8 @@ export function NarrationComposer({ status, onRetry }: NarrationComposerProps) {
               transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
               sx={{
                 height: "100%",
-                background: "linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)",
-                boxShadow: "0 0 12px color-mix(in srgb, #a855f7 60%, transparent)",
+                background: "linear-gradient(90deg, #1b4f8a 0%, #1b4f8a 50%, #0f6b7a 100%)",
+                boxShadow: "var(--shadow-sm)",
               }}
             />
           </Box>
@@ -236,11 +235,11 @@ function SectionChip({ label, status, onRetry }: SectionChipProps) {
 
   const palette =
     status === "ready"
-      ? { fg: "#10b981", glow: "#10b981" }
+      ? { fg: "#0e7a3c", glow: "#0e7a3c" }
       : status === "failed"
-        ? { fg: "#ef4444", glow: "#ef4444" }
+        ? { fg: "#b32020", glow: "#b32020" }
         : status === "loading"
-          ? { fg: "#6366f1", glow: "#a855f7" }
+          ? { fg: "#1b4f8a", glow: "#1b4f8a" }
           : { fg: "#64748b", glow: "#64748b" };
 
   const isClickable = !!onRetry;

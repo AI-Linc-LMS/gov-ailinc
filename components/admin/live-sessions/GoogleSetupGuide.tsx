@@ -537,7 +537,7 @@ export function GoogleSetupGuide({ redirectUri }: { redirectUri?: string }) {
             }}
           >
             <Box sx={{ display: "flex", gap: 0.75, alignItems: "flex-start" }}>
-              <IconWrapper icon="mdi:alert-circle-outline" size={16} color="var(--error-500, #ef4444)" />
+              <IconWrapper icon="mdi:alert-circle-outline" size={16} color="var(--error-500, #b32020)" />
               <Typography variant="caption" sx={{ fontWeight: 700, color: "var(--font-primary)", lineHeight: 1.5 }}>
                 {item.symptom}
               </Typography>

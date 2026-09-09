@@ -38,7 +38,7 @@ export function WelcomeStep({ state, data, onChange }: Props) {
         <p className="aw-kicker-sm">
           <span
             className="inline-block h-1.5 w-1.5 rounded-full"
-            style={{ background: "#00e0ff" }}
+            style={{ background: "#2f7fbf" }}
           />
           From your intake form
         </p>
@@ -55,7 +55,7 @@ export function WelcomeStep({ state, data, onChange }: Props) {
             <dt className="aw-mono aw-text-mute text-[10px] uppercase tracking-[0.22em]">
               Your URL
             </dt>
-            <dd className="aw-mono mt-1.5 text-[15px] text-[#00e0ff]">
+            <dd className="aw-mono mt-1.5 text-[15px] text-[#2f7fbf]">
               {state.subdomain}.tsem.gov.in
             </dd>
           </div>

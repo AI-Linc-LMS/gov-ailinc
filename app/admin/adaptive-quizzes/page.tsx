@@ -99,8 +99,8 @@ export default function AdminAdaptiveQuizzesPage() {
                   borderRadius: 999,
                   fontWeight: 800,
                   color: "white",
-                  background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
-                  boxShadow: "0 18px 36px -16px rgba(168, 85, 247, 0.55)",
+                  background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)",
+                  boxShadow: "0 18px 36px -16px rgba(27, 79, 138, 0.55)",
                   fontSize: "0.92rem",
                   display: "inline-flex",
                   alignItems: "center",
@@ -118,11 +118,11 @@ export default function AdminAdaptiveQuizzesPage() {
           {items.length > 0 && (
             <KpiRail
               items={[
-                { value: stats.total, label: "Total quizzes", accent: "#6366f1" },
-                { value: stats.active, label: "Active", accent: "#10b981" },
+                { value: stats.total, label: "Total quizzes", accent: "#1b4f8a" },
+                { value: stats.active, label: "Active", accent: "#0e7a3c" },
                 { value: stats.inactive, label: "Inactive", accent: "#94a3b8" },
-                { value: stats.skills, label: "Skills covered", accent: "#a855f7" },
-                { value: stats.mcqs, label: "Total MCQs", accent: "#ec4899" },
+                { value: stats.skills, label: "Skills covered", accent: "#1b4f8a" },
+                { value: stats.mcqs, label: "Total MCQs", accent: "#0f6b7a" },
               ]}
             />
           )}
@@ -134,7 +134,7 @@ export default function AdminAdaptiveQuizzesPage() {
           )}
 
           {error && (
-            <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>
+            <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>
               {error}
             </Typography>
           )}
@@ -149,7 +149,7 @@ export default function AdminAdaptiveQuizzesPage() {
                 border: "1px dashed color-mix(in srgb, var(--border-default) 90%, transparent)",
               }}
             >
-              <Icon icon="mdi:robot-confused-outline" width={48} style={{ color: "#a855f7" }} />
+              <Icon icon="mdi:robot-confused-outline" width={48} style={{ color: "#1b4f8a" }} />
               <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.1rem" }}>
                 No adaptive quizzes yet.
               </Typography>

@@ -103,7 +103,7 @@ export function AdminArticleViewer({
   }
 
   if (loading) return <ArticleBodySkeleton />;
-  if (error) return <Typography sx={{ color: "#ef4444", fontSize: "0.82rem", fontWeight: 700, py: 2 }}>{error}</Typography>;
+  if (error) return <Typography sx={{ color: "#b32020", fontSize: "0.82rem", fontWeight: 700, py: 2 }}>{error}</Typography>;
   if (!article) return null;
 
   const glossary = Object.entries(article.glossary ?? {});
@@ -114,15 +114,15 @@ export function AdminArticleViewer({
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mt: 1 }}>
       {article.concepts.length > 0 && (
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, flexWrap: "wrap" }}>
-          <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.4, color: "#a855f7", fontWeight: 800, fontSize: "0.74rem" }}>
+          <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.4, color: "#1b4f8a", fontWeight: 800, fontSize: "0.74rem" }}>
             <Icon icon="mdi:brain" width={14} />
             Builds:
           </Box>
           {article.concepts.map((c) => (
             <Box key={c} component="span" sx={{
               px: 0.9, py: 0.25, borderRadius: 999, fontSize: "0.72rem", fontWeight: 700,
-              color: "#6366f1", bgcolor: "color-mix(in srgb, #6366f1 12%, transparent)",
-              border: "1px solid color-mix(in srgb, #6366f1 30%, transparent)",
+              color: "#1b4f8a", bgcolor: "color-mix(in srgb, #1b4f8a 12%, transparent)",
+              border: "1px solid color-mix(in srgb, #1b4f8a 30%, transparent)",
             }}>
               {c}
             </Box>
@@ -157,7 +157,7 @@ export function AdminArticleViewer({
               title={needsGeneration ? "Not written yet — generating this level uses AI credits" : undefined}
               sx={{ px: 1.5, py: 0.5, borderRadius: 999, fontWeight: 800, fontSize: "0.74rem", gap: 0.4,
                 color: active ? "white" : needsGeneration ? "text.secondary" : "text.primary",
-                background: active ? "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" : "color-mix(in srgb, var(--card-bg) 60%, transparent)",
+                background: active ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" : "color-mix(in srgb, var(--card-bg) 60%, transparent)",
                 border: active ? "1px solid transparent" : `1px ${needsGeneration ? "dashed" : "solid"} color-mix(in srgb, var(--border-default) 75%, transparent)`,
                 "&:disabled": { opacity: 0.6 } }}>
               {needsGeneration && <Icon icon="mdi:auto-fix" width={12} />}
@@ -166,7 +166,7 @@ export function AdminArticleViewer({
           );
         })}
         {tierLoading && (
-          <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, color: "#a855f7" }}>
+          <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, color: "#1b4f8a" }}>
             <Icon icon="mdi:loading" width={14} className="acb-spin" />
             <Typography sx={{ fontSize: "0.74rem", fontWeight: 700 }}>rendering…</Typography>
           </Box>
@@ -192,7 +192,7 @@ export function AdminArticleViewer({
                     onClick={() => void saveEdit()}
                     disabled={savingEdit || !draft.trim()}
                     sx={{ px: 1.8, py: 0.55, borderRadius: 999, fontWeight: 800, fontSize: "0.76rem", color: "white", gap: 0.5,
-                      background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", "&:disabled": { opacity: 0.6 } }}
+                      background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)", "&:disabled": { opacity: 0.6 } }}
                   >
                     <Icon icon="mdi:content-save-outline" width={14} />
                     {savingEdit ? "Saving…" : `Save ${tier}`}
@@ -201,7 +201,7 @@ export function AdminArticleViewer({
               ) : (
                 <ButtonBase
                   onClick={() => { setDraft(html); setEditing(true); }}
-                  sx={{ px: 1.6, py: 0.55, borderRadius: 999, fontWeight: 800, fontSize: "0.76rem", color: "#6366f1", gap: 0.5 }}
+                  sx={{ px: 1.6, py: 0.55, borderRadius: 999, fontWeight: 800, fontSize: "0.76rem", color: "#1b4f8a", gap: 0.5 }}
                 >
                   <Icon icon="mdi:pencil-outline" width={14} />
                   Edit this reading level
@@ -220,8 +220,8 @@ export function AdminArticleViewer({
                 width: "100%", minHeight: 380, resize: "vertical", p: 1.5, borderRadius: 2,
                 fontFamily: "inherit", fontSize: "0.9rem", lineHeight: 1.7,
                 color: "var(--font-primary)", bgcolor: "var(--card-bg)",
-                border: "1px solid color-mix(in srgb, #6366f1 45%, transparent)",
-                "&:focus": { outline: "2px solid color-mix(in srgb, #6366f1 40%, transparent)" },
+                border: "1px solid color-mix(in srgb, #1b4f8a 45%, transparent)",
+                "&:focus": { outline: "2px solid color-mix(in srgb, #1b4f8a 40%, transparent)" },
               }}
             />
           ) : (
@@ -230,7 +230,7 @@ export function AdminArticleViewer({
         </Box>
         {glossary.length > 0 && (
           <Box sx={{ borderRadius: 3, p: 1.75, bgcolor: "color-mix(in srgb, var(--card-bg) 60%, transparent)", border: "1px solid color-mix(in srgb, var(--border-default) 70%, transparent)" }}>
-            <Typography sx={{ fontWeight: 800, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "#a855f7", mb: 1 }}>
+            <Typography sx={{ fontWeight: 800, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "#1b4f8a", mb: 1 }}>
               Glossary · {glossary.length}
             </Typography>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>

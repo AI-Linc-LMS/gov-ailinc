@@ -200,12 +200,12 @@ export default function AdaptiveArticleReaderPage() {
       {/* Reading-progress bar */}
       <Box sx={{ position: "fixed", top: 0, left: 0, right: 0, height: 3, zIndex: 1300, pointerEvents: "none" }}>
         <Box sx={{ height: "100%", width: `${Math.round(progress * 100)}%`,
-          background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)", transition: "width 0.1s linear" }} />
+          background: "linear-gradient(90deg, #1b4f8a, #1b4f8a, #0f6b7a)", transition: "width 0.1s linear" }} />
       </Box>
       <Box sx={{ maxWidth: 1760, mx: "auto", py: { xs: 3, md: 5 } }}>
         <ButtonBase
           onClick={() => push(`/adaptive-courses/${courseId}/submodule/${submoduleId}`)}
-          sx={{ mb: 2, color: "#6366f1", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
+          sx={{ mb: 2, color: "#1b4f8a", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
         >
           <Icon icon="mdi:arrow-left" width={18} />
           Back to submodule
@@ -213,7 +213,7 @@ export default function AdaptiveArticleReaderPage() {
 
         <AdaptiveSectionShell>
           {loading && <Typography sx={{ color: "text.secondary", textAlign: "center", py: 6 }}>Loading…</Typography>}
-          {error && <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
+          {error && <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
 
           {article && (
             <>
@@ -227,8 +227,8 @@ export default function AdaptiveArticleReaderPage() {
 
               {/* Reading level strip */}
               <Box sx={{ borderRadius: 4, p: { xs: 2, md: 2.5 }, mb: 2.5,
-                background: "linear-gradient(120deg, color-mix(in srgb, #6366f1 10%, var(--card-bg)) 0%, color-mix(in srgb, #ec4899 8%, var(--card-bg)) 100%)",
-                border: "1px solid color-mix(in srgb, #a855f7 20%, transparent)",
+                background: "linear-gradient(120deg, color-mix(in srgb, #1b4f8a 10%, var(--card-bg)) 0%, color-mix(in srgb, #0f6b7a 8%, var(--card-bg)) 100%)",
+                border: "1px solid color-mix(in srgb, #1b4f8a 20%, transparent)",
                 display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2, flexWrap: "wrap" }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, minWidth: 0 }}>
                   <AIBeacon size={34} />
@@ -237,7 +237,7 @@ export default function AdaptiveArticleReaderPage() {
                       Reading level · matched to you
                     </AIPill>
                     <Typography sx={{ fontSize: "0.82rem", color: "text.secondary", mt: 0.5 }}>
-                      Rendered at <b style={{ color: "#a855f7" }}>{tier}</b> · ~{readingTime} min
+                      Rendered at <b style={{ color: "#1b4f8a" }}>{tier}</b> · ~{readingTime} min
                     </Typography>
                   </Box>
                 </Box>
@@ -248,7 +248,7 @@ export default function AdaptiveArticleReaderPage() {
                       <ButtonBase key={t} onClick={() => void switchTier(t)} disabled={tierLoading}
                         sx={{ px: 1.5, py: 0.7, borderRadius: 999, display: "flex", flexDirection: "column", alignItems: "center", lineHeight: 1.1,
                           color: active ? "white" : "text.primary",
-                          background: active ? "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" : "transparent",
+                          background: active ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" : "transparent",
                           "&:disabled": { opacity: 0.6 } }}>
                         <Typography sx={{ fontWeight: 800, fontSize: "0.8rem" }}>{t}</Typography>
                         <Typography sx={{ fontSize: "0.62rem", opacity: 0.8 }}>{TIER_BLURB[t]}</Typography>
@@ -261,15 +261,15 @@ export default function AdaptiveArticleReaderPage() {
               {/* Skills you'll build */}
               {article.concepts.length > 0 && (
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2, flexWrap: "wrap" }}>
-                  <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, color: "#a855f7", fontWeight: 800, fontSize: "0.78rem" }}>
+                  <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, color: "#1b4f8a", fontWeight: 800, fontSize: "0.78rem" }}>
                     <Icon icon="mdi:brain" width={15} />
                     Skills you&apos;ll build:
                   </Box>
                   {article.concepts.map((c) => (
                     <Box key={c} component="span" sx={{
                       px: 1, py: 0.35, borderRadius: 999, fontSize: "0.76rem", fontWeight: 700,
-                      color: "#6366f1", bgcolor: "color-mix(in srgb, #6366f1 12%, transparent)",
-                      border: "1px solid color-mix(in srgb, #6366f1 30%, transparent)",
+                      color: "#1b4f8a", bgcolor: "color-mix(in srgb, #1b4f8a 12%, transparent)",
+                      border: "1px solid color-mix(in srgb, #1b4f8a 30%, transparent)",
                     }}>
                       {c}
                     </Box>
@@ -304,11 +304,11 @@ export default function AdaptiveArticleReaderPage() {
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2, position: { lg: "sticky" }, top: { lg: 24 },
                   maxHeight: { lg: "calc(100vh - 48px)" }, overflowY: { lg: "auto" }, pr: { lg: 0.5 } }}>
                   <Box sx={{ ...railSx, p: 0, overflow: "hidden",
-                    background: "linear-gradient(160deg, color-mix(in srgb, #6366f1 12%, var(--card-bg)) 0%, color-mix(in srgb, #ec4899 9%, var(--card-bg)) 100%)",
-                    border: "1px solid color-mix(in srgb, #a855f7 22%, transparent)" }}>
+                    background: "linear-gradient(160deg, color-mix(in srgb, #1b4f8a 12%, var(--card-bg)) 0%, color-mix(in srgb, #0f6b7a 9%, var(--card-bg)) 100%)",
+                    border: "1px solid color-mix(in srgb, #1b4f8a 22%, transparent)" }}>
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, px: 2, pt: 1.75, pb: 1.25 }}>
                       <Box sx={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 30, height: 30, borderRadius: 999,
-                        background: "linear-gradient(135deg, #6366f1, #a855f7)", flexShrink: 0 }}>
+                        background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)", flexShrink: 0 }}>
                         <Icon icon="mdi:lifebuoy" width={17} style={{ color: "white" }} />
                       </Box>
                       <Box sx={{ minWidth: 0 }}>
@@ -319,13 +319,13 @@ export default function AdaptiveArticleReaderPage() {
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75, px: 1.5, pb: 1.5 }}>
                       <RescueBtn icon="mdi:arrow-down-bold-circle-outline" title="Too complex - simplify"
                         sub={tierIndex > 0 ? `Drop to ${READING_TIERS[tierIndex - 1]}` : "Already at the simplest"}
-                        accent="#22c55e" disabled={tierIndex === 0 || tierLoading} onClick={() => rescue("simplify")} />
+                        accent="#0e7a3c" disabled={tierIndex === 0 || tierLoading} onClick={() => rescue("simplify")} />
                       <RescueBtn icon="mdi:arrow-up-bold-circle-outline" title="Too simple - go deeper"
                         sub={tierIndex < READING_TIERS.length - 1 ? `Climb to ${READING_TIERS[tierIndex + 1]}` : "Already at the deepest"}
-                        accent="#6366f1" disabled={tierIndex === READING_TIERS.length - 1 || tierLoading} onClick={() => rescue("deeper")} />
+                        accent="#1b4f8a" disabled={tierIndex === READING_TIERS.length - 1 || tierLoading} onClick={() => rescue("deeper")} />
                       <RescueBtn icon="mdi:emoticon-happy-outline" title="Explain like I'm 5"
                         sub={tier === "Beginner" ? "You're already here" : "Jump to Beginner"}
-                        accent="#ec4899" disabled={tier === "Beginner" || tierLoading} onClick={() => rescue("eli5")} />
+                        accent="#0f6b7a" disabled={tier === "Beginner" || tierLoading} onClick={() => rescue("eli5")} />
                     </Box>
                   </Box>
 
@@ -376,10 +376,10 @@ export default function AdaptiveArticleReaderPage() {
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, px: 2, pt: 1.75, pb: 1.25, flexShrink: 0,
               borderBottom: "1px solid color-mix(in srgb, var(--border-default) 60%, transparent)" }}>
               <Box sx={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 24, height: 24, borderRadius: 999,
-                background: "linear-gradient(135deg, #6366f1, #a855f7)", flexShrink: 0 }}>
+                background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)", flexShrink: 0 }}>
                 <Icon icon={EXPLAIN_VIEW_META[explain.view].icon} width={14} style={{ color: "white" }} />
               </Box>
-              <Typography sx={{ fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: "#a855f7", minWidth: 0,
+              <Typography sx={{ fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: "#1b4f8a", minWidth: 0,
                 overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 {EXPLAIN_VIEW_META[explain.view].label} · {explain.term}
               </Typography>
@@ -412,8 +412,8 @@ export default function AdaptiveArticleReaderPage() {
                     <ButtonBase key={key} disabled={!has}
                       onClick={() => setExplain((s) => (s ? { ...s, view: key } : s))}
                       sx={{ px: 1.25, py: 0.5, borderRadius: 999, fontSize: "0.72rem", fontWeight: 800, gap: 0.4,
-                        color: explain.view === key ? "white" : has ? "#6366f1" : "text.disabled",
-                        background: explain.view === key ? "linear-gradient(135deg, #6366f1, #a855f7)" : "color-mix(in srgb, #6366f1 12%, transparent)",
+                        color: explain.view === key ? "white" : has ? "#1b4f8a" : "text.disabled",
+                        background: explain.view === key ? "linear-gradient(135deg, #1b4f8a, #1b4f8a)" : "color-mix(in srgb, #1b4f8a 12%, transparent)",
                         "&:disabled": { opacity: 0.45, background: "color-mix(in srgb, var(--border-default) 30%, transparent)" } }}>
                       <Icon icon={EXPLAIN_VIEW_META[key].icon} width={13} />
                       {label}
@@ -432,10 +432,10 @@ export default function AdaptiveArticleReaderPage() {
         onClose={() => setSummary((s) => ({ ...s, open: false }))}
         maxWidth="sm"
         fullWidth
-        slotProps={{ paper: { sx: { borderRadius: 4, overflow: "hidden", bgcolor: "var(--card-bg)", border: "1px solid color-mix(in srgb, var(--border-default) 70%, transparent)", boxShadow: "0 28px 70px -30px rgba(124,58,237,0.55)" } } }}
+        slotProps={{ paper: { sx: { borderRadius: 4, overflow: "hidden", bgcolor: "var(--card-bg)", border: "1px solid color-mix(in srgb, var(--border-default) 70%, transparent)", boxShadow: "0 28px 70px -30px rgba(20, 64, 111,0.55)" } } }}
       >
         {/* Gradient header */}
-        <Box sx={{ position: "relative", px: 3, py: 2.25, color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 55%, #ec4899 100%)" }}>
+        <Box sx={{ position: "relative", px: 3, py: 2.25, color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 55%, #0f6b7a 100%)" }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
             <AIBeacon size={26} />
             <Box>
@@ -464,10 +464,10 @@ export default function AdaptiveArticleReaderPage() {
                   <Typography sx={{ fontSize: "0.66rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "text.secondary" }}>Key takeaways</Typography>
                   {summary.bullets.map((b, i) => (
                     <Box key={i} sx={{ display: "flex", gap: 1, alignItems: "flex-start", p: 1.1, borderRadius: 2.5,
-                      bgcolor: "color-mix(in srgb, #a855f7 7%, transparent)",
-                      border: "1px solid color-mix(in srgb, #a855f7 16%, transparent)",
+                      bgcolor: "color-mix(in srgb, #1b4f8a 7%, transparent)",
+                      border: "1px solid color-mix(in srgb, #1b4f8a 16%, transparent)",
                       opacity: 0, animation: "acb-fade-in 0.4s ease forwards", animationDelay: `${0.4 + i * 0.3}s` }}>
-                      <Icon icon="mdi:check-circle" width={17} style={{ color: "#a855f7", flexShrink: 0, marginTop: 1 }} />
+                      <Icon icon="mdi:check-circle" width={17} style={{ color: "#1b4f8a", flexShrink: 0, marginTop: 1 }} />
                       <Typography sx={{ fontSize: "0.85rem", lineHeight: 1.45 }}>{b}</Typography>
                     </Box>
                   ))}
@@ -496,7 +496,7 @@ function GeneratingShimmer({ label }: { label: string }) {
     <Box sx={{ py: 0.5 }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.25 }}>
         <AIBeacon size={22} />
-        <Typography sx={{ fontSize: "0.82rem", fontWeight: 800, color: "#a855f7",
+        <Typography sx={{ fontSize: "0.82rem", fontWeight: 800, color: "#1b4f8a",
           animation: "acb-pulse 1.4s ease-in-out infinite" }}>
           {label}
         </Typography>
@@ -504,7 +504,7 @@ function GeneratingShimmer({ label }: { label: string }) {
       <Box sx={{ display: "flex", flexDirection: "column", gap: 0.85 }}>
         {[92, 100, 78].map((w, i) => (
           <Box key={i} sx={{ height: 9, width: `${w}%`, borderRadius: 999,
-            background: "linear-gradient(90deg, color-mix(in srgb, #6366f1 18%, transparent) 25%, color-mix(in srgb, #a855f7 32%, transparent) 50%, color-mix(in srgb, #6366f1 18%, transparent) 75%)",
+            background: "linear-gradient(90deg, color-mix(in srgb, #1b4f8a 18%, transparent) 25%, color-mix(in srgb, #1b4f8a 32%, transparent) 50%, color-mix(in srgb, #1b4f8a 18%, transparent) 75%)",
             backgroundSize: "200% 100%", animation: "acb-shimmer 1.3s ease-in-out infinite", animationDelay: `${i * 0.12}s` }} />
         ))}
       </Box>
@@ -554,8 +554,8 @@ function DiagramView({ text }: { text: string }) {
         fontSize: "0.78rem", lineHeight: 1.5, color: "var(--font-primary)",
         whiteSpace: "pre", overflowX: "auto",
         maxHeight: "42vh", overflowY: "auto",
-        background: "linear-gradient(135deg, color-mix(in srgb, #6366f1 8%, var(--card-bg)) 0%, color-mix(in srgb, #a855f7 8%, var(--card-bg)) 100%)",
-        border: "1px solid color-mix(in srgb, #a855f7 28%, transparent)",
+        background: "linear-gradient(135deg, color-mix(in srgb, #1b4f8a 8%, var(--card-bg)) 0%, color-mix(in srgb, #1b4f8a 8%, var(--card-bg)) 100%)",
+        border: "1px solid color-mix(in srgb, #1b4f8a 28%, transparent)",
       }}>
         {clean}
       </Box>
@@ -589,7 +589,7 @@ function ConjureLoader({ tier }: { tier: ReadingTier }) {
   const widths = [97, 88, 100, 73, 93, 81, 99, 67, 90, 78];
   return (
     <Box sx={{ animation: "acb-conjure-in 0.4s ease forwards" }}>
-      <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.85, mb: 2.5, color: "#a855f7", fontWeight: 800, fontSize: "0.88rem" }}>
+      <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.85, mb: 2.5, color: "#1b4f8a", fontWeight: 800, fontSize: "0.88rem" }}>
         <Icon icon="mdi:auto-fix" width={19} className="acb-wand" />
         <Box component="span" sx={{ animation: "acb-pulse 1.5s ease-in-out infinite" }}>
           Conjuring your <b>{tier}</b> read…
@@ -599,7 +599,7 @@ function ConjureLoader({ tier }: { tier: ReadingTier }) {
         {widths.map((w, i) => (
           <Box key={i} sx={{
             height: 12, width: `${w}%`, borderRadius: 999,
-            background: "linear-gradient(90deg, color-mix(in srgb,#6366f1 14%,transparent) 20%, color-mix(in srgb,#a855f7 30%,transparent) 50%, color-mix(in srgb,#ec4899 14%,transparent) 80%)",
+            background: "linear-gradient(90deg, color-mix(in srgb,#1b4f8a 14%,transparent) 20%, color-mix(in srgb,#1b4f8a 30%,transparent) 50%, color-mix(in srgb,#0f6b7a 14%,transparent) 80%)",
             backgroundSize: "220% 100%",
             animation: "acb-shimmer 1.25s ease-in-out infinite, acb-conjure-in 0.5s ease forwards",
             animationDelay: `${i * 0.08}s`,
@@ -628,8 +628,8 @@ const railSx = {
 function RailLabel({ icon, text, noMargin }: { icon: string; text: string; noMargin?: boolean }) {
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 0.6, mb: noMargin ? 0 : 1.25 }}>
-      <Icon icon={icon} width={16} style={{ color: "#a855f7" }} />
-      <Typography sx={{ fontWeight: 800, fontSize: "0.74rem", letterSpacing: "0.06em", textTransform: "uppercase", color: "#a855f7" }}>{text}</Typography>
+      <Icon icon={icon} width={16} style={{ color: "#1b4f8a" }} />
+      <Typography sx={{ fontWeight: 800, fontSize: "0.74rem", letterSpacing: "0.06em", textTransform: "uppercase", color: "#1b4f8a" }}>{text}</Typography>
     </Box>
   );
 }
@@ -648,10 +648,10 @@ function TocRail({ headings, activeId, onJump, open, onToggle }: { headings: Art
           title="Show contents"
           aria-label="Show contents"
           sx={{
-            width: 36, height: 36, borderRadius: 2.5, color: "#a855f7",
-            bgcolor: "color-mix(in srgb, #a855f7 10%, transparent)",
-            border: "1px solid color-mix(in srgb, #a855f7 28%, transparent)",
-            "&:hover": { bgcolor: "color-mix(in srgb, #a855f7 18%, transparent)" },
+            width: 36, height: 36, borderRadius: 2.5, color: "#1b4f8a",
+            bgcolor: "color-mix(in srgb, #1b4f8a 10%, transparent)",
+            border: "1px solid color-mix(in srgb, #1b4f8a 28%, transparent)",
+            "&:hover": { bgcolor: "color-mix(in srgb, #1b4f8a 18%, transparent)" },
           }}
         >
           <Icon icon="mdi:format-list-bulleted" width={18} />
@@ -670,7 +670,7 @@ function TocRail({ headings, activeId, onJump, open, onToggle }: { headings: Art
               title="Hide contents"
               aria-label="Hide contents"
               size="small"
-              sx={{ color: "text.secondary", mt: -1, "&:hover": { color: "#a855f7" } }}
+              sx={{ color: "text.secondary", mt: -1, "&:hover": { color: "#1b4f8a" } }}
             >
               <Icon icon="mdi:chevron-left" width={18} />
             </IconButton>
@@ -685,11 +685,11 @@ function TocRail({ headings, activeId, onJump, open, onToggle }: { headings: Art
                   sx={{
                     justifyContent: "flex-start", textAlign: "left",
                     pl: h.level === 3 ? 2.5 : 1.25, pr: 1, py: 0.6, ml: "-2px",
-                    borderLeft: "2px solid", borderColor: active ? "#a855f7" : "transparent",
-                    color: active ? "#a855f7" : "text.secondary",
+                    borderLeft: "2px solid", borderColor: active ? "#1b4f8a" : "transparent",
+                    color: active ? "#1b4f8a" : "text.secondary",
                     fontWeight: active ? 800 : 600, fontSize: "0.8rem", lineHeight: 1.3,
                     transition: "color 0.15s ease, border-color 0.15s ease",
-                    "&:hover": { color: "#a855f7" },
+                    "&:hover": { color: "#1b4f8a" },
                   }}
                 >
                   {h.text}
@@ -727,7 +727,7 @@ function ToolbarBtn({ icon, label, onClick }: { icon: string; label: string; onC
   return (
     <ButtonBase onClick={onClick} sx={{ px: 1.75, py: 0.85, borderRadius: 999, fontWeight: 800, fontSize: "0.82rem", gap: 0.5, color: "text.primary",
       bgcolor: "color-mix(in srgb, var(--card-bg) 60%, transparent)", border: "1px solid color-mix(in srgb, var(--border-default) 75%, transparent)",
-      "&:hover": { borderColor: "color-mix(in srgb, #6366f1 50%, transparent)" } }}>
+      "&:hover": { borderColor: "color-mix(in srgb, #1b4f8a 50%, transparent)" } }}>
       <Icon icon={icon} width={16} />
       {label}
     </ButtonBase>

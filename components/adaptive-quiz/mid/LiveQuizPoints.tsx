@@ -47,7 +47,7 @@ export function LiveQuizPoints({ decay, running = true, hints = 0, startedAtMs }
   const inGrace = elapsedSec < decay.grace && hints === 0;
   const atFloor = pts <= decay.floor;
   const pct = decay.base > 0 ? Math.max(0, Math.min(100, (pts / decay.base) * 100)) : 0;
-  const color = inGrace ? "#10b981" : atFloor ? "#ef4444" : "#f59e0b";
+  const color = inGrace ? "#0e7a3c" : atFloor ? "#b32020" : "#b7791f";
   const graceLeft = Math.max(0, Math.ceil(decay.grace - elapsedSec));
 
   return (
@@ -60,7 +60,7 @@ export function LiveQuizPoints({ decay, running = true, hints = 0, startedAtMs }
       }}
     >
       <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="center">
-        <Icon icon="mdi:star-four-points" width={13} color="#7c3aed" />
+        <Icon icon="mdi:star-four-points" width={13} color="#14406f" />
         <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "text.secondary" }}>
           Points on offer
         </Typography>
@@ -83,7 +83,7 @@ export function LiveQuizPoints({ decay, running = true, hints = 0, startedAtMs }
         sx={{ mt: 1, height: 7, borderRadius: 4, bgcolor: "rgba(148,163,184,0.2)", "& .MuiLinearProgress-bar": { bgcolor: color, borderRadius: 4, transition: "transform .3s ease, background-color .3s" } }}
       />
 
-      <Typography sx={{ fontSize: "0.72rem", color: inGrace ? "#15803d" : atFloor ? "#b91c1c" : "#b45309", fontWeight: 700, mt: 0.85, lineHeight: 1.4 }}>
+      <Typography sx={{ fontSize: "0.72rem", color: inGrace ? "#0b6232" : atFloor ? "#8f1919" : "#8a5a12", fontWeight: 700, mt: 0.85, lineHeight: 1.4 }}>
         {inGrace
           ? `Full points for ${fmtSecs(graceLeft)} more`
           : atFloor

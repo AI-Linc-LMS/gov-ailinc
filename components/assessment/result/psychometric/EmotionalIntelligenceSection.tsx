@@ -64,7 +64,7 @@ export function EmotionalIntelligenceSection({ data }: EmotionalIntelligenceSect
     <div className="bg-white rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl p-4 sm:p-6 md:p-8 border-2 border-slate-200">
       {/* Header */}
       <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
-        <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl md:rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-lg flex-shrink-0">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl md:rounded-2xl bg-gradient-to-br from-[#0f6b7a] to-[#b32020] flex items-center justify-center shadow-lg flex-shrink-0">
           <svg className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
@@ -76,7 +76,7 @@ export function EmotionalIntelligenceSection({ data }: EmotionalIntelligenceSect
       </div>
 
       {/* Emotional Intelligence Radar */}
-      <div className="mb-4 sm:mb-6 md:mb-8 bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg sm:rounded-xl md:rounded-2xl p-4 sm:p-5 md:p-6 border border-pink-100">
+      <div className="mb-4 sm:mb-6 md:mb-8 bg-gradient-to-br from-[#e6f1f2] to-[#fbeaea] rounded-lg sm:rounded-xl md:rounded-2xl p-4 sm:p-5 md:p-6 border border-[#d5e7e9]">
         <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-4 sm:mb-6">Emotional Intelligence Dimensions</h3>
         <div className="w-full h-[400px]">
           <ResponsiveContainer>
@@ -102,7 +102,7 @@ export function EmotionalIntelligenceSection({ data }: EmotionalIntelligenceSect
                     return (
                       <div className="bg-white rounded-lg shadow-xl border border-slate-200 p-3">
                         <p className="font-bold text-slate-900 mb-1">{data.dimension}</p>
-                        <p className="text-lg font-bold text-pink-600">{data.score}/100</p>
+                        <p className="text-lg font-bold text-[#0f6b7a]">{data.score}/100</p>
                       </div>
                     );
                   }
@@ -118,7 +118,7 @@ export function EmotionalIntelligenceSection({ data }: EmotionalIntelligenceSect
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <div
           className={`p-5 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
-            selectedDimension === "regulation" ? "border-pink-400 bg-pink-50 shadow-lg" : "border-slate-200 bg-white hover:border-pink-300"
+            selectedDimension === "regulation" ? "border-[#3f8f9e] bg-[#e6f1f2] shadow-lg" : "border-slate-200 bg-white hover:border-[#8cbcc4]"
           }`}
           onClick={() => setSelectedDimension(selectedDimension === "regulation" ? null : "regulation")}
         >
@@ -139,7 +139,7 @@ export function EmotionalIntelligenceSection({ data }: EmotionalIntelligenceSect
 
         <div
           className={`p-5 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
-            selectedDimension === "stress" ? "border-pink-400 bg-pink-50 shadow-lg" : "border-slate-200 bg-white hover:border-pink-300"
+            selectedDimension === "stress" ? "border-[#3f8f9e] bg-[#e6f1f2] shadow-lg" : "border-slate-200 bg-white hover:border-[#8cbcc4]"
           }`}
           onClick={() => setSelectedDimension(selectedDimension === "stress" ? null : "stress")}
         >
@@ -160,7 +160,7 @@ export function EmotionalIntelligenceSection({ data }: EmotionalIntelligenceSect
 
         <div
           className={`p-5 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
-            selectedDimension === "empathy" ? "border-pink-400 bg-pink-50 shadow-lg" : "border-slate-200 bg-white hover:border-pink-300"
+            selectedDimension === "empathy" ? "border-[#3f8f9e] bg-[#e6f1f2] shadow-lg" : "border-slate-200 bg-white hover:border-[#8cbcc4]"
           }`}
           onClick={() => setSelectedDimension(selectedDimension === "empathy" ? null : "empathy")}
         >
@@ -181,7 +181,7 @@ export function EmotionalIntelligenceSection({ data }: EmotionalIntelligenceSect
 
         <div
           className={`p-5 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
-            selectedDimension === "pressure" ? "border-pink-400 bg-pink-50 shadow-lg" : "border-slate-200 bg-white hover:border-pink-300"
+            selectedDimension === "pressure" ? "border-[#3f8f9e] bg-[#e6f1f2] shadow-lg" : "border-slate-200 bg-white hover:border-[#8cbcc4]"
           }`}
           onClick={() => setSelectedDimension(selectedDimension === "pressure" ? null : "pressure")}
         >
@@ -202,7 +202,7 @@ export function EmotionalIntelligenceSection({ data }: EmotionalIntelligenceSect
       </div>
 
       {/* Social Intelligence */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+      <div className="bg-gradient-to-br from-blue-50 to-[#eef3fa] rounded-2xl p-6 border border-blue-100">
         <h3 className="text-xl font-bold text-slate-900 mb-6">Social Intelligence Profile</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-white rounded-xl p-4 border border-blue-200">

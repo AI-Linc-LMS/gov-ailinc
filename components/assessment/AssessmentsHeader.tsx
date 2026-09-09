@@ -27,7 +27,7 @@ export function AssessmentsHeader() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            boxShadow: "var(--assessment-catalog-cta-auto-shadow)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <IconWrapper

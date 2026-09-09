@@ -16,8 +16,8 @@ interface LiveRoomsStripProps {
   canCreate?: boolean;
 }
 
-const PINK = "#ec4899";
-const PINK_BG = "rgba(236,72,153,0.08)";
+const PINK = "#0f6b7a";
+const PINK_BG = "rgba(15, 107, 122,0.08)";
 
 /**
  * Instagram-style horizontally-scrolling strip of currently-live rooms.
@@ -200,9 +200,9 @@ export function LiveRoomsStrip({
                 color: "var(--font-secondary)",
                 transition: "all 0.15s",
                 "&:hover": {
-                  borderColor: "#ec4899",
-                  color: "#ec4899",
-                  backgroundColor: "rgba(236,72,153,0.06)",
+                  borderColor: "#0f6b7a",
+                  color: "#0f6b7a",
+                  backgroundColor: "rgba(15, 107, 122,0.06)",
                 },
               }}
             >
@@ -237,7 +237,7 @@ export function LiveRoomsStrip({
                 borderRadius: "50%",
                 padding: "2.5px",
                 background:
-                  "conic-gradient(from 0deg, #ef4444, #ec4899, #f59e0b, #ef4444)",
+                  "conic-gradient(from 0deg, #b32020, #0f6b7a, #b7791f, #b32020)",
               }}
             >
               <Box
@@ -271,7 +271,7 @@ export function LiveRoomsStrip({
                 px: 0.85,
                 py: 0.15,
                 borderRadius: "999px",
-                backgroundColor: "#ef4444",
+                backgroundColor: "#b32020",
                 color: "#fff",
                 fontSize: "0.58rem",
                 fontWeight: 800,

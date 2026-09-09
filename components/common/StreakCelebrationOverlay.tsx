@@ -9,7 +9,7 @@ import {
   useStreakCelebration,
 } from "@/lib/streak/streakCelebration";
 
-const COLORS = ["#f59e0b", "#f97316", "#ef4444", "#fbbf24", "#fb7185", "#a855f7", "#34d399"];
+const COLORS = ["#b7791f", "#b45309", "#b32020", "#c9903a", "#c94b4b", "#1b4f8a", "#2f9159"];
 const BURST_MS = 4200; // long enough to read the count + message; tap to skip early
 
 type Phase = "idle" | "burst" | "fly";
@@ -116,7 +116,6 @@ export function StreakCelebrationOverlay() {
         style={{
           position: "absolute", inset: 0,
           background: "radial-gradient(circle at 50% 42%, rgba(120,53,15,0.55) 0%, rgba(15,23,42,0.82) 70%)",
-          backdropFilter: "blur(2px)",
         }}
       />
 
@@ -156,8 +155,8 @@ export function StreakCelebrationOverlay() {
                 style={{
                   position: "absolute", left: "50%", top: "55%", zIndex: 1,
                   width: e.size, height: e.size, borderRadius: "50%",
-                  background: "radial-gradient(circle, #fde68a, #f97316)",
-                  boxShadow: "0 0 8px 2px rgba(249,115,22,0.45)",
+                  background: "radial-gradient(circle, #f0ddb8, #b45309)",
+                  boxShadow: "var(--shadow-sm)",
                 }}
               />
             ))}
@@ -169,20 +168,18 @@ export function StreakCelebrationOverlay() {
               transition={{ type: "spring", stiffness: 220, damping: 16 }}
               style={{ textAlign: "center", position: "relative", zIndex: 2 }}
             >
-              {/* Glowing flame disc */}
+              {/* Flame disc. The 40px to 70px amber halo that used to pulse under it
+                  was the loudest glow in the product; the disc is already a filled
+                  circle inside a white ring, so it needs elevation, not a halo. The
+                  flame itself still animates, so the moment is not static. */}
               <motion.div
                 id="streak-burst-flame"
-                animate={{ boxShadow: [
-                  "0 0 40px 8px rgba(245,158,11,0.5)",
-                  "0 0 70px 18px rgba(249,115,22,0.7)",
-                  "0 0 40px 8px rgba(245,158,11,0.5)",
-                ] }}
-                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
                 style={{
                   width: 132, height: 132, borderRadius: "50%", margin: "0 auto 20px",
                   display: "grid", placeItems: "center",
-                  background: "radial-gradient(circle at 50% 35%, #fde68a 0%, #f59e0b 45%, #ea580c 100%)",
+                  background: "radial-gradient(circle at 50% 35%, #f0ddb8 0%, #b7791f 45%, #9a4708 100%)",
                   border: "4px solid rgba(255,255,255,0.9)",
+                  boxShadow: "var(--shadow-md)",
                 }}
               >
                 <motion.span
@@ -203,7 +200,7 @@ export function StreakCelebrationOverlay() {
                   {celebrateCount}
                 </Typography>
               </motion.div>
-              <Typography sx={{ fontWeight: 800, fontSize: { xs: "1.1rem", sm: "1.35rem" }, color: "#fde68a", mt: 0.5 }}>
+              <Typography sx={{ fontWeight: 800, fontSize: { xs: "1.1rem", sm: "1.35rem" }, color: "#f0ddb8", mt: 0.5 }}>
                 day streak{celebrateCount === 1 ? " started!" : "!"}
               </Typography>
               <Typography sx={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.82)", mt: 0.75 }}>
@@ -240,7 +237,7 @@ export function StreakCelebrationOverlay() {
             opacity: { times: [0, 0.5, 0.82, 1], ease: "easeIn" },
           }}
           onAnimationComplete={onFlyComplete}
-          style={{ position: "fixed", top: 0, left: 0, marginLeft: -28, marginTop: -28, fontSize: 56, zIndex: 3, filter: "drop-shadow(0 6px 16px rgba(249,115,22,0.6))" }}
+          style={{ position: "fixed", top: 0, left: 0, marginLeft: -28, marginTop: -28, fontSize: 56, zIndex: 3, filter: "drop-shadow(0 3px 6px rgba(10,30,55,0.35))" }}
         >
           🔥
         </motion.div>

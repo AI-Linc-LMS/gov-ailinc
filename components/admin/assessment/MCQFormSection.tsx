@@ -31,7 +31,7 @@ const cardSx = {
   borderRadius: "16px",
   bgcolor: "var(--card-bg)",
   border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
-  boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+  boxShadow: "var(--shadow-sm)",
 };
 
 /** Section kicker label (contract): tiny, heavy, tracked-out uppercase. */
@@ -593,7 +593,7 @@ export function MCQFormSection({ mcqs, onMCQsChange }: MCQFormSectionProps) {
               borderRadius: 2,
               color: "#fff",
               background: "var(--gradient-ai)",
-              boxShadow: "0 10px 22px -12px color-mix(in srgb, var(--ai-violet) 70%, transparent)",
+              boxShadow: "var(--shadow-sm)",
               "&:hover": { background: "var(--gradient-ai)", filter: "brightness(1.05)" },
               "&.Mui-disabled": {
                 color: "var(--font-secondary)",

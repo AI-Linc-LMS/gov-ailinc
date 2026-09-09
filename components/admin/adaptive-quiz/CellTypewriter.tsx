@@ -89,14 +89,14 @@ export function CellTypewriter({
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-        <Icon icon="mdi:fountain-pen-tip" width={12} style={{ color: "#a855f7" }} />
+        <Icon icon="mdi:fountain-pen-tip" width={12} style={{ color: "#1b4f8a" }} />
         <Typography
           sx={{
             fontSize: "0.62rem",
             fontWeight: 800,
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "#a855f7",
+            color: "#1b4f8a",
           }}
         >
           Writing question {idx + 1} of {total}
@@ -107,8 +107,8 @@ export function CellTypewriter({
           px: 1,
           py: 0.75,
           borderRadius: 1.5,
-          bgcolor: "color-mix(in srgb, #a855f7 5%, transparent)",
-          border: "1px solid color-mix(in srgb, #a855f7 18%, transparent)",
+          bgcolor: "color-mix(in srgb, #1b4f8a 5%, transparent)",
+          border: "1px solid color-mix(in srgb, #1b4f8a 18%, transparent)",
           minHeight: 42,
         }}
       >
@@ -129,7 +129,7 @@ export function CellTypewriter({
               display: "inline-block",
               width: "0.5em",
               ml: 0.3,
-              borderRight: "1.5px solid #a855f7",
+              borderRight: "1.5px solid #1b4f8a",
               animation: "cell-typewriter-blink 0.9s steps(2) infinite",
             }}
           />
@@ -137,7 +137,7 @@ export function CellTypewriter({
       </Box>
       <style jsx global>{`
         @keyframes cell-typewriter-blink {
-          0%, 49% { border-right-color: #a855f7; }
+          0%, 49% { border-right-color: #1b4f8a; }
           50%, 100% { border-right-color: transparent; }
         }
       `}</style>

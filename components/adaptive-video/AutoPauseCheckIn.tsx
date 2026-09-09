@@ -50,8 +50,7 @@ export function AutoPauseCheckIn({ checkIn, onAnswer, onContinue, onRewind }: Pr
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "rgba(15, 12, 41, 0.82)",
-        backdropFilter: "blur(6px)",
+        background: "rgba(7, 20, 38, 0.82)",
         zIndex: 20,
         p: 2,
       }}
@@ -65,12 +64,12 @@ export function AutoPauseCheckIn({ checkIn, onAnswer, onContinue, onRewind }: Pr
           pt: 3.25,
           overflow: "hidden",
           background: "var(--card-bg, #fff)",
-          border: "1px solid color-mix(in srgb, #a855f7 28%, transparent)",
-          boxShadow: "0 32px 70px rgba(15,12,41,0.45)",
+          border: "1px solid color-mix(in srgb, #1b4f8a 28%, transparent)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <Box aria-hidden sx={{ position: "absolute", top: 0, left: 0, right: 0, height: 4,
-          background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)" }} />
+          background: "linear-gradient(90deg, #1b4f8a, #1b4f8a, #0f6b7a)" }} />
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1.5 }}>
           <AIPill icon={<Icon icon="mdi:lightning-bolt" />}>Quick check</AIPill>
           <Typography sx={{ fontSize: "0.72rem", color: "text.secondary" }}>
@@ -100,14 +99,14 @@ export function AutoPauseCheckIn({ checkIn, onAnswer, onContinue, onRewind }: Pr
                   py: 1.25,
                   border: "1px solid",
                   borderColor: isCorrect
-                    ? "#16a34a"
+                    ? "#0b6232"
                     : isWrongPick
-                    ? "#dc2626"
-                    : "color-mix(in srgb, #6366f1 22%, transparent)",
+                    ? "#991b1b"
+                    : "color-mix(in srgb, #1b4f8a 22%, transparent)",
                   background: isCorrect
-                    ? "color-mix(in srgb, #16a34a 12%, transparent)"
+                    ? "color-mix(in srgb, #0b6232 12%, transparent)"
                     : isWrongPick
-                    ? "color-mix(in srgb, #dc2626 10%, transparent)"
+                    ? "color-mix(in srgb, #991b1b 10%, transparent)"
                     : "transparent",
                   color: "text.primary",
                 }}
@@ -116,7 +115,7 @@ export function AutoPauseCheckIn({ checkIn, onAnswer, onContinue, onRewind }: Pr
                   {letter}
                 </Box>
                 {checkIn[key] as string}
-                {isCorrect && <Icon icon="mdi:check-circle" style={{ marginLeft: "auto", color: "#16a34a" }} />}
+                {isCorrect && <Icon icon="mdi:check-circle" style={{ marginLeft: "auto", color: "#0b6232" }} />}
               </Button>
             );
           })}

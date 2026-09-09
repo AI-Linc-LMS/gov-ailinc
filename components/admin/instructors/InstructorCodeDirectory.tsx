@@ -49,7 +49,7 @@ export function InstructorCodeDirectory() {
     );
   }
   if (error) {
-    return <Typography sx={{ color: "#ef4444", fontWeight: 700, py: 3 }}>{error}</Typography>;
+    return <Typography sx={{ color: "#b32020", fontWeight: 700, py: 3 }}>{error}</Typography>;
   }
   if (rows.length === 0) {
     return (
@@ -119,7 +119,7 @@ function InstructorCodeRow({
       {/* Identity */}
       <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
         <Box sx={{ width: 40, height: 40, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center",
-          color: "#fff", fontWeight: 800, background: "linear-gradient(135deg,#6366f1,#a855f7)" }}>
+          color: "#fff", fontWeight: 800, background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)" }}>
           {(row.name || row.email || "?").slice(0, 1).toUpperCase()}
         </Box>
         <Box sx={{ minWidth: 0 }}>
@@ -164,7 +164,7 @@ function InstructorCodeRow({
           variant="contained"
           disableElevation
           sx={{ borderRadius: 2, textTransform: "none", fontWeight: 700, minWidth: 72,
-            background: "linear-gradient(135deg,#6366f1,#a855f7)" }}
+            background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)" }}
         >
           {saving ? <CircularProgress size={16} sx={{ color: "#fff" }} /> : "Save"}
         </Button>

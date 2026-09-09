@@ -13,7 +13,7 @@ export default function ProctoringDemoPage() {
           mb: 4,
           border: "1px solid #e5e7eb",
           borderRadius: 2,
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          background: "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)",
           color: "#fff",
         }}
       >
@@ -85,9 +85,9 @@ export default function ProctoringDemoPage() {
         sx={{
           p: 3,
           mt: 3,
-          border: "1px solid #fef3c7",
+          border: "1px solid #fdf3e2",
           borderRadius: 2,
-          backgroundColor: "#fffbeb",
+          backgroundColor: "#fdf9f0",
         }}
       >
         <Typography variant="body2" color="text.secondary">

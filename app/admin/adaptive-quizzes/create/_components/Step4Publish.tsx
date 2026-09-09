@@ -98,15 +98,15 @@ export function Step4Publish({ draft }: Step4PublishProps) {
           sx={{
             p: 2,
             borderRadius: 2,
-            bgcolor: "color-mix(in srgb, #ef4444 8%, transparent)",
-            border: "1px solid color-mix(in srgb, #ef4444 22%, transparent)",
+            bgcolor: "color-mix(in srgb, #b32020 8%, transparent)",
+            border: "1px solid color-mix(in srgb, #b32020 22%, transparent)",
             display: "flex",
             gap: 1,
             alignItems: "flex-start",
           }}
         >
-          <Icon icon="mdi:alert-circle-outline" width={18} style={{ color: "#ef4444", marginTop: 2 }} />
-          <Typography sx={{ fontSize: "0.85rem", color: "#ef4444", lineHeight: 1.5 }}>
+          <Icon icon="mdi:alert-circle-outline" width={18} style={{ color: "#b32020", marginTop: 2 }} />
+          <Typography sx={{ fontSize: "0.85rem", color: "#b32020", lineHeight: 1.5 }}>
             No questions in the bank yet. Go back and generate them in Step 2.
           </Typography>
         </Box>

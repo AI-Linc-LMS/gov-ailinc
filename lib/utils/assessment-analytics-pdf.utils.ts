@@ -9,8 +9,9 @@ import {
 } from "@/lib/utils/assessment-section-performance.utils";
 
 /** Match assessment result PDF chrome */
-const SKY = { r: 2, g: 132, b: 199 };
-const SKY_DEEP = { r: 3, g: 105, b: 161 };
+// The report's primary accent: institutional blue (#1b4f8a) and its 700 step (#12365f).
+const SKY = { r: 27, g: 79, b: 138 };
+const SKY_DEEP = { r: 18, g: 54, b: 95 };
 const SLATE_MUTED = { r: 71, g: 85, b: 105 };
 const INK = { r: 15, g: 23, b: 42 };
 const TRACK = { r: 226, g: 232, b: 240 };
@@ -27,19 +28,25 @@ function hexToRgb(hex: string): readonly [number, number, number] {
           .map((c) => c + c)
           .join("")
       : h;
-  if (full.length !== 6) return [2, 132, 199];
+  if (full.length !== 6) return [27, 79, 138];
   const n = Number.parseInt(full, 16);
-  if (!Number.isFinite(n)) return [2, 132, 199];
+  if (!Number.isFinite(n)) return [27, 79, 138];
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255] as const;
 }
 
-/** Same order as `SCORE_BUCKET_COLORS` in analytics charts UI. */
+/**
+ * Same order as `SCORE_BUCKET_COLORS` in the analytics charts UI, and it has to stay that way:
+ * the officer reading this PDF has the screen open beside it. Score bands are ORDERED, so this
+ * is one hue deepening with the band, off the institutional blue ramp - not the old
+ * red/orange/yellow/blue/green traffic light, whose middle two steps were near-indistinguishable
+ * once printed in greyscale, which is how a report like this usually ends up being read.
+ */
 const CHART_SCORE_BAND_RGB = (
-  ["#ef4444", "#f97316", "#eab308", "#3b82f6", "#10b981"] as const
+  ["#85aad6", "#4a7fbb", "#1b4f8a", "#12365f", "#0a1e37"] as const
 ).map((x) => hexToRgb(x));
 
-const CHART_TIME_RGB = hexToRgb("#7c3aed");
-const CHART_TIMELINE_RGB = hexToRgb("#6366f1");
+const CHART_TIME_RGB = hexToRgb("#1b4f8a");
+const CHART_TIMELINE_RGB = hexToRgb("#1b4f8a");
 
 type AnalyticsBarPalette = "score" | "time" | "sky";
 
@@ -155,7 +162,7 @@ function drawFootersOnAllPages(
     pdf.text(`Page ${p} of ${total}`, margin + 14.5, textY);
 
     pdf.setFontSize(7);
-    pdf.setTextColor(148, 163, 184);
+    pdf.setTextColor(107, 118, 132);
     pdf.text(`© Confidential assessment report`, pageW - margin, textY, {
       align: "right",
     });
@@ -242,9 +249,9 @@ export function generateAssessmentAnalyticsPdfVector(
     const rowH = Math.max(14, 6 + maxLabelLines * 3.4 + 6);
     ensureSpace(rowH + 4);
     const top = y;
-    pdf.setDrawColor(226, 232, 240);
+    pdf.setDrawColor(221, 227, 235);
     pdf.setLineWidth(0.25);
-    pdf.setFillColor(248, 250, 252);
+    pdf.setFillColor(246, 248, 251);
     pdf.roundedRect(margin, top, contentW, rowH, 1.2, 1.2, "FD");
     const valueBaseline = top + rowH - 3.5;
     for (let i = 0; i < pairs.length; i++) {
@@ -413,7 +420,7 @@ export function generateAssessmentAnalyticsPdfVector(
     }
 
     if (dashLayout) {
-      pdf.setDrawColor(226, 232, 240);
+      pdf.setDrawColor(221, 227, 235);
       pdf.setLineWidth(0.15);
       for (let g = 1; g <= 4; g++) {
         const gy = baseY - ((chartInnerH - 1) * g) / 5;
@@ -611,15 +618,22 @@ export function generateAssessmentAnalyticsPdfVector(
   const blockH = statusTotal > 0 ? 58 : 22;
   ensureSpace(blockH + 4);
   const blockTop = y;
-  pdf.setFillColor(248, 250, 252);
-  pdf.setDrawColor(226, 232, 240);
+  pdf.setFillColor(246, 248, 251);
+  pdf.setDrawColor(221, 227, 235);
   pdf.setLineWidth(0.25);
   pdf.roundedRect(margin, blockTop, contentW, blockH, 1, 1, "FD");
 
+  /**
+   * Status tokens, never categorical hues: gold is pending, blue is the neutral middle state,
+   * green is complete. Each slice is named in the legend beside the pie, and the three also
+   * separate by lightness (OKLCH L 0.63 / 0.43 / 0.51), so the chart survives the greyscale
+   * printer this report usually meets. Gold against green is the palette's weakest colour-vision
+   * pair (dE 6.5), which is exactly why the legend and the lightness gap are not optional here.
+   */
   const STATUS_COLORS = {
-    inProgress: [245, 158, 11] as const,
-    submitted: [59, 130, 246] as const,
-    finalized: [16, 185, 129] as const,
+    inProgress: [183, 121, 31] as const,
+    submitted: [27, 79, 138] as const,
+    finalized: [14, 122, 60] as const,
   };
 
   if (statusTotal > 0) {
@@ -638,7 +652,7 @@ export function generateAssessmentAnalyticsPdfVector(
       drawPieSliceFilled(pdf, pieCx, pieCy, pieR, ang, ang + w, sl.rgb);
       ang += w;
     }
-    pdf.setDrawColor(148, 163, 184);
+    pdf.setDrawColor(107, 118, 132);
     pdf.setLineWidth(0.35);
     pdf.circle(pieCx, pieCy, pieR, "S");
 
@@ -673,7 +687,7 @@ export function generateAssessmentAnalyticsPdfVector(
       pdf.rect(sx, stackY, w, stackH, "F");
       sx += w;
     }
-    pdf.setDrawColor(203, 213, 225);
+    pdf.setDrawColor(221, 227, 235);
     pdf.setLineWidth(0.2);
     pdf.rect(stackX, stackY, stackW, stackH, "S");
   } else {
@@ -760,7 +774,7 @@ export function generateAssessmentAnalyticsPdfVector(
         align: "center",
       });
       pdf.text("Status", c.stL + c.stW - 1, y + 4.2, { align: "right" });
-      pdf.setDrawColor(226, 232, 240);
+      pdf.setDrawColor(221, 227, 235);
       pdf.setLineWidth(0.2);
       pdf.line(margin, y + 6.5, margin + contentW, y + 6.5);
       y += 8.5;
@@ -855,7 +869,7 @@ export function generateAssessmentAnalyticsPdfVector(
       pdf.text(statusLabel, c.stL + c.stW - 1.2, y + 0.9, { align: "right" });
 
       setInk();
-      pdf.setDrawColor(241, 245, 249);
+      pdf.setDrawColor(238, 241, 245);
       pdf.setLineWidth(0.15);
       pdf.line(margin, y + rowH - 1.2, margin + contentW, y + rowH - 1.2);
       y += rowH;
@@ -883,7 +897,7 @@ export function generateAssessmentAnalyticsPdfVector(
     };
     const drawTpHead = () => {
       ensureSpace(8);
-      pdf.setFillColor(249, 250, 251);
+      pdf.setFillColor(246, 248, 251);
       pdf.rect(margin, y - 1, contentW, 7, "F");
       pdf.setFont(PDF_FONT, "bold");
       pdf.setFontSize(7.5);
@@ -971,7 +985,7 @@ export function generateAssessmentAnalyticsPdfVector(
     };
     const drawSubHead = () => {
       ensureSpace(8);
-      pdf.setFillColor(249, 250, 251);
+      pdf.setFillColor(246, 248, 251);
       pdf.rect(margin, y - 1, contentW, 7, "F");
       pdf.setFont(PDF_FONT, "bold");
       pdf.setFontSize(7);
@@ -1060,7 +1074,7 @@ export function generateAssessmentAnalyticsPdfVector(
   //   };
   //   const drawCodingHead = () => {
   //     ensureSpace(8);
-  //     pdf.setFillColor(249, 250, 251);
+  //     pdf.setFillColor(246, 248, 251);
   //     pdf.rect(margin, y - 1, contentW, 7, "F");
   //     pdf.setFont(PDF_FONT, "bold");
   //     pdf.setFontSize(6.5);

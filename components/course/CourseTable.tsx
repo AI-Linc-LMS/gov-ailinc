@@ -89,16 +89,16 @@ export const CourseTable: React.FC<CourseTableProps> = ({
       case "easy":
         return {
           backgroundColor: "#e0f2fe",
-          color: "#0369a1",
+          color: "#12365f",
         };
       case "medium":
         return {
-          backgroundColor: "#fef3c7",
+          backgroundColor: "#fdf3e2",
           color: "#92400e",
         };
       case "hard":
         return {
-          backgroundColor: "#fee2e2",
+          backgroundColor: "#fbeaea",
           color: "#991b1b",
         };
       default:
@@ -134,7 +134,7 @@ export const CourseTable: React.FC<CourseTableProps> = ({
                   borderRadius: 2,
                   boxShadow: "none",
                   "&:hover": {
-                    boxShadow: 2,
+                    boxShadow: "var(--shadow-sm)",
                   },
                 }}
               >
@@ -237,8 +237,8 @@ export const CourseTable: React.FC<CourseTableProps> = ({
                       size="small"
                       sx={{
                         backgroundColor: course.certificate_available
-                          ? "#d1fae5"
-                          : "#fee2e2",
+                          ? "#dff0e6"
+                          : "#fbeaea",
                         color: course.certificate_available
                           ? "#065f46"
                           : "#991b1b",
@@ -267,7 +267,7 @@ export const CourseTable: React.FC<CourseTableProps> = ({
                           size="small"
                           sx={{
                             "& .MuiRating-iconFilled": {
-                              color: "#fbbf24",
+                              color: "#c9903a",
                             },
                             fontSize: "0.875rem",
                           }}
@@ -566,8 +566,8 @@ export const CourseTable: React.FC<CourseTableProps> = ({
                       size="small"
                       sx={{
                         backgroundColor: course.certificate_available
-                          ? "#d1fae5"
-                          : "#fee2e2",
+                          ? "#dff0e6"
+                          : "#fbeaea",
                         color: course.certificate_available
                           ? "#065f46"
                           : "#991b1b",
@@ -596,7 +596,7 @@ export const CourseTable: React.FC<CourseTableProps> = ({
                           size="small"
                           sx={{
                             "& .MuiRating-iconFilled": {
-                              color: "#fbbf24",
+                              color: "#c9903a",
                             },
                           }}
                         />

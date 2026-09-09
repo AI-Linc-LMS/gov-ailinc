@@ -65,7 +65,7 @@ export function CognitiveWorkStyleSection({ data }: CognitiveWorkStyleSectionPro
     <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border-2 border-slate-200">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#1b4f8a] to-[#164274] flex items-center justify-center shadow-lg">
           <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
           </svg>
@@ -77,7 +77,7 @@ export function CognitiveWorkStyleSection({ data }: CognitiveWorkStyleSectionPro
       </div>
 
       {/* Thinking Style Quadrant */}
-      <div className="mb-8 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-100">
+      <div className="mb-8 bg-gradient-to-br from-[#eef3fa] to-[#eef3fa] rounded-2xl p-6 border border-[#d9e6f4]">
         <h3 className="text-xl font-bold text-slate-900 mb-6">Thinking Style Analysis</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {thinkingStyleData.map((item, index) => (
@@ -101,14 +101,14 @@ export function CognitiveWorkStyleSection({ data }: CognitiveWorkStyleSectionPro
             </div>
           ))}
         </div>
-        <div className="bg-white rounded-xl p-4 border border-purple-200">
-          <p className="text-sm font-semibold text-purple-600 uppercase tracking-wide mb-1">Dominant Style</p>
+        <div className="bg-white rounded-xl p-4 border border-[#b6cde8]">
+          <p className="text-sm font-semibold text-[#164274] uppercase tracking-wide mb-1">Dominant Style</p>
           <p className="text-lg font-bold text-slate-900">{data.thinking_style.dominant_style}</p>
         </div>
       </div>
 
       {/* Execution vs Ideation Quadrant */}
-      <div className="mb-8 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-100">
+      <div className="mb-8 bg-gradient-to-br from-blue-50 to-[#e6f1f2] rounded-2xl p-6 border border-blue-100">
         <h3 className="text-xl font-bold text-slate-900 mb-6">Execution vs Ideation Balance</h3>
         <div className="w-full h-[400px] mb-4">
           <ResponsiveContainer>
@@ -188,7 +188,7 @@ export function CognitiveWorkStyleSection({ data }: CognitiveWorkStyleSectionPro
           <p className="text-xs text-slate-600">{data.attention_span.focus_tendency}</p>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
+        <div className="bg-gradient-to-br from-blue-50 to-[#eef3fa] rounded-xl p-5 border border-blue-200">
           <p className="text-sm font-semibold text-blue-600 uppercase tracking-wide mb-2">Learning Preference</p>
           <div className="space-y-2">
             <div className="flex items-center justify-between">

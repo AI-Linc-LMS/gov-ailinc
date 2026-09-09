@@ -33,7 +33,7 @@ const OverallFeedbackComponent = ({
             p: 3,
             borderRadius: 3,
             border: "1px solid #e5e7eb",
-            background: "linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)",
+            background: "linear-gradient(135deg, #fdf3e2 0%, #f0ddb8 100%)",
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
@@ -42,7 +42,7 @@ const OverallFeedbackComponent = ({
                 width: 40,
                 height: 40,
                 borderRadius: 2,
-                background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                background: "linear-gradient(135deg, #b7791f 0%, #8a5a12 100%)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -73,7 +73,7 @@ const OverallFeedbackComponent = ({
                     minWidth: 24,
                     height: 24,
                     borderRadius: "50%",
-                    backgroundColor: "#f59e0b",
+                    backgroundColor: "#b7791f",
                     color: "#ffffff",
                     display: "flex",
                     alignItems: "center",
@@ -100,7 +100,7 @@ const OverallFeedbackComponent = ({
           p: 3,
           borderRadius: 3,
           border: "1px solid #e5e7eb",
-          background: "linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)",
+          background: "linear-gradient(135deg, #d9e6f4 0%, #b6cde8 100%)",
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
@@ -109,7 +109,7 @@ const OverallFeedbackComponent = ({
               width: 40,
               height: 40,
               borderRadius: 2,
-              background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+              background: "linear-gradient(135deg, #4a7fbb 0%, #1b4f8a 100%)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -117,7 +117,7 @@ const OverallFeedbackComponent = ({
           >
             <IconWrapper icon="mdi:message-text" size={22} color="#ffffff" />
           </Box>
-          <Typography variant="h6" sx={{ fontWeight: 700, color: "#1e40af" }}>
+          <Typography variant="h6" sx={{ fontWeight: 700, color: "#12365f" }}>
             Overall Feedback
           </Typography>
         </Box>
@@ -127,10 +127,10 @@ const OverallFeedbackComponent = ({
             p: 3,
             backgroundColor: "#ffffff",
             borderRadius: 2,
-            border: "1px solid #bfdbfe",
+            border: "1px solid #b6cde8",
           }}
         >
-          <Typography variant="body2" sx={{ color: "#1e40af", lineHeight: 1.8 }}>
+          <Typography variant="body2" sx={{ color: "#12365f", lineHeight: 1.8 }}>
             {feedback}
           </Typography>
         </Paper>

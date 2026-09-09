@@ -39,12 +39,12 @@ export function CatalogCourseCard({
         p: 2.5,
         bgcolor: "var(--card-bg, #fff)",
         border: "1px solid var(--border-default, #ececf1)",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 10px 26px -22px rgba(16,24,40,0.18)",
+        boxShadow: "var(--shadow-sm)",
         transition: "transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease",
         "&:hover": {
-          transform: "translateY(-3px)",
-          borderColor: "color-mix(in srgb, #6366f1 40%, transparent)",
-          boxShadow: "0 20px 40px -26px rgba(99, 102, 241, 0.45)",
+          transform: "translateY(-1px)",
+          borderColor: "color-mix(in srgb, #1b4f8a 40%, transparent)",
+          boxShadow: "var(--shadow-md)",
         },
       }}
     >
@@ -58,7 +58,7 @@ export function CatalogCourseCard({
           mb: 1.5,
           flexShrink: 0,
           background:
-            "linear-gradient(135deg, color-mix(in srgb, #6366f1 14%, transparent), color-mix(in srgb, #a855f7 12%, transparent))",
+            "linear-gradient(135deg, color-mix(in srgb, #1b4f8a 14%, transparent), color-mix(in srgb, #1b4f8a 12%, transparent))",
         }}
       >
         {course.card_image_url && (
@@ -90,8 +90,8 @@ export function CatalogCourseCard({
             display: "grid",
             placeItems: "center",
             color: "white",
-            background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
-            boxShadow: "0 14px 26px -14px rgba(168, 85, 247, 0.6)",
+            background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Icon icon="mdi:book-education-outline" width={22} />
@@ -161,8 +161,8 @@ export function CatalogCourseCard({
           borderRadius: 2,
           textTransform: "none",
           fontWeight: 800,
-          background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
-          "&:hover": { background: "linear-gradient(135deg, #5457e5 0%, #9333ea 60%, #db2777 100%)" },
+          background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)",
+          "&:hover": { background: "linear-gradient(135deg, #164274 0%, #164274 60%, #0b5260 100%)" },
           "&.Mui-disabled": { color: "rgba(255,255,255,0.85)", opacity: 0.7 },
         }}
       >
@@ -181,7 +181,7 @@ export function CatalogCourseCard({
 function Metric({ icon, label, value }: { icon: string; label: string; value: number }) {
   return (
     <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.6 }}>
-      <Icon icon={icon} width={16} style={{ color: "#6366f1" }} />
+      <Icon icon={icon} width={16} style={{ color: "#1b4f8a" }} />
       <Typography component="span" sx={{ fontWeight: 800, fontSize: "0.85rem" }}>
         {value}
       </Typography>

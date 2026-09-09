@@ -55,10 +55,9 @@ export function AITutorSidecar({
         top: 24,
         p: 2,
         borderRadius: 4,
-        bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 60%, transparent)",
-        border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 60%, transparent)",
-        backdropFilter: "blur(18px) saturate(140%)",
-        boxShadow: "0 1px 0 0 color-mix(in srgb, white 14%, transparent) inset",
+        bgcolor: "var(--card-bg, #ffffff)",
+        border: "1px solid var(--border-default, #e5e7eb)",
+        boxShadow: "var(--shadow-xs)",
         display: "flex",
         flexDirection: "column",
         gap: 2,
@@ -94,9 +93,9 @@ export function AITutorSidecar({
                 px: 0.85,
                 py: 0.25,
                 borderRadius: 999,
-                bgcolor: "color-mix(in srgb, #6366f1 12%, transparent)",
-                border: "1px solid color-mix(in srgb, #6366f1 32%, transparent)",
-                color: "#6366f1",
+                bgcolor: "color-mix(in srgb, #1b4f8a 12%, transparent)",
+                border: "1px solid color-mix(in srgb, #1b4f8a 32%, transparent)",
+                color: "#1b4f8a",
                 fontSize: "0.72rem",
                 fontWeight: 800,
               }}
@@ -113,10 +112,10 @@ export function AITutorSidecar({
                 fontWeight: 800,
                 color:
                   difficultyLabel === "Hard"
-                    ? "#ef4444"
+                    ? "#b32020"
                     : difficultyLabel === "Easy"
-                      ? "#10b981"
-                      : "#6366f1",
+                      ? "#0e7a3c"
+                      : "#1b4f8a",
               }}
             >
               {difficultyLabel}
@@ -166,8 +165,8 @@ export function AITutorSidecar({
             sx={{
               p: 1.25,
               borderRadius: 2,
-              border: "1px solid color-mix(in srgb, #a855f7 35%, transparent)",
-              bgcolor: "color-mix(in srgb, #a855f7 8%, transparent)",
+              border: "1px solid color-mix(in srgb, #1b4f8a 35%, transparent)",
+              bgcolor: "color-mix(in srgb, #1b4f8a 8%, transparent)",
             }}
           >
             <Typography sx={{ fontSize: "0.84rem", color: "text.primary", lineHeight: 1.5 }}>
@@ -179,8 +178,8 @@ export function AITutorSidecar({
             sx={{
               p: 1.25,
               borderRadius: 2,
-              border: "1.5px dashed color-mix(in srgb, #a855f7 45%, transparent)",
-              bgcolor: "color-mix(in srgb, #a855f7 4%, transparent)",
+              border: "1.5px dashed color-mix(in srgb, #1b4f8a 45%, transparent)",
+              bgcolor: "color-mix(in srgb, #1b4f8a 4%, transparent)",
               display: "flex",
               flexDirection: "column",
               gap: 0.75,
@@ -192,7 +191,7 @@ export function AITutorSidecar({
                   icon="mdi:loading"
                   width={14}
                   style={{
-                    color: "#a855f7",
+                    color: "#1b4f8a",
                     flexShrink: 0,
                     marginTop: 2,
                     animation: "ai-tutor-hint-spin 1s linear infinite",
@@ -213,8 +212,8 @@ export function AITutorSidecar({
                 borderRadius: 999,
                 color: hintTokensRemaining > 0 && !hintLoading ? "white" : "text.disabled",
                 background: hintTokensRemaining > 0 && !hintLoading
-                  ? "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)"
-                  : "color-mix(in srgb, #a855f7 18%, transparent)",
+                  ? "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)"
+                  : "color-mix(in srgb, #1b4f8a 18%, transparent)",
                 fontSize: "0.7rem",
                 fontWeight: 800,
                 letterSpacing: "0.05em",
@@ -246,13 +245,13 @@ export function AITutorSidecar({
               gap: 1,
               p: 1,
               borderRadius: 2,
-              bgcolor: "color-mix(in srgb, #10b981 8%, transparent)",
-              border: "1px solid color-mix(in srgb, #10b981 25%, transparent)",
+              bgcolor: "color-mix(in srgb, #0e7a3c 8%, transparent)",
+              border: "1px solid color-mix(in srgb, #0e7a3c 25%, transparent)",
             }}
           >
-            <Icon icon="mdi:check-circle-outline" width={16} style={{ color: "#10b981" }} />
+            <Icon icon="mdi:check-circle-outline" width={16} style={{ color: "#0e7a3c" }} />
             <Typography sx={{ fontSize: "0.76rem", fontWeight: 600, color: "text.primary" }}>
-              If you answer ✓: <Box component="span" sx={{ color: "#10b981", fontWeight: 800 }}>{correctBranch}</Box>
+              If you answer ✓: <Box component="span" sx={{ color: "#0e7a3c", fontWeight: 800 }}>{correctBranch}</Box>
             </Typography>
           </Box>
           <Box
@@ -262,13 +261,13 @@ export function AITutorSidecar({
               gap: 1,
               p: 1,
               borderRadius: 2,
-              bgcolor: "color-mix(in srgb, #ef4444 8%, transparent)",
-              border: "1px solid color-mix(in srgb, #ef4444 25%, transparent)",
+              bgcolor: "color-mix(in srgb, #b32020 8%, transparent)",
+              border: "1px solid color-mix(in srgb, #b32020 25%, transparent)",
             }}
           >
-            <Icon icon="mdi:refresh" width={16} style={{ color: "#ef4444" }} />
+            <Icon icon="mdi:refresh" width={16} style={{ color: "#b32020" }} />
             <Typography sx={{ fontSize: "0.76rem", fontWeight: 600, color: "text.primary" }}>
-              If you answer ✗: <Box component="span" sx={{ color: "#ef4444", fontWeight: 800 }}>{wrongBranch}</Box>
+              If you answer ✗: <Box component="span" sx={{ color: "#b32020", fontWeight: 800 }}>{wrongBranch}</Box>
             </Typography>
           </Box>
         </Box>

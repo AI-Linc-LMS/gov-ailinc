@@ -99,11 +99,11 @@ export function PageGuide({
               backgroundColor: "var(--surface-indigo-light)",
               border: "1px solid",
               borderColor: "var(--primary-200)",
-              boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+              boxShadow: "var(--shadow-sm)",
               transition: "all 0.2s ease",
               "&:hover": {
                 backgroundColor: "var(--primary-100)",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                boxShadow: "var(--shadow-md)",
                 transform: "translateY(-1px)",
               },
             }}
@@ -162,7 +162,7 @@ export function PageGuide({
         {/* Accent header */}
         <Box
           sx={{
-            background: "linear-gradient(135deg, #a78bfa, #ec4899)",
+            background: "linear-gradient(135deg, #85aad6, #0f6b7a)",
             color: "#fff",
             px: 3,
             py: 2.25,
@@ -242,12 +242,12 @@ export function PageGuide({
                 alignItems: "center",
                 p: 1.5,
                 borderRadius: "10px",
-                backgroundColor: "rgba(167,139,250,0.08)",
-                border: "1px solid rgba(167,139,250,0.3)",
+                backgroundColor: "rgba(27,79,138,0.08)",
+                border: "1px solid rgba(27,79,138,0.3)",
                 mb: 2,
               }}
             >
-              <IconWrapper icon="mdi:lightbulb-on-outline" size={18} color="#a78bfa" />
+              <IconWrapper icon="mdi:lightbulb-on-outline" size={18} color="#85aad6" />
               <Typography variant="caption" sx={{ color: "var(--font-primary)", flex: 1 }}>
                 {content.tip}
               </Typography>
@@ -267,7 +267,7 @@ export function PageGuide({
                   textTransform: "none",
                   fontWeight: 700,
                   borderRadius: "8px",
-                  background: "linear-gradient(135deg, #a78bfa, #ec4899)",
+                  background: "linear-gradient(135deg, #85aad6, #0f6b7a)",
                   boxShadow: "none",
                   "&:hover": { filter: "brightness(0.92)", boxShadow: "none" },
                 }}

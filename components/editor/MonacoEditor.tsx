@@ -82,7 +82,7 @@ function ensureMentorDecorationStyle() {
   style.textContent = `
     .mentor-rootcause-line { background: rgba(239, 68, 68, 0.14); }
     .mentor-rootcause-glyph {
-      background: radial-gradient(circle at 50% 50%, #ef4444 0 4px, transparent 5px);
+      background: radial-gradient(circle at 50% 50%, #b32020 0 4px, transparent 5px);
       cursor: pointer;
     }
   `;
@@ -130,7 +130,7 @@ export function CodeEditor({
           className: "mentor-rootcause-line",
           glyphMarginClassName: "mentor-rootcause-glyph",
           glyphMarginHoverMessage: glyphMessage ? { value: glyphMessage } : undefined,
-          overviewRuler: { color: "#ef4444", position: mon.editor.OverviewRulerLane.Left },
+          overviewRuler: { color: "#b32020", position: mon.editor.OverviewRulerLane.Left },
         },
       },
     ]);
@@ -182,7 +182,7 @@ export function CodeEditor({
             className: "mentor-rootcause-line",
             glyphMarginClassName: "mentor-rootcause-glyph",
             glyphMarginHoverMessage: glyphMessage ? { value: glyphMessage } : undefined,
-            overviewRuler: { color: "#ef4444", position: monaco.editor.OverviewRulerLane.Left },
+            overviewRuler: { color: "#b32020", position: monaco.editor.OverviewRulerLane.Left },
           },
         },
       ]);

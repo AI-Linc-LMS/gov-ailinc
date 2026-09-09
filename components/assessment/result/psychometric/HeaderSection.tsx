@@ -27,7 +27,7 @@ export function HeaderSection({ meta }: HeaderSectionProps) {
         }}
       >
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-blue-800/70 to-indigo-900/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-blue-800/70 to-[#0a1e37]/80"></div>
       </div>
       
       {/* Decorative Background Elements */}

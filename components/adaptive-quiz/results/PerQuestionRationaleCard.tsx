@@ -54,7 +54,7 @@ export function PerQuestionRationaleCard({
           {mcq.options.map((opt) => {
             const isCorrect = opt.id === mcq.correct_option;
             const isPicked = opt.id === response.selected_option;
-            const color = isCorrect ? "#10b981" : isPicked ? "#ef4444" : undefined;
+            const color = isCorrect ? "#0e7a3c" : isPicked ? "#b32020" : undefined;
             return (
               <Box
                 key={opt.id}
@@ -89,8 +89,8 @@ export function PerQuestionRationaleCard({
                   {opt.id}
                 </Box>
                 <RichHtml html={opt.value} sx={{ fontSize: "0.86rem", flex: 1 }} />
-                {isCorrect && <Icon icon="mdi:check-circle" width={18} style={{ color: "#10b981" }} />}
-                {isPicked && !isCorrect && <Icon icon="mdi:close-circle" width={18} style={{ color: "#ef4444" }} />}
+                {isCorrect && <Icon icon="mdi:check-circle" width={18} style={{ color: "#0e7a3c" }} />}
+                {isPicked && !isCorrect && <Icon icon="mdi:close-circle" width={18} style={{ color: "#b32020" }} />}
               </Box>
             );
           })}
@@ -132,8 +132,8 @@ export function PerQuestionRationaleCard({
               px: 1.5,
               py: 0.6,
               borderRadius: 999,
-              border: "1px solid color-mix(in srgb, #a855f7 40%, transparent)",
-              color: "#a855f7",
+              border: "1px solid color-mix(in srgb, #1b4f8a 40%, transparent)",
+              color: "#1b4f8a",
               fontSize: "0.74rem",
               fontWeight: 800,
               display: "inline-flex",

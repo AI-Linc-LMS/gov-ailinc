@@ -287,7 +287,7 @@ export default function AdminScorecardPage() {
             icon: "mdi:view-dashboard-outline",
             label: "Scorecard sections",
             value: String(stats.sectionTypes),
-            accent: "#10b981",
+            accent: "#0e7a3c",
           },
           {
             key: "modules",

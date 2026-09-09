@@ -54,7 +54,7 @@ export function EnhancedTraitInsightsSection({ insights }: EnhancedTraitInsights
     <div className="bg-white rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl p-4 sm:p-6 md:p-8 border-2 border-slate-200">
       {/* Header */}
       <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
-        <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl md:rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg flex-shrink-0">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl md:rounded-2xl bg-gradient-to-br from-[#1b4f8a] to-[#164274] flex items-center justify-center shadow-lg flex-shrink-0">
           <svg className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
           </svg>
@@ -75,8 +75,8 @@ export function EnhancedTraitInsightsSection({ insights }: EnhancedTraitInsights
               key={insight.trait_id}
               className={`border-2 rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden transition-all duration-300 ${
                 isSelected
-                  ? "border-indigo-400 shadow-xl bg-gradient-to-br from-indigo-50 to-purple-50"
-                  : "border-slate-200 hover:border-indigo-300 hover:shadow-lg bg-white"
+                  ? "border-[#4a7fbb] shadow-xl bg-gradient-to-br from-[#eef3fa] to-[#eef3fa]"
+                  : "border-slate-200 hover:border-[#85aad6] hover:shadow-lg bg-white"
               }`}
             >
               <button
@@ -84,7 +84,7 @@ export function EnhancedTraitInsightsSection({ insights }: EnhancedTraitInsights
                 className="w-full px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-5 flex justify-between items-center transition-all duration-200"
               >
                 <div className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 text-left min-w-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-base sm:text-lg shadow-md flex-shrink-0">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-[#1b4f8a] to-[#164274] flex items-center justify-center text-white font-bold text-base sm:text-lg shadow-md flex-shrink-0">
                     {insight.trait_name.charAt(0)}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -112,7 +112,7 @@ export function EnhancedTraitInsightsSection({ insights }: EnhancedTraitInsights
               {isExpanded && (
                 <div className="px-6 pb-6 space-y-6 border-t border-slate-200 bg-white">
                   {/* Your Tendency */}
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200 mt-4">
+                  <div className="bg-gradient-to-r from-blue-50 to-[#eef3fa] rounded-xl p-5 border border-blue-200 mt-4">
                     <p className="text-sm font-semibold text-blue-600 uppercase tracking-wide mb-2">Your Tendency</p>
                     <p className="text-base text-slate-700 italic leading-relaxed">"{insight.your_tendency}"</p>
                   </div>
@@ -133,8 +133,8 @@ export function EnhancedTraitInsightsSection({ insights }: EnhancedTraitInsights
                       <p className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">In Job</p>
                       <p className="text-sm text-slate-700">{insight.real_world_implications.job}</p>
                     </div>
-                    <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
-                      <p className="text-xs font-semibold text-purple-600 uppercase tracking-wide mb-2">In Teamwork</p>
+                    <div className="bg-[#eef3fa] rounded-xl p-4 border border-[#b6cde8]">
+                      <p className="text-xs font-semibold text-[#164274] uppercase tracking-wide mb-2">In Teamwork</p>
                       <p className="text-sm text-slate-700">{insight.real_world_implications.teamwork}</p>
                     </div>
                   </div>

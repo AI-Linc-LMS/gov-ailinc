@@ -159,9 +159,9 @@ export function PaymentAccountCard() {
           sx={{
             fontWeight: 700,
             bgcolor: connected
-              ? "color-mix(in srgb,#10b981 14%,transparent)"
-              : "color-mix(in srgb,#f59e0b 16%,transparent)",
-            color: connected ? "#047857" : "#b45309",
+              ? "color-mix(in srgb,#0e7a3c 14%,transparent)"
+              : "color-mix(in srgb,#b7791f 16%,transparent)",
+            color: connected ? "#0B6232" : "#8a5a12",
           }}
         />
         {/* Shown only once keys exist: "no webhook" is meaningless before an account is connected. */}
@@ -173,9 +173,9 @@ export function PaymentAccountCard() {
             sx={{
               fontWeight: 700,
               bgcolor: webhookReady
-                ? "color-mix(in srgb,#10b981 14%,transparent)"
-                : "color-mix(in srgb,#ef4444 16%,transparent)",
-              color: webhookReady ? "#047857" : "#b91c1c",
+                ? "color-mix(in srgb,#0e7a3c 14%,transparent)"
+                : "color-mix(in srgb,#b32020 16%,transparent)",
+              color: webhookReady ? "#0B6232" : "#8f1919",
             }}
           />
         )}

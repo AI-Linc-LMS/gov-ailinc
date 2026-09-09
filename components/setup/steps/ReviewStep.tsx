@@ -50,7 +50,7 @@ function Row({
         <button
           type="button"
           onClick={onEdit}
-          className="aw-mono text-[10px] uppercase tracking-[0.3em] text-[#00e0ff] transition-colors hover:text-white"
+          className="aw-mono text-[10px] uppercase tracking-[0.3em] text-[#2f7fbf] transition-colors hover:text-white"
         >
           Edit
         </button>

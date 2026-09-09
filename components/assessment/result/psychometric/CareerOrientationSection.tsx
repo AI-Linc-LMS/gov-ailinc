@@ -115,17 +115,22 @@ export function CareerOrientationSection({ career }: CareerOrientationSectionPro
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5 break-inside-avoid">
           {sortedRoles.map((item, index) => {
             const color = getScoreColor(item.score);
+            // Four score bands, each a single ramp rather than the three-hue sweeps
+            // that used to run blue into indigo into purple, and red into rose into
+            // pink. Those two crossed the retired hues, and a band that changes hue
+            // partway reads as two bands. Each getIcon() below gives the band a
+            // second, non-colour signal.
             const getGradient = (score: number) => {
-              if (score >= 80) return "from-green-500 via-emerald-500 to-teal-500";
-              if (score >= 65) return "from-blue-500 via-indigo-500 to-purple-500";
-              if (score >= 50) return "from-amber-500 via-orange-500 to-yellow-500";
-              return "from-red-500 via-rose-500 to-pink-500";
+              if (score >= 80) return "from-[#0e7a3c] via-[#0e7a3c] to-[#0b6232]";
+              if (score >= 65) return "from-[#1b4f8a] via-[#1b4f8a] to-[#12365f]";
+              if (score >= 50) return "from-[#b7791f] via-[#b7791f] to-[#96620f]";
+              return "from-[#b32020] via-[#b32020] to-[#8f1919]";
             };
             const getBgGradient = (score: number) => {
-              if (score >= 80) return "from-green-50 via-emerald-50 to-teal-50";
-              if (score >= 65) return "from-blue-50 via-indigo-50 to-purple-50";
-              if (score >= 50) return "from-amber-50 via-orange-50 to-yellow-50";
-              return "from-red-50 via-rose-50 to-pink-50";
+              if (score >= 80) return "from-[#dff0e6] via-[#dff0e6] to-[#cfe8da]";
+              if (score >= 65) return "from-[#eef3fa] via-[#eef3fa] to-[#d9e6f4]";
+              if (score >= 50) return "from-[#fdf3e2] via-[#fdf3e2] to-[#f7e6c8]";
+              return "from-[#fbeaea] via-[#fbeaea] to-[#f6d6d6]";
             };
             const getIcon = (score: number) => {
               if (score >= 80) return (
@@ -225,7 +230,7 @@ export function CareerOrientationSection({ career }: CareerOrientationSectionPro
                         style={{
                           width: `${item.score}%`,
                           background: `linear-gradient(90deg, ${color} 0%, ${color}dd 50%, ${color} 100%)`,
-                          boxShadow: `0 0 15px ${color}40`,
+                          boxShadow: "var(--shadow-sm)",
                         }}
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
@@ -275,7 +280,7 @@ export function CareerOrientationSection({ career }: CareerOrientationSectionPro
                 <div 
                   className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                   style={{
-                    boxShadow: `0 0 0 1px ${color}40, 0 0 20px ${color}20`,
+                    boxShadow: "var(--shadow-sm)",
                   }}
                 ></div>
               </div>

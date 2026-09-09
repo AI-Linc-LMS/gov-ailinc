@@ -141,7 +141,7 @@ export const AssessmentQuizLayout = memo(
               flexDirection: "column",
               minHeight: { md: "min(520px, 70vh)" },
               boxShadow:
-                "0 10px 40px color-mix(in srgb, var(--primary-900) 9%, transparent), 0 1px 0 color-mix(in srgb, var(--primary-900) 6%, transparent)",
+                "var(--shadow-sm)",
             }}
           >
             {/* Question Title */}

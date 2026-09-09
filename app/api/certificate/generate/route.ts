@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
     ctx.drawImage(image, 0, 0);
 
  /* ===== NAME ===== */
-ctx.fillStyle = "#5A46A0";
+ctx.fillStyle = "#1b4f8a";
 ctx.textAlign = "center";
 ctx.textBaseline = "middle";
 
@@ -255,7 +255,7 @@ ctx.fillText(cleanName, nameX, nameY);
     if (templateCandidate && trainingSubject && !templateSubjectAlreadyRendered) {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillStyle = "#641c53";
+      ctx.fillStyle = "#1b4f8a";
       let subFont = Math.round(canvas.width * 0.032);
       const maxSubWidth = canvas.width * 0.72;
       do {

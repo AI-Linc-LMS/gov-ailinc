@@ -97,7 +97,7 @@ export function ResumeViewerModal({
           height: "92vh",
           borderRadius: { xs: 0, sm: 2.5 },
           boxShadow:
-            "0 32px 64px color-mix(in srgb, var(--font-primary) 32%, transparent), 0 0 0 1px color-mix(in srgb, var(--accent-purple) 16%, transparent)",
+            "var(--shadow-xl)",
           overflow: "hidden",
           border: "1px solid color-mix(in srgb, var(--accent-purple) 22%, transparent)",
         },
@@ -106,7 +106,6 @@ export function ResumeViewerModal({
         backdrop: {
           sx: {
             backgroundColor: "color-mix(in srgb, var(--font-primary) 65%, transparent)",
-            backdropFilter: "blur(4px)",
           },
         },
       }}
@@ -321,10 +320,10 @@ export function ResumeViewerModal({
                   borderRadius: 2,
                   fontSize: "0.875rem",
                   backgroundColor: "var(--accent-purple)",
-                  boxShadow: "0 2px 8px color-mix(in srgb, var(--accent-purple) 45%, transparent)",
+                  boxShadow: "var(--shadow-sm)",
                   "&:hover": {
                     backgroundColor: "var(--accent-indigo-dark)",
-                    boxShadow: "0 4px 12px color-mix(in srgb, var(--accent-purple) 48%, transparent)",
+                    boxShadow: "var(--shadow-md)",
                   },
                 }}
               >
@@ -358,7 +357,7 @@ export function ResumeViewerModal({
                   borderRadius: 2.5,
                   overflow: "hidden",
                   boxShadow:
-                    "0 12px 40px color-mix(in srgb, var(--font-primary) 24%, transparent), 0 0 0 1px color-mix(in srgb, var(--font-primary) 12%, transparent), inset 0 1px 0 color-mix(in srgb, var(--card-bg) 85%, transparent)",
+                    "var(--shadow-sm)",
                   backgroundColor: "var(--card-bg)",
                   border: "1px solid color-mix(in srgb, var(--border-default) 90%, transparent)",
                 }}

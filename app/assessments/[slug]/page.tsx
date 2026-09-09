@@ -451,8 +451,10 @@ export default function AssessmentDetailPage({
             p: { xs: 3, md: 4 },
             color: "#fff",
             background:
-              "linear-gradient(115deg, #2b1244 0%, #3d1663 45%, #6b1a52 82%, #7d2058 100%)",
-            boxShadow: "0 28px 56px -28px rgba(61, 22, 99, 0.55)",
+              // Was the mockup's deep eggplant into dark magenta. Same four stops,
+            // now institutional navy into institutional teal.
+            "linear-gradient(115deg, #0a1e37 0%, #12365f 45%, #0f6b7a 82%, #0b5260 100%)",
+            boxShadow: "var(--shadow-xl)",
           }}
         >
           <Box

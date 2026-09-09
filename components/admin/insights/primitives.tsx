@@ -15,26 +15,50 @@ import { IconWrapper } from "@/components/common/IconWrapper";
  */
 
 export const INSIGHT = {
-  indigo: "#6366f1",
-  purple: "#a855f7",
-  pink: "#ec4899",
-  green: "#10b981",
-  amber: "#f59e0b",
-  red: "#ef4444",
-  blue: "#3b82f6",
-  teal: "#14b8a6",
-  gradient: "linear-gradient(135deg,#6366f1 0%,#a855f7 60%,#ec4899 100%)",
+  indigo: "#1b4f8a",
+  purple: "#1b4f8a",
+  pink: "#0f6b7a",
+  green: "#0e7a3c",
+  amber: "#b7791f",
+  red: "#b32020",
+  blue: "#4a7fbb",
+  teal: "#0f6b7a",
+  gradient: "linear-gradient(135deg,#1b4f8a 0%,#1b4f8a 60%,#0f6b7a 100%)",
 } as const;
 
+/**
+ * The categorical scale: identity, assigned in this fixed order and NEVER cycled or
+ * re-sorted, so a series keeps its colour when the range filter changes the series count.
+ *
+ * It is written as literals rather than as INSIGHT members on purpose. INSIGHT is the
+ * dashboard's *accent* map, and on the government palette several of its keys are
+ * deliberate synonyms - `indigo` and `purple` are both #1b4f8a, `pink` and `teal` are both
+ * #0f6b7a. Building the series scale out of those keys silently painted series 1 and 6
+ * identically, and series 4 and 7 identically, which is worse than the off-brand colour it
+ * was fixing. Keep the two concerns separate.
+ *
+ * Order derived by enumeration against the data-viz gates, not by taste. Measured:
+ *   adjacent (stacked areas, grouped bars)  worst CVD dE 6.5 gold/green, normal dE 17.4 PASS
+ *   first four, ALL PAIRS (the 4-slice donut) worst CVD dE 6.5, normal dE 17.4 PASS,
+ *                                             every slot >= 3:1 on the card
+ * Gold and green are the one pair in the floor band (6-8), which is legal only alongside
+ * secondary encoding: both charts that can place them together ship a legend that names and
+ * numbers every series, and the donut also carries a 2px card-coloured gap between slices.
+ *
+ * This is the brief's palette re-ordered, not a different palette: slots 1-3 are unchanged,
+ * and teal moved off slot 4 because teal against institutional blue (dE 9.6) and against
+ * sanctioned green (dE 11.9) both sit under the normal-vision floor of 15, so a four-slice
+ * donut using it had two pairs a full-colour reader could not separate.
+ */
 export const SERIES_COLORS = [
-  INSIGHT.indigo,
-  INSIGHT.green,
-  INSIGHT.amber,
-  INSIGHT.pink,
-  INSIGHT.blue,
-  INSIGHT.purple,
-  INSIGHT.teal,
-  INSIGHT.red,
+  "#1b4f8a", // institutional blue
+  "#0e7a3c", // sanctioned green
+  "#b7791f", // gold
+  "#6b4423", // brown
+  "#85aad6", // light blue - 2.41:1 on the card, so only ever with a legend or a direct label
+  "#0f6b7a", // teal
+  "#8f1919", // deep red
+  "#4a5563", // slate
 ];
 
 export function Panel({
@@ -84,7 +108,7 @@ export function Panel({
             borderRadius: 1.5,
             display: "grid",
             placeItems: "center",
-            background: `linear-gradient(135deg, ${accent}, color-mix(in srgb, ${accent} 55%, #a855f7))`,
+            background: `linear-gradient(135deg, ${accent}, color-mix(in srgb, ${accent} 55%, #1b4f8a))`,
             color: "#fff",
             boxShadow: `0 8px 18px -10px color-mix(in srgb, ${accent} 85%, transparent)`,
             flexShrink: 0,

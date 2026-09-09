@@ -36,10 +36,10 @@ export function LiveTimerRing({ resetKey, expectedSeconds = 60, running = true, 
   const seconds = Math.floor(elapsedMs / 1000);
   const pct = Math.min(100, (seconds / expectedSeconds) * 100);
   const color = seconds < expectedSeconds * 0.6
-    ? "#10b981"
+    ? "#0e7a3c"
     : seconds < expectedSeconds
-      ? "#f59e0b"
-      : "#ef4444";
+      ? "#b7791f"
+      : "#b32020";
 
   return (
     <Box sx={{ position: "relative", width: 96, height: 96, display: "flex", alignItems: "center", justifyContent: "center" }}>

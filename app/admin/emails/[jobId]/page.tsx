@@ -197,9 +197,9 @@ export default function EmailJobDetailPage() {
           <Box sx={{ mt: 2.5 }}>
             <KpiRail
               items={[
-                { value: recipientsCount, label: "Recipients", accent: "#6366f1" },
-                { value: successfulCount, label: "Delivered", accent: "#10b981" },
-                { value: failedCount, label: "Failed", accent: failedCount > 0 ? "#ef4444" : "#94a3b8" },
+                { value: recipientsCount, label: "Recipients", accent: "#1b4f8a" },
+                { value: successfulCount, label: "Delivered", accent: "#0e7a3c" },
+                { value: failedCount, label: "Failed", accent: failedCount > 0 ? "#b32020" : "#94a3b8" },
               ]}
             />
           </Box>

@@ -34,9 +34,9 @@ import { getAxiosErrorDetail } from "@/lib/utils/api-error";
 /* --------------------------------- status --------------------------------- */
 
 const STATUS_META: Record<InstructorStudentStatus, { label: string; color: string; bg: string; dot: string }> = {
-  on_track: { label: "On track", color: "#047857", bg: "color-mix(in srgb,#10b981 14%,transparent)", dot: "#10b981" },
-  watch: { label: "Watch", color: "#b45309", bg: "color-mix(in srgb,#f59e0b 16%,transparent)", dot: "#f59e0b" },
-  at_risk: { label: "At risk", color: "#b91c1c", bg: "color-mix(in srgb,#ef4444 14%,transparent)", dot: "#ef4444" },
+  on_track: { label: "On track", color: "#0B6232", bg: "color-mix(in srgb,#0e7a3c 14%,transparent)", dot: "#0e7a3c" },
+  watch: { label: "Watch", color: "#8a5a12", bg: "color-mix(in srgb,#b7791f 16%,transparent)", dot: "#b7791f" },
+  at_risk: { label: "At risk", color: "#8f1919", bg: "color-mix(in srgb,#b32020 14%,transparent)", dot: "#b32020" },
 };
 
 const STATUS_TABS: { key: InstructorStudentStatus | ""; label: string }[] = [
@@ -130,7 +130,7 @@ function ExpandedDetail({
         display: "grid",
         gap: 2.5,
         gridTemplateColumns: { xs: "1fr", md: "1fr 1fr auto" },
-        bgcolor: "color-mix(in srgb,#6366f1 4%,transparent)",
+        bgcolor: "color-mix(in srgb,#1b4f8a 4%,transparent)",
         borderTop: "1px solid var(--border-default)",
       }}
     >
@@ -145,7 +145,7 @@ function ExpandedDetail({
           <Stack spacing={0.75}>
             {detail.courses.map((c) => (
               <Stack key={c.id} direction="row" spacing={0.75} alignItems="center">
-                <Icon icon="mdi:book-open-variant" width={15} style={{ color: "#7c3aed" }} />
+                <Icon icon="mdi:book-open-variant" width={15} style={{ color: "#14406f" }} />
                 <Typography sx={{ fontSize: "0.82rem", fontWeight: 600 }}>{c.title}</Typography>
               </Stack>
             ))}
@@ -183,14 +183,14 @@ function ExpandedDetail({
             onClick={() => onNudge(studentId)}
             disabled={nudging}
             startIcon={nudging ? <CircularProgress size={15} color="inherit" /> : <Icon icon="mdi:bell-ring-outline" width={16} />}
-            sx={{ justifyContent: "flex-start", textTransform: "none", fontWeight: 700, color: "#fff", px: 1.75, py: 0.9, borderRadius: 2, background: "linear-gradient(135deg,#7c3aed,#ec4899)", "&:hover": { filter: "brightness(1.06)" }, "&.Mui-disabled": { color: "rgba(255,255,255,0.85)", opacity: 0.7 } }}
+            sx={{ justifyContent: "flex-start", textTransform: "none", fontWeight: 700, color: "#fff", px: 1.75, py: 0.9, borderRadius: 2, background: "linear-gradient(135deg,#14406f,#0f6b7a)", "&:hover": { filter: "brightness(1.06)" }, "&.Mui-disabled": { color: "rgba(255,255,255,0.85)", opacity: 0.7 } }}
           >
             {nudging ? "Sending…" : "Send a nudge"}
           </Button>
           <Button
             href={detail ? `mailto:${detail.email}` : undefined}
             startIcon={<Icon icon="mdi:calendar-account" width={16} />}
-            sx={{ justifyContent: "flex-start", textTransform: "none", fontWeight: 700, color: "#6366f1", px: 1.75, py: 0.9, borderRadius: 2, border: "1px solid var(--border-default)" }}
+            sx={{ justifyContent: "flex-start", textTransform: "none", fontWeight: 700, color: "#1b4f8a", px: 1.75, py: 0.9, borderRadius: 2, border: "1px solid var(--border-default)" }}
           >
             Book 1:1
           </Button>
@@ -231,12 +231,12 @@ function ReportRow({
           py: 1.5,
           cursor: "pointer",
           transition: "background .12s",
-          "&:hover": { bgcolor: "color-mix(in srgb,#6366f1 5%,transparent)" },
+          "&:hover": { bgcolor: "color-mix(in srgb,#1b4f8a 5%,transparent)" },
         }}
       >
         {/* Student */}
         <Stack direction="row" spacing={1.25} alignItems="center" sx={{ minWidth: 0 }}>
-          <Box sx={{ width: 38, height: 38, flexShrink: 0, borderRadius: "50%", display: "grid", placeItems: "center", color: "#fff", fontWeight: 800, fontSize: "0.82rem", background: "linear-gradient(135deg,#7c3aed,#ec4899)" }}>
+          <Box sx={{ width: 38, height: 38, flexShrink: 0, borderRadius: "50%", display: "grid", placeItems: "center", color: "#fff", fontWeight: 800, fontSize: "0.82rem", background: "linear-gradient(135deg,#14406f,#0f6b7a)" }}>
             {initials(s.name)}
           </Box>
           <Box sx={{ minWidth: 0 }}>
@@ -256,7 +256,7 @@ function ReportRow({
             <Typography sx={{ fontSize: "0.72rem", fontWeight: 800 }}>{Math.round(pct)}%</Typography>
           </Stack>
           <Box sx={{ height: 6, borderRadius: 3, bgcolor: "color-mix(in srgb,var(--border-default) 55%,transparent)", overflow: "hidden" }}>
-            <Box sx={{ width: `${pct}%`, height: "100%", background: pct >= 60 ? "#10b981" : pct >= 40 ? "#f59e0b" : "#ef4444" }} />
+            <Box sx={{ width: `${pct}%`, height: "100%", background: pct >= 60 ? "#0e7a3c" : pct >= 40 ? "#b7791f" : "#b32020" }} />
           </Box>
         </Box>
 
@@ -267,7 +267,7 @@ function ReportRow({
 
         {/* Points */}
         <Stack direction="row" spacing={0.4} alignItems="center" sx={{ display: { xs: "none", md: "flex" } }}>
-          <Icon icon="mdi:lightning-bolt" width={14} style={{ color: "#f59e0b" }} />
+          <Icon icon="mdi:lightning-bolt" width={14} style={{ color: "#b7791f" }} />
           <Typography sx={{ fontSize: "0.84rem", fontWeight: 800 }}>{s.points}</Typography>
         </Stack>
 
@@ -434,10 +434,10 @@ export default function InstructorStudentsPage() {
   }, [query, status, cohortId]);
 
   const kpis = [
-    { label: "Students", value: summary.count, icon: "mdi:account-multiple", color: "#6366f1" },
-    { label: "Avg progress", value: `${Math.round(summary.avg_progress)}%`, icon: "mdi:chart-line", color: "#0ea5e9" },
-    { label: "Avg score", value: summary.avg_score ? `${Math.round(summary.avg_score)}%` : "-", icon: "mdi:star-outline", color: "#10b981" },
-    { label: "At risk", value: summary.at_risk, icon: "mdi:alert-outline", color: "#ef4444" },
+    { label: "Students", value: summary.count, icon: "mdi:account-multiple", color: "#1b4f8a" },
+    { label: "Avg progress", value: `${Math.round(summary.avg_progress)}%`, icon: "mdi:chart-line", color: "#1b4f8a" },
+    { label: "Avg score", value: summary.avg_score ? `${Math.round(summary.avg_score)}%` : "-", icon: "mdi:star-outline", color: "#0e7a3c" },
+    { label: "At risk", value: summary.at_risk, icon: "mdi:alert-outline", color: "#b32020" },
   ];
 
   return (
@@ -490,7 +490,7 @@ export default function InstructorStudentsPage() {
                   fontSize: "0.8rem",
                   fontWeight: 700,
                   color: active ? "#fff" : "text.secondary",
-                  background: active ? "linear-gradient(135deg,#7c3aed,#ec4899)" : "var(--card-bg)",
+                  background: active ? "linear-gradient(135deg,#14406f,#0f6b7a)" : "var(--card-bg)",
                   border: active ? "none" : "1px solid var(--border-default)",
                 }}
               >
@@ -516,7 +516,7 @@ export default function InstructorStudentsPage() {
             label="All cohorts"
             onClick={() => setCohortId(null)}
             variant={cohortId === null ? "filled" : "outlined"}
-            sx={{ fontWeight: 700, ...(cohortId === null ? { bgcolor: "color-mix(in srgb,#6366f1 15%,transparent)", color: "#4f46e5" } : {}) }}
+            sx={{ fontWeight: 700, ...(cohortId === null ? { bgcolor: "color-mix(in srgb,#1b4f8a 15%,transparent)", color: "#12365f" } : {}) }}
           />
           {cohorts.map((c) => (
             <Chip
@@ -524,13 +524,13 @@ export default function InstructorStudentsPage() {
               label={c.name}
               onClick={() => setCohortId(c.id)}
               variant={cohortId === c.id ? "filled" : "outlined"}
-              sx={{ fontWeight: 700, ...(cohortId === c.id ? { bgcolor: "color-mix(in srgb,#6366f1 15%,transparent)", color: "#4f46e5" } : {}) }}
+              sx={{ fontWeight: 700, ...(cohortId === c.id ? { bgcolor: "color-mix(in srgb,#1b4f8a 15%,transparent)", color: "#12365f" } : {}) }}
             />
           ))}
         </Stack>
       )}
 
-      {error && <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
+      {error && <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
 
       {/* Table */}
       <Box data-tour-id="instructor-students" sx={{ borderRadius: 3, overflow: "hidden", bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)" }}>
@@ -542,7 +542,7 @@ export default function InstructorStudentsPage() {
             gap: 1.5,
             px: 2,
             py: 1.25,
-            bgcolor: "color-mix(in srgb,#6366f1 6%,transparent)",
+            bgcolor: "color-mix(in srgb,#1b4f8a 6%,transparent)",
             borderBottom: "1px solid var(--border-default)",
           }}
         >
@@ -634,7 +634,7 @@ export default function InstructorStudentsPage() {
             onClick={sendMessage}
             disabled={msgCohort === "" || !msgBody.trim() || msgSending}
             startIcon={msgSending ? <CircularProgress size={15} color="inherit" /> : <Icon icon="mdi:send" width={16} />}
-            sx={{ textTransform: "none", fontWeight: 800, color: "#fff", px: 2.5, borderRadius: 2, background: "linear-gradient(135deg,#7c3aed,#ec4899)" }}
+            sx={{ textTransform: "none", fontWeight: 800, color: "#fff", px: 2.5, borderRadius: 2, background: "linear-gradient(135deg,#14406f,#0f6b7a)" }}
           >
             Send message
           </Button>

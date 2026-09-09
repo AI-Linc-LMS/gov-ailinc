@@ -524,7 +524,7 @@ export const AssessmentSubjectiveLayout = memo(
               border: "1px solid var(--border-default)",
               minHeight: { md: "min(520px, 70vh)" },
               boxShadow:
-                "0 10px 40px color-mix(in srgb, var(--primary-900) 9%, transparent), 0 1px 0 color-mix(in srgb, var(--primary-900) 6%, transparent)",
+                "var(--shadow-sm)",
             }}
           >
             <Box
@@ -921,7 +921,7 @@ export const AssessmentSubjectiveLayout = memo(
                 overflow: "hidden",
                 border: "1px solid color-mix(in srgb, var(--accent-indigo) 28%, transparent)",
                 backgroundColor: "var(--surface)",
-                boxShadow: "0 1px 2px color-mix(in srgb, var(--primary-900) 6%, transparent)",
+                boxShadow: "var(--shadow-xs)",
               }}
             >
               <ButtonBase
@@ -966,7 +966,7 @@ export const AssessmentSubjectiveLayout = memo(
                     backgroundColor: "var(--font-light)",
                     border: "1px solid color-mix(in srgb, var(--accent-indigo) 28%, transparent)",
                     boxShadow:
-                      "0 1px 2px color-mix(in srgb, var(--accent-indigo-dark) 10%, transparent)",
+                      "var(--shadow-xs)",
                   }}
                 >
                   <IconWrapper icon="mdi:lightbulb-on-outline" size={24} color="var(--accent-indigo-dark)" />

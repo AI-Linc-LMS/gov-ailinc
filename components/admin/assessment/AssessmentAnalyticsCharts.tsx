@@ -58,21 +58,32 @@ const C = {
   muted: "var(--font-tertiary)",
 };
 
-/** Score bands low → high (matches common “traffic light” histograms). */
+/**
+ * Score bands low → high. These are ORDERED buckets, so they take one hue that deepens with
+ * the band, read straight off the institutional blue ramp.
+ *
+ * It used to be a red/amber/amber/indigo/green "traffic light", which had two faults. The two
+ * amber steps were the same colour, so bands 2 and 3 were indistinguishable, and colouring a
+ * histogram by its own x position spends the identity channel restating what the axis labels
+ * and the bar heights already say. Every bar also carries its count on top, so nothing here
+ * rests on the fill.
+ */
 const SCORE_BUCKET_COLORS = [
-  "var(--error-500)",
-  "var(--warning-500)",
-  "var(--warning-500)",
-  "var(--accent-indigo)",
-  "var(--success-500)",
+  "var(--primary-300)",
+  "var(--primary-400)",
+  "var(--primary-500)",
+  "var(--primary-700)",
+  "var(--primary-900)",
 ];
 
-const TIME_BUCKET_COLOR = "var(--accent-purple)";
+/** One series, one hue. (Named --accent-purple before; that token is institutional blue now,
+ *  so the name was the only purple left in this chart.) */
+const TIME_BUCKET_COLOR = "var(--accent-indigo)";
 
 const REPORT = {
   radius: 3,
-  shadow:
-    "0 1px 2px color-mix(in srgb, var(--font-primary) 10%, transparent), 0 6px 16px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+  // The elevation scale, not a bespoke shadow: a government service should look printed.
+  shadow: "var(--shadow-md)",
   chartWell: "color-mix(in srgb, var(--surface) 75%, transparent)",
 } as const;
 

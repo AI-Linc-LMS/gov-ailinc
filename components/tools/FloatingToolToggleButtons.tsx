@@ -32,7 +32,7 @@ export function FloatingToolToggleButtons({
       borderColor: active ? main : borderIdle,
       bgcolor: active ? alpha(main, 0.14) : alpha(theme.palette.background.paper, 0.95),
       color: active ? main : theme.palette.text.secondary,
-      boxShadow: active ? `0 2px 10px ${alpha(main, 0.22)}` : `0 1px 2px ${alpha(theme.palette.common.black, 0.06)}`,
+      boxShadow: active ? "var(--shadow-sm)" : "var(--shadow-xs)",
       transition: theme.transitions.create(
         ["border-color", "background-color", "box-shadow", "color", "transform"],
         { duration: theme.transitions.duration.shorter }
@@ -41,7 +41,7 @@ export function FloatingToolToggleButtons({
         borderColor: main,
         bgcolor: alpha(main, 0.12),
         color: main,
-        boxShadow: `0 4px 14px ${alpha(main, 0.28)}`,
+        boxShadow: "var(--shadow-md)",
       },
       "&:active": {
         transform: "scale(0.96)",

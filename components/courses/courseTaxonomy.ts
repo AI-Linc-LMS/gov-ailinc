@@ -75,7 +75,7 @@ const SECTIONS: readonly CourseSectionPresentation[] = [
       "Structured preparation for state, central, railway, police, public undertaking and " +
       "banking recruitment, from the notification to the interview board.",
     icon: "mdi:office-building-outline",
-    accent: "#6366f1",
+    accent: "#1b4f8a",
   },
   {
     slug: "skills-entrepreneurship",
@@ -84,7 +84,7 @@ const SECTIONS: readonly CourseSectionPresentation[] = [
       "Trade training and enterprise support delivered through district skill centres, built " +
       "around work that already exists in the mandal.",
     icon: "mdi:sprout-outline",
-    accent: "#10b981",
+    accent: "#0e7a3c",
   },
 ];
 
@@ -330,7 +330,7 @@ export function categoryChips(sections: readonly CourseGroupSection[]): CourseCa
       key: ALL_CATEGORIES,
       label: "All courses",
       icon: "mdi:view-grid-outline",
-      accent: "#6366f1",
+      accent: "#1b4f8a",
       count: total,
     },
   ];

@@ -55,7 +55,7 @@ export const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
             height: "297mm", // A4 height (1123px at 96 DPI)
             minHeight: "297mm",
             backgroundColor: "var(--card-bg)",
-            boxShadow: "0 2px 4px color-mix(in srgb, var(--font-primary) 22%, transparent)",
+            boxShadow: "var(--shadow-sm)",
             overflow: "hidden", // Ensure content doesn't overflow
             transform: {
               xs: "scale(0.4)",

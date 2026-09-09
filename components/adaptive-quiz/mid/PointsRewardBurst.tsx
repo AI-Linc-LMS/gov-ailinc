@@ -45,7 +45,7 @@ export function PointsRewardBurst({ reward }: { reward: RewardBurst | null }) {
             exit={{ opacity: 0, y: -96, scale: 0.9 }}
             transition={{ duration: 1.2, ease: "easeOut", times: [0, 0.2, 0.7, 1] }}
           >
-            <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.6, px: 2, py: 1, borderRadius: 999, color: "white", fontWeight: 900, fontSize: "1.5rem", background: "linear-gradient(135deg, #10b981 0%, #22c55e 100%)", boxShadow: "0 16px 36px -14px rgba(16,185,129,0.7)" }}>
+            <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.6, px: 2, py: 1, borderRadius: 999, color: "white", fontWeight: 900, fontSize: "1.5rem", background: "linear-gradient(135deg, #0e7a3c 0%, #0e7a3c 100%)", boxShadow: "var(--shadow-sm)" }}>
               <Icon icon="mdi:star-four-points" width={22} />
               +{active.points}
               <Typography component="span" sx={{ fontSize: "0.85rem", fontWeight: 800, opacity: 0.9 }}>pts</Typography>

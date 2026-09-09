@@ -362,15 +362,15 @@ export function ZoomCredentialsDialog({ open, onClose, autoCheck, onAutoCheckHan
             {(diagnostics || checkError) && (
               <Box sx={{ mb: 2, p: 1.75, borderRadius: "12px", border: "1px solid var(--border-default)" }}>
                 {checkError && (
-                  <Typography sx={{ color: "#ef4444", fontWeight: 700, fontSize: "0.86rem" }}>
+                  <Typography sx={{ color: "#b32020", fontWeight: 700, fontSize: "0.86rem" }}>
                     {checkError}
                   </Typography>
                 )}
                 {diagnostics && (
                   <>
                     <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", mb: 1,
-                      color: diagnostics.overall === "ok" ? "#10b981"
-                        : diagnostics.overall === "warn" ? "#f59e0b" : "#ef4444" }}>
+                      color: diagnostics.overall === "ok" ? "#0e7a3c"
+                        : diagnostics.overall === "warn" ? "#b7791f" : "#b32020" }}>
                       {diagnostics.overall === "ok"
                         ? "Everything checks out — you're ready to schedule."
                         : diagnostics.overall === "warn"
@@ -379,9 +379,9 @@ export function ZoomCredentialsDialog({ open, onClose, autoCheck, onAutoCheckHan
                     </Typography>
                     {diagnostics.checks.map((c) => {
                       const tone =
-                        c.status === "ok" ? "#10b981"
-                        : c.status === "warn" ? "#f59e0b"
-                        : c.status === "fail" ? "#ef4444" : "var(--font-tertiary)";
+                        c.status === "ok" ? "#0e7a3c"
+                        : c.status === "warn" ? "#b7791f"
+                        : c.status === "fail" ? "#b32020" : "var(--font-tertiary)";
                       const icon =
                         c.status === "ok" ? "mdi:check-circle"
                         : c.status === "warn" ? "mdi:alert-circle"

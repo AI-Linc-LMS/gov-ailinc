@@ -86,7 +86,7 @@ export function MCQQuestionsTable({
               border: "1px solid var(--border-default)",
               backgroundColor: "var(--card-bg)",
               boxShadow:
-                "0 1px 3px color-mix(in srgb, var(--font-primary) 8%, transparent)",
+                "var(--shadow-sm)",
             }}
           >
             {/* Question number + metadata */}
@@ -188,10 +188,10 @@ export function MCQQuestionsTable({
                       p: { xs: 1.25, sm: 1.5 },
                       borderRadius: 1.5,
                       border: isCorrect
-                        ? "2px solid var(--success-500, #10b981)"
+                        ? "2px solid var(--success-500, #0e7a3c)"
                         : "1.5px solid var(--border-default)",
                       backgroundColor: isCorrect
-                        ? "color-mix(in srgb, var(--success-500, #10b981) 12%, var(--surface) 88%)"
+                        ? "color-mix(in srgb, var(--success-500, #0e7a3c) 12%, var(--surface) 88%)"
                         : "var(--surface)",
                     }}
                   >
@@ -200,7 +200,7 @@ export function MCQQuestionsTable({
                         minWidth: 24,
                         height: 24,
                         borderRadius: "50%",
-                        bgcolor: isCorrect ? "var(--success-500, #10b981)" : "var(--border-default)",
+                        bgcolor: isCorrect ? "var(--success-500, #0e7a3c)" : "var(--border-default)",
                         color: isCorrect ? "var(--font-light)" : "var(--font-secondary)",
                         display: "flex",
                         alignItems: "center",
@@ -231,7 +231,7 @@ export function MCQQuestionsTable({
                           minWidth: 20,
                           height: 20,
                           borderRadius: "50%",
-                          backgroundColor: "var(--success-500, #10b981)",
+                          backgroundColor: "var(--success-500, #0e7a3c)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",

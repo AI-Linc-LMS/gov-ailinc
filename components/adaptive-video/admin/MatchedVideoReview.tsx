@@ -104,7 +104,7 @@ export function MatchedVideoReview({
         overflow: "hidden",
         bgcolor: "var(--card-bg, #fff)",
         border: "1px solid var(--border-default, #ececf1)",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 10px 26px -22px rgba(16,24,40,0.18)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       {/* Header */}
@@ -113,16 +113,16 @@ export function MatchedVideoReview({
         <Box
           sx={{
             position: "relative", width: 96, height: 54, borderRadius: 2, overflow: "hidden", flexShrink: 0,
-            bgcolor: "#0f0c29", display: "grid", placeItems: "center",
+            bgcolor: "#071426", display: "grid", placeItems: "center",
           }}
         >
           {companion.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={companion.thumbnail_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           ) : (
-            <Icon icon="mdi:video-outline" width={22} style={{ color: "#64618a" }} />
+            <Icon icon="mdi:video-outline" width={22} style={{ color: "#6b7684" }} />
           )}
-          <Box sx={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", bgcolor: "rgba(15,12,41,0.25)" }}>
+          <Box sx={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", bgcolor: "rgba(7,20,38,0.25)" }}>
             <Icon icon="mdi:play-circle" width={24} style={{ color: "rgba(255,255,255,0.92)" }} />
           </Box>
           {companion.duration_seconds > 0 && (
@@ -217,7 +217,7 @@ export function MatchedVideoReview({
         >
           {/* Header */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.25 }}>
-            <Icon icon="mdi:swap-horizontal" width={16} style={{ color: "#6366f1" }} />
+            <Icon icon="mdi:swap-horizontal" width={16} style={{ color: "#1b4f8a" }} />
             <Typography sx={{ fontSize: "0.74rem", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase", color: "text.secondary" }}>
               Swap from catalog
             </Typography>
@@ -245,7 +245,7 @@ export function MatchedVideoReview({
               onClick={search}
               disabled={searching}
               sx={{ borderRadius: 2.5, px: 2.5, fontWeight: 700, textTransform: "none",
-                background: "linear-gradient(135deg, #6366f1, #a855f7)" }}
+                background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)" }}
             >
               {searching ? <CircularProgress size={18} color="inherit" /> : "Search"}
             </Button>
@@ -259,7 +259,7 @@ export function MatchedVideoReview({
               fontSize: "0.76rem", fontWeight: 600, color: "text.secondary" }}
           >
             <Icon icon={transcribedOnly ? "mdi:checkbox-marked" : "mdi:checkbox-blank-outline"} width={17}
-              style={{ color: transcribedOnly ? "#6366f1" : "#94a3b8" }} />
+              style={{ color: transcribedOnly ? "#1b4f8a" : "#94a3b8" }} />
             Transcribed only
             <Typography component="span" sx={{ fontSize: "0.7rem", color: "text.disabled" }}>
               (a companion needs a transcript)
@@ -283,10 +283,10 @@ export function MatchedVideoReview({
                     display: "flex", alignItems: "center", gap: 1.25, p: 1, borderRadius: 2,
                     bgcolor: "var(--card-bg, #fff)", border: "1px solid var(--border-default, #ececf1)",
                     transition: "border-color 120ms ease",
-                    "&:hover": { borderColor: "color-mix(in srgb, #6366f1 40%, transparent)" },
+                    "&:hover": { borderColor: "color-mix(in srgb, #1b4f8a 40%, transparent)" },
                   }}
                 >
-                  <Box sx={{ position: "relative", width: 72, height: 41, borderRadius: 1.5, overflow: "hidden", flexShrink: 0, bgcolor: "#0f0c29" }}>
+                  <Box sx={{ position: "relative", width: 72, height: 41, borderRadius: 1.5, overflow: "hidden", flexShrink: 0, bgcolor: "#071426" }}>
                     {v.thumbnail_url && (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={v.thumbnail_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -300,7 +300,7 @@ export function MatchedVideoReview({
                       {v.title}
                     </Typography>
                     <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.4, mt: 0.25,
-                      fontSize: "0.7rem", fontWeight: 700, color: v.has_text_track ? "#16a34a" : "#f59e0b" }}>
+                      fontSize: "0.7rem", fontWeight: 700, color: v.has_text_track ? "#0b6232" : "#b7791f" }}>
                       <Icon icon={v.has_text_track ? "mdi:closed-caption" : "mdi:closed-caption-outline"} width={13} />
                       {v.has_text_track ? "Transcript" : "No transcript"}
                     </Box>
@@ -323,8 +323,8 @@ export function MatchedVideoReview({
 
       {note && (
         <Box sx={{ mt: 1.25, display: "inline-flex", alignItems: "center", gap: 0.6, px: 1.25, py: 0.6, borderRadius: 2,
-          bgcolor: "color-mix(in srgb, #6366f1 8%, transparent)", border: "1px solid color-mix(in srgb, #6366f1 18%, transparent)" }}>
-          <Icon icon="mdi:information-outline" width={15} style={{ color: "#6366f1" }} />
+          bgcolor: "color-mix(in srgb, #1b4f8a 8%, transparent)", border: "1px solid color-mix(in srgb, #1b4f8a 18%, transparent)" }}>
+          <Icon icon="mdi:information-outline" width={15} style={{ color: "#1b4f8a" }} />
           <Typography sx={{ fontSize: "0.78rem", color: "text.secondary" }}>{note}</Typography>
         </Box>
       )}
@@ -341,11 +341,11 @@ function StatusPill({ active }: { active: boolean }) {
       sx={{
         flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 0.4, px: 0.85, py: 0.25, borderRadius: 999,
         fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.04em", textTransform: "uppercase",
-        color: active ? "#16a34a" : "#94a3b8",
-        bgcolor: active ? "color-mix(in srgb, #16a34a 12%, transparent)" : "var(--bg-subtle, #f1f1f4)",
+        color: active ? "#0b6232" : "#94a3b8",
+        bgcolor: active ? "color-mix(in srgb, #0b6232 12%, transparent)" : "var(--bg-subtle, #f1f1f4)",
       }}
     >
-      <Box sx={{ width: 5, height: 5, borderRadius: 999, bgcolor: active ? "#16a34a" : "#cbd5e1" }} />
+      <Box sx={{ width: 5, height: 5, borderRadius: 999, bgcolor: active ? "#0b6232" : "#cbd5e1" }} />
       {active ? "Active" : "Inactive"}
     </Box>
   );
@@ -358,7 +358,7 @@ function MetaDot() {
 function MetaChip({ icon, label }: { icon: string; label: string }) {
   return (
     <Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 0.35, fontSize: "0.74rem", fontWeight: 700, color: "text.secondary" }}>
-      <Icon icon={icon} width={13} style={{ color: "#6366f1" }} />
+      <Icon icon={icon} width={13} style={{ color: "#1b4f8a" }} />
       {label}
     </Box>
   );
@@ -395,14 +395,14 @@ function ToolbarButton({
         fontSize: "0.78rem",
         borderRadius: 2,
         px: 1.25,
-        color: active ? "#fff" : danger ? "#dc2626" : "text.primary",
-        bgcolor: active ? "#6366f1" : "transparent",
+        color: active ? "#fff" : danger ? "#991b1b" : "text.primary",
+        bgcolor: active ? "#1b4f8a" : "transparent",
         border: "1px solid",
-        borderColor: active ? "#6366f1" : "var(--border-default, #ececf1)",
-        "& .MuiButton-startIcon": { mr: 0.6, color: active ? "#fff" : danger ? "#dc2626" : "#6366f1" },
+        borderColor: active ? "#1b4f8a" : "var(--border-default, #ececf1)",
+        "& .MuiButton-startIcon": { mr: 0.6, color: active ? "#fff" : danger ? "#991b1b" : "#1b4f8a" },
         "&:hover": {
-          bgcolor: active ? "#5457e6" : danger ? "color-mix(in srgb, #dc2626 8%, transparent)" : "var(--bg-subtle, #f4f4f6)",
-          borderColor: active ? "#5457e6" : danger ? "color-mix(in srgb, #dc2626 40%, transparent)" : "color-mix(in srgb, #6366f1 40%, transparent)",
+          bgcolor: active ? "#1b4f8a" : danger ? "color-mix(in srgb, #991b1b 8%, transparent)" : "var(--bg-subtle, #f4f4f6)",
+          borderColor: active ? "#1b4f8a" : danger ? "color-mix(in srgb, #991b1b 40%, transparent)" : "color-mix(in srgb, #1b4f8a 40%, transparent)",
         },
       }}
     >
@@ -426,7 +426,7 @@ function CompanionPreview({ loading, data }: { loading: boolean; data: VideoComp
       {/* Player */}
       <Box>
         {data.video?.embed_url ? (
-          <Box sx={{ position: "relative", aspectRatio: "16 / 9", borderRadius: 2, overflow: "hidden", bgcolor: "#0f0c29" }}>
+          <Box sx={{ position: "relative", aspectRatio: "16 / 9", borderRadius: 2, overflow: "hidden", bgcolor: "#071426" }}>
             <iframe
               src={`${data.video.embed_url}?title=0&byline=0&portrait=0`}
               allow="autoplay; fullscreen; picture-in-picture"
@@ -467,7 +467,7 @@ function CompanionPreview({ loading, data }: { loading: boolean; data: VideoComp
           <Box>
             <PreviewHeading icon="mdi:lightning-bolt" label={`Check-ins (${data.check_ins.length})`} />
             {data.check_ins.map((c) => (
-              <Box key={c.id} sx={{ mb: 1, p: 1, borderRadius: 1.5, bgcolor: "color-mix(in srgb, #6366f1 6%, transparent)" }}>
+              <Box key={c.id} sx={{ mb: 1, p: 1, borderRadius: 1.5, bgcolor: "color-mix(in srgb, #1b4f8a 6%, transparent)" }}>
                 <Typography sx={{ fontSize: "0.74rem", color: "text.secondary" }}>
                   @ {fmt(c.timestamp_seconds)} · {c.concept}
                 </Typography>
@@ -484,7 +484,7 @@ function CompanionPreview({ loading, data }: { loading: boolean; data: VideoComp
 function PreviewHeading({ icon, label }: { icon: string; label: string }) {
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 0.75 }}>
-      <Icon icon={icon} width={15} style={{ color: "#6366f1" }} />
+      <Icon icon={icon} width={15} style={{ color: "#1b4f8a" }} />
       <Typography sx={{ fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: "text.secondary" }}>
         {label}
       </Typography>

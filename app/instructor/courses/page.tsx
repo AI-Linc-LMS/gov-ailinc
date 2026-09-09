@@ -52,7 +52,7 @@ export default function InstructorCoursesPage() {
           </HeaderActionButton>
         }
       />
-      {error && <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
+      {error && <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
       {!error && !loading && courses.length === 0 && (
         <Box sx={{ p: 4, textAlign: "center", borderRadius: 3, border: "1px dashed var(--border-default)" }}>
           <Typography sx={{ fontWeight: 800, mb: 0.5 }}>Nothing here yet</Typography>
@@ -88,20 +88,20 @@ export default function InstructorCoursesPage() {
                 onKeyDown={(e) => { if (href && e.key === "Enter") open(); }}
                 sx={{ cursor: href ? "pointer" : "default", p: 2.25, borderRadius: 3, bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)",
                   transition: "transform .14s, box-shadow .14s, border-color .14s",
-                  ...(href ? { "&:hover": { transform: "translateY(-3px)", borderColor: "color-mix(in srgb, #a855f7 40%, transparent)", boxShadow: "0 20px 40px -26px rgba(168,85,247,0.45)" } } : {}) }}
+                  ...(href ? { "&:hover": { transform: "translateY(-3px)", borderColor: "color-mix(in srgb, #1b4f8a 40%, transparent)", boxShadow: "0 20px 40px -26px rgba(27, 79, 138,0.45)" } } : {}) }}
               >
                 <Stack direction="row" alignItems="center" spacing={1.25} sx={{ mb: 1 }}>
                   <Box sx={{ width: 40, height: 40, borderRadius: 2.5, display: "grid", placeItems: "center", color: "#fff", flexShrink: 0,
-                    background: c.kind === "adaptive" ? "linear-gradient(135deg,#6366f1,#a855f7)" : "linear-gradient(135deg,#0ea5e9,#14b8a6)" }}>
+                    background: c.kind === "adaptive" ? "linear-gradient(135deg,#1b4f8a,#1b4f8a)" : "linear-gradient(135deg,#1b4f8a,#0f6b7a)" }}>
                     <Icon icon={c.kind === "adaptive" ? "mdi:book-education" : "mdi:book-open-variant"} width={20} />
                   </Box>
                   <Chip size="small" label={c.is_published ? "published" : "draft"}
-                    sx={{ fontWeight: 700, color: c.is_published ? "#10b981" : "#f59e0b",
-                      bgcolor: `color-mix(in srgb, ${c.is_published ? "#10b981" : "#f59e0b"} 14%, transparent)` }} />
+                    sx={{ fontWeight: 700, color: c.is_published ? "#0e7a3c" : "#b7791f",
+                      bgcolor: `color-mix(in srgb, ${c.is_published ? "#0e7a3c" : "#b7791f"} 14%, transparent)` }} />
                   {c.kind === "classic" && (
                     <Tooltip title="A classic course. Its content is managed in the admin course area — the instructor course view is adaptive-only for now.">
                       <Chip size="small" label="classic"
-                        sx={{ fontWeight: 700, color: "#0ea5e9", bgcolor: "color-mix(in srgb, #0ea5e9 14%, transparent)" }} />
+                        sx={{ fontWeight: 700, color: "#1b4f8a", bgcolor: "color-mix(in srgb, #1b4f8a 14%, transparent)" }} />
                     </Tooltip>
                   )}
                 </Stack>
@@ -117,7 +117,7 @@ export default function InstructorCoursesPage() {
                     direction="row"
                     alignItems="center"
                     spacing={0.5}
-                    sx={{ mt: 1.5, fontSize: "0.82rem", fontWeight: 800, color: "#6366f1" }}
+                    sx={{ mt: 1.5, fontSize: "0.82rem", fontWeight: 800, color: "#1b4f8a" }}
                   >
                     <Icon
                       icon={c.authored_by_me ? "mdi:hammer-wrench" : "mdi:account-group-outline"}
@@ -152,24 +152,24 @@ function AuthoredStatus({ course }: { course: InstructorCourse }) {
   const map: Record<string, { label: string; tone: string; hint: string }> = {
     draft: {
       label: "Your draft",
-      tone: "#6366f1",
+      tone: "#1b4f8a",
       // Names the destination. "Send it for review when it is ready" described a button that
       // lives on a page the card never took you to, so it read as an instruction with no verb.
       hint: "Open it to add weeks, topics and content — then send it for review from there.",
     },
     pending_review: {
       label: "Waiting for review",
-      tone: "#f59e0b",
+      tone: "#b7791f",
       hint: "An admin is reviewing it. Students cannot see it yet.",
     },
     approved: {
       label: "Approved",
-      tone: "#10b981",
+      tone: "#0e7a3c",
       hint: "An admin approved it. They assign students to make it live.",
     },
     rejected: {
       label: "Sent back",
-      tone: "#ef4444",
+      tone: "#b32020",
       // The reason itself replaces this — see below. This is only the fallback for a
       // rejection with no note, which the API refuses but old rows might carry.
       hint: "An admin sent this back for changes.",

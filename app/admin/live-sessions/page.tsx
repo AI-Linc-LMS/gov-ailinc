@@ -425,10 +425,10 @@ export default function AdminLiveSessionsPage() {
                 <Box data-tour-id="live-sessions-stats">
                   <KpiRail
                     items={[
-                      { value: counts.upcoming, label: t("adminLiveSessions.filterUpcoming", "Upcoming"), accent: "#6366f1" },
-                      { value: counts.live, label: t("adminLiveSessions.filterLive", "Live now"), accent: "#10b981" },
+                      { value: counts.upcoming, label: t("adminLiveSessions.filterUpcoming", "Upcoming"), accent: "#1b4f8a" },
+                      { value: counts.live, label: t("adminLiveSessions.filterLive", "Live now"), accent: "#0e7a3c" },
                       { value: counts.past, label: t("adminLiveSessions.completed", "Completed"), accent: "#94a3b8" },
-                      { value: counts.webinars, label: t("adminLiveSessions.webinars", "Webinars"), accent: "#ec4899" },
+                      { value: counts.webinars, label: t("adminLiveSessions.webinars", "Webinars"), accent: "#0f6b7a" },
                     ]}
                   />
                 </Box>
@@ -629,7 +629,7 @@ function SessionListRow({ session, onOpen }: { session: LiveActivity; onOpen: (s
         opacity: isCancelled ? 0.7 : 1,
         "&:hover": {
           borderColor: "var(--accent-indigo)",
-          boxShadow: "0 6px 16px -8px rgba(124,58,237,0.35)",
+          boxShadow: "0 6px 16px -8px rgba(20, 64, 111,0.35)",
         },
       }}
     >
@@ -642,7 +642,7 @@ function SessionListRow({ session, onOpen }: { session: LiveActivity; onOpen: (s
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+          background: "linear-gradient(135deg, #1b4f8a 0%, #12365f 100%)",
         }}
       >
         <IconWrapper icon={rowIcon} size={22} color="#fff" />
@@ -677,7 +677,7 @@ function SessionListRow({ session, onOpen }: { session: LiveActivity; onOpen: (s
 
 /** Tiny status dot + label for the integrations strip. */
 function StatusDot({ ok, warn = false, label }: { ok: boolean; warn?: boolean; label: string }) {
-  const color = warn ? "var(--error-500, #ef4444)" : ok ? "var(--success-500)" : "var(--warning-500)";
+  const color = warn ? "var(--error-500, #b32020)" : ok ? "var(--success-500)" : "var(--warning-500)";
   return (
     <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}>
       <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: color, boxShadow: `0 0 6px ${color}` }} />

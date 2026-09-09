@@ -13,7 +13,19 @@ interface ProgressRingChartProps {
   fontSize?: number;
 }
 
-const DEFAULT_RING_COLOR = "#0a66c2";
+/**
+ * The default ring colour doubles as a SENTINEL: when the caller has not overridden it, the ring
+ * is painted from the score band instead (see `finalColor` below). `#0a66c2` was that sentinel
+ * and is not a government-palette value, so it moves to institutional blue.
+ *
+ * The old value has to stay recognised. `OverallScoreCard` passes `#0a66c2` explicitly for the
+ * "Advanced" grade, which today trips the sentinel and quietly gets the band colour; if this
+ * constant simply changed, that call would start rendering a literal off-palette blue instead.
+ * Keeping it in the sentinel set preserves what is on screen now and makes it impossible for
+ * that hue to reach the ring.
+ */
+const DEFAULT_RING_COLOR = "#1b4f8a";
+const BAND_SENTINEL_COLORS = new Set([DEFAULT_RING_COLOR, "#0a66c2"]);
 const DEFAULT_TRACK_COLOR = "var(--border-default)";
 
 export function ProgressRingChart({
@@ -28,7 +40,7 @@ export function ProgressRingChart({
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (value / 100) * circumference;
-  const finalColor = color === DEFAULT_RING_COLOR ? proficiencyBandColor(value) : color;
+  const finalColor = BAND_SENTINEL_COLORS.has(color) ? proficiencyBandColor(value) : color;
 
   return (
     <Box

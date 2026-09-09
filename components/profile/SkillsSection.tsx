@@ -89,11 +89,11 @@ export function SkillsSection({ profile, onSave, onRemoveSection }: SkillsSectio
         border: "1px solid var(--border-default)",
         borderRadius: 4,
         boxShadow:
-          "0 1px 2px rgba(16,24,40,0.04), 0 12px 28px -20px rgba(30,27,75,0.28)",
+          "var(--shadow-sm)",
         transition: "box-shadow 0.2s ease",
         "&:hover": {
           boxShadow:
-            "0 1px 2px rgba(16,24,40,0.04), 0 16px 34px -20px rgba(30,27,75,0.34)",
+            "var(--shadow-md)",
         },
       }}
     >
@@ -304,7 +304,7 @@ export function SkillsSection({ profile, onSave, onRemoveSection }: SkillsSectio
                       backgroundColor: "color-mix(in srgb, var(--surface) 72%, var(--background))",
                       borderColor: "color-mix(in srgb, var(--border-default) 85%, var(--font-secondary))",
                       transform: "translateY(-1px)",
-                      boxShadow: "0 2px 4px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+                      boxShadow: "var(--shadow-md)",
                     },
                   }}
                 />

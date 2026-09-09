@@ -355,7 +355,7 @@ export function PsychometricResultView({ data }: PsychometricResultViewProps) {
         <div className="exclude-from-pdf pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6">
           <button
             onClick={handleDownloadPDF}
-            className="w-full sm:w-auto mx-auto flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:from-blue-800 active:to-indigo-800 text-white rounded-xl sm:rounded-2xl text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 touch-manipulation min-h-[48px] sm:min-h-[52px]"
+            className="w-full sm:w-auto mx-auto flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-[#164274] hover:from-blue-700 hover:to-[#12365f] active:from-blue-800 active:to-[#0e2a4b] text-white rounded-xl sm:rounded-2xl text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 touch-manipulation min-h-[48px] sm:min-h-[52px]"
             aria-label="Download PDF Report"
           >
             <svg className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

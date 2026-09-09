@@ -26,8 +26,8 @@ const PAD_BOTTOM = 26;
 const POINT_RADIUS = 7;
 
 const POINT_COLOR: Record<PointKind, string> = {
-  wrong: "#f43f5e",
-  right: "#f59e0b",
+  wrong: "#b32020",
+  right: "#b7791f",
 };
 
 /**
@@ -83,11 +83,10 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
         overflow: "hidden",
         p: { xs: 2.5, md: 3.25 },
         borderRadius: 5,
-        bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 70%, transparent)",
-        border: "1px solid color-mix(in srgb, #f43f5e 22%, transparent)",
-        backdropFilter: "blur(22px) saturate(150%)",
+        bgcolor: "var(--card-bg, #ffffff)",
+        border: "1px solid color-mix(in srgb, #b32020 22%, transparent)",
         boxShadow:
-          "0 1px 0 0 color-mix(in srgb, white 22%, transparent) inset, 0 28px 60px -36px color-mix(in srgb, #f43f5e 50%, transparent)",
+          "var(--shadow-sm)",
         display: "flex",
         flexDirection: "column",
         gap: 2.5,
@@ -103,7 +102,7 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
           position: "absolute",
           inset: 0,
           backgroundImage:
-            "linear-gradient(120deg, color-mix(in srgb, #f43f5e 6%, transparent) 0%, color-mix(in srgb, #a855f7 5%, transparent) 50%, color-mix(in srgb, #6366f1 6%, transparent) 100%)",
+            "linear-gradient(120deg, color-mix(in srgb, #b32020 6%, transparent) 0%, color-mix(in srgb, #1b4f8a 5%, transparent) 50%, color-mix(in srgb, #1b4f8a 6%, transparent) 100%)",
           backgroundSize: "240% 100%",
           pointerEvents: "none",
         }}
@@ -116,13 +115,13 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
             width: 38,
             height: 38,
             borderRadius: 2.5,
-            background: "linear-gradient(135deg, #f43f5e 0%, #a855f7 100%)",
+            background: "linear-gradient(135deg, #b32020 0%, #1b4f8a 100%)",
             color: "white",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             flexShrink: 0,
-            boxShadow: "0 12px 28px -10px color-mix(in srgb, #f43f5e 60%, transparent)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Icon icon="mdi:chart-bell-curve-cumulative" width={22} />
@@ -134,7 +133,7 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
               fontWeight: 800,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "#f43f5e",
+              color: "#b32020",
               lineHeight: 1,
             }}
           >
@@ -152,9 +151,9 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
             px: 1.25,
             py: 0.5,
             borderRadius: 999,
-            bgcolor: "color-mix(in srgb, #f43f5e 10%, transparent)",
-            border: "1px solid color-mix(in srgb, #f43f5e 28%, transparent)",
-            color: "#f43f5e",
+            bgcolor: "color-mix(in srgb, #b32020 10%, transparent)",
+            border: "1px solid color-mix(in srgb, #b32020 28%, transparent)",
+            color: "#b32020",
             fontWeight: 800,
             fontSize: "0.72rem",
             letterSpacing: "0.08em",
@@ -177,9 +176,9 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
           position: "relative",
           p: { xs: 1.5, md: 2 },
           borderRadius: 4,
-          bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 50%, transparent)",
-          border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 60%, transparent)",
-          boxShadow: "0 1px 0 0 color-mix(in srgb, white 12%, transparent) inset",
+          bgcolor: "var(--card-bg, #ffffff)",
+          border: "1px solid var(--border-default, #e5e7eb)",
+          boxShadow: "var(--shadow-xs)",
           display: "grid",
           gridTemplateColumns: { xs: "1fr", md: "minmax(160px, 220px) 1fr" },
           gap: { xs: 1, md: 2 },
@@ -203,12 +202,12 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
                   cursor: "pointer",
                   transition: "background 160ms ease",
                   background: isFocus
-                    ? "linear-gradient(90deg, color-mix(in srgb, #f43f5e 14%, transparent) 0%, color-mix(in srgb, #a855f7 6%, transparent) 100%)"
+                    ? "linear-gradient(90deg, color-mix(in srgb, #b32020 14%, transparent) 0%, color-mix(in srgb, #1b4f8a 6%, transparent) 100%)"
                     : "transparent",
                   "&:hover": {
                     background: isFocus
-                      ? "linear-gradient(90deg, color-mix(in srgb, #f43f5e 16%, transparent) 0%, color-mix(in srgb, #a855f7 8%, transparent) 100%)"
-                      : "color-mix(in srgb, #f43f5e 5%, transparent)",
+                      ? "linear-gradient(90deg, color-mix(in srgb, #b32020 16%, transparent) 0%, color-mix(in srgb, #1b4f8a 8%, transparent) 100%)"
+                      : "color-mix(in srgb, #b32020 5%, transparent)",
                   },
                 }}
               >
@@ -218,8 +217,8 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
                     height: 28,
                     borderRadius: 1,
                     background: isFocus
-                      ? "linear-gradient(180deg, #f43f5e 0%, #a855f7 100%)"
-                      : "color-mix(in srgb, #f43f5e 28%, transparent)",
+                      ? "linear-gradient(180deg, #b32020 0%, #1b4f8a 100%)"
+                      : "color-mix(in srgb, #b32020 28%, transparent)",
                     flexShrink: 0,
                   }}
                 />
@@ -268,8 +267,8 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
             <defs>
               {/* Line gradient - rose → purple */}
               <linearGradient id="mc-line" x1="0" x2="1" y1="0" y2="0">
-                <stop offset="0%" stopColor="#f43f5e" stopOpacity={0.9} />
-                <stop offset="100%" stopColor="#a855f7" stopOpacity={0.9} />
+                <stop offset="0%" stopColor="#b32020" stopOpacity={0.9} />
+                <stop offset="100%" stopColor="#1b4f8a" stopOpacity={0.9} />
               </linearGradient>
               {/* Dot glow filter */}
               <filter id="mc-glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -293,7 +292,7 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
                     x2={x}
                     y1={TRACK_TOP - 4}
                     y2={VB_HEIGHT - PAD_BOTTOM + 4}
-                    stroke="color-mix(in srgb, #6366f1 8%, transparent)"
+                    stroke="color-mix(in srgb, #1b4f8a 8%, transparent)"
                     strokeWidth={1}
                     strokeDasharray={showLabel ? undefined : "2 3"}
                   />
@@ -335,7 +334,7 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
                     y2={y}
                     stroke={
                       isFocus
-                        ? "color-mix(in srgb, #f43f5e 35%, transparent)"
+                        ? "color-mix(in srgb, #b32020 35%, transparent)"
                         : "color-mix(in srgb, currentColor 14%, transparent)"
                     }
                     strokeWidth={isFocus ? 1.5 : 1}
@@ -470,10 +469,10 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
                 p: 2.25,
                 pl: 2.75,
                 borderRadius: 4,
-                bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 70%, transparent)",
-                border: "1px solid color-mix(in srgb, #f43f5e 24%, transparent)",
+                bgcolor: "var(--card-bg, #ffffff)",
+                border: "1px solid color-mix(in srgb, #b32020 24%, transparent)",
                 boxShadow:
-                  "0 1px 0 0 color-mix(in srgb, white 16%, transparent) inset, 0 16px 40px -28px color-mix(in srgb, #f43f5e 45%, transparent)",
+                  "var(--shadow-sm)",
                 display: "flex",
                 flexDirection: "column",
                 gap: 1.25,
@@ -489,7 +488,7 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
                   bottom: 0,
                   left: 0,
                   width: 4,
-                  background: "linear-gradient(180deg, #f43f5e 0%, #a855f7 100%)",
+                  background: "linear-gradient(180deg, #b32020 0%, #1b4f8a 100%)",
                 }}
               />
 
@@ -500,7 +499,7 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
                     fontWeight: 800,
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
-                    color: "#f43f5e",
+                    color: "#b32020",
                   }}
                 >
                   Diagnosis
@@ -533,8 +532,8 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
                     p: 1.5,
                     borderRadius: 3,
                     background:
-                      "linear-gradient(135deg, color-mix(in srgb, #10b981 10%, transparent) 0%, color-mix(in srgb, #34d399 6%, transparent) 100%)",
-                    border: "1px solid color-mix(in srgb, #10b981 28%, transparent)",
+                      "linear-gradient(135deg, color-mix(in srgb, #0e7a3c 10%, transparent) 0%, color-mix(in srgb, #2f9159 6%, transparent) 100%)",
+                    border: "1px solid color-mix(in srgb, #0e7a3c 28%, transparent)",
                     display: "flex",
                     gap: 1.25,
                     alignItems: "flex-start",
@@ -545,13 +544,13 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
                       width: 28,
                       height: 28,
                       borderRadius: 1.5,
-                      background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                      background: "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)",
                       color: "white",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       flexShrink: 0,
-                      boxShadow: "0 6px 16px -6px color-mix(in srgb, #10b981 50%, transparent)",
+                      boxShadow: "var(--shadow-sm)",
                     }}
                   >
                     <Icon icon="mdi:lightbulb-on-outline" width={16} />
@@ -563,7 +562,7 @@ export function MisconceptionCallout({ misconceptions, responses }: Misconceptio
                         fontWeight: 800,
                         letterSpacing: "0.18em",
                         textTransform: "uppercase",
-                        color: "#059669",
+                        color: "#0B6232",
                         lineHeight: 1,
                         mb: 0.5,
                       }}
@@ -594,7 +593,8 @@ function LegendDot({ kind, label }: { kind: PointKind; label: string }) {
           height: 12,
           borderRadius: "50%",
           bgcolor: color,
-          boxShadow: `0 0 0 1.5px rgba(255,255,255,0.6), 0 4px 12px -3px color-mix(in srgb, ${color} 55%, transparent)`,
+          // A 1.5px white ring keeps the legend dot legible on a tinted card.
+          boxShadow: "0 0 0 1.5px rgba(255,255,255,0.6), var(--shadow-xs)",
         }}
       />
       <Typography sx={{ fontSize: "0.72rem", color: "text.secondary", fontWeight: 600 }}>
@@ -612,7 +612,7 @@ function LegendLine({ label }: { label: string }) {
           width: 22,
           height: 3,
           borderRadius: 999,
-          background: "linear-gradient(90deg, #f43f5e 0%, #a855f7 100%)",
+          background: "linear-gradient(90deg, #b32020 0%, #1b4f8a 100%)",
         }}
       />
       <Typography sx={{ fontSize: "0.72rem", color: "text.secondary", fontWeight: 600 }}>

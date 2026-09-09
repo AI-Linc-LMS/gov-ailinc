@@ -38,9 +38,9 @@ const GRANULARITY_OPTIONS: PerformanceTrendsGranularity[] = ["weekly", "bimonthl
 
 const SERIES = [
   { key: "mcqAccuracy", label: "MCQ", color: "var(--accent-indigo)" },
-  { key: "subjectiveScore", label: "Subjective", color: "#10b981" },
-  { key: "assessmentScore", label: "Assessment", color: "#f59e0b" },
-  { key: "interviewScore", label: "Interview", color: "#a855f7" },
+  { key: "subjectiveScore", label: "Subjective", color: "#0e7a3c" },
+  { key: "assessmentScore", label: "Assessment", color: "#b7791f" },
+  { key: "interviewScore", label: "Interview", color: "#1b4f8a" },
 ];
 
 // Custom chart tooltip - same elevated card style used by LearningConsumptionSection.
@@ -61,9 +61,8 @@ function ChartTooltip({
         py: 1.5,
         borderRadius: 2,
         backgroundColor: "var(--card-bg)",
-        backdropFilter: "blur(12px)",
         border: "1px solid color-mix(in srgb, var(--border-default) 80%, transparent)",
-        boxShadow: "0 20px 50px -20px rgba(15, 23, 42, 0.35)",
+        boxShadow: "var(--shadow-sm)",
         minWidth: 180,
       }}
     >
@@ -100,7 +99,7 @@ function ChartTooltip({
 
 function DeltaPill({ value, label }: { value: number; label: string }) {
   const positive = value >= 0;
-  const accent = positive ? "#10b981" : "#ef4444";
+  const accent = positive ? "#0e7a3c" : "#b32020";
   return (
     <Box
       sx={{
@@ -213,21 +212,21 @@ export function PerformanceTrendsSection({
       {
         key: "subjectiveScore" as const,
         label: "Subjective",
-        accent: "#10b981",
+        accent: "#0e7a3c",
         value: latest.subjectiveScore,
         delta: delta("subjectiveScore"),
       },
       {
         key: "assessmentScore" as const,
         label: "Assessment",
-        accent: "#f59e0b",
+        accent: "#b7791f",
         value: latest.assessmentScore,
         delta: delta("assessmentScore"),
       },
       {
         key: "interviewScore" as const,
         label: "Interview",
-        accent: "#a855f7",
+        accent: "#1b4f8a",
         value: latest.interviewScore,
         delta: delta("interviewScore"),
       },
@@ -277,7 +276,7 @@ export function PerformanceTrendsSection({
                       bgcolor: "var(--card-bg)",
                       color: "var(--font-primary)",
                       boxShadow:
-                        "0 4px 12px -6px color-mix(in srgb, var(--accent-indigo) 40%, transparent)",
+                        "var(--shadow-sm)",
                       "&:hover": { bgcolor: "var(--card-bg)" },
                     },
                     "&:hover": {

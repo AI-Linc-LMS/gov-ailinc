@@ -28,7 +28,7 @@ export function MomentumInfo({ info, size = 15, color = "#94a3b8" }: { info: Mom
         size="small"
         onClick={open}
         aria-label="How momentum is calculated"
-        sx={{ p: 0.2, color, "&:hover": { color: "#f59e0b", bgcolor: "transparent" } }}
+        sx={{ p: 0.2, color, "&:hover": { color: "#b7791f", bgcolor: "transparent" } }}
       >
         <Icon icon="mdi:information-outline" width={size} />
       </IconButton>
@@ -39,11 +39,11 @@ export function MomentumInfo({ info, size = 15, color = "#94a3b8" }: { info: Mom
         onClick={(e) => e.stopPropagation()}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-        slotProps={{ paper: { sx: { mt: 0.5, borderRadius: 3, border: "1px solid #eef2f7", boxShadow: "0 18px 44px -18px rgba(16,24,40,0.32)", maxWidth: 320 } } }}
+        slotProps={{ paper: { sx: { mt: 0.5, borderRadius: 3, border: "1px solid #eef2f7", boxShadow: "var(--shadow-lg)", maxWidth: 320 } } }}
       >
         <Box sx={{ p: 2 }}>
           <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 0.75 }}>
-            <Box sx={{ width: 26, height: 26, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #f59e0b, #f97316)" }}>
+            <Box sx={{ width: 26, height: 26, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #b7791f, #b45309)" }}>
               <Icon icon="mdi:chart-line-variant" width={15} />
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: "0.88rem", color: "#0f172a" }}>How momentum is calculated</Typography>
@@ -62,7 +62,7 @@ export function MomentumInfo({ info, size = 15, color = "#94a3b8" }: { info: Mom
                 : `Your ${current}-day streak × ${perDay} = ${value}.`}
             </Typography>
             {!atMax && daysToMax > 0 && (
-              <Typography sx={{ fontSize: "0.74rem", color: "#b45309", fontWeight: 600, mt: 0.25 }}>
+              <Typography sx={{ fontSize: "0.74rem", color: "#8a5a12", fontWeight: 600, mt: 0.25 }}>
                 {daysToMax} more active day{daysToMax === 1 ? "" : "s"} → {cap}.
               </Typography>
             )}
@@ -74,7 +74,7 @@ export function MomentumInfo({ info, size = 15, color = "#94a3b8" }: { info: Mom
 
           <ButtonBase
             onClick={() => { close(); router.push("/leaderboard-streaks"); }}
-            sx={{ mt: 1.25, fontWeight: 800, fontSize: "0.8rem", color: "#f97316", gap: 0.4 }}
+            sx={{ mt: 1.25, fontWeight: 800, fontSize: "0.8rem", color: "#b45309", gap: 0.4 }}
           >
             View your streak <Icon icon="mdi:arrow-right" width={15} />
           </ButtonBase>

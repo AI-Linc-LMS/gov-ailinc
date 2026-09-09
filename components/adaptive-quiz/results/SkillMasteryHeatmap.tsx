@@ -19,15 +19,15 @@ const BAND_LABEL: Record<string, string> = {
 };
 
 const BAND_COLOR: Record<string, string> = {
-  emerging: "#ef4444",
-  developing: "#f59e0b",
-  proficient: "#6366f1",
-  mastered: "#10b981",
+  emerging: "#b32020",
+  developing: "#b7791f",
+  proficient: "#1b4f8a",
+  mastered: "#0e7a3c",
 };
 
 
 function BandPill({ band }: { band: string }) {
-  const color = BAND_COLOR[band] ?? "#6366f1";
+  const color = BAND_COLOR[band] ?? "#1b4f8a";
   return (
     <Box
       sx={{
@@ -49,9 +49,8 @@ export function SkillMasteryHeatmap({ skills }: SkillMasteryHeatmapProps) {
       sx={{
         p: { xs: 2.5, md: 3 },
         borderRadius: 4,
-        bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 65%, transparent)",
-        border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 60%, transparent)",
-        backdropFilter: "blur(18px) saturate(140%)",
+        bgcolor: "var(--card-bg, #ffffff)",
+        border: "1px solid var(--border-default, #e5e7eb)",
         display: "flex",
         flexDirection: "column",
         gap: 2,
@@ -59,7 +58,7 @@ export function SkillMasteryHeatmap({ skills }: SkillMasteryHeatmapProps) {
     >
       <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={1}>
         <Stack direction="row" alignItems="center" spacing={1.25}>
-          <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1, #a855f7)", boxShadow: "0 8px 18px -10px rgba(124,58,237,0.6)" }}>
+          <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)", boxShadow: "var(--shadow-sm)" }}>
             <Icon icon="mdi:chart-line-variant" width={19} />
           </Box>
           <Box>
@@ -77,7 +76,7 @@ export function SkillMasteryHeatmap({ skills }: SkillMasteryHeatmapProps) {
           column); 1–2 skills stretch to fill the width instead of leaving a lonely short card. */}
       <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 1.25 }}>
         {skills.map((row) => {
-          const color = BAND_COLOR[row.band] ?? "#6366f1";
+          const color = BAND_COLOR[row.band] ?? "#1b4f8a";
           const hasBaseline = row.delta_pct !== null && row.delta_pct !== undefined;
           const delta = row.delta_pct as number;
           const previousMastery =
@@ -89,8 +88,8 @@ export function SkillMasteryHeatmap({ skills }: SkillMasteryHeatmapProps) {
               key={row.skill}
               sx={{
                 p: 1.5, borderRadius: 3,
-                border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 55%, transparent)",
-                bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 45%, transparent)",
+                border: "1px solid var(--border-default, #e5e7eb)",
+                bgcolor: "var(--card-bg, #ffffff)",
               }}
             >
               <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1} sx={{ mb: 0.85 }}>
@@ -100,12 +99,12 @@ export function SkillMasteryHeatmap({ skills }: SkillMasteryHeatmapProps) {
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ flexShrink: 0 }}>
                   <BandPill band={row.band} />
                   {hasBaseline && delta !== 0 ? (
-                    <Stack direction="row" spacing={0.2} alignItems="center" sx={{ color: delta > 0 ? "#15803d" : "#b91c1c" }}>
+                    <Stack direction="row" spacing={0.2} alignItems="center" sx={{ color: delta > 0 ? "#0b6232" : "#8f1919" }}>
                       <Icon icon={delta > 0 ? "mdi:arrow-up" : "mdi:arrow-down"} width={13} />
                       <Typography sx={{ fontSize: "0.72rem", fontWeight: 800 }}>{Math.abs(delta)}</Typography>
                     </Stack>
                   ) : !hasBaseline ? (
-                    <Box sx={{ px: 0.7, py: 0.15, borderRadius: 999, fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: "#a855f7", bgcolor: "color-mix(in srgb, #a855f7 12%, transparent)", border: "1px solid color-mix(in srgb, #a855f7 25%, transparent)" }}>
+                    <Box sx={{ px: 0.7, py: 0.15, borderRadius: 999, fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: "#1b4f8a", bgcolor: "color-mix(in srgb, #1b4f8a 12%, transparent)", border: "1px solid color-mix(in srgb, #1b4f8a 25%, transparent)" }}>
                       New
                     </Box>
                   ) : null}

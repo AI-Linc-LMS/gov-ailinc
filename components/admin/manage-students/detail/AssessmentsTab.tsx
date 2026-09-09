@@ -74,7 +74,7 @@ export function AssessmentsTab({
               <XAxis dataKey="label" tick={{ fontSize: 11 }} />
               <YAxis tick={{ fontSize: 11 }} />
               <Tooltip />
-              <Line type="monotone" dataKey="score" stroke={ADAPTIVE.purple} strokeWidth={2} dot />
+              <Line type="monotone" dataKey="score" stroke={ADAPTIVE.indigo} strokeWidth={2} dot />
             </LineChart>
           </ResponsiveContainer>
         </Box>

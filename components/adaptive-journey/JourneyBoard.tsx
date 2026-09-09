@@ -87,10 +87,10 @@ function nodeLabel(n: JourneyNodeView): { main: string; sub?: string; ai?: boole
 }
 
 const NODE_STYLE: Record<string, { color: string; bg: string; icon: string }> = {
-  topic: { color: "#6366f1", bg: "#eef2ff", icon: "mdi:book-open-page-variant" },
-  checkpoint: { color: "#a855f7", bg: "#f5f3ff", icon: "mdi:shield-check" },
-  week_final: { color: "#f59e0b", bg: "#fff7ed", icon: "mdi:flag-checkered" },
-  interview: { color: "#db2777", bg: "#fdf2f8", icon: "mdi:account-voice" },
+  topic: { color: "#1b4f8a", bg: "#eef3fa", icon: "mdi:book-open-page-variant" },
+  checkpoint: { color: "#1b4f8a", bg: "#eef3fa", icon: "mdi:shield-check" },
+  week_final: { color: "#b7791f", bg: "#fff7ed", icon: "mdi:flag-checkered" },
+  interview: { color: "#0b5260", bg: "#eef5f6", icon: "mdi:account-voice" },
 };
 
 function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; courseId: number; stepNo: number; dueAt?: string | null }) {
@@ -113,16 +113,16 @@ function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; cou
 
   const available = node.status === "available";
   const circle = done ? (
-    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#22c55e", color: "white", flexShrink: 0, zIndex: 1 }}>
+    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#0e7a3c", color: "white", flexShrink: 0, zIndex: 1 }}>
       <Icon icon="mdi:check" width={16} />
     </Box>
   ) : current ? (
-    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#6366f1", color: "white", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, boxShadow: "0 0 0 4px rgba(99,102,241,0.18)" }}>
+    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#1b4f8a", color: "white", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, boxShadow: "0 0 0 4px rgba(27, 79, 138,0.18)" }}>
       {stepNo}
     </Box>
   ) : available ? (
     // Unlocked-but-not-started: open and actionable - a step number, never a padlock.
-    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#eef2ff", color: "#6366f1", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, border: "1.5px solid #c7d2fe" }}>
+    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#eef3fa", color: "#1b4f8a", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, border: "1.5px solid #b6cde8" }}>
       {stepNo}
     </Box>
   ) : (
@@ -147,9 +147,9 @@ function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; cou
         sx={{
           flex: 1, mb: 1.5, p: 1.75, borderRadius: 3, border: "1px solid",
           borderLeft: "4px solid", borderLeftColor: ns.color,
-          borderColor: current ? "#c7d2fe" : "#eef2f7",
+          borderColor: current ? "#b6cde8" : "#eef2f7",
           bgcolor: current ? "#fbfbff" : "#fff",
-          boxShadow: current ? `0 4px 14px -14px ${ns.color}` : "0 1px 2px rgba(16,24,40,0.04)",
+          boxShadow: current ? "var(--shadow-sm)" : "var(--shadow-xs)",
           opacity: locked ? 0.72 : 1,
           cursor: navigable ? "pointer" : "default",
           transition: "border-color .15s",
@@ -163,8 +163,8 @@ function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; cou
           <Box sx={{ minWidth: 0, flex: 1 }}>
             <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap">
               <Typography sx={{ fontSize: "0.64rem", fontWeight: 800, letterSpacing: 0.6, color: ns.color }}>{l.main}</Typography>
-              {l.sub && <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: 0.5, color: "#a855f7" }}>· {l.sub}</Typography>}
-              {l.ai && <Chip label="+AI" size="small" sx={{ height: 16, fontSize: "0.56rem", fontWeight: 800, color: "#7c3aed", bgcolor: "#ede9fe" }} />}
+              {l.sub && <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: 0.5, color: "#1b4f8a" }}>· {l.sub}</Typography>}
+              {l.ai && <Chip label="+AI" size="small" sx={{ height: 16, fontSize: "0.56rem", fontWeight: 800, color: "#14406f", bgcolor: "#eef3fa" }} />}
             </Stack>
             <Typography sx={{ fontWeight: 700, fontSize: "0.95rem", color: "#0f172a", mt: 0.25 }}>{node.title}</Typography>
             {contentSummary(node) && (
@@ -173,7 +173,7 @@ function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; cou
           </Box>
           <Box sx={{ textAlign: "right", flexShrink: 0 }}>
             {done ? (
-              <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", color: "#15803d" }}>
+              <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", color: "#0b6232" }}>
                 {node.score.earned}<span style={{ color: "#64748b", fontWeight: 600 }}>/{node.score.total}</span>
                 <Typography component="span" sx={{ fontSize: "0.66rem", color: "#64748b", display: "block", fontWeight: 600 }}>earned</Typography>
               </Typography>
@@ -189,13 +189,13 @@ function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; cou
         {current && (
           <Stack direction={{ xs: "column", sm: "row" }} spacing={1} justifyContent="space-between" alignItems={{ sm: "center" }} sx={{ mt: 1.5 }}>
             <Stack direction="row" spacing={0.6} alignItems="center" sx={{ minWidth: 0 }}>
-              <Box sx={{ width: 7, height: 7, borderRadius: "50%", bgcolor: "#15803d", flexShrink: 0 }} />
-              <Typography sx={{ fontSize: "0.74rem", color: "#15803d", fontWeight: 600 }}>
+              <Box sx={{ width: 7, height: 7, borderRadius: "50%", bgcolor: "#0b6232", flexShrink: 0 }} />
+              <Typography sx={{ fontSize: "0.74rem", color: "#0b6232", fontWeight: 600 }}>
                 Available now · earn full {node.score.total} pts{dueAt ? ` before ${fmtDate(dueAt)}` : ""}
               </Typography>
             </Stack>
             {navigable && (
-              <ButtonBase onClick={go} sx={{ flexShrink: 0, px: 2, py: 0.85, borderRadius: 2, fontWeight: 800, fontSize: "0.8rem", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}>
+              <ButtonBase onClick={go} sx={{ flexShrink: 0, px: 2, py: 0.85, borderRadius: 2, fontWeight: 800, fontSize: "0.8rem", color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}>
                 Continue →
               </ButtonBase>
             )}
@@ -224,11 +224,11 @@ function WeekCard({ week, courseId, startStep }: { week: JourneyWeekView; course
   const showTitle = !!title && title.toLowerCase() !== autoLabel.toLowerCase() && !/^week\s*\d+$/i.test(title);
 
   return (
-    <Box sx={{ border: "1px solid #e9e6f7", borderRadius: 4, overflow: "hidden", bgcolor: "#fff", mb: 2, boxShadow: "0 12px 30px -24px rgba(99,102,241,0.45)" }}>
-      <Box sx={{ p: { xs: 2, md: 2.5 }, borderBottom: "1px solid #eef2f7", backgroundImage: "linear-gradient(135deg, #f5f3ff 0%, #fdf2f8 100%)" }}>
+    <Box sx={{ border: "1px solid #d9e6f4", borderRadius: 4, overflow: "hidden", bgcolor: "#fff", mb: 2, boxShadow: "var(--shadow-sm)" }}>
+      <Box sx={{ p: { xs: 2, md: 2.5 }, borderBottom: "1px solid #eef2f7", backgroundImage: "linear-gradient(135deg, #eef3fa 0%, #eef5f6 100%)" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="wrap" gap={1}>
           <Stack direction="row" spacing={1.25} alignItems="center" flexWrap="wrap">
-            <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", boxShadow: "0 8px 18px -10px rgba(124,58,237,0.6)" }}>
+            <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)", boxShadow: "var(--shadow-sm)" }}>
               <Icon icon="mdi:calendar-month" width={18} />
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", color: "#0f172a" }}>
@@ -243,29 +243,29 @@ function WeekCard({ week, courseId, startStep }: { week: JourneyWeekView; course
             {week.schedule && (
               <Chip
                 size="small"
-                icon={<Box sx={{ width: 7, height: 7, borderRadius: "50%", bgcolor: dl != null && dl < 0 ? "#ef4444" : "#22c55e", ml: 0.75 }} />}
+                icon={<Box sx={{ width: 7, height: 7, borderRadius: "50%", bgcolor: dl != null && dl < 0 ? "#b32020" : "#0e7a3c", ml: 0.75 }} />}
                 label={`Due ${fmtDate(week.schedule.dueAt)}${dl != null ? ` · ${dl < 0 ? `${-dl}d overdue` : `${dl} days left`}` : ""}`}
-                sx={{ fontWeight: 700, fontSize: "0.74rem", color: dl != null && dl < 0 ? "#b91c1c" : "#15803d", bgcolor: dl != null && dl < 0 ? "#fef2f2" : "#f0fdf4" }}
+                sx={{ fontWeight: 700, fontSize: "0.74rem", color: dl != null && dl < 0 ? "#8f1919" : "#0b6232", bgcolor: dl != null && dl < 0 ? "#fdf5f5" : "#f0fdf4" }}
               />
             )}
             <Chip
               size="small"
               icon={<Icon icon="mdi:trophy" width={14} />}
               label={`${week.totals.earned} / ${week.totals.total} pts`}
-              sx={{ fontWeight: 800, fontSize: "0.74rem", color: "#6d28d9", bgcolor: "#ede9fe", "& .MuiChip-icon": { color: "#6d28d9" } }}
+              sx={{ fontWeight: 800, fontSize: "0.74rem", color: "#164274", bgcolor: "#eef3fa", "& .MuiChip-icon": { color: "#164274" } }}
             />
           </Stack>
         </Stack>
 
-        <LinearProgress variant="determinate" value={pct} sx={{ mt: 1.5, height: 6, borderRadius: 3, bgcolor: "#eef2f7", "& .MuiLinearProgress-bar": { borderRadius: 3, background: "linear-gradient(90deg, #6366f1, #a855f7)" } }} />
+        <LinearProgress variant="determinate" value={pct} sx={{ mt: 1.5, height: 6, borderRadius: 3, bgcolor: "#eef2f7", "& .MuiLinearProgress-bar": { borderRadius: 3, background: "linear-gradient(90deg, #1b4f8a, #1b4f8a)" } }} />
 
         {week.penaltyStrip && week.schedule && (
           <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems="stretch" sx={{ mt: 1.5 }}>
-            <PenaltyCell color="#15803d" bg="#f0fdf4" head="On time" sub={`by ${fmtDate(week.schedule.dueAt)}`} note="Full score" />
+            <PenaltyCell color="#0b6232" bg="#f0fdf4" head="On time" sub={`by ${fmtDate(week.schedule.dueAt)}`} note="Full score" />
             <Icon icon="mdi:arrow-right" width={16} style={{ color: "#cbd5e1", alignSelf: "center" }} />
-            <PenaltyCell color="#b45309" bg="#fffbeb" head="1–4 days late" sub={fmtRange(addDays(week.schedule.dueAt, 1), addDays(week.penaltyStrip.zeroAfter, -1))} note="−50% penalty" />
+            <PenaltyCell color="#8a5a12" bg="#fdf9f0" head="1–4 days late" sub={fmtRange(addDays(week.schedule.dueAt, 1), addDays(week.penaltyStrip.zeroAfter, -1))} note="−50% penalty" />
             <Icon icon="mdi:arrow-right" width={16} style={{ color: "#cbd5e1", alignSelf: "center" }} />
-            <PenaltyCell color="#b91c1c" bg="#fef2f2" head="After deadline" sub={`from ${fmtDate(week.penaltyStrip.zeroAfter)}`} note="−100% · no credit" />
+            <PenaltyCell color="#8f1919" bg="#fdf5f5" head="After deadline" sub={`from ${fmtDate(week.penaltyStrip.zeroAfter)}`} note="−100% · no credit" />
           </Stack>
         )}
       </Box>
@@ -306,7 +306,7 @@ function Hero({ board, courseId }: { board: JourneyBoardData; courseId: number }
   if (c.estHours) meta.push({ icon: "mdi:clock-outline", label: `~${c.estHours} hrs` });
 
   return (
-    <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 55%, #c026d3 100%)", boxShadow: "0 24px 60px -28px rgba(124,58,237,0.6)" }}>
+    <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #14406f 0%, #1b4f8a 55%, #0f6b7a 100%)", boxShadow: "var(--shadow-sm)" }}>
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
         <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.7)", mb: 1 }}>‹ My Courses / {c.title}</Typography>
@@ -341,7 +341,7 @@ function Hero({ board, courseId }: { board: JourneyBoardData; courseId: number }
           <Box sx={{ minWidth: 0 }}>
             <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
               <Typography sx={{ fontWeight: 800, fontSize: "0.92rem" }}>AI has tuned this course to you</Typography>
-              {c.fieldTier && <Chip label={`LEVEL · ${c.fieldTier.toUpperCase()}`} size="small" sx={{ height: 18, fontSize: "0.6rem", fontWeight: 800, color: "#7c3aed", bgcolor: "white" }} />}
+              {c.fieldTier && <Chip label={`LEVEL · ${c.fieldTier.toUpperCase()}`} size="small" sx={{ height: 18, fontSize: "0.6rem", fontWeight: 800, color: "#14406f", bgcolor: "white" }} />}
             </Stack>
             <Typography sx={{ fontSize: "0.76rem", color: "rgba(255,255,255,0.8)", mt: 0.25, lineHeight: 1.45 }}>
               {c.fieldTier
@@ -354,7 +354,7 @@ function Hero({ board, courseId }: { board: JourneyBoardData; courseId: number }
           disabled={!resumeSub}
           onMouseEnter={() => resumeSub && prefetch(`/adaptive-courses/${courseId}/submodule/${resumeSub}`)}
           onClick={() => resumeSub && push(`/adaptive-courses/${courseId}/submodule/${resumeSub}`)}
-          sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 2, fontWeight: 800, fontSize: "0.82rem", color: "#7c3aed", bgcolor: "white", "&.Mui-disabled": { opacity: 0.5 } }}
+          sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 2, fontWeight: 800, fontSize: "0.82rem", color: "#14406f", bgcolor: "white", "&.Mui-disabled": { opacity: 0.5 } }}
         >
           Resume learning →
         </ButtonBase>
@@ -406,7 +406,7 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
     return <Typography sx={{ color: "#64748b", py: 6, textAlign: "center" }}>You are not enrolled in this course.</Typography>;
   }
   if (error || !board) {
-    return <Typography sx={{ color: "#b91c1c", py: 6, textAlign: "center" }}>{error || "Journey unavailable."}</Typography>;
+    return <Typography sx={{ color: "#8f1919", py: 6, textAlign: "center" }}>{error || "Journey unavailable."}</Typography>;
   }
 
   // Never fall back to the legacy week→submodule list. A 0-node board is only transient now
@@ -418,8 +418,8 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
       <Box>
         <Hero board={board} courseId={courseId} />
         <JourneyTopCards courseId={courseId} calibration={board.calibration} interview={board.interview} />
-        <Box sx={{ mt: 2.5, p: { xs: 3, md: 5 }, borderRadius: 4, textAlign: "center", border: "1px solid #eef2f7", bgcolor: "#fff", boxShadow: "0 1px 2px rgba(16,24,40,0.04)" }}>
-          <Box sx={{ width: 52, height: 52, mx: "auto", mb: 1.5, borderRadius: "50%", display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}>
+        <Box sx={{ mt: 2.5, p: { xs: 3, md: 5 }, borderRadius: 4, textAlign: "center", border: "1px solid #eef2f7", bgcolor: "#fff", boxShadow: "var(--shadow-xs)" }}>
+          <Box sx={{ width: 52, height: 52, mx: "auto", mb: 1.5, borderRadius: "50%", display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}>
             <Icon icon="mdi:map-marker-path" width={26} />
           </Box>
           <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", color: "#0f172a" }}>Your learning journey is being set up</Typography>
@@ -440,7 +440,7 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
         <Box>
           <Stack direction="row" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1} sx={{ mb: 1.25 }}>
             <Stack direction="row" spacing={1.25} alignItems="center">
-              <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", boxShadow: "0 8px 18px -10px rgba(124,58,237,0.6)" }}>
+              <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)", boxShadow: "var(--shadow-sm)" }}>
                 <Icon icon="mdi:map-marker-path" width={19} />
               </Box>
               <Box>
@@ -451,24 +451,24 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
               </Box>
             </Stack>
             {board.contentLocked ? (
-              <Chip icon={<Icon icon="mdi:auto-fix" width={15} />} label="Adaptive paths on" size="small" sx={{ fontWeight: 800, color: "#6d28d9", bgcolor: "#ede9fe", border: "1px solid #ddd6fe", "& .MuiChip-icon": { color: "#6d28d9" } }} />
+              <Chip icon={<Icon icon="mdi:auto-fix" width={15} />} label="Adaptive paths on" size="small" sx={{ fontWeight: 800, color: "#164274", bgcolor: "#eef3fa", border: "1px solid #d9e6f4", "& .MuiChip-icon": { color: "#164274" } }} />
             ) : (
-              <Chip icon={<Icon icon="mdi:lock-open-variant-outline" width={15} />} label="Open access" size="small" sx={{ fontWeight: 800, color: "#047857", bgcolor: "#d1fae5", border: "1px solid #a7f3d0", "& .MuiChip-icon": { color: "#047857" } }} />
+              <Chip icon={<Icon icon="mdi:lock-open-variant-outline" width={15} />} label="Open access" size="small" sx={{ fontWeight: 800, color: "#0B6232", bgcolor: "#dff0e6", border: "1px solid #a7f3d0", "& .MuiChip-icon": { color: "#0B6232" } }} />
             )}
           </Stack>
 
           {board.contentLocked ? (
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ p: 1.5, mb: 2, borderRadius: 2.5, backgroundImage: "linear-gradient(135deg, #faf5ff, #fff1f7)", border: "1px solid #f0e7fb" }}>
-              <Icon icon="mdi:calendar-alert" width={17} color="#a855f7" style={{ flexShrink: 0 }} />
+            <Stack direction="row" spacing={1} alignItems="center" sx={{ p: 1.5, mb: 2, borderRadius: 2.5, backgroundImage: "linear-gradient(135deg, #eef3fa, #e6f1f2)", border: "1px solid #d9e6f4" }}>
+              <Icon icon="mdi:calendar-alert" width={17} color="#1b4f8a" style={{ flexShrink: 0 }} />
               <Typography sx={{ fontSize: "0.8rem", color: "#475569", lineHeight: 1.4 }}>
-                Each week has its own due date. Late penalties apply to the <b style={{ color: "#7c3aed" }}>points earned</b> for that week - finish before the date to keep 100%.
+                Each week has its own due date. Late penalties apply to the <b style={{ color: "#14406f" }}>points earned</b> for that week - finish before the date to keep 100%.
               </Typography>
             </Stack>
           ) : (
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ p: 1.5, mb: 2, borderRadius: 2.5, backgroundImage: "linear-gradient(135deg, #ecfdf5, #f0fdfa)", border: "1px solid #bbf7d0" }}>
-              <Icon icon="mdi:lock-open-variant-outline" width={17} color="#059669" style={{ flexShrink: 0 }} />
+            <Stack direction="row" spacing={1} alignItems="center" sx={{ p: 1.5, mb: 2, borderRadius: 2.5, backgroundImage: "linear-gradient(135deg, #f0f7f3, #f0fdfa)", border: "1px solid #c8e6d5" }}>
+              <Icon icon="mdi:lock-open-variant-outline" width={17} color="#0B6232" style={{ flexShrink: 0 }} />
               <Typography sx={{ fontSize: "0.8rem", color: "#475569", lineHeight: 1.4 }}>
-                Every step is <b style={{ color: "#047857" }}>open</b> - learn in any order and earn <b style={{ color: "#047857" }}>full points anytime</b>. No due dates, no late penalties.
+                Every step is <b style={{ color: "#0B6232" }}>open</b> - learn in any order and earn <b style={{ color: "#0B6232" }}>full points anytime</b>. No due dates, no late penalties.
               </Typography>
             </Stack>
           )}

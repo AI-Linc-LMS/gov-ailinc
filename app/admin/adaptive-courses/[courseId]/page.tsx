@@ -557,7 +557,7 @@ export default function AdminAdaptiveCourseDetailPage() {
       <Box sx={{ maxWidth: 1760, mx: "auto", px: { xs: 2, md: 3 }, py: { xs: 3, md: 5 } }}>
         <ButtonBase
           onClick={() => push("/admin/adaptive-courses")}
-          sx={{ mb: 2, color: "#6366f1", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
+          sx={{ mb: 2, color: "#1b4f8a", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
         >
           <Icon icon="mdi:arrow-left" width={18} />
           Back to Course Builder
@@ -566,7 +566,7 @@ export default function AdminAdaptiveCourseDetailPage() {
         <AdaptiveSectionShell>
           {loading && <AdminAdaptiveCourseDetailSkeleton />}
           {error && (
-            <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>
+            <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>
               {error}
             </Typography>
           )}
@@ -638,7 +638,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                         display: "inline-flex", alignItems: "center",
                         color: active ? "white" : "text.primary",
                         background: active
-                          ? "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)"
+                          ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)"
                           : "color-mix(in srgb, var(--card-bg) 60%, transparent)",
                         border: active ? "1px solid transparent" : "1px solid color-mix(in srgb, var(--border-default) 75%, transparent)",
                       }}
@@ -713,12 +713,12 @@ export default function AdminAdaptiveCourseDetailPage() {
               {tab === "content" && course.skills.length > 0 && (
                 <Box sx={{
                   mb: 2.5, p: { xs: 2, md: 2.5 }, borderRadius: 4,
-                  bgcolor: "color-mix(in srgb, #a855f7 6%, var(--card-bg))",
-                  border: "1px solid color-mix(in srgb, #a855f7 25%, transparent)",
+                  bgcolor: "color-mix(in srgb, #1b4f8a 6%, var(--card-bg))",
+                  border: "1px solid color-mix(in srgb, #1b4f8a 25%, transparent)",
                 }}>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, mb: 1.25, flexWrap: "wrap" }}>
-                    <Icon icon="mdi:brain" width={18} style={{ color: "#a855f7" }} />
-                    <Typography sx={{ fontWeight: 800, fontSize: "0.82rem", letterSpacing: "0.06em", textTransform: "uppercase", color: "#a855f7" }}>
+                    <Icon icon="mdi:brain" width={18} style={{ color: "#1b4f8a" }} />
+                    <Typography sx={{ fontWeight: 800, fontSize: "0.82rem", letterSpacing: "0.06em", textTransform: "uppercase", color: "#1b4f8a" }}>
                       Skills this course builds
                     </Typography>
                     <Typography sx={{ fontSize: "0.74rem", color: "text.secondary", fontWeight: 700 }}>
@@ -730,7 +730,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                       <Box key={s.skill} sx={{
                         display: "inline-flex", alignItems: "center", gap: 0.5, pl: 1.25, pr: 0.5, py: 0.5, borderRadius: 999,
                         color: "white", fontWeight: 800, fontSize: "0.78rem",
-                        background: "linear-gradient(135deg, #6366f1 0%, #a855f7 70%, #ec4899 100%)",
+                        background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 70%, #0f6b7a 100%)",
                       }}>
                         {prettySkill(s.skill)}
                         {s.question_count > 0 && (
@@ -810,8 +810,8 @@ export default function AdminAdaptiveCourseDetailPage() {
                               placeItems: "center",
                               color: "white",
                               flexShrink: 0,
-                              background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
-                              boxShadow: "0 12px 24px -14px rgba(168,85,247,0.6)",
+                              background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
+                              boxShadow: "0 12px 24px -14px rgba(27, 79, 138,0.6)",
                             }}
                           >
                             <Icon icon="mdi:calendar-week-outline" width={22} />
@@ -822,7 +822,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                               to the width of the "WEEK n" eyebrow above it and a four-letter
                               week title wraps mid-word. */}
                           <Box sx={{ minWidth: 0, flex: 1 }}>
-                            <Typography sx={{ fontSize: "0.66rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "#a855f7" }}>
+                            <Typography sx={{ fontSize: "0.66rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "#1b4f8a" }}>
                               Week {mod.weekno}
                             </Typography>
                             <InlineEditableTitle
@@ -893,7 +893,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                                     sx={{
                                       borderRadius: 2.5,
                                       border: "1px solid color-mix(in srgb, var(--border-default) 65%, transparent)",
-                                      bgcolor: open ? "color-mix(in srgb, #a855f7 6%, transparent)" : "transparent",
+                                      bgcolor: open ? "color-mix(in srgb, #1b4f8a 6%, transparent)" : "transparent",
                                       overflow: "hidden",
                                     }}
                                   >
@@ -905,7 +905,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                                         onClick={() => setExpandedArticle(open ? null : a.article_id)}
                                         sx={{ flex: 1, minWidth: 0, textAlign: "left", display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap", p: 1.25 }}
                                       >
-                                        <Icon icon="mdi:book-open-variant" width={15} style={{ color: "#a855f7" }} />
+                                        <Icon icon="mdi:book-open-variant" width={15} style={{ color: "#1b4f8a" }} />
                                         <Typography sx={{ fontWeight: 700, fontSize: "0.85rem" }}>{a.title}</Typography>
                                         <Typography sx={{ fontSize: "0.78rem", color: "text.secondary" }}>
                                           adaptive article · {a.default_tier} · ~{a.reading_time_minutes} min · {a.available_tiers.length} tier
@@ -919,7 +919,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                                         <Icon
                                           icon={open ? "mdi:chevron-up" : "mdi:chevron-down"}
                                           width={18}
-                                          style={{ color: "#a855f7", flexShrink: 0 }}
+                                          style={{ color: "#1b4f8a", flexShrink: 0 }}
                                         />
                                       </ButtonBase>
                                       <RowDeleteButton
@@ -958,7 +958,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                                     sx={{
                                       borderRadius: 2.5,
                                       border: "1px solid color-mix(in srgb, var(--border-default) 65%, transparent)",
-                                      bgcolor: open ? "color-mix(in srgb, #6366f1 5%, transparent)" : "transparent",
+                                      bgcolor: open ? "color-mix(in srgb, #1b4f8a 5%, transparent)" : "transparent",
                                       overflow: "hidden",
                                     }}
                                   >
@@ -976,7 +976,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                                           p: 1.25,
                                         }}
                                       >
-                                        <Icon icon="mdi:tune-vertical" width={15} style={{ color: "#6366f1" }} />
+                                        <Icon icon="mdi:tune-vertical" width={15} style={{ color: "#1b4f8a" }} />
                                         <Typography sx={{ fontWeight: 700, fontSize: "0.85rem" }}>{q.title}</Typography>
                                         <Typography sx={{ fontSize: "0.78rem", color: "text.secondary" }}>
                                           {q.mcq_count}-item bank · serves {q.min_questions}–{q.max_questions}
@@ -986,7 +986,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                                         <Icon
                                           icon={open ? "mdi:chevron-up" : "mdi:chevron-down"}
                                           width={18}
-                                          style={{ color: "#6366f1", flexShrink: 0 }}
+                                          style={{ color: "#1b4f8a", flexShrink: 0 }}
                                         />
                                       </ButtonBase>
                                       <RowDeleteButton
@@ -1049,7 +1049,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                                         sx={{
                                           borderRadius: 2.5,
                                           border: "1px solid color-mix(in srgb, var(--border-default) 65%, transparent)",
-                                          bgcolor: open ? "color-mix(in srgb, #ec4899 5%, transparent)" : "transparent",
+                                          bgcolor: open ? "color-mix(in srgb, #0f6b7a 5%, transparent)" : "transparent",
                                           overflow: "hidden",
                                         }}
                                       >
@@ -1057,7 +1057,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                                           onClick={() => setExpandedCoding(open ? null : p.problem_id)}
                                           sx={{ width: "100%", textAlign: "left", display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap", p: 1.25 }}
                                         >
-                                          <Icon icon="mdi:robot-happy-outline" width={15} style={{ color: "#ec4899" }} />
+                                          <Icon icon="mdi:robot-happy-outline" width={15} style={{ color: "#0f6b7a" }} />
                                           <Typography sx={{ fontWeight: 700, fontSize: "0.85rem" }}>{p.title}</Typography>
                                           <Typography sx={{ fontSize: "0.78rem", color: "text.secondary" }}>
                                             AI coding mentor · {p.difficulty_level}
@@ -1070,7 +1070,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                                           <Icon
                                             icon={open ? "mdi:chevron-up" : "mdi:chevron-down"}
                                             width={18}
-                                            style={{ color: "#ec4899", flexShrink: 0 }}
+                                            style={{ color: "#0f6b7a", flexShrink: 0 }}
                                           />
                                         </ButtonBase>
                                         {open && (
@@ -1244,7 +1244,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                   disabled={genDesc}
                   size="small"
                   startIcon={genDesc ? <CircularProgress size={14} /> : <Icon icon="mdi:auto-fix" width={16} />}
-                  sx={{ textTransform: "none", fontWeight: 700, color: "#6366f1" }}
+                  sx={{ textTransform: "none", fontWeight: 700, color: "#1b4f8a" }}
                 >
                   {genDesc ? "Generating…" : "Generate with AI"}
                 </Button>
@@ -1268,7 +1268,7 @@ export default function AdminAdaptiveCourseDetailPage() {
             onClick={handleSaveDetails}
             variant="contained"
             disabled={savingDetails}
-            sx={{ textTransform: "none", fontWeight: 700, background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}
+            sx={{ textTransform: "none", fontWeight: 700, background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}
           >
             {savingDetails ? "Saving…" : "Save"}
           </Button>
@@ -1298,7 +1298,7 @@ export default function AdminAdaptiveCourseDetailPage() {
             variant="contained"
             disabled={regenerating}
             startIcon={regenerating ? <CircularProgress size={16} color="inherit" /> : <Icon icon="mdi:refresh" width={16} />}
-            sx={{ textTransform: "none", fontWeight: 700, background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}
+            sx={{ textTransform: "none", fontWeight: 700, background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}
           >
             {regenerating ? "Starting…" : "Regenerate"}
           </Button>
@@ -1335,7 +1335,7 @@ export default function AdminAdaptiveCourseDetailPage() {
               sx={{
                 display: "inline-flex", alignItems: "center", gap: 0.5, px: 1.75, py: 0.7, borderRadius: 999,
                 fontWeight: 800, fontSize: "0.8rem", color: "white",
-                background: "linear-gradient(135deg, #6366f1 0%, #a855f7 70%, #ec4899 100%)",
+                background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 70%, #0f6b7a 100%)",
                 "&:disabled": { opacity: 0.6, cursor: "not-allowed" },
               }}
             >
@@ -1377,7 +1377,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                     sx={{
                       px: 2, py: 0.7, borderRadius: 999, fontWeight: 800, fontSize: "0.8rem", gap: 0.5,
                       color: active ? "white" : "text.primary",
-                      background: active ? "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" : "color-mix(in srgb, var(--card-bg) 60%, transparent)",
+                      background: active ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" : "color-mix(in srgb, var(--card-bg) 60%, transparent)",
                       border: active ? "1px solid transparent" : "1px solid color-mix(in srgb, var(--border-default) 75%, transparent)",
                     }}
                   >
@@ -1396,7 +1396,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                   fontSize: "0.8rem", fontWeight: 700, color: "text.secondary",
                 }}
               >
-                <Icon icon={codingClipboard ? "mdi:checkbox-marked" : "mdi:checkbox-blank-outline"} width={18} style={{ color: codingClipboard ? "#6366f1" : undefined }} />
+                <Icon icon={codingClipboard ? "mdi:checkbox-marked" : "mdi:checkbox-blank-outline"} width={18} style={{ color: codingClipboard ? "#1b4f8a" : undefined }} />
                 Allow copy-paste in the coding editor
                 <Typography component="span" sx={{ fontSize: "0.72rem", color: "text.disabled" }}>
                   (off = anti-paste hardening; you can change this per set later)
@@ -1418,7 +1418,7 @@ export default function AdminAdaptiveCourseDetailPage() {
                     sx={{
                       px: 2, py: 0.7, borderRadius: 999, fontWeight: 800, fontSize: "0.8rem",
                       color: active ? "white" : "text.primary",
-                      background: active ? "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" : "color-mix(in srgb, var(--card-bg) 60%, transparent)",
+                      background: active ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" : "color-mix(in srgb, var(--card-bg) 60%, transparent)",
                       border: active ? "1px solid transparent" : "1px solid color-mix(in srgb, var(--border-default) 75%, transparent)",
                     }}
                   >
@@ -1455,8 +1455,8 @@ export default function AdminAdaptiveCourseDetailPage() {
           <Box
             sx={{
               mt: 2.5, p: 2, borderRadius: 3,
-              bgcolor: "color-mix(in srgb, #6366f1 8%, var(--card-bg))",
-              border: "1px solid color-mix(in srgb, #6366f1 25%, transparent)",
+              bgcolor: "color-mix(in srgb, #1b4f8a 8%, var(--card-bg))",
+              border: "1px solid color-mix(in srgb, #1b4f8a 25%, transparent)",
             }}
           >
             <Typography sx={{ fontWeight: 800, fontSize: "0.82rem", mb: 0.5 }}>
@@ -1600,12 +1600,12 @@ function ModuleSummary({ mod }: { mod: AdminAdaptiveCourseModule }) {
   const handouts = sum((s) => s.attachments?.length ?? 0);
 
   const items: { icon: string; n: number; label: string; accent: string }[] = [
-    { icon: "mdi:file-tree-outline", n: subs.length, label: `submodule${subs.length === 1 ? "" : "s"}`, accent: "#6366f1" },
-    { icon: "mdi:book-open-variant", n: articles, label: "articles", accent: "#a855f7" },
-    { icon: "mdi:tune-vertical", n: quizzes, label: "quizzes", accent: "#6366f1" },
-    { icon: "mdi:robot-happy-outline", n: coding, label: "coding", accent: "#ec4899" },
-    { icon: "mdi:play-circle-outline", n: videos, label: "videos", accent: "#0ea5e9" },
-    { icon: "mdi:paperclip", n: handouts, label: "handouts", accent: "#14b8a6" },
+    { icon: "mdi:file-tree-outline", n: subs.length, label: `submodule${subs.length === 1 ? "" : "s"}`, accent: "#1b4f8a" },
+    { icon: "mdi:book-open-variant", n: articles, label: "articles", accent: "#1b4f8a" },
+    { icon: "mdi:tune-vertical", n: quizzes, label: "quizzes", accent: "#1b4f8a" },
+    { icon: "mdi:robot-happy-outline", n: coding, label: "coding", accent: "#0f6b7a" },
+    { icon: "mdi:play-circle-outline", n: videos, label: "videos", accent: "#1b4f8a" },
+    { icon: "mdi:paperclip", n: handouts, label: "handouts", accent: "#0f6b7a" },
   ].filter((x) => x.n > 0);
 
   return (
@@ -1652,8 +1652,8 @@ function ContentHealthPill({
 
   const canRegen = health.needs_regeneration;
   const tone = isQuota
-    ? { color: "#b91c1c", bg: "#fef2f2", border: "#fecaca" }
-    : { color: "#b45309", bg: "#fffbeb", border: "#fde68a" };
+    ? { color: "#8f1919", bg: "#fdf5f5", border: "#f2d3d3" }
+    : { color: "#8a5a12", bg: "#fdf9f0", border: "#f0ddb8" };
 
   const detail = (
     <Box sx={{ py: 0.5 }}>
@@ -1723,15 +1723,15 @@ function pillBtnSx(variant: "solid" | "outline") {
     display: "inline-flex",
     alignItems: "center",
     whiteSpace: "nowrap",
-    color: variant === "solid" ? "white" : "#6366f1",
+    color: variant === "solid" ? "white" : "#1b4f8a",
     background:
       variant === "solid"
-        ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+        ? "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)"
         : "color-mix(in srgb, var(--card-bg) 60%, transparent)",
     border:
       variant === "solid"
         ? "1px solid transparent"
-        : "1px solid color-mix(in srgb, #6366f1 40%, transparent)",
+        : "1px solid color-mix(in srgb, #1b4f8a 40%, transparent)",
   } as const;
 }
 
@@ -1762,7 +1762,7 @@ function ReviewBanner({
 
   const author = course.authored_by?.name || "an instructor";
   const tone =
-    state === "approved" ? "#10b981" : state === "rejected" ? "#ef4444" : state === "pending_review" ? "#f59e0b" : "#6366f1";
+    state === "approved" ? "#0e7a3c" : state === "rejected" ? "#b32020" : state === "pending_review" ? "#b7791f" : "#1b4f8a";
 
   const copy: Record<string, { title: string; body: string }> = {
     draft: {
@@ -1824,7 +1824,7 @@ function ReviewBanner({
           disabled={busy}
           sx={{
             px: 2.4, py: 1, borderRadius: 999, fontWeight: 800, fontSize: "0.84rem", gap: 0.6,
-            color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+            color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
             "&:disabled": { opacity: 0.6 },
           }}
         >
@@ -1852,7 +1852,7 @@ function ReviewBanner({
             disabled={busy}
             sx={{
               px: 2.4, py: 1, borderRadius: 999, fontWeight: 800, fontSize: "0.84rem", gap: 0.6,
-              color: "white", background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              color: "white", background: "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)",
               "&:disabled": { opacity: 0.6 },
             }}
           >

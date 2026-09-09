@@ -107,12 +107,12 @@ export function CodeEditorPanel({
           loadingText={t("common.running")}
           startIcon={<IconWrapper icon="mdi:play" size={16} />}
           sx={{
-            borderColor: "#6366f1",
-            color: "#6366f1",
+            borderColor: "#1b4f8a",
+            color: "#1b4f8a",
             fontSize: { xs: "0.75rem", md: "0.8rem", lg: "0.875rem" },
             "&:hover": {
-              borderColor: "#4f46e5",
-              backgroundColor: "#f5f3ff",
+              borderColor: "#12365f",
+              backgroundColor: "#eef3fa",
             },
           }}
         >
@@ -128,10 +128,10 @@ export function CodeEditorPanel({
           loadingText={t("common.submitting")}
           startIcon={<IconWrapper icon="mdi:check" size={16} />}
           sx={{
-            backgroundColor: "#10b981",
+            backgroundColor: "#0e7a3c",
             fontSize: { xs: "0.75rem", md: "0.8rem", lg: "0.875rem" },
             "&:hover": {
-              backgroundColor: "#059669",
+              backgroundColor: "#0B6232",
             },
             "&:disabled": {
               backgroundColor: "#d1d5db",

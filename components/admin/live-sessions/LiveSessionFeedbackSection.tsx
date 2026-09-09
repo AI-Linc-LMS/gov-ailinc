@@ -8,7 +8,7 @@ import {
   type LiveSessionFeedbackSummary,
 } from "@/lib/services/admin/admin-live-activities.service";
 
-const RATING_TONE = ["#ef4444", "#f97316", "#f59e0b", "#84cc16", "#10b981"];
+const RATING_TONE = ["#b32020", "#b45309", "#b7791f", "#84cc16", "#0e7a3c"];
 
 function toneFor(value: number | null): string {
   if (value == null) return "var(--font-tertiary)";
@@ -24,7 +24,7 @@ function Stars({ value }: { value: number | null }) {
           key={n}
           icon={value >= n - 0.25 ? "mdi:star" : value >= n - 0.75 ? "mdi:star-half-full" : "mdi:star-outline"}
           size={15}
-          color={value >= n - 0.75 ? "#f59e0b" : "var(--border-default)"}
+          color={value >= n - 0.75 ? "#b7791f" : "var(--border-default)"}
         />
       ))}
     </Stack>
@@ -102,7 +102,7 @@ export function LiveSessionFeedbackSection({ liveClassId }: { liveClassId: numbe
   }
 
   if (error) {
-    return <Typography sx={{ color: "#ef4444", fontWeight: 700, py: 3 }}>{error}</Typography>;
+    return <Typography sx={{ color: "#b32020", fontWeight: 700, py: 3 }}>{error}</Typography>;
   }
 
   const summary = data?.summary;

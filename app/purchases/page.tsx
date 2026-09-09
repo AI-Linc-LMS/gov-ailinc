@@ -63,18 +63,18 @@ function statusStyle(txn: MyTransaction): { hue: string; icon: string } {
   switch (txn.status) {
     case "VERIFIED":
     case "SUCCESS":
-      return { hue: "#10b981", icon: "mdi:check-circle-outline" };
+      return { hue: "#0e7a3c", icon: "mdi:check-circle-outline" };
     case "REFUNDED":
-      return { hue: "#f59e0b", icon: "mdi:cash-refund" };
+      return { hue: "#b7791f", icon: "mdi:cash-refund" };
     case "DISPUTED":
-      return { hue: "#ef4444", icon: "mdi:alert-octagon-outline" };
+      return { hue: "#b32020", icon: "mdi:alert-octagon-outline" };
     case "FAILED":
-      return { hue: "#ef4444", icon: "mdi:close-circle-outline" };
+      return { hue: "#b32020", icon: "mdi:close-circle-outline" };
     case "EXPIRED":
       return { hue: "#94a3b8", icon: "mdi:timer-off-outline" };
     default:
       // INITIATED / PENDING — a payment in flight, which is exactly when people look here.
-      return { hue: "#6366f1", icon: "mdi:progress-clock" };
+      return { hue: "#1b4f8a", icon: "mdi:progress-clock" };
   }
 }
 
@@ -189,7 +189,7 @@ export default function PurchasesPage() {
                       </Typography>
                       <AccessNote txn={txn} />
                       {txn.error_message && (
-                        <Typography sx={{ fontSize: "0.75rem", color: "#ef4444", mt: 0.25 }}>
+                        <Typography sx={{ fontSize: "0.75rem", color: "#b32020", mt: 0.25 }}>
                           {txn.error_message}
                         </Typography>
                       )}
@@ -199,7 +199,7 @@ export default function PurchasesPage() {
                         {formatMoney(txn.amount, txn.currency)}
                       </Typography>
                       {txn.refunded_amount && (
-                        <Typography sx={{ fontSize: "0.75rem", color: "#f59e0b" }}>
+                        <Typography sx={{ fontSize: "0.75rem", color: "#b7791f" }}>
                           {formatMoney(txn.refunded_amount, txn.currency)} refunded
                         </Typography>
                       )}

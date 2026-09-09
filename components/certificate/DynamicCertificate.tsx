@@ -47,13 +47,13 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
           ref={ref}
           className="certificate-export-root"
           data-certificate-root=""
-          sx={{ width: CERT_WIDTH, height: CERT_HEIGHT, bgcolor: "#faf8ff" }}
+          sx={{ width: CERT_WIDTH, height: CERT_HEIGHT, bgcolor: "#f6f8fb" }}
         />
       );
     }
 
     const { branding, dateLabelPrefix = "DATE:" } = content;
-    const accent = branding?.accentColor || "#5a46a0";
+    const accent = branding?.accentColor || "#1b4f8a";
     const nameAccent = "#1587c9";
     const dateStr = formatCertificateDate(content?.issuedOn || new Date());
     const logoUrl = (branding?.logoUrl || "").trim();
@@ -76,9 +76,9 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
     const recipientFontSize = nameLen > 30 ? 56 : nameLen > 20 ? 64 : 72;
 
     const dotPattern =
-      "radial-gradient(circle at 1px 1px, rgba(90,70,160,0.07) 1px, transparent 0)";
+      "radial-gradient(circle at 1px 1px, rgba(27,79,138,0.07) 1px, transparent 0)";
     const lineMask =
-      "linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px), linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px)";
+      "linear-gradient(90deg, rgba(20, 64, 111,0.04) 1px, transparent 1px), linear-gradient(rgba(20, 64, 111,0.04) 1px, transparent 1px)";
 
     return (
       <Box
@@ -98,8 +98,8 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
           gridTemplateColumns: "1fr 300px",
           boxShadow: "0 22px 52px rgba(16, 24, 40, 0.18)",
           fontFamily: '"Inter", "Segoe UI", system-ui, sans-serif',
-          bgcolor: "#faf8ff",
-          color: "#1a1033",
+          bgcolor: "#f6f8fb",
+          color: "#111a26",
           position: "relative",
         }}
       >
@@ -110,7 +110,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
             px: 5.5,
             pt: 3,
             pb: content?.credentialLines?.length ? 16 : 3.5,
-            backgroundColor: "#f7f4ff",
+            backgroundColor: "#f6f8fb",
             backgroundImage: `${lineMask}, ${dotPattern}`,
             backgroundSize: "28px 28px, 22px 22px",
             backgroundPosition: "0 0, 0 0",
@@ -144,12 +144,12 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
               sx={{
                 fontSize: 13,
                 letterSpacing: "0.08em",
-                color: "rgba(26,16,51,0.55)",
+                color: "rgba(17,26,38,0.55)",
                 fontWeight: 600,
               }}
             >
               {dateLabelPrefix}{" "}
-              <Box component="span" sx={{ color: "#1a1033", fontWeight: 700 }}>
+              <Box component="span" sx={{ color: "#111a26", fontWeight: 700 }}>
                 {dateStr}
               </Box>
             </Typography>
@@ -173,7 +173,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
                 sx={{
                   fontSize: 13,
                   fontWeight: 800,
-                  color: "#1a1033",
+                  color: "#111a26",
                   letterSpacing: "0.04em",
                   mt: logoUrl ? 0.75 : 0,
                   lineHeight: 1.3,
@@ -187,7 +187,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
                     fontSize: 11,
                     fontWeight: 500,
                     fontStyle: "italic",
-                    color: "rgba(26,16,51,0.65)",
+                    color: "rgba(17,26,38,0.65)",
                     mt: 0.25,
                     lineHeight: 1.35,
                   }}
@@ -200,7 +200,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
                   sx={{
                     fontSize: 11,
                     fontWeight: 600,
-                    color: "rgba(26,16,51,0.5)",
+                    color: "rgba(17,26,38,0.5)",
                     letterSpacing: "0.06em",
                     mt: 0.25,
                   }}
@@ -218,7 +218,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
               fontWeight: 800,
               letterSpacing: "0.11em",
               textTransform: "uppercase",
-              color: "#3e3aa5",
+              color: "#1b4f8a",
               lineHeight: 1.05,
               mb: 0.6,
             }}
@@ -241,9 +241,9 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
               sx={{ width: "100%", height: 20 }}
               fill="none"
             >
-              <path d="M8 12H94" stroke="rgba(90,70,160,0.35)" strokeWidth="1.4" />
-              <path d="M126 12H212" stroke="rgba(90,70,160,0.35)" strokeWidth="1.4" />
-              <path d="M110 4C104 4 101 8 101 12C101 16 104 20 110 20C116 20 119 16 119 12C119 8 116 4 110 4Z" stroke="rgba(90,70,160,0.55)" strokeWidth="1.4" />
+              <path d="M8 12H94" stroke="rgba(27,79,138,0.35)" strokeWidth="1.4" />
+              <path d="M126 12H212" stroke="rgba(27,79,138,0.35)" strokeWidth="1.4" />
+              <path d="M110 4C104 4 101 8 101 12C101 16 104 20 110 20C116 20 119 16 119 12C119 8 116 4 110 4Z" stroke="rgba(27,79,138,0.55)" strokeWidth="1.4" />
             </Box>
           </Box>
 
@@ -251,7 +251,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
             sx={{
               textAlign: "center",
               fontSize: 19,
-              color: "rgba(26,16,51,0.72)",
+              color: "rgba(17,26,38,0.72)",
               mb: 0.2,
             }}
           >
@@ -281,7 +281,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
             sx={{
               width: "58%",
               mx: "auto",
-              borderBottom: "2px solid rgba(90,70,160,0.45)",
+              borderBottom: "2px solid rgba(27,79,138,0.45)",
               mb: 1.35,
             }}
           />
@@ -293,7 +293,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
                 textAlign: "center",
                 fontSize: 18,
                 lineHeight: 1.55,
-                color: "rgba(26,16,51,0.85)",
+                color: "rgba(17,26,38,0.85)",
                 maxWidth: 720,
                 mx: "auto",
                 mb: 1.1,
@@ -312,7 +312,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
                   key={i}
                   sx={{
                     fontWeight: seg.bold ? 700 : 500,
-                    color: seg.color ?? (seg.bold ? "#1a1033" : "inherit"),
+                    color: seg.color ?? (seg.bold ? "#111a26" : "inherit"),
                     ...(seg.fontSizePx != null ? { fontSize: seg.fontSizePx } : {}),
                   }}
                 >
@@ -365,13 +365,13 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
                   >
                     {fallbackSignatureText}
                   </Typography>
-                  <Box sx={{ borderBottom: "2px solid rgba(26,16,51,0.35)" }} />
+                  <Box sx={{ borderBottom: "2px solid rgba(17,26,38,0.35)" }} />
                 </Box>
               )}
-              <Typography sx={{ fontWeight: 800, fontSize: 15, color: "#1a1033", textTransform: "title-case" }}>
+              <Typography sx={{ fontWeight: 800, fontSize: 15, color: "#111a26", textTransform: "title-case" }}>
                 {signatoryName}
               </Typography>
-              <Typography sx={{ fontSize: 13, color: "rgba(26,16,51,0.65)" }}>
+              <Typography sx={{ fontSize: 13, color: "rgba(17,26,38,0.65)" }}>
                 {signatoryTitle}
               </Typography>
             </Box>
@@ -379,10 +379,10 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
             <Box sx={{ flex: 1 }} />
 
             <Box sx={{ textAlign: "right" }}>
-              <Typography sx={{ fontSize: 12, letterSpacing: "0.06em", color: "rgba(26,16,51,0.5)" }}>
+              <Typography sx={{ fontSize: 12, letterSpacing: "0.06em", color: "rgba(17,26,38,0.5)" }}>
                 Certificate ID
               </Typography>
-              <Typography sx={{ fontWeight: 700, fontSize: 14, color: "#1a1033" }}>
+              <Typography sx={{ fontWeight: 700, fontSize: 14, color: "#111a26" }}>
                 {content.certificateId}
               </Typography>
             </Box>
@@ -392,7 +392,10 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
         {/* Sidebar */}
         <Box
           sx={{
-            background: `linear-gradient(165deg, #0f0518 0%, #1a0a2e 40%, #12081f 100%)`,
+            // The sidebar band. Was a violet-black ladder whose outer stops both
+            // mapped onto the same navy, which flattened it; these are the three
+            // distinct dark government surfaces, deepest at the foot.
+            background: `linear-gradient(165deg, #10263f 0%, #0b1b2e 40%, #071426 100%)`,
             position: "relative",
             display: "flex",
             flexDirection: "column",
@@ -489,7 +492,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
                   width: 36,
                   height: 36,
                   borderRadius: 1,
-                  background: `linear-gradient(135deg, ${accent}, #312e81)`,
+                  background: `linear-gradient(135deg, ${accent}, #0a1e37)`,
                   flexShrink: 0,
                 }}
               />
@@ -549,7 +552,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
             height: 104,
             borderRadius: "50%",
             border: `4px double ${accent}`,
-            bgcolor: "#faf8ff",
+            bgcolor: "#f6f8fb",
             boxShadow: `0 0 22px ${accent}88`,
             display: "flex",
             alignItems: "center",

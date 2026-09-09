@@ -42,7 +42,7 @@ const cardSx = {
   borderRadius: "16px",
   bgcolor: "var(--card-bg)",
   border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
-  boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+  boxShadow: "var(--shadow-sm)",
 };
 
 /** Uppercase table-head cell in the kicker voice. */

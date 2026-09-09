@@ -920,7 +920,7 @@ function CourseRow({
         transition: "all .15s",
         "&:hover": {
           borderColor: "var(--accent-indigo)",
-          boxShadow: "0 6px 16px -8px rgba(124,58,237,0.35)",
+          boxShadow: "0 6px 16px -8px rgba(20, 64, 111,0.35)",
         },
       }}
     >
@@ -934,7 +934,7 @@ function CourseRow({
           alignItems: "center",
           justifyContent: "center",
           background:
-            "linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-indigo-dark, #4f46e5) 100%)",
+            "linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-indigo-dark, #12365f) 100%)",
         }}
       >
         <IconWrapper

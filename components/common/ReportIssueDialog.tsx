@@ -409,10 +409,10 @@ export function ReportIssueDialog({
             fontWeight: 600,
             backgroundColor: "var(--ticket-brand)",
             color: "var(--font-light)",
-            boxShadow: "0 4px 12px rgba(37,99,235,0.25)",
+            boxShadow: "var(--shadow-md)",
             "&:hover": {
               backgroundColor: "var(--ticket-brand-hover)",
-              boxShadow: "0 6px 16px rgba(37,99,235,0.32)",
+              boxShadow: "var(--shadow-md)",
             },
             "&.Mui-disabled": {
               backgroundColor: "var(--border-default)",

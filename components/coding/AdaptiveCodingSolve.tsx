@@ -353,7 +353,7 @@ export function AdaptiveCodingSolve({ configId, problemId, onBack }: AdaptiveCod
   }
   if (error || !problem) {
     return (
-      <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 6 }}>
+      <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 6 }}>
         {error || "Problem not found."}
       </Typography>
     );
@@ -370,7 +370,7 @@ export function AdaptiveCodingSolve({ configId, problemId, onBack }: AdaptiveCod
             component="button"
             onClick={onBack}
             sx={{
-              all: "unset", cursor: "pointer", color: "#6366f1", fontWeight: 700, fontSize: "0.85rem",
+              all: "unset", cursor: "pointer", color: "#1b4f8a", fontWeight: 700, fontSize: "0.85rem",
               display: "inline-flex", alignItems: "center", gap: 0.5,
             }}
           >
@@ -393,7 +393,7 @@ export function AdaptiveCodingSolve({ configId, problemId, onBack }: AdaptiveCod
             component="button"
             onClick={onBack}
             sx={{
-              all: "unset", cursor: "pointer", color: "#6366f1", fontWeight: 700, fontSize: "0.85rem",
+              all: "unset", cursor: "pointer", color: "#1b4f8a", fontWeight: 700, fontSize: "0.85rem",
               display: "inline-flex", alignItems: "center", gap: 0.5,
             }}
           >
@@ -407,11 +407,11 @@ export function AdaptiveCodingSolve({ configId, problemId, onBack }: AdaptiveCod
           <Box
             sx={{
               display: "flex", alignItems: "center", gap: 1, px: 1.75, py: 1, borderRadius: 2,
-              background: "color-mix(in srgb, #10b981 12%, transparent)",
-              border: "1px solid color-mix(in srgb, #10b981 30%, transparent)",
+              background: "color-mix(in srgb, #0e7a3c 12%, transparent)",
+              border: "1px solid color-mix(in srgb, #0e7a3c 30%, transparent)",
             }}
           >
-            <Icon icon="mdi:check-circle" width={18} style={{ color: "#10b981" }} />
+            <Icon icon="mdi:check-circle" width={18} style={{ color: "#0e7a3c" }} />
             <Typography sx={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f9d6b" }}>
               You&apos;ve solved this - keep refining or try the challenge below.
             </Typography>
@@ -482,7 +482,7 @@ export function AdaptiveCodingSolve({ configId, problemId, onBack }: AdaptiveCod
             disabled={running || submitting || solvedAlready}
             startIcon={running ? <CircularProgress size={14} /> : <Icon icon="mdi:play" width={16} />}
             variant="outlined"
-            sx={{ textTransform: "none", fontWeight: 800, borderColor: "#6366f1", color: "#6366f1" }}
+            sx={{ textTransform: "none", fontWeight: 800, borderColor: "#1b4f8a", color: "#1b4f8a" }}
           >
             Run
           </Button>
@@ -493,7 +493,7 @@ export function AdaptiveCodingSolve({ configId, problemId, onBack }: AdaptiveCod
             variant="contained"
             sx={{
               textTransform: "none", fontWeight: 800, color: "white",
-              background: "linear-gradient(135deg,#10b981,#059669)",
+              background: "linear-gradient(135deg,#0e7a3c,#0B6232)",
             }}
           >
             Submit
@@ -523,7 +523,7 @@ export function AdaptiveCodingSolve({ configId, problemId, onBack }: AdaptiveCod
 
 function CodingReadyGate({ problem, starting, onBegin }: { problem: CodingProblem; starting: boolean; onBegin: () => void }) {
   const diffColor =
-    problem.difficulty_level === "Easy" ? "#10b981" : problem.difficulty_level === "Hard" ? "#ef4444" : "#f59e0b";
+    problem.difficulty_level === "Easy" ? "#0e7a3c" : problem.difficulty_level === "Hard" ? "#b32020" : "#b7791f";
   const points: { icon: string; text: string }[] = [
     { icon: "mdi:timer-play-outline", text: "Your timer starts the moment you begin." },
     { icon: "mdi:trending-down", text: "Points start full and decay the longer you take - submit fast to keep more." },
@@ -533,13 +533,13 @@ function CodingReadyGate({ problem, starting, onBegin }: { problem: CodingProble
     <Box
       sx={{
         borderRadius: 3, p: { xs: 3, md: 4 }, textAlign: "center",
-        border: "1px solid color-mix(in srgb, #6366f1 22%, transparent)",
+        border: "1px solid color-mix(in srgb, #1b4f8a 22%, transparent)",
         background:
-          "linear-gradient(160deg, color-mix(in srgb,#6366f1 9%,var(--card-bg)) 0%, color-mix(in srgb,#a855f7 7%,var(--card-bg)) 100%)",
+          "linear-gradient(160deg, color-mix(in srgb,#1b4f8a 9%,var(--card-bg)) 0%, color-mix(in srgb,#1b4f8a 7%,var(--card-bg)) 100%)",
       }}
     >
       <Box sx={{ width: 56, height: 56, mx: "auto", mb: 1.5, borderRadius: "50%", display: "grid", placeItems: "center",
-        color: "white", background: "linear-gradient(135deg,#6366f1,#a855f7)", boxShadow: "0 14px 30px -12px rgba(124,58,237,0.7)" }}>
+        color: "white", background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)", boxShadow: "var(--shadow-sm)" }}>
         <Icon icon="mdi:flash" width={28} />
       </Box>
       <Typography sx={{ fontWeight: 800, fontSize: "1.25rem" }}>Ready to begin?</Typography>
@@ -553,7 +553,7 @@ function CodingReadyGate({ problem, starting, onBegin }: { problem: CodingProble
       <Stack spacing={1} sx={{ maxWidth: 380, mx: "auto", mb: 2.5, textAlign: "left" }}>
         {points.map((p) => (
           <Stack key={p.icon} direction="row" spacing={1} alignItems="flex-start">
-            <Icon icon={p.icon} width={18} style={{ color: "#7c3aed", flexShrink: 0, marginTop: 2 }} />
+            <Icon icon={p.icon} width={18} style={{ color: "#14406f", flexShrink: 0, marginTop: 2 }} />
             <Typography sx={{ fontSize: "0.85rem", color: "text.secondary", lineHeight: 1.45 }}>{p.text}</Typography>
           </Stack>
         ))}
@@ -564,7 +564,7 @@ function CodingReadyGate({ problem, starting, onBegin }: { problem: CodingProble
         startIcon={starting ? <CircularProgress size={16} sx={{ color: "white" }} /> : <Icon icon="mdi:flash" width={18} />}
         variant="contained"
         sx={{ textTransform: "none", fontWeight: 800, color: "white", px: 3, py: 1,
-          background: "linear-gradient(135deg,#6366f1,#a855f7)" }}
+          background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)" }}
       >
         Begin · start the timer
       </Button>
@@ -584,8 +584,8 @@ function TestStrip({ testResults }: { testResults: TestResults }) {
 
   if (testResults.compile_error) {
     return (
-      <Box sx={{ p: 1.5, borderRadius: 2, background: "color-mix(in srgb,#ef4444 8%,transparent)", border: "1px solid color-mix(in srgb,#ef4444 28%,transparent)" }}>
-        <Typography sx={{ fontWeight: 800, fontSize: "0.8rem", color: "#ef4444" }}>Compile error</Typography>
+      <Box sx={{ p: 1.5, borderRadius: 2, background: "color-mix(in srgb,#b32020 8%,transparent)", border: "1px solid color-mix(in srgb,#b32020 28%,transparent)" }}>
+        <Typography sx={{ fontWeight: 800, fontSize: "0.8rem", color: "#b32020" }}>Compile error</Typography>
         <Box component="pre" sx={{ mt: 0.5, fontSize: "0.76rem", fontFamily: "monospace", whiteSpace: "pre-wrap" }}>
           {testResults.compile_error}
         </Box>
@@ -594,7 +594,7 @@ function TestStrip({ testResults }: { testResults: TestResults }) {
   }
 
   const allPassed = testResults.total > 0 && testResults.failed === 0;
-  const tone = allPassed ? "#10b981" : "#ef4444";
+  const tone = allPassed ? "#0e7a3c" : "#b32020";
   const pct = testResults.total ? Math.round((testResults.passed / testResults.total) * 100) : 0;
 
   return (
@@ -621,7 +621,7 @@ function TestStrip({ testResults }: { testResults: TestResults }) {
         <Box sx={{ display: "flex", gap: 0.6, flexWrap: "wrap", mb: sel ? 1.25 : 0 }}>
           {rows.map((r) => {
             const active = r.index === (sel?.index ?? -1);
-            const c = r.passed ? "#10b981" : "#ef4444";
+            const c = r.passed ? "#0e7a3c" : "#b32020";
             return (
               <Box
                 key={r.index}
@@ -645,14 +645,14 @@ function TestStrip({ testResults }: { testResults: TestResults }) {
           <Box
             sx={{
               p: 1.25, borderRadius: 2, fontFamily: "monospace", fontSize: "0.76rem",
-              background: `color-mix(in srgb, ${sel.passed ? "#10b981" : "#ef4444"} 5%, transparent)`,
-              border: `1px solid color-mix(in srgb, ${sel.passed ? "#10b981" : "#ef4444"} 22%, transparent)`,
+              background: `color-mix(in srgb, ${sel.passed ? "#0e7a3c" : "#b32020"} 5%, transparent)`,
+              border: `1px solid color-mix(in srgb, ${sel.passed ? "#0e7a3c" : "#b32020"} 22%, transparent)`,
             }}
           >
             <Typography
               sx={{
                 fontSize: "0.68rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", mb: 0.5,
-                display: "flex", alignItems: "center", gap: 0.4, color: sel.passed ? "#10b981" : "#ef4444",
+                display: "flex", alignItems: "center", gap: 0.4, color: sel.passed ? "#0e7a3c" : "#b32020",
               }}
             >
               <Icon icon={sel.passed ? "mdi:check-circle-outline" : "mdi:close-circle-outline"} width={13} />

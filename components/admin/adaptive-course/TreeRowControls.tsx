@@ -4,8 +4,8 @@ import { useCallback, useState } from "react";
 import { Box, ButtonBase, TextField, Tooltip, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
 
-const INDIGO = "#6366f1";
-const DANGER = "#ef4444";
+const INDIGO = "#1b4f8a";
+const DANGER = "#b32020";
 
 /**
  * Click-to-edit title for the module and topic rows of the course tree, the read

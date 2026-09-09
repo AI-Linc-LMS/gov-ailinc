@@ -2,7 +2,7 @@ import type { CertificateBranding } from "@/lib/certificate/types";
 import type { ClientInfo } from "@/lib/services/client.service";
 import { resolveCertificateLogoUrl } from "@/lib/utils/resolveCertificateLogoUrl";
 
-const DEFAULT_ACCENT = "#6d28d9";
+const DEFAULT_ACCENT = "#164274";
 
 function isHexColor(t: string): boolean {
   return /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(t.trim());

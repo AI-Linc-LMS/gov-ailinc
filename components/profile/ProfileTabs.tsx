@@ -47,7 +47,7 @@ export function ProfileTabs({ value, onChange }: { value: number; onChange: (v: 
             width: "calc(33.333% - 2px)",
             borderRadius: 10,
             backgroundColor: "#fff",
-            boxShadow: "0 1px 3px rgba(16,24,40,0.10)",
+            boxShadow: "var(--shadow-sm)",
           }}
           animate={{ left: value === 0 ? 0 : value === 1 ? "calc(33.333% + 1px)" : "calc(66.666% + 2px)" }}
           transition={{ type: "spring", stiffness: 450, damping: 35 }}

@@ -52,8 +52,8 @@ export function ConceptMap({ data, currentTime }: { data: ConceptMapData; curren
             sx={{
               order: -1, width: "100%", maxWidth: 240, mx: "auto", mb: 0.5, textAlign: "center",
               px: 2.25, py: 1.1, borderRadius: 999, fontWeight: 800, fontSize: "0.95rem", color: "#fff",
-              background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
-              boxShadow: "0 14px 30px -14px rgba(168,85,247,0.7)",
+              background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)",
+              boxShadow: "var(--shadow-sm)",
             }}
           >
             {center}
@@ -70,13 +70,13 @@ export function ConceptMap({ data, currentTime }: { data: ConceptMapData; curren
                 opacity: reached ? 1 : 0.45,
                 color: reached ? "text.primary" : "text.secondary",
                 border: "1px solid",
-                borderColor: reached ? "color-mix(in srgb, #6366f1 40%, transparent)" : "var(--border-default, #ddd)",
+                borderColor: reached ? "color-mix(in srgb, #1b4f8a 40%, transparent)" : "var(--border-default, #ddd)",
                 background: reached ? "var(--card-bg, #fff)" : "transparent",
-                boxShadow: reached ? "0 8px 20px -14px color-mix(in srgb, #6366f1 70%, transparent)" : "none",
+                boxShadow: reached ? "var(--shadow-sm)" : "none",
                 transition: "all 200ms ease",
               }}
             >
-              {reached && <Box sx={{ width: 6, height: 6, borderRadius: 999, background: "linear-gradient(135deg,#6366f1,#ec4899)" }} />}
+              {reached && <Box sx={{ width: 6, height: 6, borderRadius: 999, background: "linear-gradient(135deg,#1b4f8a,#0f6b7a)" }} />}
               {n.label}
               {!reached && <Icon icon="mdi:lock-clock" width={13} style={{ opacity: 0.6 }} />}
             </Box>

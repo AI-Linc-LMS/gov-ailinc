@@ -65,7 +65,7 @@ export function ReportDialog({ open, onClose, target, onSubmit }: ReportDialogPr
     >
       <DialogContent sx={{ p: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
-          <IconWrapper icon="mdi:flag-outline" size={20} color="#ef4444" />
+          <IconWrapper icon="mdi:flag-outline" size={20} color="#b32020" />
           <Typography variant="subtitle1" fontWeight={700}>
             Report this {target}
           </Typography>
@@ -91,12 +91,12 @@ export function ReportDialog({ open, onClose, target, onSubmit }: ReportDialogPr
                   px: 1.5,
                   py: 1,
                   borderRadius: "8px",
-                  border: `1px solid ${active ? "#ef4444" : "var(--border-default)"}`,
+                  border: `1px solid ${active ? "#b32020" : "var(--border-default)"}`,
                   backgroundColor: active ? "rgba(239,68,68,0.06)" : "transparent",
                   cursor: "pointer",
                   transition: "all 0.12s",
                   "&:hover": {
-                    borderColor: "#ef4444",
+                    borderColor: "#b32020",
                   },
                 }}
               >
@@ -105,12 +105,12 @@ export function ReportDialog({ open, onClose, target, onSubmit }: ReportDialogPr
                     width: 16,
                     height: 16,
                     borderRadius: "50%",
-                    border: `2px solid ${active ? "#ef4444" : "var(--border-default)"}`,
-                    backgroundColor: active ? "#ef4444" : "transparent",
+                    border: `2px solid ${active ? "#b32020" : "var(--border-default)"}`,
+                    backgroundColor: active ? "#b32020" : "transparent",
                     flexShrink: 0,
                   }}
                 />
-                <Typography variant="body2" sx={{ color: active ? "#b91c1c" : "var(--font-primary)" }}>
+                <Typography variant="body2" sx={{ color: active ? "#8f1919" : "var(--font-primary)" }}>
                   {label}
                 </Typography>
               </Box>
@@ -133,7 +133,7 @@ export function ReportDialog({ open, onClose, target, onSubmit }: ReportDialogPr
         />
 
         {error && (
-          <Typography variant="caption" sx={{ color: "#ef4444", display: "block", mb: 1 }}>
+          <Typography variant="caption" sx={{ color: "#b32020", display: "block", mb: 1 }}>
             {error}
           </Typography>
         )}
@@ -152,9 +152,9 @@ export function ReportDialog({ open, onClose, target, onSubmit }: ReportDialogPr
             sx={{
               textTransform: "none",
               fontWeight: 600,
-              backgroundColor: "#ef4444",
+              backgroundColor: "#b32020",
               boxShadow: "none",
-              "&:hover": { backgroundColor: "#dc2626", boxShadow: "none" },
+              "&:hover": { backgroundColor: "#991b1b", boxShadow: "none" },
             }}
           >
             {submitting ? "Submitting…" : "Submit report"}

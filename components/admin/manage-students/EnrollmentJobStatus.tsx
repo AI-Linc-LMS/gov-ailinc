@@ -292,7 +292,7 @@ export function EnrollmentJobStatus({
           p: 3,
           mb: 3,
           borderRadius: 2,
-          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+          boxShadow: "var(--shadow-sm)",
           backgroundColor: "var(--card-bg)",
         }}
       >
@@ -305,9 +305,9 @@ export function EnrollmentJobStatus({
                 borderRadius: 2,
                 backgroundColor:
                   job.status === "COMPLETED"
-                    ? "#d1fae5"
+                    ? "#dff0e6"
                     : job.status === "FAILED"
-                    ? "#fee2e2"
+                    ? "#fbeaea"
                     : job.status === "IN_PROGRESS"
                     ? "color-mix(in srgb, var(--primary-500) 16%, var(--surface) 84%)"
                     : "var(--surface)",
@@ -329,9 +329,9 @@ export function EnrollmentJobStatus({
                 size={24}
                 color={
                   job.status === "COMPLETED"
-                    ? "#10b981"
+                    ? "#0e7a3c"
                     : job.status === "FAILED"
-                    ? "#ef4444"
+                    ? "#b32020"
                     : job.status === "IN_PROGRESS"
                     ? "var(--primary-500)"
                     : "var(--font-tertiary)"
@@ -372,7 +372,7 @@ export function EnrollmentJobStatus({
             p: 3,
             mb: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             backgroundColor:
               "color-mix(in srgb, var(--primary-500) 10%, var(--surface) 90%)",
             border: "1px solid color-mix(in srgb, var(--primary-500) 28%, transparent)",
@@ -407,10 +407,10 @@ export function EnrollmentJobStatus({
           sx={{
             mb: 3,
             borderRadius: 2,
-            backgroundColor: "#d1fae5",
-            border: "1px solid #10b981",
+            backgroundColor: "#dff0e6",
+            border: "1px solid #0e7a3c",
             "& .MuiAlert-icon": {
-              color: "#10b981",
+              color: "#0e7a3c",
             },
           }}
         >
@@ -429,10 +429,10 @@ export function EnrollmentJobStatus({
           sx={{
             mb: 3,
             borderRadius: 2,
-            backgroundColor: "#fee2e2",
-            border: "1px solid #ef4444",
+            backgroundColor: "#fbeaea",
+            border: "1px solid #b32020",
             "& .MuiAlert-icon": {
-              color: "#ef4444",
+              color: "#b32020",
             },
           }}
         >
@@ -449,7 +449,7 @@ export function EnrollmentJobStatus({
                 p: 1.5,
                 borderRadius: 1,
                 backgroundColor: "#ffffff",
-                border: "1px solid #fecaca",
+                border: "1px solid #f2d3d3",
               }}
             >
               <Typography
@@ -487,7 +487,7 @@ export function EnrollmentJobStatus({
           sx={{
             p: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             display: "flex",
             alignItems: "center",
             gap: 2,
@@ -527,7 +527,7 @@ export function EnrollmentJobStatus({
           sx={{
             p: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             display: "flex",
             alignItems: "center",
             gap: 2,
@@ -538,13 +538,13 @@ export function EnrollmentJobStatus({
               width: 48,
               height: 48,
               borderRadius: 2,
-              backgroundColor: "#d1fae5",
+              backgroundColor: "#dff0e6",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <IconWrapper icon="mdi:account-plus" size={24} color="#10b981" />
+            <IconWrapper icon="mdi:account-plus" size={24} color="#0e7a3c" />
           </Box>
           <Box>
             <Typography
@@ -555,7 +555,7 @@ export function EnrollmentJobStatus({
             </Typography>
             <Typography
               variant="h5"
-              sx={{ fontWeight: 700, color: "#10b981", mt: 0.5 }}
+              sx={{ fontWeight: 700, color: "#0e7a3c", mt: 0.5 }}
             >
               {job.created_accounts.length}
             </Typography>
@@ -566,7 +566,7 @@ export function EnrollmentJobStatus({
           sx={{
             p: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             display: "flex",
             alignItems: "center",
             gap: 2,
@@ -577,13 +577,13 @@ export function EnrollmentJobStatus({
               width: 48,
               height: 48,
               borderRadius: 2,
-              backgroundColor: "#dbeafe",
+              backgroundColor: "#d9e6f4",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <IconWrapper icon="mdi:school" size={24} color="#3b82f6" />
+            <IconWrapper icon="mdi:school" size={24} color="#4a7fbb" />
           </Box>
           <Box>
             <Typography
@@ -594,7 +594,7 @@ export function EnrollmentJobStatus({
             </Typography>
             <Typography
               variant="h5"
-              sx={{ fontWeight: 700, color: "#3b82f6", mt: 0.5 }}
+              sx={{ fontWeight: 700, color: "#4a7fbb", mt: 0.5 }}
             >
               {job.enrolled_students.length}
             </Typography>
@@ -605,7 +605,7 @@ export function EnrollmentJobStatus({
           sx={{
             p: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             display: "flex",
             alignItems: "center",
             gap: 2,
@@ -616,13 +616,13 @@ export function EnrollmentJobStatus({
               width: 48,
               height: 48,
               borderRadius: 2,
-              backgroundColor: "#fef3c7",
+              backgroundColor: "#fdf3e2",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <IconWrapper icon="mdi:account-remove" size={24} color="#f59e0b" />
+            <IconWrapper icon="mdi:account-remove" size={24} color="#b7791f" />
           </Box>
           <Box>
             <Typography
@@ -633,7 +633,7 @@ export function EnrollmentJobStatus({
             </Typography>
             <Typography
               variant="h5"
-              sx={{ fontWeight: 700, color: "#f59e0b", mt: 0.5 }}
+              sx={{ fontWeight: 700, color: "#b7791f", mt: 0.5 }}
             >
               {job.skipped_accounts.length}
             </Typography>
@@ -644,7 +644,7 @@ export function EnrollmentJobStatus({
           sx={{
             p: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             display: "flex",
             alignItems: "center",
             gap: 2,
@@ -655,13 +655,13 @@ export function EnrollmentJobStatus({
               width: 48,
               height: 48,
               borderRadius: 2,
-              backgroundColor: "#fef3c7",
+              backgroundColor: "#fdf3e2",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <IconWrapper icon="mdi:book-remove" size={24} color="#f59e0b" />
+            <IconWrapper icon="mdi:book-remove" size={24} color="#b7791f" />
           </Box>
           <Box>
             <Typography
@@ -672,7 +672,7 @@ export function EnrollmentJobStatus({
             </Typography>
             <Typography
               variant="h5"
-              sx={{ fontWeight: 700, color: "#f59e0b", mt: 0.5 }}
+              sx={{ fontWeight: 700, color: "#b7791f", mt: 0.5 }}
             >
               {job.skipped_enrollments.length}
             </Typography>
@@ -683,7 +683,7 @@ export function EnrollmentJobStatus({
           sx={{
             p: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             display: "flex",
             alignItems: "center",
             gap: 2,
@@ -694,13 +694,13 @@ export function EnrollmentJobStatus({
               width: 48,
               height: 48,
               borderRadius: 2,
-              backgroundColor: "#fee2e2",
+              backgroundColor: "#fbeaea",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <IconWrapper icon="mdi:alert-circle" size={24} color="#ef4444" />
+            <IconWrapper icon="mdi:alert-circle" size={24} color="#b32020" />
           </Box>
           <Box>
             <Typography
@@ -711,7 +711,7 @@ export function EnrollmentJobStatus({
             </Typography>
             <Typography
               variant="h5"
-              sx={{ fontWeight: 700, color: "#ef4444", mt: 0.5 }}
+              sx={{ fontWeight: 700, color: "#b32020", mt: 0.5 }}
             >
               {job.failed_students.length}
             </Typography>
@@ -726,13 +726,13 @@ export function EnrollmentJobStatus({
             p: 3,
             mb: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             backgroundColor: "#f9fafb",
             border: "1px solid #e5e7eb",
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-            <IconWrapper icon="mdi:information" size={20} color="#6366f1" />
+            <IconWrapper icon="mdi:information" size={20} color="#1b4f8a" />
             <Typography
               variant="subtitle2"
               sx={{ fontWeight: 600, color: "#111827" }}
@@ -760,7 +760,7 @@ export function EnrollmentJobStatus({
             p: 3,
             mb: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             backgroundColor: "#ffffff",
           }}
         >
@@ -780,7 +780,7 @@ export function EnrollmentJobStatus({
             }
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <IconWrapper icon="mdi:account-remove" size={20} color="#f59e0b" />
+              <IconWrapper icon="mdi:account-remove" size={20} color="#b7791f" />
               <Typography
                 variant="subtitle2"
                 sx={{ fontWeight: 600, color: "#111827" }}
@@ -814,14 +814,14 @@ export function EnrollmentJobStatus({
               severity="info"
               sx={{
                 mb: 2,
-                backgroundColor: "#eff6ff",
-                border: "1px solid #bfdbfe",
+                backgroundColor: "#eef3fa",
+                border: "1px solid #b6cde8",
                 "& .MuiAlert-icon": {
-                  color: "#3b82f6",
+                  color: "#4a7fbb",
                 },
               }}
             >
-              <Typography variant="body2" sx={{ color: "#1e40af" }}>
+              <Typography variant="body2" sx={{ color: "#12365f" }}>
                 Some students already had accounts and were skipped, but were still enrolled in the selected courses.
               </Typography>
             </Alert>
@@ -916,7 +916,7 @@ export function EnrollmentJobStatus({
             p: 3,
             mb: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             backgroundColor: "#ffffff",
           }}
         >
@@ -936,7 +936,7 @@ export function EnrollmentJobStatus({
             }
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <IconWrapper icon="mdi:book-remove" size={20} color="#f59e0b" />
+              <IconWrapper icon="mdi:book-remove" size={20} color="#b7791f" />
               <Typography
                 variant="subtitle2"
                 sx={{ fontWeight: 600, color: "#111827" }}
@@ -970,14 +970,14 @@ export function EnrollmentJobStatus({
               severity="info"
               sx={{
                 mb: 2,
-                backgroundColor: "#eff6ff",
-                border: "1px solid #bfdbfe",
+                backgroundColor: "#eef3fa",
+                border: "1px solid #b6cde8",
                 "& .MuiAlert-icon": {
-                  color: "#3b82f6",
+                  color: "#4a7fbb",
                 },
               }}
             >
-              <Typography variant="body2" sx={{ color: "#1e40af" }}>
+              <Typography variant="body2" sx={{ color: "#12365f" }}>
                 Some students were already enrolled in some courses and were skipped.
               </Typography>
             </Alert>
@@ -1035,7 +1035,7 @@ export function EnrollmentJobStatus({
                         label="Already enrolled"
                         size="small"
                         sx={{
-                          backgroundColor: "#fef3c7",
+                          backgroundColor: "#fdf3e2",
                           color: "#92400e",
                           fontSize: "0.75rem",
                           height: 24,
@@ -1058,12 +1058,12 @@ export function EnrollmentJobStatus({
             p: 3,
             mb: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             backgroundColor: "#ffffff",
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-            <IconWrapper icon="mdi:account-plus" size={20} color="#10b981" />
+            <IconWrapper icon="mdi:account-plus" size={20} color="#0e7a3c" />
             <Typography
               variant="subtitle2"
               sx={{ fontWeight: 600, color: "#111827" }}
@@ -1078,9 +1078,9 @@ export function EnrollmentJobStatus({
                 label={getStudentName(userId)}
                 size="small"
                 sx={{
-                  backgroundColor: "#d1fae5",
+                  backgroundColor: "#dff0e6",
                   color: "#065f46",
-                  border: "1px solid #10b981",
+                  border: "1px solid #0e7a3c",
                   fontWeight: 500,
                   "&:hover": {
                     backgroundColor: "#a7f3d0",
@@ -1099,7 +1099,7 @@ export function EnrollmentJobStatus({
             p: 3,
             mb: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             backgroundColor: "#ffffff",
           }}
         >
@@ -1119,7 +1119,7 @@ export function EnrollmentJobStatus({
             }
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <IconWrapper icon="mdi:school" size={20} color="#3b82f6" />
+              <IconWrapper icon="mdi:school" size={20} color="#4a7fbb" />
               <Typography
                 variant="subtitle2"
                 sx={{ fontWeight: 600, color: "#111827" }}
@@ -1194,7 +1194,7 @@ export function EnrollmentJobStatus({
                         <IconWrapper
                           icon="mdi:book-open-variant"
                           size={16}
-                          color="#3b82f6"
+                          color="#4a7fbb"
                         />
                         <Typography
                           variant="body2"
@@ -1220,13 +1220,13 @@ export function EnrollmentJobStatus({
             p: 3,
             mb: 3,
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
             backgroundColor: "#ffffff",
-            border: "1px solid #fee2e2",
+            border: "1px solid #fbeaea",
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-            <IconWrapper icon="mdi:alert-circle" size={20} color="#ef4444" />
+            <IconWrapper icon="mdi:alert-circle" size={20} color="#b32020" />
             <Typography
               variant="subtitle2"
               sx={{ fontWeight: 600, color: "#111827" }}
@@ -1239,9 +1239,9 @@ export function EnrollmentJobStatus({
               <TableHead>
                 <TableRow
                   sx={{
-                    backgroundColor: "#fef2f2",
+                    backgroundColor: "#fdf5f5",
                     "& .MuiTableCell-head": {
-                      borderBottom: "2px solid #fee2e2",
+                      borderBottom: "2px solid #fbeaea",
                       fontWeight: 600,
                       color: "#374151",
                       fontSize: "0.875rem",
@@ -1259,10 +1259,10 @@ export function EnrollmentJobStatus({
                     key={index}
                     sx={{
                       "&:hover": {
-                        backgroundColor: "#fef2f2",
+                        backgroundColor: "#fdf5f5",
                       },
                       "& .MuiTableCell-root": {
-                        borderBottom: "1px solid #fee2e2",
+                        borderBottom: "1px solid #fbeaea",
                         py: 1.5,
                       },
                     }}
@@ -1289,10 +1289,10 @@ export function EnrollmentJobStatus({
                           px: 1,
                           py: 0.5,
                           borderRadius: 1,
-                          backgroundColor: "#fee2e2",
+                          backgroundColor: "#fbeaea",
                         }}
                       >
-                        <IconWrapper icon="mdi:alert" size={14} color="#ef4444" />
+                        <IconWrapper icon="mdi:alert" size={14} color="#b32020" />
                         <Typography
                           variant="body2"
                           sx={{ color: "#991b1b", fontSize: "0.75rem" }}
@@ -1315,7 +1315,7 @@ export function EnrollmentJobStatus({
           p: 2,
           mb: 2,
           borderRadius: 2,
-          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+          boxShadow: "var(--shadow-sm)",
           backgroundColor: "#f9fafb",
           border: "1px solid #e5e7eb",
         }}
@@ -1337,7 +1337,7 @@ export function EnrollmentJobStatus({
           </Box>
           {job.completed_at && (
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <IconWrapper icon="mdi:check-circle" size={16} color="#10b981" />
+              <IconWrapper icon="mdi:check-circle" size={16} color="#0e7a3c" />
               <Typography variant="body2" sx={{ color: "#6b7280" }}>
                 Completed: {new Date(job.completed_at).toLocaleString()}
               </Typography>
@@ -1358,7 +1358,7 @@ export function EnrollmentJobStatus({
             variant="contained"
             startIcon={<IconWrapper icon="mdi:check" size={18} />}
             sx={{
-              backgroundColor: "#6366f1",
+              backgroundColor: "#1b4f8a",
               color: "#ffffff",
               fontWeight: 600,
               textTransform: "none",
@@ -1366,7 +1366,7 @@ export function EnrollmentJobStatus({
               py: 1,
               borderRadius: 2,
               "&:hover": {
-                backgroundColor: "#4f46e5",
+                backgroundColor: "#12365f",
               },
             }}
           >

@@ -207,7 +207,7 @@ export function AssessmentTable({
                           color: "var(--font-primary)",
                           border: "1px solid var(--border-default)",
                           boxShadow:
-                            "0 4px 6px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+                            "var(--shadow-sm)",
                           borderRadius: 2,
                           "& .MuiMenuItem-root": {
                             color: "var(--font-primary)",
@@ -432,11 +432,11 @@ export function AssessmentTable({
                 p: 2,
                 borderRadius: 2,
                 boxShadow:
-                  "0 1px 3px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+                  "var(--shadow-sm)",
                 border: "1px solid var(--border-default)",
                 "&:hover": {
                   boxShadow:
-                    "0 4px 6px color-mix(in srgb, var(--font-primary) 16%, transparent)",
+                    "var(--shadow-md)",
                   transition: "box-shadow 0.2s ease",
                 },
               }}

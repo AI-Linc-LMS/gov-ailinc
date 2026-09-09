@@ -50,9 +50,9 @@ export function QuizResults({
     ? Math.round((obtainedMarks / totalMarks) * 100)
     : Math.round((correctAnswers / totalQuestions) * 100);
   const getScoreColor = () => {
-    if (percentage >= 80) return "#10b981";
-    if (percentage >= 60) return "#f59e0b";
-    return "#ef4444";
+    if (percentage >= 80) return "#0e7a3c";
+    if (percentage >= 60) return "#b7791f";
+    return "#b32020";
   };
 
   const getScoreLabel = () => {
@@ -98,11 +98,11 @@ export function QuizResults({
               textTransform: "none",
               fontSize: "0.9375rem",
               fontWeight: 600,
-              borderColor: "#6366f1",
-              color: "#6366f1",
+              borderColor: "#1b4f8a",
+              color: "#1b4f8a",
               "&:hover": {
-                borderColor: "#4f46e5",
-                backgroundColor: "#6366f115",
+                borderColor: "#12365f",
+                backgroundColor: "#1b4f8a15",
               },
             }}
           >
@@ -135,7 +135,7 @@ export function QuizResults({
             justifyContent: "center",
             mx: "auto",
             mb: 3,
-            boxShadow: `0 8px 24px ${getScoreColor()}40`,
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Typography
@@ -214,8 +214,8 @@ export function QuizResults({
           <Chip
             label={`Correct: ${correctAnswers}`}
             sx={{
-              backgroundColor: "#10b98120",
-              color: "#10b981",
+              backgroundColor: "#0e7a3c20",
+              color: "#0e7a3c",
               fontWeight: 600,
               fontSize: "0.875rem",
               px: 2,
@@ -224,8 +224,8 @@ export function QuizResults({
           <Chip
             label={`Incorrect: ${totalQuestions - correctAnswers}`}
             sx={{
-              backgroundColor: "#ef444420",
-              color: "#ef4444",
+              backgroundColor: "#b3202020",
+              color: "#b32020",
               fontWeight: 600,
               fontSize: "0.875rem",
               px: 2,
@@ -276,8 +276,8 @@ export function QuizResults({
                 variant="outlined"
                 onClick={handlePreviousQuestion}
                 sx={{
-                  borderColor: "#6366f1",
-                  color: "#6366f1",
+                  borderColor: "#1b4f8a",
+                  color: "#1b4f8a",
                   px: 2.5,
                   py: 1,
                   minWidth: "110px",
@@ -286,8 +286,8 @@ export function QuizResults({
                   borderRadius: 2,
                   textTransform: "none",
                   "&:hover": {
-                    borderColor: "#4f46e5",
-                    backgroundColor: "#6366f115",
+                    borderColor: "#12365f",
+                    backgroundColor: "#1b4f8a15",
                   },
                 }}
               >
@@ -325,7 +325,7 @@ export function QuizResults({
                 onClick={handleNextQuestion}
                 sx={{
                   background:
-                    "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                    "linear-gradient(135deg, #1b4f8a 0%, #12365f 100%)",
                   color: "#ffffff",
                   px: 3,
                   py: 1,
@@ -334,11 +334,11 @@ export function QuizResults({
                   fontWeight: 600,
                   borderRadius: 2,
                   textTransform: "none",
-                  boxShadow: "0 4px 12px rgba(99, 102, 241, 0.3)",
+                  boxShadow: "var(--shadow-sm)",
                   "&:hover": {
                     background:
-                      "linear-gradient(135deg, #4f46e5 0%, #4338ca 100%)",
-                    boxShadow: "0 6px 16px rgba(99, 102, 241, 0.4)",
+                      "linear-gradient(135deg, #12365f 0%, #0e2a4b 100%)",
+                    boxShadow: "var(--shadow-md)",
                     transform: "translateY(-1px)",
                   },
                   "&:active": {
@@ -370,8 +370,8 @@ export function QuizResults({
                   height: 32,
                   borderRadius: "50%",
                   backgroundColor: currentAnswer.isCorrect
-                    ? "#10b981"
-                    : "#ef4444",
+                    ? "#0e7a3c"
+                    : "#b32020",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -415,11 +415,11 @@ export function QuizResults({
                           p: 2,
                           border:
                             isCorrect && isSelected
-                              ? "2px solid #10b981"
+                              ? "2px solid #0e7a3c"
                               : isCorrect
-                              ? "2px solid #10b981"
+                              ? "2px solid #0e7a3c"
                               : isSelected
-                              ? "2px solid #ef4444"
+                              ? "2px solid #b32020"
                               : "1px solid #e5e7eb",
                           backgroundColor:
                             isCorrect && isSelected
@@ -427,7 +427,7 @@ export function QuizResults({
                               : isCorrect
                               ? "#f0fdf4"
                               : isSelected
-                              ? "#fef2f2"
+                              ? "#fdf5f5"
                               : "#ffffff",
                           borderRadius: 2,
                           display: "flex",
@@ -455,7 +455,7 @@ export function QuizResults({
                               label="Correct"
                               size="small"
                               sx={{
-                                backgroundColor: "#10b981",
+                                backgroundColor: "#0e7a3c",
                                 color: "#ffffff",
                                 fontWeight: 600,
                                 fontSize: "0.75rem",
@@ -467,7 +467,7 @@ export function QuizResults({
                               label="Your Answer"
                               size="small"
                               sx={{
-                                backgroundColor: "#ef4444",
+                                backgroundColor: "#b32020",
                                 color: "#ffffff",
                                 fontWeight: 600,
                                 fontSize: "0.75rem",
@@ -479,7 +479,7 @@ export function QuizResults({
                               label="Your Answer"
                               size="small"
                               sx={{
-                                backgroundColor: "#10b981",
+                                backgroundColor: "#0e7a3c",
                                 color: "#ffffff",
                                 fontWeight: 600,
                                 fontSize: "0.75rem",
@@ -499,14 +499,14 @@ export function QuizResults({
                       p: 2,
                       backgroundColor: "#f9fafb",
                       borderRadius: 2,
-                      borderLeft: "4px solid #6366f1",
+                      borderLeft: "4px solid #1b4f8a",
                     }}
                   >
                     <Typography
                       variant="body2"
                       sx={{
                         fontWeight: 600,
-                        color: "#6366f1",
+                        color: "#1b4f8a",
                         mb: 0.5,
                       }}
                     >
@@ -550,11 +550,11 @@ export function QuizResults({
               textTransform: "none",
               fontSize: "1rem",
               fontWeight: 600,
-              borderColor: "#6366f1",
-              color: "#6366f1",
+              borderColor: "#1b4f8a",
+              color: "#1b4f8a",
               "&:hover": {
-                borderColor: "#4f46e5",
-                backgroundColor: "#6366f115",
+                borderColor: "#12365f",
+                backgroundColor: "#1b4f8a15",
               },
             }}
           >
@@ -572,9 +572,9 @@ export function QuizResults({
               textTransform: "none",
               fontSize: "1rem",
               fontWeight: 600,
-              backgroundColor: "#6366f1",
+              backgroundColor: "#1b4f8a",
               "&:hover": {
-                backgroundColor: "#4f46e5",
+                backgroundColor: "#12365f",
               },
             }}
           >

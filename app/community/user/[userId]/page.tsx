@@ -30,8 +30,8 @@ import { formatDistanceToNow } from "@/lib/utils/date-utils";
 const TIER_COLOR: Record<string, string> = {
   bronze: "#cd7f32",
   silver: "#94a3b8",
-  gold: "#fbbf24",
-  platinum: "#a78bfa",
+  gold: "#c9903a",
+  platinum: "#85aad6",
 };
 
 const TIER_ICON: Record<string, string> = {
@@ -268,9 +268,9 @@ export default function CommunityUserPage() {
                       height: 22,
                       fontSize: "0.7rem",
                       fontWeight: 600,
-                      backgroundColor: "rgba(99,102,241,0.12)",
-                      color: "#6366f1",
-                      border: "1px solid rgba(99,102,241,0.3)",
+                      backgroundColor: "rgba(27, 79, 138,0.12)",
+                      color: "#1b4f8a",
+                      border: "1px solid rgba(27, 79, 138,0.3)",
                     }}
                   />
                 )}
@@ -378,25 +378,25 @@ export default function CommunityUserPage() {
             }}
           >
             {[
-              { label: "Posts", value: stats.threads, icon: "mdi:forum-outline", color: "#6366f1" },
-              { label: "Comments", value: stats.comments, icon: "mdi:comment-outline", color: "#10b981" },
+              { label: "Posts", value: stats.threads, icon: "mdi:forum-outline", color: "#1b4f8a" },
+              { label: "Comments", value: stats.comments, icon: "mdi:comment-outline", color: "#0e7a3c" },
               {
                 label: "Upvotes",
                 value: stats.upvotes_received,
                 icon: "mdi:arrow-up-bold-outline",
-                color: "#0ea5e9",
+                color: "#1b4f8a",
               },
               {
                 label: "Accepted",
                 value: stats.accepted_answers,
                 icon: "mdi:check-decagram-outline",
-                color: "#16a34a",
+                color: "#0b6232",
               },
               {
                 label: "Bounties",
                 value: stats.bounties_won,
                 icon: "mdi:fire",
-                color: "#f59e0b",
+                color: "#b7791f",
               },
             ].map((s) => (
               <Paper
@@ -450,7 +450,7 @@ export default function CommunityUserPage() {
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
-              <IconWrapper icon="mdi:medal-outline" size={18} color="#f59e0b" />
+              <IconWrapper icon="mdi:medal-outline" size={18} color="#b7791f" />
               <Typography variant="subtitle1" fontWeight={700}>
                 Badges
               </Typography>
@@ -629,14 +629,14 @@ export default function CommunityUserPage() {
                   </Typography>
                   {c.is_accepted && (
                     <Chip
-                      icon={<IconWrapper icon="mdi:check-decagram" size={11} color="#16a34a" />}
+                      icon={<IconWrapper icon="mdi:check-decagram" size={11} color="#0b6232" />}
                       label="Accepted"
                       size="small"
                       sx={{
                         height: 18,
                         fontSize: "0.65rem",
                         backgroundColor: "rgba(22,163,74,0.12)",
-                        color: "#15803d",
+                        color: "#0b6232",
                         border: "1px solid rgba(22,163,74,0.3)",
                         "& .MuiChip-icon": { ml: 0.5 },
                       }}

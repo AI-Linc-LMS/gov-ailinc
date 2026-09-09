@@ -60,8 +60,8 @@ export function WizardLayout({
               aria-hidden
               className="inline-block h-1.5 w-1.5 rounded-full"
               style={{
-                background: "#00e0ff",
-                boxShadow: "0 0 8px rgba(0, 224, 255, 0.7)",
+                background: "#2f7fbf",
+                boxShadow: "var(--shadow-sm)",
               }}
             />
             <span
@@ -86,7 +86,7 @@ export function WizardLayout({
 
           <div className="aw-mono flex items-center gap-3 text-[10px] uppercase tracking-[0.3em]">
             <span
-              className={saving ? "aw-saving text-[#00e0ff]" : ""}
+              className={saving ? "aw-saving text-[#2f7fbf]" : ""}
               style={
                 saving ? undefined : { color: "rgb(var(--aw-fg) / 0.4)" }
               }
@@ -97,7 +97,7 @@ export function WizardLayout({
             <span
               className="font-semibold"
               style={{
-                background: "linear-gradient(90deg, #2356d6, #00e0ff)",
+                background: "linear-gradient(90deg, #2356d6, #2f7fbf)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 color: "transparent",
@@ -245,7 +245,7 @@ export function WizardLayout({
                     style={{
                       color:
                         hoveredBar && hoveredBar < step
-                          ? "#00e0ff"
+                          ? "#2f7fbf"
                           : hoveredBar === step || (!hoveredBar && step)
                             ? "rgb(var(--aw-fg) / 0.85)"
                             : undefined,
@@ -256,7 +256,7 @@ export function WizardLayout({
                   <span style={{ color: "rgb(var(--aw-line) / 0.32)" }}>·</span>
                   <span>{STEP_TITLES[(hoveredBar ?? step) - 1]}</span>
                   {hoveredBar && hoveredBar < step ? (
-                    <span style={{ color: "rgba(0,224,255,0.7)" }}>
+                    <span style={{ color: "rgba(133,170,214,0.9)" }}>
                       · Click to revisit
                     </span>
                   ) : null}

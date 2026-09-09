@@ -21,7 +21,7 @@ export default function AdaptiveVideoCompanionPage() {
       <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 } }}>
         <ButtonBase
           onClick={() => push(`/adaptive-courses/${courseId}/submodule/${submoduleId}`)}
-          sx={{ mb: 2, color: "#6366f1", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
+          sx={{ mb: 2, color: "#1b4f8a", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
         >
           <Icon icon="mdi:arrow-left" width={18} />
           Back to submodule
@@ -31,7 +31,7 @@ export default function AdaptiveVideoCompanionPage() {
           {Number.isFinite(configId) ? (
             <VideoCompanion configId={configId} />
           ) : (
-            <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 6 }}>
+            <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 6 }}>
               Missing video companion reference.
             </Typography>
           )}

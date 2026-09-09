@@ -25,9 +25,9 @@ import type {
 import { AdminSectionSkeleton } from "@/components/courses/CourseSkeletons";
 
 const TIER_COLOR: Record<string, string> = {
-  beginner: "#f59e0b",
-  intermediate: "#3b82f6",
-  advanced: "#16a34a",
+  beginner: "#b7791f",
+  intermediate: "#4a7fbb",
+  advanced: "#0b6232",
 };
 
 /** Per-student calibration submissions + their seeded Student Model (level,
@@ -202,10 +202,10 @@ function SubmissionRow({
       {(s.strengths.length > 0 || s.growth_areas.length > 0) && (
         <Stack direction="row" flexWrap="wrap" sx={{ mt: 1, gap: 0.75 }}>
           {s.strengths.map((x) => (
-            <Chip key={`s-${x.dimension}`} size="small" label={x.dimension} sx={{ bgcolor: "#dcfce7", color: "#15803d", fontWeight: 700 }} />
+            <Chip key={`s-${x.dimension}`} size="small" label={x.dimension} sx={{ bgcolor: "#dff0e6", color: "#0b6232", fontWeight: 700 }} />
           ))}
           {s.growth_areas.map((x) => (
-            <Chip key={`g-${x.dimension}`} size="small" label={x.dimension} sx={{ bgcolor: "#fef3c7", color: "#b45309", fontWeight: 700 }} />
+            <Chip key={`g-${x.dimension}`} size="small" label={x.dimension} sx={{ bgcolor: "#fdf3e2", color: "#8a5a12", fontWeight: 700 }} />
           ))}
         </Stack>
       )}

@@ -275,7 +275,7 @@ export default function AssessmentsPage() {
                     px: 3,
                     py: 1.15,
                     borderRadius: 999,
-                    boxShadow: "0 12px 24px -12px rgba(124,58,237,0.5)",
+                    boxShadow: "0 12px 24px -12px rgba(20, 64, 111,0.5)",
                     "&:hover": { filter: "brightness(1.05)", transform: "translateY(-1px)" },
                   }}
                 >

@@ -94,7 +94,7 @@ export function AdminScorecardSubNav({ active, onLocalTabChange }: AdminScorecar
         bgcolor: "var(--card-bg)",
         overflow: "hidden",
         boxShadow:
-          "0 4px 24px color-mix(in srgb, var(--font-primary) 14%, transparent)",
+          "var(--shadow-sm)",
       }}
     >
       <Tabs

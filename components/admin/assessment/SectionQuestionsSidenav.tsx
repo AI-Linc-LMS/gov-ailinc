@@ -156,7 +156,7 @@ export function SectionQuestionsSidenav({
         flexDirection: "column",
         borderRadius: "var(--radius-card)",
         border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+        boxShadow: "var(--shadow-sm)",
         bgcolor: "var(--card-bg)",
       }}
     >
@@ -253,7 +253,7 @@ export function SectionQuestionsSidenav({
               "&.Mui-selected": {
                 bgcolor: "var(--card-bg)",
                 color: "var(--ai-violet)",
-                boxShadow: "0 1px 2px rgba(16,24,40,0.1), 0 1px 3px rgba(16,24,40,0.08)",
+                boxShadow: "var(--shadow-sm)",
                 "&:hover": { bgcolor: "var(--card-bg)", color: "var(--ai-violet)" },
               },
             },

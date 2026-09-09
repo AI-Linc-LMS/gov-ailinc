@@ -8,44 +8,53 @@ export type SectionPerformanceStatusKind =
   | "moderate"
   | "strongest";
 
+/**
+ * Row accents. Each entry carries the same colour twice: once as a hex the UI
+ * reads, and once as the decimal channels jsPDF needs. Only the hex half is
+ * greppable, so the palette sweep moved the hexes onto the government colours
+ * and left every *Rgb array on the vendor ramp: the same table was rendering
+ * navy on screen and blue-600 / violet-600 / emerald in the exported PDF. The
+ * arrays below are now the channels of the hex on the line above them, so the
+ * two halves cannot disagree. If you change a hex here, change its array too.
+ */
 export const SECTION_ROW_ACCENTS = [
   {
-    solid: "#2563eb",
-    light: "#dbeafe",
-    text: "#1e40af",
-    solidRgb: [37, 99, 235] as const,
-    lightRgb: [219, 234, 254] as const,
-    textRgb: [30, 64, 175] as const,
+    solid: "#1b4f8a",
+    light: "#d9e6f4",
+    text: "#12365f",
+    solidRgb: [27, 79, 138] as const,
+    lightRgb: [217, 230, 244] as const,
+    textRgb: [18, 54, 95] as const,
   },
   {
-    solid: "#7c3aed",
-    light: "#ede9fe",
-    text: "#5b21b6",
-    solidRgb: [124, 58, 237] as const,
-    lightRgb: [237, 233, 254] as const,
-    textRgb: [91, 33, 182] as const,
+    solid: "#14406f",
+    light: "#eef3fa",
+    text: "#12365f",
+    solidRgb: [20, 64, 111] as const,
+    lightRgb: [238, 243, 250] as const,
+    textRgb: [18, 54, 95] as const,
   },
   {
-    solid: "#059669",
-    light: "#d1fae5",
+    solid: "#0B6232",
+    light: "#dff0e6",
     text: "#065f46",
-    solidRgb: [5, 150, 105] as const,
-    lightRgb: [209, 250, 229] as const,
+    solidRgb: [11, 98, 50] as const,
+    lightRgb: [223, 240, 230] as const,
     textRgb: [6, 95, 70] as const,
   },
   {
-    solid: "#dc2626",
-    light: "#fee2e2",
+    solid: "#991b1b",
+    light: "#fbeaea",
     text: "#991b1b",
-    solidRgb: [220, 38, 38] as const,
-    lightRgb: [254, 226, 226] as const,
+    solidRgb: [153, 27, 27] as const,
+    lightRgb: [251, 234, 234] as const,
     textRgb: [153, 27, 27] as const,
   },
   {
-    solid: "#d97706",
+    solid: "#8a5a12",
     light: "#ffedd5",
     text: "#9a3412",
-    solidRgb: [217, 119, 6] as const,
+    solidRgb: [138, 90, 18] as const,
     lightRgb: [255, 237, 213] as const,
     textRgb: [154, 52, 18] as const,
   },
@@ -106,9 +115,9 @@ export const SECTION_STATUS_MUI: Record<
   SectionPerformanceStatusKind,
   { bgcolor: string; color: string }
 > = {
-  critical: { bgcolor: "#fee2e2", color: "#991b1b" },
+  critical: { bgcolor: "#fbeaea", color: "#991b1b" },
   moderate: { bgcolor: "#ffedd5", color: "#9a3412" },
-  strongest: { bgcolor: "#d1fae5", color: "#065f46" },
+  strongest: { bgcolor: "#dff0e6", color: "#065f46" },
 };
 
 /** Filled status pill in vector PDF (matches SECTION_STATUS_MUI). */

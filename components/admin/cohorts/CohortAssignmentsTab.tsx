@@ -29,27 +29,27 @@ const TYPE_META: Record<
   { label: string; icon: string; color: string; blurb: string }
 > = {
   adaptive_course: {
-    label: "Course", icon: "mdi:robot-outline", color: "#6366f1",
+    label: "Course", icon: "mdi:robot-outline", color: "#1b4f8a",
     blurb: "Enrols every active student in this batch, and anyone who joins later.",
   },
   live_series: {
-    label: "Live session series", icon: "mdi:video-outline", color: "#ec4899",
+    label: "Live session series", icon: "mdi:video-outline", color: "#0f6b7a",
     blurb: "Links a recurring live class to this batch so its students see it.",
   },
   classic_course: {
-    label: "Classic course (legacy)", icon: "mdi:book-open-variant", color: "#0ea5e9",
+    label: "Classic course (legacy)", icon: "mdi:book-open-variant", color: "#1b4f8a",
     blurb: "The older course format. Use a course for anything new.",
   },
   assessment: {
-    label: "Assessment", icon: "mdi:clipboard-text-outline", color: "#a855f7",
+    label: "Assessment", icon: "mdi:clipboard-text-outline", color: "#1b4f8a",
     blurb: "Makes this test available to the batch, and only the batch.",
   },
   mock_interview: {
-    label: "Mock interview", icon: "mdi:account-voice", color: "#f59e0b",
+    label: "Mock interview", icon: "mdi:account-voice", color: "#b7791f",
     blurb: "Gives the batch access to this AI interview template.",
   },
   job_posting: {
-    label: "Job posting", icon: "mdi:briefcase-outline", color: "#10b981",
+    label: "Job posting", icon: "mdi:briefcase-outline", color: "#0e7a3c",
     blurb: "Shows this job opening to the batch's students.",
   },
 };
@@ -93,7 +93,7 @@ export function CohortAssignmentsTab({
     <Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
         <Typography sx={{ fontWeight: 800, fontSize: "1.05rem" }}>
-          Assignments <span style={{ color: "#a855f7" }}>{artifacts.length}</span>
+          Assignments <span style={{ color: "#1b4f8a" }}>{artifacts.length}</span>
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <Button
@@ -155,7 +155,7 @@ export function CohortAssignmentsTab({
               </Box>
               <ButtonBase
                 onClick={() => void remove(a)}
-                sx={{ p: 0.75, borderRadius: 2, color: "text.secondary", "&:hover": { color: "#ef4444" } }}
+                sx={{ p: 0.75, borderRadius: 2, color: "text.secondary", "&:hover": { color: "#b32020" } }}
                 aria-label="Remove assignment"
               >
                 <Icon icon="mdi:close" width={18} />

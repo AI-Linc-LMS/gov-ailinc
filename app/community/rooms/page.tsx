@@ -28,8 +28,8 @@ import { formatDistanceToNow } from "@/lib/utils/date-utils";
 type TabValue = "all" | RoomStatus;
 
 const STATUS_COLOR: Record<RoomStatus, string> = {
-  live: "#ef4444",
-  scheduled: "#0ea5e9",
+  live: "#b32020",
+  scheduled: "#1b4f8a",
   ended: "#6b7280",
 };
 
@@ -104,7 +104,7 @@ export default function RoomsListPage() {
         >
           <Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
-              <IconWrapper icon="mdi:broadcast" size={26} color="#ec4899" />
+              <IconWrapper icon="mdi:broadcast" size={26} color="#0f6b7a" />
               <Typography variant="h5" fontWeight={700}>
                 Live Rooms
               </Typography>
@@ -122,9 +122,9 @@ export default function RoomsListPage() {
                 textTransform: "none",
                 fontWeight: 700,
                 borderRadius: "10px",
-                backgroundColor: "#ec4899",
+                backgroundColor: "#0f6b7a",
                 boxShadow: "none",
-                "&:hover": { backgroundColor: "#db2777", boxShadow: "none" },
+                "&:hover": { backgroundColor: "#0b5260", boxShadow: "none" },
               }}
             >
               Start a Room

@@ -16,14 +16,14 @@ export function ExplanationSection({ explanation }: ExplanationSectionProps) {
         p: 2.5,
         backgroundColor: "#f9fafb",
         borderRadius: 2,
-        borderLeft: "4px solid #6366f1",
+        borderLeft: "4px solid #1b4f8a",
       }}
     >
       <Typography
         variant="body2"
         sx={{
           fontWeight: 600,
-          color: "#6366f1",
+          color: "#1b4f8a",
           mb: 1,
         }}
       >

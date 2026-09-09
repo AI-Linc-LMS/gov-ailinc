@@ -32,18 +32,18 @@ function fmtPct(n: number): string {
 }
 
 const COHORT_GRADIENTS = [
-  "linear-gradient(120deg,#6366f1,#f59e0b)",
-  "linear-gradient(120deg,#a855f7,#ec4899)",
-  "linear-gradient(120deg,#6366f1,#8b5cf6)",
-  "linear-gradient(120deg,#0ea5e9,#6366f1)",
+  "linear-gradient(120deg,#1b4f8a,#b7791f)",
+  "linear-gradient(120deg,#1b4f8a,#0f6b7a)",
+  "linear-gradient(120deg,#1b4f8a,#4a7fbb)",
+  "linear-gradient(120deg,#1b4f8a,#1b4f8a)",
 ];
-const AI_GRAD = "linear-gradient(135deg,#7c3aed,#ec4899)";
+const AI_GRAD = "linear-gradient(135deg,#14406f,#0f6b7a)";
 
 type Band = { label: string; color: string; bg: string };
 function band(pct: number): Band {
-  if (pct >= 60) return { label: "Strong", color: "#059669", bg: "color-mix(in srgb,#10b981 15%,transparent)" };
-  if (pct >= 40) return { label: "Watch", color: "#b45309", bg: "color-mix(in srgb,#f59e0b 16%,transparent)" };
-  return { label: "Needs work", color: "#b91c1c", bg: "color-mix(in srgb,#ef4444 14%,transparent)" };
+  if (pct >= 60) return { label: "Strong", color: "#0B6232", bg: "color-mix(in srgb,#0e7a3c 15%,transparent)" };
+  if (pct >= 40) return { label: "Watch", color: "#8a5a12", bg: "color-mix(in srgb,#b7791f 16%,transparent)" };
+  return { label: "Needs work", color: "#8f1919", bg: "color-mix(in srgb,#b32020 14%,transparent)" };
 }
 const isGraded = (s: InstructorRecentSubmission) =>
   s.review_status === "evaluated" || s.review_status === "published" || s.score != null;
@@ -109,7 +109,7 @@ export default function InstructorDashboardPage() {
 
   return (
     <PageShell>
-      {error && <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
+      {error && <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
 
       {/* Two-column: a continuous main column + a continuous right rail (no per-row staggered gaps). */}
       <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "minmax(0,1fr) 360px" }, gap: 2.5, alignItems: "start" }}>
@@ -117,8 +117,8 @@ export default function InstructorDashboardPage() {
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5, minWidth: 0 }}>
           {/* ---- Hero ---- */}
           <Box data-tour-id="instructor-briefing" sx={{ borderRadius: 4, position: "relative", overflow: "hidden", color: "#fff",
-            background: "radial-gradient(120% 140% at 85% 0%, #4c1d95 0%, #2e1065 45%, #1e1b4b 100%)" }}>
-            <Box sx={{ height: 4, background: "linear-gradient(90deg,#8b5cf6,#ec4899,#f59e0b)" }} />
+            background: "radial-gradient(120% 140% at 85% 0%, #0e2a4b 0%, #0a1e37 45%, #071426 100%)" }}>
+            <Box sx={{ height: 4, background: "linear-gradient(90deg,#4a7fbb,#0f6b7a,#b7791f)" }} />
             <Box sx={{ p: { xs: 2.5, md: 3.5 } }}>
               <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.5, gap: 1 }}>
                 <Box sx={{ px: 1.25, py: 0.5, borderRadius: 999, border: "1px solid rgba(255,255,255,0.2)",
@@ -149,13 +149,13 @@ export default function InstructorDashboardPage() {
 
               <Typography sx={{ mt: 1.25, color: "rgba(255,255,255,0.8)", fontSize: "0.96rem", maxWidth: 620, lineHeight: 1.5 }}>
                 {topRiskCohort && topRiskCohort.at_risk > 0 ? (
-                  <>Your biggest lever is <b style={{ color: "#fff" }}>{topRiskCohort.name}</b>, with <b style={{ color: "#fca5a5" }}>{topRiskCohort.at_risk} student{topRiskCohort.at_risk === 1 ? "" : "s"}</b> slipping. A quick check-in moves them back on track.{" "}
+                  <>Your biggest lever is <b style={{ color: "#fff" }}>{topRiskCohort.name}</b>, with <b style={{ color: "#d99b9b" }}>{topRiskCohort.at_risk} student{topRiskCohort.at_risk === 1 ? "" : "s"}</b> slipping. A quick check-in moves them back on track.{" "}
                     <Box component="span" onClick={() => push("/instructor/students?status=at_risk")}
-                      sx={{ color: "#fcd34d", fontWeight: 800, cursor: "pointer", whiteSpace: "nowrap" }}>Review →</Box></>
+                      sx={{ color: "#d9b169", fontWeight: 800, cursor: "pointer", whiteSpace: "nowrap" }}>Review →</Box></>
                 ) : pending > 0 ? (
                   <>You have <b style={{ color: "#fff" }}>{pending} submission{pending === 1 ? "" : "s"}</b> to review. Clearing your grading backlog keeps students moving.{" "}
                     <Box component="span" onClick={() => push("/instructor/assessments")}
-                      sx={{ color: "#fcd34d", fontWeight: 800, cursor: "pointer", whiteSpace: "nowrap" }}>Grade now →</Box></>
+                      sx={{ color: "#d9b169", fontWeight: 800, cursor: "pointer", whiteSpace: "nowrap" }}>Grade now →</Box></>
                 ) : (
                   <>Everyone's tracking well across your {dash?.batches ?? 0} cohort{(dash?.batches ?? 0) === 1 ? "" : "s"}. Keep the momentum with a live session or a quick nudge.</>
                 )}
@@ -178,7 +178,7 @@ export default function InstructorDashboardPage() {
                   <Button component="a" href={primary.href || undefined} target="_blank" rel="noopener" disabled={!primary.href}
                     startIcon={<Icon icon={primary.icon} width={18} />} endIcon={<Icon icon="mdi:arrow-right" width={18} />}
                     sx={{ px: 3, py: 1.25, borderRadius: 999, fontWeight: 800, textTransform: "none", color: "#fff", background: AI_GRAD,
-                      boxShadow: "0 12px 30px -12px rgba(236,72,153,.6)", "&:hover": { filter: "brightness(1.06)" },
+                      boxShadow: "0 12px 30px -12px rgba(15, 107, 122,.6)", "&:hover": { filter: "brightness(1.06)" },
                       "&.Mui-disabled": { background: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.5)", boxShadow: "none" } }}>
                     {primary.label}
                   </Button>
@@ -186,7 +186,7 @@ export default function InstructorDashboardPage() {
                   <Button onClick={() => push(primary.to!)}
                     startIcon={<Icon icon={primary.icon} width={18} />} endIcon={<Icon icon="mdi:arrow-right" width={18} />}
                     sx={{ px: 3, py: 1.25, borderRadius: 999, fontWeight: 800, textTransform: "none", color: "#fff", background: AI_GRAD,
-                      boxShadow: "0 12px 30px -12px rgba(236,72,153,.6)", "&:hover": { filter: "brightness(1.06)" } }}>
+                      boxShadow: "0 12px 30px -12px rgba(15, 107, 122,.6)", "&:hover": { filter: "brightness(1.06)" } }}>
                     {primary.label}
                   </Button>
                 )}
@@ -201,11 +201,11 @@ export default function InstructorDashboardPage() {
 
           {/* ---- KPI tiles ---- */}
           <Box data-tour-id="instructor-kpis" sx={{ display: "grid", gridTemplateColumns: { xs: "1fr 1fr", md: "repeat(4, 1fr)" }, gap: 2 }}>
-            <Kpi label="Students" value={students} icon="mdi:account-multiple" tint="#6366f1" sub={`${dash?.active_students ?? 0} active this week`} />
-            <Kpi label="Cohorts" value={dash?.batches ?? 0} icon="mdi:school-outline" tint="#f59e0b" sub={`${dash?.courses ?? 0} course${(dash?.courses ?? 0) === 1 ? "" : "s"}`} />
-            <Kpi label="Avg progress" value={fmtPct(dash?.avg_progress ?? 0)} icon="mdi:chart-line" tint="#10b981" sub={`${fmtPct(dash?.completion_rate ?? 0)} completed`} />
-            <Kpi label="At risk" value={atRisk} icon="mdi:alert-outline" tint="#ef4444"
-              sub={atRisk > 0 ? <span style={{ color: "#ef4444", fontWeight: 700 }}>need a nudge</span> : "all on track"} />
+            <Kpi label="Students" value={students} icon="mdi:account-multiple" tint="#1b4f8a" sub={`${dash?.active_students ?? 0} active this week`} />
+            <Kpi label="Cohorts" value={dash?.batches ?? 0} icon="mdi:school-outline" tint="#b7791f" sub={`${dash?.courses ?? 0} course${(dash?.courses ?? 0) === 1 ? "" : "s"}`} />
+            <Kpi label="Avg progress" value={fmtPct(dash?.avg_progress ?? 0)} icon="mdi:chart-line" tint="#0e7a3c" sub={`${fmtPct(dash?.completion_rate ?? 0)} completed`} />
+            <Kpi label="At risk" value={atRisk} icon="mdi:alert-outline" tint="#b32020"
+              sub={atRisk > 0 ? <span style={{ color: "#b32020", fontWeight: 700 }}>need a nudge</span> : "all on track"} />
           </Box>
 
           {/* ---- Cohort readiness ---- */}
@@ -222,7 +222,7 @@ export default function InstructorDashboardPage() {
             <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: 0.5 }}>
               <Typography sx={{ fontWeight: 800, fontSize: "1.15rem" }}>Your cohorts</Typography>
               <Button onClick={() => push("/instructor/cohorts")} endIcon={<Icon icon="mdi:chevron-right" width={18} />}
-                sx={{ textTransform: "none", fontWeight: 700, color: "#6366f1" }}>All cohorts</Button>
+                sx={{ textTransform: "none", fontWeight: 700, color: "#1b4f8a" }}>All cohorts</Button>
             </Stack>
             <Typography sx={{ color: "text.secondary", fontSize: "0.82rem", mb: 1.5 }}>Assigned by admin · you own delivery & reporting</Typography>
             <Stack spacing={1.5}>
@@ -243,7 +243,7 @@ export default function InstructorDashboardPage() {
             <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: 1.5 }}>
               <Typography sx={{ fontWeight: 800, fontSize: "1.15rem" }}>Recent submissions</Typography>
               <Button onClick={() => push("/instructor/assessments")} endIcon={<Icon icon="mdi:chevron-right" width={18} />}
-                sx={{ textTransform: "none", fontWeight: 700, color: "#6366f1" }}>Gradebook</Button>
+                sx={{ textTransform: "none", fontWeight: 700, color: "#1b4f8a" }}>Gradebook</Button>
             </Stack>
             <Box sx={{ borderRadius: 3, border: "1px solid var(--border-default)", bgcolor: "var(--card-bg)", overflow: "hidden" }}>
               {(dash?.recent_submissions ?? []).length === 0 ? (
@@ -275,7 +275,7 @@ export default function InstructorDashboardPage() {
           {/* Needs attention */}
           <Box sx={{ borderRadius: 3, border: "1px solid var(--border-default)", bgcolor: "var(--card-bg)", p: 2 }}>
             <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 0.25 }}>
-              <Icon icon="mdi:flag-variant-outline" width={18} style={{ color: "#ef4444" }} />
+              <Icon icon="mdi:flag-variant-outline" width={18} style={{ color: "#b32020" }} />
               <Typography sx={{ fontWeight: 800 }}>Needs attention</Typography>
             </Stack>
             <Typography sx={{ color: "text.secondary", fontSize: "0.78rem", mb: 1.5 }}>AI-flagged · {atRisk} student{atRisk === 1 ? "" : "s"}</Typography>
@@ -284,14 +284,14 @@ export default function InstructorDashboardPage() {
                 <Box key={s.student_id} onClick={() => setSelected(s.student_id)} role="button" tabIndex={0}
                   onKeyDown={(e) => { if (e.key === "Enter") setSelected(s.student_id); }}
                   sx={{ display: "flex", alignItems: "center", gap: 1.25, p: 1, borderRadius: 2, cursor: "pointer",
-                    "&:hover": { bgcolor: "color-mix(in srgb, #ef4444 6%, transparent)" } }}>
+                    "&:hover": { bgcolor: "color-mix(in srgb, #b32020 6%, transparent)" } }}>
                   <Box sx={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center",
-                    color: "#fff", fontWeight: 800, fontSize: "0.72rem", background: "linear-gradient(135deg,#6366f1,#a855f7)" }}>
+                    color: "#fff", fontWeight: 800, fontSize: "0.72rem", background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)" }}>
                     {(s.name || s.email || "?").slice(0, 1).toUpperCase()}
                   </Box>
                   <Box sx={{ minWidth: 0, flex: 1 }}>
                     <Typography sx={{ fontWeight: 700, fontSize: "0.85rem" }} noWrap>{s.name || s.email}</Typography>
-                    <Typography sx={{ color: "#ef4444", fontSize: "0.74rem" }}>{fmtPct(s.progress)} progress · low</Typography>
+                    <Typography sx={{ color: "#b32020", fontSize: "0.74rem" }}>{fmtPct(s.progress)} progress · low</Typography>
                   </Box>
                   <Icon icon="mdi:chevron-right" width={18} style={{ color: "var(--font-tertiary)" }} />
                 </Box>
@@ -302,8 +302,8 @@ export default function InstructorDashboardPage() {
             </Stack>
             {dash && dash.at_risk.length > 0 && (
               <Button fullWidth onClick={() => push("/instructor/students?status=at_risk")}
-                sx={{ mt: 1.5, py: 0.9, borderRadius: 2, fontWeight: 800, textTransform: "none", color: "#ef4444",
-                  bgcolor: "color-mix(in srgb,#ef4444 8%,transparent)" }}>
+                sx={{ mt: 1.5, py: 0.9, borderRadius: 2, fontWeight: 800, textTransform: "none", color: "#b32020",
+                  bgcolor: "color-mix(in srgb,#b32020 8%,transparent)" }}>
                 Review all at-risk
               </Button>
             )}
@@ -320,7 +320,7 @@ export default function InstructorDashboardPage() {
 
 /** SVG progress ring. The progress arc is only drawn when pct >= 1, so a near-zero value shows a
  *  clean empty track (no stray rounded-cap dot at 12 o'clock). */
-function Ring({ pct, size = 120, stroke = 11, track = "rgba(255,255,255,0.12)", grad = ["#8b5cf6", "#ec4899"], children }: {
+function Ring({ pct, size = 120, stroke = 11, track = "rgba(255,255,255,0.12)", grad = ["#4a7fbb", "#0f6b7a"], children }: {
   pct: number; size?: number; stroke?: number; track?: string; grad?: [string, string]; children?: React.ReactNode;
 }) {
   const clamped = Math.max(0, Math.min(100, pct));
@@ -378,9 +378,9 @@ function TodayCard({ onTrackPct, liveNow, pending, atRisk, nextSession, onGrade,
   ];
   return (
     <Box sx={{ borderRadius: 4, overflow: "hidden", color: "#fff",
-      background: "radial-gradient(120% 130% at 10% 0%, #312e81 0%, #1e1b4b 55%, #0f172a 100%)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      background: "radial-gradient(120% 130% at 10% 0%, #0a1e37 0%, #071426 55%, #0f172a 100%)", border: "1px solid rgba(255,255,255,0.08)" }}>
       <Box sx={{ p: 2.5, display: "flex", gap: 2, alignItems: "center" }}>
-        <Ring pct={onTrackPct} size={100} grad={["#34d399", "#10b981"]}>
+        <Ring pct={onTrackPct} size={100} grad={["#2f9159", "#0e7a3c"]}>
           <Typography sx={{ fontWeight: 900, fontSize: "1.35rem", lineHeight: 1 }}>{fmtPct(onTrackPct)}</Typography>
           <Typography sx={{ fontSize: "0.56rem", color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: 0.5 }}>on track</Typography>
         </Ring>
@@ -405,7 +405,7 @@ function TodayCard({ onTrackPct, liveNow, pending, atRisk, nextSession, onGrade,
             sx={{ display: "flex", alignItems: "center", gap: 1, p: 1, borderRadius: 2, cursor: "pointer",
               bgcolor: "rgba(255,255,255,0.05)", "&:hover": { bgcolor: "rgba(255,255,255,0.1)" } }}>
             <Icon icon={it.done ? "mdi:check-circle" : "mdi:circle-outline"} width={18}
-              style={{ color: it.done ? "#34d399" : "rgba(255,255,255,0.5)", flexShrink: 0 }} />
+              style={{ color: it.done ? "#2f9159" : "rgba(255,255,255,0.5)", flexShrink: 0 }} />
             <Typography sx={{ fontSize: "0.84rem", fontWeight: 600, color: it.done ? "rgba(255,255,255,0.6)" : "#fff",
               textDecoration: it.done ? "line-through" : "none" }}>{it.label}</Typography>
           </Box>
@@ -415,7 +415,7 @@ function TodayCard({ onTrackPct, liveNow, pending, atRisk, nextSession, onGrade,
   );
 }
 
-function Kpi({ label, value, sub, icon, tint = "#6366f1" }: {
+function Kpi({ label, value, sub, icon, tint = "#1b4f8a" }: {
   label: string; value: React.ReactNode; sub?: React.ReactNode; icon: string; tint?: string;
 }) {
   return (
@@ -445,7 +445,7 @@ function ReadinessCard({ ready, engagement, progress, completion, onTrack }: {
   ];
   return (
     <Box sx={{ borderRadius: 4, overflow: "hidden", color: "#fff",
-      background: "radial-gradient(120% 130% at 0% 0%, #1e1b4b 0%, #0f172a 60%, #020617 100%)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      background: "radial-gradient(120% 130% at 0% 0%, #071426 0%, #0f172a 60%, #020617 100%)", border: "1px solid rgba(255,255,255,0.08)" }}>
       <Box sx={{ p: { xs: 2.5, md: 3 }, display: "grid", gridTemplateColumns: { xs: "1fr", sm: "auto 1fr" }, gap: 3, alignItems: "center" }}>
         <Stack alignItems="center" spacing={1}>
           <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.75 }}>
@@ -454,7 +454,7 @@ function ReadinessCard({ ready, engagement, progress, completion, onTrack }: {
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: "0.72rem", letterSpacing: 0.6, textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>Cohort readiness</Typography>
           </Box>
-          <Ring pct={ready} size={128} grad={["#8b5cf6", "#ec4899"]}>
+          <Ring pct={ready} size={128} grad={["#4a7fbb", "#0f6b7a"]}>
             <Typography sx={{ fontWeight: 900, fontSize: "1.6rem", lineHeight: 1 }}>{fmtPct(ready)}</Typography>
             <Typography sx={{ fontSize: "0.56rem", color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: 0.5 }}>ready</Typography>
           </Ring>
@@ -501,13 +501,13 @@ function CohortHealthCard({ cohorts, avg, onReport }: { cohorts: InstructorCohor
           </Box>
         </Stack>
         <Button onClick={onReport} endIcon={<Icon icon="mdi:arrow-right" width={15} />}
-          sx={{ textTransform: "none", fontWeight: 700, color: "#6366f1", minWidth: 0, fontSize: "0.8rem" }}>Full report</Button>
+          sx={{ textTransform: "none", fontWeight: 700, color: "#1b4f8a", minWidth: 0, fontSize: "0.8rem" }}>Full report</Button>
       </Stack>
 
-      <Box sx={{ p: 1.75, borderRadius: 3, bgcolor: "color-mix(in srgb,#6366f1 7%,transparent)", mb: 2 }}>
+      <Box sx={{ p: 1.75, borderRadius: 3, bgcolor: "color-mix(in srgb,#1b4f8a 7%,transparent)", mb: 2 }}>
         <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 0.5, textTransform: "uppercase", color: "text.secondary" }}>Avg progress · your cohorts</Typography>
         <Stack direction="row" alignItems="baseline" spacing={0.75}>
-          <Typography sx={{ fontWeight: 900, fontSize: "2rem", color: "#6366f1", letterSpacing: "-0.01em" }}>{fmtPct(avg)}</Typography>
+          <Typography sx={{ fontWeight: 900, fontSize: "2rem", color: "#1b4f8a", letterSpacing: "-0.01em" }}>{fmtPct(avg)}</Typography>
           <Typography sx={{ fontSize: "0.78rem", color: "text.secondary" }}>{cohorts.length} cohort{cohorts.length === 1 ? "" : "s"} tracked</Typography>
         </Stack>
       </Box>
@@ -525,7 +525,7 @@ function CohortHealthCard({ cohorts, avg, onReport }: { cohorts: InstructorCohor
                 </Stack>
               </Stack>
               <Box sx={{ height: 6, borderRadius: 3, bgcolor: "color-mix(in srgb,var(--border-default) 55%,transparent)", overflow: "hidden" }}>
-                <Box sx={{ width: `${Math.max(0, Math.min(100, c.progress))}%`, height: "100%", background: c.progress >= 60 ? "#10b981" : c.progress >= 40 ? "#f59e0b" : "#ef4444" }} />
+                <Box sx={{ width: `${Math.max(0, Math.min(100, c.progress))}%`, height: "100%", background: c.progress >= 60 ? "#0e7a3c" : c.progress >= 40 ? "#b7791f" : "#b32020" }} />
               </Box>
             </Box>
           );
@@ -534,8 +534,8 @@ function CohortHealthCard({ cohorts, avg, onReport }: { cohorts: InstructorCohor
       </Stack>
 
       {weakest && weakest.progress < 60 && (
-        <Box sx={{ mt: 2, p: 1.5, borderRadius: 2.5, bgcolor: "color-mix(in srgb,#7c3aed 8%,transparent)", display: "flex", gap: 1, alignItems: "flex-start" }}>
-          <Icon icon="mdi:sparkles" width={16} style={{ color: "#7c3aed", flexShrink: 0, marginTop: 2 }} />
+        <Box sx={{ mt: 2, p: 1.5, borderRadius: 2.5, bgcolor: "color-mix(in srgb,#14406f 8%,transparent)", display: "flex", gap: 1, alignItems: "flex-start" }}>
+          <Icon icon="mdi:sparkles" width={16} style={{ color: "#14406f", flexShrink: 0, marginTop: 2 }} />
           <Typography sx={{ fontSize: "0.8rem", color: "var(--font-secondary)", lineHeight: 1.4 }}>
             Focus on <b>{weakest.name}</b> next. It's your lowest-progress cohort at {fmtPct(weakest.progress)}.
           </Typography>
@@ -566,7 +566,7 @@ function RowCascade({ count, grad }: { count: number; grad: string }) {
       ))}
       {extra > 0 && (
         <Box sx={{ minWidth: 34, height: 34, px: 0.5, borderRadius: 999, display: "grid", placeItems: "center",
-          bgcolor: "color-mix(in srgb,#6366f1 16%,transparent)", color: "#4f46e5", border: "2px solid var(--card-bg)", ml: "-12px", fontWeight: 900, fontSize: "0.66rem" }}>
+          bgcolor: "color-mix(in srgb,#1b4f8a 16%,transparent)", color: "#12365f", border: "2px solid var(--card-bg)", ml: "-12px", fontWeight: 900, fontSize: "0.66rem" }}>
           +{extra}
         </Box>
       )}
@@ -582,7 +582,7 @@ function CohortRow({ c, grad, onOpen, onHover }: {
       sx={{ cursor: "pointer", p: 2, borderRadius: 3, bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)",
         display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr auto" }, gap: 2, alignItems: "center",
         transition: "border-color .15s, box-shadow .15s",
-        "&:hover": { borderColor: "color-mix(in srgb, #6366f1 40%, transparent)", boxShadow: "0 12px 30px -20px rgba(99,102,241,.4)" } }}>
+        "&:hover": { borderColor: "color-mix(in srgb, #1b4f8a 40%, transparent)", boxShadow: "0 12px 30px -20px rgba(27, 79, 138,.4)" } }}>
       <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
         <RowCascade count={c.student_count} grad={grad} />
         <Box sx={{ minWidth: 0 }}>
@@ -605,7 +605,7 @@ function CohortRow({ c, grad, onOpen, onHover }: {
 function Stat({ n, label, danger }: { n: React.ReactNode; label: string; danger?: boolean }) {
   return (
     <Box sx={{ textAlign: "center" }}>
-      <Typography sx={{ fontWeight: 900, fontSize: "1.05rem", color: danger ? "#f59e0b" : "var(--font-primary)" }}>{n}</Typography>
+      <Typography sx={{ fontWeight: 900, fontSize: "1.05rem", color: danger ? "#b7791f" : "var(--font-primary)" }}>{n}</Typography>
       <Typography sx={{ fontSize: "0.62rem", color: "text.secondary", textTransform: "uppercase", letterSpacing: 0.4 }}>{label}</Typography>
     </Box>
   );
@@ -617,7 +617,7 @@ function SchedulePanel({ items, onSchedule }: { items: InstructorScheduleItem[];
       <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: 1.5 }}>
         <Typography sx={{ fontWeight: 800, fontSize: "1.05rem" }}>Schedule</Typography>
         <Button onClick={onSchedule} endIcon={<Icon icon="mdi:arrow-right" width={16} />}
-          sx={{ textTransform: "none", fontWeight: 700, color: "#6366f1", minWidth: 0 }}>All</Button>
+          sx={{ textTransform: "none", fontWeight: 700, color: "#1b4f8a", minWidth: 0 }}>All</Button>
       </Stack>
       <Stack spacing={1}>
         {items.length === 0 && <Typography sx={{ color: "text.secondary", fontSize: "0.84rem", py: 1 }}>No upcoming sessions.</Typography>}
@@ -625,11 +625,11 @@ function SchedulePanel({ items, onSchedule }: { items: InstructorScheduleItem[];
           const live = s.status === "live";
           return (
             <Box key={s.id} sx={{ p: 1.5, borderRadius: 2, border: "1px solid var(--border-default)",
-              bgcolor: live ? "color-mix(in srgb,#10b981 8%,transparent)" : "transparent" }}>
+              bgcolor: live ? "color-mix(in srgb,#0e7a3c 8%,transparent)" : "transparent" }}>
               <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 0.5 }}>
                 <Chip size="small" label={live ? "● Live" : "Scheduled"}
-                  sx={{ fontWeight: 800, height: 20, color: live ? "#059669" : "#6366f1",
-                    bgcolor: live ? "color-mix(in srgb,#10b981 16%,transparent)" : "color-mix(in srgb,#6366f1 12%,transparent)" }} />
+                  sx={{ fontWeight: 800, height: 20, color: live ? "#0B6232" : "#1b4f8a",
+                    bgcolor: live ? "color-mix(in srgb,#0e7a3c 16%,transparent)" : "color-mix(in srgb,#1b4f8a 12%,transparent)" }} />
                 <Typography sx={{ fontSize: "0.72rem", color: "text.secondary", fontWeight: 600 }}>
                   {new Date(s.datetime).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
                 </Typography>
@@ -655,7 +655,7 @@ function SubmissionRow({ s, first, onGrade }: { s: InstructorRecentSubmission; f
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, p: 1.75, borderTop: first ? "none" : "1px solid var(--border-default)" }}>
       <Box sx={{ width: 34, height: 34, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center",
-        color: "#fff", fontWeight: 800, fontSize: "0.78rem", background: "linear-gradient(135deg,#6366f1,#a855f7)" }}>
+        color: "#fff", fontWeight: 800, fontSize: "0.78rem", background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)" }}>
         {(s.student_name || "?").slice(0, 1).toUpperCase()}
       </Box>
       <Box sx={{ minWidth: 0, flex: 1 }}>
@@ -668,9 +668,9 @@ function SubmissionRow({ s, first, onGrade }: { s: InstructorRecentSubmission; f
         </Typography>
       )}
       {graded && s.score != null ? (
-        <Chip size="small" label={`${Math.round(s.score)}`} sx={{ fontWeight: 800, color: "#059669", bgcolor: "color-mix(in srgb,#10b981 14%,transparent)" }} />
+        <Chip size="small" label={`${Math.round(s.score)}`} sx={{ fontWeight: 800, color: "#0B6232", bgcolor: "color-mix(in srgb,#0e7a3c 14%,transparent)" }} />
       ) : (
-        <Chip size="small" label="Grade" onClick={onGrade} sx={{ fontWeight: 800, color: "#6366f1", cursor: "pointer", bgcolor: "color-mix(in srgb,#6366f1 12%,transparent)" }} />
+        <Chip size="small" label="Grade" onClick={onGrade} sx={{ fontWeight: 800, color: "#1b4f8a", cursor: "pointer", bgcolor: "color-mix(in srgb,#1b4f8a 12%,transparent)" }} />
       )}
     </Box>
   );

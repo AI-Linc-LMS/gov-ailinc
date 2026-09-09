@@ -26,15 +26,15 @@ export function DashboardMetricCard({
         border: "1px solid var(--border-default)",
         backgroundColor: "var(--card-bg)",
         boxShadow:
-          "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+          "var(--shadow-sm)",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         transition: "transform 0.2s, box-shadow 0.2s",
         "&:hover": {
-          transform: "translateY(-2px)",
+          transform: "translateY(-1px)",
           boxShadow:
-            "0 4px 12px color-mix(in srgb, var(--font-primary) 15%, transparent)",
+            "var(--shadow-md)",
         },
       }}
     >

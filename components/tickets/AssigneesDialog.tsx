@@ -154,7 +154,7 @@ export function AssigneesDialog({ open, clientId, onClose }: Props) {
             alignItems: "center",
             justifyContent: "center",
             flexShrink: 0,
-            boxShadow: "0 4px 12px rgba(22,163,74,0.28)",
+            boxShadow: "var(--shadow-md)",
           }}
         >
           <IconWrapper icon="mdi:account-group" size={22} color="var(--font-light)" />
@@ -251,10 +251,10 @@ export function AssigneesDialog({ open, clientId, onClose }: Props) {
               borderRadius: 1.5,
               backgroundColor: "var(--ticket-cta-green)",
               color: "var(--font-light)",
-              boxShadow: "0 4px 12px rgba(22,163,74,0.25)",
+              boxShadow: "var(--shadow-sm)",
               "&:hover": {
                 backgroundColor: "var(--ticket-cta-green-hover)",
-                boxShadow: "0 6px 16px rgba(22,163,74,0.32)",
+                boxShadow: "var(--shadow-md)",
               },
               "&.Mui-disabled": {
                 backgroundColor: "var(--border-default)",
@@ -348,7 +348,7 @@ export function AssigneesDialog({ open, clientId, onClose }: Props) {
                   transition: "all 0.15s ease",
                   "&:hover": {
                     borderColor: "var(--ticket-cta-green)",
-                    boxShadow: "0 2px 6px rgba(22,163,74,0.10)",
+                    boxShadow: "var(--shadow-md)",
                   },
                 }}
               >

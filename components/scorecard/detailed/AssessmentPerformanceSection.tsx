@@ -25,9 +25,9 @@ interface AssessmentPerformanceSectionProps {
 }
 
 const DIFFICULTY_COLORS: Record<keyof AssessmentDifficultyBreakdown, string> = {
-  easy: "#10b981",
-  medium: "#f59e0b",
-  hard: "#ef4444",
+  easy: "#0e7a3c",
+  medium: "#b7791f",
+  hard: "#b32020",
 };
 
 function formatDate(iso: string | null): string {
@@ -210,7 +210,7 @@ function PerformanceRow({
 
   const delta =
     row.score != null && prevScore != null ? Math.round(row.score - prevScore) : null;
-  const deltaColor = delta == null ? "var(--font-secondary)" : delta > 0 ? "#10b981" : delta < 0 ? "#ef4444" : "var(--font-secondary)";
+  const deltaColor = delta == null ? "var(--font-secondary)" : delta > 0 ? "#0e7a3c" : delta < 0 ? "#b32020" : "var(--font-secondary)";
   const deltaIcon =
     delta == null ? "mdi:minus" : delta > 0 ? "mdi:trending-up" : delta < 0 ? "mdi:trending-down" : "mdi:trending-neutral";
 
@@ -290,7 +290,7 @@ function PerformanceRow({
             "&:hover": {
               borderColor: `color-mix(in srgb, ${accent} 45%, transparent)`,
               transform: "translateY(-1px)",
-              boxShadow: `0 18px 40px -24px color-mix(in srgb, ${accent} 35%, transparent)`,
+              boxShadow: "var(--shadow-md)",
             },
           }}
         >
@@ -347,7 +347,7 @@ function PerformanceRow({
                       textTransform: "uppercase",
                       pl: 0.5,
                       "& .MuiChip-icon": { ml: 0.5, mr: -0.25, color: "#0e7c5a" },
-                      bgcolor: "color-mix(in srgb, #10b981 16%, transparent)",
+                      bgcolor: "color-mix(in srgb, #0e7a3c 16%, transparent)",
                       color: "#0e7c5a",
                     }}
                   />
@@ -380,8 +380,8 @@ function PerformanceRow({
                       fontWeight: 800,
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
-                      bgcolor: "color-mix(in srgb, #f59e0b 14%, transparent)",
-                      color: "#b45309",
+                      bgcolor: "color-mix(in srgb, #b7791f 14%, transparent)",
+                      color: "#8a5a12",
                     }}
                   />
                 )}
@@ -409,7 +409,7 @@ function PerformanceRow({
                   <MetaPill
                     icon="mdi:trophy-outline"
                     tooltip={`Your rank in this cohort of ${row.cohortCount}.`}
-                    accent={row.rank <= 10 ? "#10b981" : row.rank <= Math.max(20, row.cohortCount * 0.25) ? "var(--accent-indigo-dark)" : undefined}
+                    accent={row.rank <= 10 ? "#0e7a3c" : row.rank <= Math.max(20, row.cohortCount * 0.25) ? "var(--accent-indigo-dark)" : undefined}
                   >
                     #{row.rank}
                   </MetaPill>
@@ -472,8 +472,8 @@ function PerformanceRow({
                   }}
                 >
                   {[
-                    { label: "Correct", value: row.questionAnalytics.correct, color: "#10b981" },
-                    { label: "Incorrect", value: row.questionAnalytics.incorrect, color: "#ef4444" },
+                    { label: "Correct", value: row.questionAnalytics.correct, color: "#0e7a3c" },
+                    { label: "Incorrect", value: row.questionAnalytics.incorrect, color: "#b32020" },
                     { label: "Skipped", value: row.questionAnalytics.skipped, color: "var(--font-secondary)" },
                     { label: "Avg / Q", value: formatSecondsPerQ(row.questionAnalytics.averageTimePerQuestion), color: "var(--accent-indigo-dark)" },
                   ].map((stat) => (
@@ -662,7 +662,7 @@ export function AssessmentPerformanceSection({ data }: AssessmentPerformanceSect
                 }}
               >
                 {summary.best && (
-                  <ShowcaseCard row={summary.best} label="Best performance" accent="#10b981" icon="mdi:trophy" />
+                  <ShowcaseCard row={summary.best} label="Best performance" accent="#0e7a3c" icon="mdi:trophy" />
                 )}
                 {summary.latest && summary.latest !== summary.best && (
                   <ShowcaseCard row={summary.latest} label="Most recent" accent="var(--accent-indigo)" icon="mdi:clock-fast" />
@@ -708,7 +708,7 @@ export function AssessmentPerformanceSection({ data }: AssessmentPerformanceSect
                 { label: "Attempts", value: summary.attempts, accent: "var(--accent-indigo-dark)" },
                 { label: "Avg score", value: summary.avgScore, suffix: "%", accent: proficiencyBandColor(summary.avgScore) },
                 { label: "Best", value: summary.best?.score ?? 0, suffix: "%", accent: proficiencyBandColor(summary.best?.score ?? 0) },
-                { label: "Pending review", value: summary.pending, accent: summary.pending > 0 ? "#f59e0b" : "var(--font-secondary)" },
+                { label: "Pending review", value: summary.pending, accent: summary.pending > 0 ? "#b7791f" : "var(--font-secondary)" },
               ].map((kpi, idx) => (
                 <Box
                   key={kpi.label}

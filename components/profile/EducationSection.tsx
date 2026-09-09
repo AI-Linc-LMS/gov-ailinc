@@ -163,11 +163,11 @@ export function EducationSection({
           border: "1px solid var(--border-default)",
           borderRadius: 4,
             boxShadow:
-            "0 1px 2px rgba(16,24,40,0.04), 0 12px 28px -20px rgba(30,27,75,0.28)",
+            "var(--shadow-sm)",
           transition: "box-shadow 0.2s ease",
           "&:hover": {
             boxShadow:
-              "0 1px 2px rgba(16,24,40,0.04), 0 16px 34px -20px rgba(30,27,75,0.34)",
+              "var(--shadow-md)",
           },
         }}
       >
@@ -462,7 +462,7 @@ export function EducationSection({
         PaperProps={{
           sx: {
             borderRadius: { xs: 0, sm: 2 },
-            boxShadow: "0 4px 16px color-mix(in srgb, var(--font-primary) 14%, transparent)",
+            boxShadow: "var(--shadow-lg)",
             m: { xs: 0, sm: 2 },
             maxHeight: { xs: "100vh", sm: "90vh" },
           },

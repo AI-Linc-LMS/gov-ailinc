@@ -36,7 +36,7 @@ import {
   type CohortStatus,
 } from "@/lib/services/admin/admin-cohorts.service";
 
-const COHORT_ACCENT = "#a855f7";
+const COHORT_ACCENT = "#1b4f8a";
 
 const STATUS_LABEL: Record<CohortStatus, string> = {
   draft: "Draft",
@@ -91,10 +91,10 @@ export default function AdminCohortsPage() {
 
   const stats: StatItem[] = useMemo(
     () => [
-      { label: "Cohorts", value: cohorts.length, icon: "mdi:account-group", tone: "var(--ai-violet, #7c3aed)" },
-      { label: "Active", value: counts.active ?? 0, icon: "mdi:play-circle-outline", tone: "var(--success-500, #5fa564)" },
-      { label: "Members", value: cohorts.reduce((n, c) => n + c.member_count, 0), icon: "mdi:account-multiple", tone: "var(--ai-pink, #ec4899)" },
-      { label: "Assignments", value: cohorts.reduce((n, c) => n + c.artifact_count, 0), icon: "mdi:cube-outline", tone: "var(--accent-indigo, #6366f1)" },
+      { label: "Cohorts", value: cohorts.length, icon: "mdi:account-group", tone: "var(--ai-violet, #14406f)" },
+      { label: "Active", value: counts.active ?? 0, icon: "mdi:play-circle-outline", tone: "var(--success-500, #0e7a3c)" },
+      { label: "Members", value: cohorts.reduce((n, c) => n + c.member_count, 0), icon: "mdi:account-multiple", tone: "var(--ai-pink, #0f6b7a)" },
+      { label: "Assignments", value: cohorts.reduce((n, c) => n + c.artifact_count, 0), icon: "mdi:cube-outline", tone: "var(--accent-indigo, #1b4f8a)" },
     ],
     [cohorts, counts],
   );
@@ -369,7 +369,7 @@ function CohortRow({ cohort, onOpen }: { cohort: CohortListItem; onOpen: () => v
         transition: "all .15s",
         "&:hover": {
           borderColor: COHORT_ACCENT,
-          boxShadow: "0 6px 16px -8px rgba(124,58,237,0.35)",
+          boxShadow: "0 6px 16px -8px rgba(20, 64, 111,0.35)",
         },
       }}
     >

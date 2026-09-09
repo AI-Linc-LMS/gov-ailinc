@@ -8,7 +8,7 @@
  *
  * Values are taken from the shipped student dashboard (components/dashboard/v2/*) and
  * ModulePageHeader rather than from the token file, because the two disagree:
- * --primary-500 is #a855f7 while the dashboard's violet is #7c3aed. Signing in should
+ * --primary-500 is #1b4f8a while the dashboard's violet is #14406f. Signing in should
  * look like the product you land in, so the dashboard wins.
  *
  * See DESIGN.md for the reasoning behind each value.
@@ -23,16 +23,16 @@ export const AUTH = {
   surface: "#ffffff",
   hairline: "#e6e8ef",
 
-  violet: "#7c3aed",
-  violetDeep: "#5b21b6",
-  violetSoft: "#f5f0ff",
-  pink: "#ec4899",
+  violet: "#14406f",
+  violetDeep: "#12365f",
+  violetSoft: "#eef3fa",
+  pink: "#0f6b7a",
 
-  night: "#140b2b",
-  night2: "#1e1040",
+  night: "#0b1b2e",
+  night2: "#10263f",
 
-  error: "#dc2626",
-  errorSoft: "#fef2f2",
+  error: "#991b1b",
+  errorSoft: "#fdf5f5",
 } as const;
 
 /** 4px base rhythm. */

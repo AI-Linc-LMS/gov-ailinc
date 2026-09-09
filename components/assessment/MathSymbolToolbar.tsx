@@ -121,7 +121,7 @@ export const MathSymbolToolbar = memo(function MathSymbolToolbar({
         borderRadius: 2,
         border: "1px solid color-mix(in srgb, var(--accent-indigo) 28%, transparent)",
         background: "linear-gradient(165deg, var(--font-light) 0%, var(--surface) 55%, var(--neutral-100) 100%)",
-        boxShadow: "0 2px 8px color-mix(in srgb, var(--accent-indigo-dark) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--primary-900) 6%, transparent)",
+        boxShadow: "var(--shadow-sm)",
         overflow: "hidden",
       }}
     >
@@ -170,7 +170,7 @@ export const MathSymbolToolbar = memo(function MathSymbolToolbar({
             justifyContent: "center",
             backgroundColor: "var(--font-light)",
             border: "1px solid color-mix(in srgb, var(--accent-indigo) 28%, transparent)",
-            boxShadow: "0 1px 3px color-mix(in srgb, var(--accent-indigo-dark) 14%, transparent)",
+            boxShadow: "var(--shadow-sm)",
           }}
           aria-hidden
         >

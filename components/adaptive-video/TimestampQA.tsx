@@ -49,7 +49,7 @@ export function TimestampQA({
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.25 }}>
         <AIPill icon={<Icon icon="mdi:comment-question-outline" />}>Ask at this moment</AIPill>
         <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.4, ml: "auto", px: 1, py: 0.3, borderRadius: 999,
-          background: "color-mix(in srgb, #6366f1 12%, transparent)", color: "#6366f1", fontSize: "0.7rem", fontWeight: 800 }}>
+          background: "color-mix(in srgb, #1b4f8a 12%, transparent)", color: "#1b4f8a", fontSize: "0.7rem", fontWeight: 800 }}>
           <Icon icon="mdi:pin" width={12} /> {fmt(currentTime)}
         </Box>
       </Box>
@@ -68,14 +68,14 @@ export function TimestampQA({
           disabled={loading || !question.trim()}
           onClick={submit}
           sx={{ borderRadius: 2.5, px: 2.5, fontWeight: 700, textTransform: "none",
-            background: "linear-gradient(135deg, #6366f1, #a855f7)" }}
+            background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)" }}
         >
           {loading ? <CircularProgress size={18} color="inherit" /> : "Ask"}
         </Button>
       </Box>
 
       {error && (
-        <Box sx={{ mt: 1.25, display: "flex", alignItems: "flex-start", gap: 0.6, color: "#b91c1c" }}>
+        <Box sx={{ mt: 1.25, display: "flex", alignItems: "flex-start", gap: 0.6, color: "#8f1919" }}>
           <Icon icon="mdi:shield-alert-outline" width={15} style={{ marginTop: 2, flexShrink: 0 }} />
           <Typography sx={{ fontSize: "0.8rem", fontWeight: 600 }}>{error}</Typography>
         </Box>
@@ -83,9 +83,9 @@ export function TimestampQA({
 
       {result && (
         <Box sx={{ mt: 1.5, p: 1.75, borderRadius: 2.5, bgcolor: "var(--card-bg, #fff)",
-          border: "1px solid color-mix(in srgb, #6366f1 14%, transparent)" }}>
+          border: "1px solid color-mix(in srgb, #1b4f8a 14%, transparent)" }}>
           <Typography sx={{ fontSize: "0.83rem", fontWeight: 800, mb: 0.5, display: "flex", gap: 0.5, alignItems: "center" }}>
-            <Icon icon="mdi:account-question" width={15} style={{ color: "#6366f1" }} />
+            <Icon icon="mdi:account-question" width={15} style={{ color: "#1b4f8a" }} />
             {result.question}
           </Typography>
           <Typography sx={{ fontSize: "0.87rem", whiteSpace: "pre-wrap", lineHeight: 1.55 }}>{result.answer}</Typography>

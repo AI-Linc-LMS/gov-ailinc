@@ -6,7 +6,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Cell,
   ResponsiveContainer,
   Tooltip as RTooltip,
   XAxis,
@@ -88,14 +87,14 @@ const STATUS_TONE: Record<string, string> = {
  * the same theme tokens off the document and hand recharts the resolved values.
  */
 function useChartInk() {
-  const [ink, setInk] = useState({ text: "#7a7a7a", grid: "#d9d9d9" });
+  const [ink, setInk] = useState({ text: "#6b7684", grid: "#dde3eb" });
 
   useEffect(() => {
     const read = () => {
       const cs = getComputedStyle(document.documentElement);
       setInk({
-        text: cs.getPropertyValue("--font-secondary").trim() || "#7a7a7a",
-        grid: cs.getPropertyValue("--border-default").trim() || "#d9d9d9",
+        text: cs.getPropertyValue("--font-secondary").trim() || "#6b7684",
+        grid: cs.getPropertyValue("--border-default").trim() || "#dde3eb",
       });
     };
     read();
@@ -565,11 +564,18 @@ export function PeopleSection({ data, loading }: { data: PeoplePayload | null; l
                 cursor={{ fill: `color-mix(in srgb, ${INSIGHT.indigo} 8%, transparent)` }}
                 formatter={(value) => Number(value).toLocaleString()}
               />
-              <Bar dataKey="value" name="Tickets" radius={[0, 6, 6, 0]} barSize={16}>
-                {categories.map((c, i) => (
-                  <Cell key={c.label} fill={SERIES_COLORS[i % SERIES_COLORS.length]} />
-                ))}
-              </Bar>
+              {/* One measure, and the category names are already written down the y axis, so
+                  every bar takes the same slot-1 hue. Handing each bar its own colour spent the
+                  identity channel re-encoding what the bar length and its label already say, and
+                  it meant a category's colour changed whenever the range filter re-ranked the
+                  list - colour has to follow the entity, never its current position. */}
+              <Bar
+                dataKey="value"
+                name="Tickets"
+                radius={[0, 6, 6, 0]}
+                barSize={16}
+                fill={SERIES_COLORS[0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         )}

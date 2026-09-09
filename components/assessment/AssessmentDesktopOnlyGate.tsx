@@ -53,13 +53,13 @@ export function AssessmentDesktopOnlyDialog({
             width: 88,
             height: 88,
             borderRadius: "50%",
-            background: "linear-gradient(135deg, var(--accent-warning, #f59e0b) 0%, var(--accent-warning-dark, #d97706) 100%)",
+            background: "linear-gradient(135deg, var(--accent-warning, #b7791f) 0%, var(--accent-warning-dark, #8a5a12) 100%)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             mx: "auto",
             mb: 2.5,
-            boxShadow: "0 12px 40px color-mix(in srgb, #f59e0b 30%, transparent)",
+            boxShadow: "var(--shadow-xl)",
           }}
         >
           <IconWrapper icon="mdi:devices" size={44} color="var(--font-light)" />
@@ -85,7 +85,7 @@ export function AssessmentDesktopOnlyDialog({
             py: 1.25,
             borderRadius: 2,
             backgroundColor: "var(--accent-indigo)",
-            boxShadow: "0 4px 14px 0 color-mix(in srgb, var(--accent-indigo) 38%, transparent)",
+            boxShadow: "var(--shadow-md)",
             "&:hover": { backgroundColor: "var(--accent-indigo-dark)" },
           }}
         >
@@ -142,13 +142,13 @@ export function AssessmentDesktopOnlyFullPage({
               width: 88,
               height: 88,
               borderRadius: "50%",
-              background: "linear-gradient(135deg, var(--accent-warning, #f59e0b) 0%, var(--accent-warning-dark, #d97706) 100%)",
+              background: "linear-gradient(135deg, var(--accent-warning, #b7791f) 0%, var(--accent-warning-dark, #8a5a12) 100%)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               mx: "auto",
               mb: 2.5,
-              boxShadow: "0 12px 40px color-mix(in srgb, #f59e0b 30%, transparent)",
+              boxShadow: "var(--shadow-sm)",
             }}
           >
             <IconWrapper icon="mdi:devices" size={44} color="var(--font-light)" />

@@ -33,7 +33,7 @@ const CARD_SX = {
   p: { xs: 2, md: 2.5 }, borderRadius: 3,
   bgcolor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
 } as const;
-const TIER_COLOR: Record<string, string> = { beginner: "#fbbf24", intermediate: "#60a5fa", advanced: "#4ade80" };
+const TIER_COLOR: Record<string, string> = { beginner: "#c9903a", intermediate: "#85aad6", advanced: "#2f9159" };
 
 function CalibrationTakeInner() {
   const router = useRouter();
@@ -249,7 +249,7 @@ function CalibrationTakeInner() {
   if (loading) {
     return (
       <Box sx={{ minHeight: "100vh", display: "grid", placeItems: "center", bgcolor: "#0b1220" }}>
-        <CircularProgress sx={{ color: "#60a5fa" }} />
+        <CircularProgress sx={{ color: "#85aad6" }} />
       </Box>
     );
   }
@@ -259,7 +259,7 @@ function CalibrationTakeInner() {
       <Box sx={{ minHeight: "100vh", bgcolor: "#0b1220", color: "white", py: { xs: 3, md: 6 }, px: 2, display: "flex", justifyContent: "center" }}>
         <Box sx={{ width: "100%", maxWidth: 680 }}>
           <Stack alignItems="center" spacing={1} sx={{ mb: 3 }}>
-            <Icon icon="mdi:shield-check" width={44} color="#4ade80" />
+            <Icon icon="mdi:shield-check" width={44} color="#2f9159" />
             <Typography sx={{ fontWeight: 800, fontSize: "1.4rem", textAlign: "center" }}>
               {ins ? ins.headline : "Calibration submitted"}
             </Typography>
@@ -270,7 +270,7 @@ function CalibrationTakeInner() {
 
           {resultLoading && !ins && (
             <Stack alignItems="center" spacing={1.5} sx={{ py: 4 }}>
-              <CircularProgress size={26} sx={{ color: "#60a5fa" }} />
+              <CircularProgress size={26} sx={{ color: "#85aad6" }} />
               <Typography sx={{ color: "rgba(255,255,255,0.6)" }}>Analyzing how you reason…</Typography>
             </Stack>
           )}
@@ -280,10 +280,10 @@ function CalibrationTakeInner() {
               <Box sx={CARD_SX}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Typography sx={{ fontWeight: 700 }}>Your starting level</Typography>
-                  <Chip label={ins.level_label} sx={{ fontWeight: 800, color: "#0b1220", bgcolor: TIER_COLOR[ins.field_tier] ?? "#60a5fa" }} />
+                  <Chip label={ins.level_label} sx={{ fontWeight: 800, color: "#0b1220", bgcolor: TIER_COLOR[ins.field_tier] ?? "#85aad6" }} />
                 </Stack>
                 <Box sx={{ mt: 1.5, height: 8, borderRadius: 4, bgcolor: "rgba(255,255,255,0.08)" }}>
-                  <Box sx={{ width: `${Math.round(ins.ability_index)}%`, height: "100%", borderRadius: 4, bgcolor: TIER_COLOR[ins.field_tier] ?? "#60a5fa" }} />
+                  <Box sx={{ width: `${Math.round(ins.ability_index)}%`, height: "100%", borderRadius: 4, bgcolor: TIER_COLOR[ins.field_tier] ?? "#85aad6" }} />
                 </Box>
                 <Typography sx={{ mt: 1.5, color: "rgba(255,255,255,0.82)", lineHeight: 1.6 }}>{ins.summary}</Typography>
               </Box>
@@ -291,7 +291,7 @@ function CalibrationTakeInner() {
               {ins.pace?.label && (
                 <Box sx={CARD_SX}>
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <Icon icon="mdi:speedometer" width={18} color="#a5b4fc" />
+                    <Icon icon="mdi:speedometer" width={18} color="#85aad6" />
                     <Typography sx={{ fontWeight: 700 }}>Your pace: {ins.pace.label}</Typography>
                   </Stack>
                   <Typography sx={{ mt: 0.5, color: "rgba(255,255,255,0.7)", fontSize: "0.85rem" }}>
@@ -300,12 +300,12 @@ function CalibrationTakeInner() {
                 </Box>
               )}
 
-              <Box sx={{ ...CARD_SX, bgcolor: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.25)" }}>
-                <Typography sx={{ fontWeight: 800, color: "#c4b5fd", mb: 1 }}>✦ How TSEM will adapt to you</Typography>
+              <Box sx={{ ...CARD_SX, bgcolor: "rgba(20, 64, 111,0.12)", border: "1px solid rgba(20, 64, 111,0.25)" }}>
+                <Typography sx={{ fontWeight: 800, color: "#b6cde8", mb: 1 }}>✦ How TSEM will adapt to you</Typography>
                 <Stack spacing={1}>
                   {ins.how_ai_helps.map((h, i) => (
                     <Stack key={i} direction="row" spacing={1}>
-                      <Icon icon="mdi:arrow-right-thin" width={18} color="#c4b5fd" style={{ flexShrink: 0, marginTop: 2 }} />
+                      <Icon icon="mdi:arrow-right-thin" width={18} color="#b6cde8" style={{ flexShrink: 0, marginTop: 2 }} />
                       <Typography sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.88rem" }}>{h}</Typography>
                     </Stack>
                   ))}
@@ -328,7 +328,7 @@ function CalibrationTakeInner() {
     return (
       <Box sx={{ minHeight: "100vh", display: "grid", placeItems: "center", bgcolor: "#0b1220", color: "white", p: 3 }}>
         <Stack alignItems="center" spacing={1.5}>
-          <Icon icon="mdi:alert-circle-outline" width={44} color="#fca5a5" />
+          <Icon icon="mdi:alert-circle-outline" width={44} color="#d99b9b" />
           <Typography sx={{ color: "rgba(255,255,255,0.8)" }}>{error}</Typography>
           <Button variant="outlined" onClick={() => router.back()} sx={{ color: "white", borderColor: "rgba(255,255,255,0.3)", textTransform: "none" }}>Go back</Button>
         </Stack>
@@ -346,7 +346,7 @@ function CalibrationTakeInner() {
       <Box sx={{ minHeight: "100vh", display: "grid", placeItems: "center", bgcolor: "#0b1220", color: "white", p: 3 }}>
         <Stack alignItems="center" spacing={2} sx={{ maxWidth: 460, textAlign: "center" }}>
           <Box sx={{ width: 56, height: 56, borderRadius: 3, display: "grid", placeItems: "center", bgcolor: "rgba(255,255,255,0.08)" }}>
-            <Icon icon="mdi:shield-lock" width={28} color="#a5b4fc" />
+            <Icon icon="mdi:shield-lock" width={28} color="#85aad6" />
           </Box>
           <Typography sx={{ fontWeight: 800, fontSize: "1.35rem" }}>
             Calibration Assessment{fieldName ? ` · ${fieldName}` : ""}
@@ -361,7 +361,7 @@ function CalibrationTakeInner() {
           </Stack>
           <Button variant="contained" onClick={begin}
             startIcon={<Icon icon="mdi:fullscreen" width={20} />}
-            sx={{ mt: 1, textTransform: "none", fontWeight: 800, borderRadius: 2, px: 4, py: 1.2, bgcolor: "#3b82f6", "&:hover": { bgcolor: "#2563eb" } }}>
+            sx={{ mt: 1, textTransform: "none", fontWeight: 800, borderRadius: 2, px: 4, py: 1.2, bgcolor: "#4a7fbb", "&:hover": { bgcolor: "#1b4f8a" } }}>
             Enter fullscreen & begin
           </Button>
           <Typography sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.4)" }}>
@@ -375,7 +375,7 @@ function CalibrationTakeInner() {
   const Integrity = ({ label, ok, warn }: { label: string; ok?: boolean; warn?: string }) => (
     <Stack direction="row" justifyContent="space-between" sx={{ py: 0.5 }}>
       <Typography sx={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.7)" }}>{label}</Typography>
-      <Typography sx={{ fontSize: "0.82rem", fontWeight: 700, color: warn ? "#fbbf24" : ok ? "#4ade80" : "#94a3b8" }}>
+      <Typography sx={{ fontSize: "0.82rem", fontWeight: 700, color: warn ? "#c9903a" : ok ? "#2f9159" : "#94a3b8" }}>
         {warn ? `⚠ ${warn}` : ok ? "✓ Clear" : "-"}
       </Typography>
     </Stack>
@@ -396,10 +396,10 @@ function CalibrationTakeInner() {
         </Stack>
         <Stack direction="row" spacing={1.25} alignItems="center">
           <Chip size="small" icon={<Icon icon="mdi:shield-account" width={14} />} label="Self-proctored"
-            sx={{ color: "#93c5fd", bgcolor: "rgba(59,130,246,0.12)", fontWeight: 700, fontSize: "0.7rem" }} />
+            sx={{ color: "#b6cde8", bgcolor: "rgba(59,130,246,0.12)", fontWeight: 700, fontSize: "0.7rem" }} />
           <Chip size="small" icon={<Icon icon="mdi:fullscreen" width={14} />} label={fullscreen ? "Full screen" : "Go full screen"}
             onClick={fullscreen ? undefined : enterLockdown}
-            sx={{ color: fullscreen ? "#cbd5e1" : "#fcd34d", bgcolor: "rgba(255,255,255,0.06)", fontWeight: 700, fontSize: "0.7rem", cursor: fullscreen ? "default" : "pointer" }} />
+            sx={{ color: fullscreen ? "#cbd5e1" : "#d9b169", bgcolor: "rgba(255,255,255,0.06)", fontWeight: 700, fontSize: "0.7rem", cursor: fullscreen ? "default" : "pointer" }} />
           <Typography sx={{ fontWeight: 800, fontVariantNumeric: "tabular-nums", letterSpacing: 1 }}>{fmtClock(remaining)}</Typography>
         </Stack>
       </Stack>
@@ -420,7 +420,7 @@ function CalibrationTakeInner() {
             {mcqs.map((m, i) => (
               <Box key={m.id} onClick={() => setIdx(i)} sx={{
                 height: 5, flex: "1 1 14px", minWidth: 14, borderRadius: 3, cursor: "pointer",
-                bgcolor: i === idx ? "#fff" : answers[String(m.id)] ? "#3b82f6" : "rgba(255,255,255,0.14)",
+                bgcolor: i === idx ? "#fff" : answers[String(m.id)] ? "#4a7fbb" : "rgba(255,255,255,0.14)",
               }} />
             ))}
           </Stack>
@@ -436,13 +436,13 @@ function CalibrationTakeInner() {
                   <Box key={L} onClick={() => setAnswers((a) => ({ ...a, [String(q.id)]: L }))}
                     sx={{
                       display: "flex", alignItems: "center", gap: 1.5, p: 1.75, borderRadius: 2, cursor: "pointer",
-                      border: "1px solid", borderColor: selected ? "#3b82f6" : "rgba(255,255,255,0.1)",
+                      border: "1px solid", borderColor: selected ? "#4a7fbb" : "rgba(255,255,255,0.1)",
                       bgcolor: selected ? "rgba(59,130,246,0.14)" : "rgba(255,255,255,0.02)",
                       transition: "border-color .15s, background .15s",
-                      "&:hover": { borderColor: selected ? "#3b82f6" : "rgba(255,255,255,0.25)" },
+                      "&:hover": { borderColor: selected ? "#4a7fbb" : "rgba(255,255,255,0.25)" },
                     }}>
                     <Box sx={{ width: 30, height: 30, borderRadius: 1.25, display: "grid", placeItems: "center", flexShrink: 0,
-                      bgcolor: selected ? "#60a5fa" : "rgba(255,255,255,0.06)", color: selected ? "#0b1220" : "rgba(255,255,255,0.8)", fontWeight: 800, fontSize: "0.85rem" }}>
+                      bgcolor: selected ? "#85aad6" : "rgba(255,255,255,0.06)", color: selected ? "#0b1220" : "rgba(255,255,255,0.8)", fontWeight: 800, fontSize: "0.85rem" }}>
                       {L.toUpperCase()}
                     </Box>
                     <Typography sx={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.92)" }}>{text}</Typography>
@@ -459,11 +459,11 @@ function CalibrationTakeInner() {
             <Typography sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.4)" }}>Answers lock on submit · no going back after question {total}</Typography>
             {idx < total - 1 ? (
               <Button variant="contained" onClick={() => setIdx((i) => Math.min(total - 1, i + 1))}
-                sx={{ textTransform: "none", fontWeight: 700, borderRadius: 2, bgcolor: "#3b82f6", "&:hover": { bgcolor: "#2563eb" } }}
+                sx={{ textTransform: "none", fontWeight: 700, borderRadius: 2, bgcolor: "#4a7fbb", "&:hover": { bgcolor: "#1b4f8a" } }}
                 endIcon={<Icon icon="mdi:arrow-right" width={16} />}>Next question</Button>
             ) : (
               <Button variant="contained" disabled={submitting} onClick={() => doSubmit(false)}
-                sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, bgcolor: "#16a34a", "&:hover": { bgcolor: "#15803d" } }}
+                sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, bgcolor: "#0b6232", "&:hover": { bgcolor: "#0b6232" } }}
                 endIcon={submitting ? <CircularProgress size={15} sx={{ color: "white" }} /> : <Icon icon="mdi:check" width={16} />}>
                 {submitting ? "Submitting…" : "Submit calibration"}
               </Button>
@@ -477,8 +477,8 @@ function CalibrationTakeInner() {
           <Integrity label="Fullscreen" ok={fullscreen} warn={fullscreen ? undefined : "off"} />
           <Integrity label="Tab switches" ok={tabSwitches.length === 0} warn={tabSwitches.length ? `${tabSwitches.length} flagged` : undefined} />
 
-          <Box sx={{ mt: 3, p: 1.75, borderRadius: 2, bgcolor: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.25)" }}>
-            <Typography sx={{ fontSize: "0.78rem", fontWeight: 800, color: "#c4b5fd", mb: 0.5 }}>✦ Why it&apos;s the same for everyone</Typography>
+          <Box sx={{ mt: 3, p: 1.75, borderRadius: 2, bgcolor: "rgba(20, 64, 111,0.12)", border: "1px solid rgba(20, 64, 111,0.25)" }}>
+            <Typography sx={{ fontSize: "0.78rem", fontWeight: 800, color: "#b6cde8", mb: 0.5 }}>✦ Why it&apos;s the same for everyone</Typography>
             <Typography sx={{ fontSize: "0.74rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.5 }}>
               A fixed, standardized set gives a clean baseline of your true level. That score seeds the AI Student Model - every adaptive surface after this is personalized <i>from</i> here.
             </Typography>
@@ -494,7 +494,7 @@ export default function CalibrationTakePage() {
     <Suspense
       fallback={
         <Box sx={{ minHeight: "100vh", display: "grid", placeItems: "center", bgcolor: "#0b1220" }}>
-          <CircularProgress sx={{ color: "#60a5fa" }} />
+          <CircularProgress sx={{ color: "#85aad6" }} />
         </Box>
       }
     >

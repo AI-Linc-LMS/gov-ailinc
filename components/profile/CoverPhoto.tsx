@@ -37,7 +37,7 @@ export function CoverPhoto({ coverPhotoUrl, onEditCoverUrl, onUploadCover }: Cov
           borderRadius: `${HERO_RADIUS * 8}px ${HERO_RADIUS * 8}px 0 0`,
           backgroundColor: coverPhotoUrl ? "transparent" : "transparent",
           backgroundImage: coverPhotoUrl
-            ? `linear-gradient(180deg, rgba(15,10,40,0.12) 0%, rgba(15,10,40,0.42) 100%), url(${coverPhotoUrl})`
+            ? `linear-gradient(180deg, rgba(7,20,38,0.12) 0%, rgba(7,20,38,0.42) 100%), url(${coverPhotoUrl})`
             : // No upload: the night-violet ramp from the hero, so an empty cover still
               // belongs to the product instead of looking like a missing image.
               HERO_BG,
@@ -60,7 +60,7 @@ export function CoverPhoto({ coverPhotoUrl, onEditCoverUrl, onUploadCover }: Cov
               left: 0,
               right: 0,
               height: "45%",
-              background: "linear-gradient(to top, rgba(15,10,40,0.5) 0%, transparent 100%)",
+              background: "linear-gradient(to top, rgba(7,20,38,0.5) 0%, transparent 100%)",
               pointerEvents: "none",
             }}
           />
@@ -92,9 +92,9 @@ export function CoverPhoto({ coverPhotoUrl, onEditCoverUrl, onUploadCover }: Cov
                 borderRadius: 999,
                 px: { xs: 1.75, sm: 2 },
                 py: { xs: 0.625, sm: 0.75 },
-                boxShadow: "0 4px 16px -6px rgba(15,10,40,0.45)",
+                boxShadow: "var(--shadow-sm)",
                 "&:hover": { backgroundColor: "#fff" },
-                "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px rgba(15,10,40,0.6), 0 0 0 4px #fff` },
+                "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px rgba(7,20,38,0.6), 0 0 0 4px #fff` },
                 transition: "background-color 0.15s ease",
               }}
               size="small"

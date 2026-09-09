@@ -196,8 +196,10 @@ export default function ProfilePage() {
 
   return (
     <MainLayout fullWidthContent>
-      {/* .profile-surface re-points --accent-indigo and friends to the dashboard palette for
-          this subtree only. See the block at the end of app/globals.css. */}
+      {/* .profile-surface re-points the neutrals (ink, hairline, surface) for this
+          subtree only. It no longer touches --accent-indigo or --accent-purple:
+          those overrode the government palette back to violet. See the block at
+          the end of app/globals.css. */}
       <Box
         className="profile-surface"
         sx={{

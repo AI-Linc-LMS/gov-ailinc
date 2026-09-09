@@ -18,10 +18,10 @@ import {
  */
 
 const BAND_COLOR: Record<string, string> = {
-  emerging: "#ef4444",
-  developing: "#f59e0b",
-  proficient: "#6366f1",
-  mastered: "#10b981",
+  emerging: "#b32020",
+  developing: "#b7791f",
+  proficient: "#1b4f8a",
+  mastered: "#0e7a3c",
 };
 
 const GAP_LABELS: Record<string, string> = {
@@ -65,14 +65,14 @@ export function CodingMasteryPanel({ refreshKey = 0 }: { refreshKey?: number }) 
     <Box
       sx={{
         borderRadius: 3, overflow: "hidden",
-        border: "1px solid color-mix(in srgb, #a855f7 22%, transparent)",
+        border: "1px solid color-mix(in srgb, #1b4f8a 22%, transparent)",
         background: "var(--card-bg, #fff)",
       }}
     >
       <Box
         sx={{
           display: "flex", alignItems: "center", gap: 1, px: 2, py: 1.25, flexWrap: "wrap",
-          background: "linear-gradient(135deg, color-mix(in srgb,#a855f7 10%,transparent), color-mix(in srgb,#6366f1 6%,transparent))",
+          background: "linear-gradient(135deg, color-mix(in srgb,#1b4f8a 10%,transparent), color-mix(in srgb,#1b4f8a 6%,transparent))",
         }}
       >
         <AIPill icon={<Icon icon="mdi:chart-donut" width={12} />}>Your coding mastery</AIPill>
@@ -82,7 +82,7 @@ export function CodingMasteryPanel({ refreshKey = 0 }: { refreshKey?: number }) 
       </Box>
       <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1 }}>
         {model.skills.map((s) => {
-          const color = BAND_COLOR[s.band] ?? "#6366f1";
+          const color = BAND_COLOR[s.band] ?? "#1b4f8a";
           return (
             <Box key={s.skill} sx={{ display: "flex", alignItems: "center", gap: 1.25, flexWrap: "wrap" }}>
               <Typography sx={{ fontSize: "0.82rem", fontWeight: 700, flex: 1, minWidth: 96 }}>{s.skill}</Typography>
@@ -115,7 +115,7 @@ export function CodingMasteryPanel({ refreshKey = 0 }: { refreshKey?: number }) 
                 key={`${m.tag}-${i}`}
                 sx={{
                   px: 0.9, py: 0.3, borderRadius: 999, fontSize: "0.7rem", fontWeight: 700,
-                  color: "#f59e0b", background: "color-mix(in srgb, #f59e0b 12%, transparent)",
+                  color: "#b7791f", background: "color-mix(in srgb, #b7791f 12%, transparent)",
                 }}
               >
                 {gapLabel(m.tag)}

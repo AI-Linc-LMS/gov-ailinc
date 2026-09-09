@@ -63,7 +63,7 @@ export default function AdaptiveQuizStartPage() {
             border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 60%, transparent)",
             backdropFilter: "blur(18px) saturate(140%)",
             boxShadow:
-              "0 1px 0 0 color-mix(in srgb, white 14%, transparent) inset, 0 24px 60px -32px rgba(99, 102, 241, 0.3)",
+              "0 1px 0 0 color-mix(in srgb, white 14%, transparent) inset, 0 24px 60px -32px rgba(27, 79, 138, 0.3)",
             display: "flex",
             flexDirection: "column",
             gap: 3,
@@ -88,7 +88,7 @@ export default function AdaptiveQuizStartPage() {
             <Feature icon="mdi:thought-bubble-outline" label="Reasons explained" />
           </Box>
 
-          {error && <Typography sx={{ color: "#ef4444", fontWeight: 700 }}>{error}</Typography>}
+          {error && <Typography sx={{ color: "#b32020", fontWeight: 700 }}>{error}</Typography>}
 
           <ButtonBase
             onClick={() => void handleStart()}
@@ -102,9 +102,9 @@ export default function AdaptiveQuizStartPage() {
               fontSize: "1rem",
               color: "white",
               background: starting
-                ? "color-mix(in srgb, #6366f1 50%, transparent)"
-                : "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
-              boxShadow: "0 18px 36px -16px rgba(99, 102, 241, 0.55)",
+                ? "color-mix(in srgb, #1b4f8a 50%, transparent)"
+                : "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)",
+              boxShadow: "0 18px 36px -16px rgba(27, 79, 138, 0.55)",
               transition: "transform 120ms ease, box-shadow 120ms ease",
               "&:hover": { transform: starting ? "none" : "translateY(-1px)" },
               "&:disabled": { cursor: "not-allowed", opacity: 0.7 },
@@ -132,7 +132,7 @@ function Feature({ icon, label }: { icon: string; label: string }) {
         border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 80%, transparent)",
       }}
     >
-      <Icon icon={icon} width={16} style={{ color: "#6366f1" }} />
+      <Icon icon={icon} width={16} style={{ color: "#1b4f8a" }} />
       <Typography sx={{ fontSize: "0.78rem", fontWeight: 700 }}>{label}</Typography>
     </Box>
   );

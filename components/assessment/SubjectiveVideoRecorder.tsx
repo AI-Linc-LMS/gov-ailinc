@@ -193,7 +193,7 @@ export function SubjectiveVideoRecorder({
         border: "1px solid color-mix(in srgb, var(--accent-indigo) 18%, var(--border-default))",
         overflow: "hidden",
         bgcolor: "color-mix(in srgb, var(--surface) 35%, var(--card-bg))",
-        boxShadow: "0 8px 28px color-mix(in srgb, var(--primary-900) 8%, transparent)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       <Box
@@ -290,9 +290,9 @@ export function SubjectiveVideoRecorder({
             borderColor: isRecording
               ? "color-mix(in srgb, var(--accent-indigo) 65%, var(--border-default))"
               : "color-mix(in srgb, var(--accent-indigo) 22%, var(--border-default))",
-            boxShadow: isRecording
-              ? "0 0 0 3px color-mix(in srgb, var(--accent-indigo) 18%, transparent), 0 12px 32px color-mix(in srgb, var(--primary-900) 18%, transparent)"
-              : "0 4px 20px color-mix(in srgb, var(--primary-900) 12%, transparent)",
+            // Recording is signalled by the 2px border colour above and by the
+            // REC label, not by a coloured bloom around the frame.
+            boxShadow: isRecording ? "var(--shadow-md)" : "var(--shadow-sm)",
             transition: "border-color 0.25s ease, box-shadow 0.25s ease",
           }}
         >
@@ -332,7 +332,7 @@ export function SubjectiveVideoRecorder({
                   borderRadius: 999,
                   bgcolor: "color-mix(in srgb, var(--error-600) 88%, transparent)",
                   color: "var(--font-light)",
-                  boxShadow: "0 2px 12px color-mix(in srgb, var(--error-500) 28%, transparent)",
+                  boxShadow: "var(--shadow-sm)",
                 }}
               >
                 <Box
@@ -433,7 +433,7 @@ export function SubjectiveVideoRecorder({
                 px: 2,
                 borderRadius: 2,
                 bgcolor: "var(--accent-indigo)",
-                boxShadow: "0 4px 16px color-mix(in srgb, var(--accent-indigo) 38%, transparent)",
+                boxShadow: "var(--shadow-sm)",
                 "&:hover": {
                   bgcolor: "var(--accent-indigo-dark)",
                 },
@@ -454,7 +454,7 @@ export function SubjectiveVideoRecorder({
                 py: 1.1,
                 px: 2,
                 borderRadius: 2,
-                boxShadow: "0 4px 14px color-mix(in srgb, var(--error-500) 28%, transparent)",
+                boxShadow: "var(--shadow-sm)",
               }}
             >
               {t("assessments.take.subjectiveVideoStopUpload")}

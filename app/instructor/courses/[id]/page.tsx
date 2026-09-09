@@ -116,7 +116,7 @@ export default function InstructorCoursePage() {
         }
       />
 
-      {error && <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
+      {error && <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
 
       {!error && (
         <>
@@ -165,8 +165,8 @@ export default function InstructorCoursePage() {
                         void handleRemove(r.student_id, r.name);
                       }}
                       disabled={removing === r.student_id}
-                      sx={{ fontWeight: 700, cursor: "pointer", color: "#ef4444",
-                        bgcolor: "color-mix(in srgb, #ef4444 12%, transparent)" }}
+                      sx={{ fontWeight: 700, cursor: "pointer", color: "#b32020",
+                        bgcolor: "color-mix(in srgb, #b32020 12%, transparent)" }}
                     />
                   </Stack>
                 }

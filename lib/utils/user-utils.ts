@@ -100,13 +100,13 @@ export const getRoleLabel = (role: string | null | undefined): string => {
 export const getRoleAccent = (role: string | null | undefined): string => {
   switch ((role || "").trim().toLowerCase()) {
     case "superadmin":
-      return "#fbbf24";
+      return "#c9903a";
     case "admin":
-      return "#f472b6";
+      return "#3f8f9e";
     case "instructor":
-      return "#34d399";
+      return "#2f9159";
     case "course_manager":
-      return "#a5b4fc";
+      return "#85aad6";
     default:
       // Student is the default role; it should read as a label, not as a badge.
       return "#cbd5e1";

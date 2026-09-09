@@ -148,7 +148,7 @@ export function CodingProblemComments({
                     width: 40,
                     height: 40,
                     flexShrink: 0,
-                    backgroundColor: "#6366f1",
+                    backgroundColor: "#1b4f8a",
                     fontSize: "0.875rem",
                     fontWeight: 600,
                   }}
@@ -241,7 +241,7 @@ export function CodingProblemComments({
                     borderColor: "#d1d5db",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#6366f1",
+                    borderColor: "#1b4f8a",
                     borderWidth: "1px",
                   },
                 },
@@ -260,8 +260,8 @@ export function CodingProblemComments({
               )
             }
             sx={{
-              bgcolor: "#6366f1",
-              "&:hover": { bgcolor: "#4f46e5" },
+              bgcolor: "#1b4f8a",
+              "&:hover": { bgcolor: "#12365f" },
               "&:disabled": { bgcolor: "#9ca3af" },
               minWidth: 100,
               height: 40,

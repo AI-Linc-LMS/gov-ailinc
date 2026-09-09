@@ -47,10 +47,10 @@ export function ConfidenceInput({ value, onChange }: ConfidenceInputProps) {
                 py: 1,
                 borderRadius: 2,
                 border: selected
-                  ? "1.5px solid #6366f1"
+                  ? "1.5px solid #1b4f8a"
                   : "1.5px solid color-mix(in srgb, var(--border-default, #e5e7eb) 80%, transparent)",
                 bgcolor: selected
-                  ? "color-mix(in srgb, #6366f1 8%, transparent)"
+                  ? "color-mix(in srgb, #1b4f8a 8%, transparent)"
                   : "color-mix(in srgb, var(--card-bg, #ffffff) 75%, transparent)",
                 display: "flex",
                 flexDirection: "column",
@@ -64,7 +64,7 @@ export function ConfidenceInput({ value, onChange }: ConfidenceInputProps) {
                 sx={{
                   fontSize: "0.7rem",
                   fontWeight: 700,
-                  color: selected ? "#6366f1" : "text.primary",
+                  color: selected ? "#1b4f8a" : "text.primary",
                   textAlign: "center",
                 }}
               >

@@ -152,7 +152,7 @@ export default function AdaptiveQuizResultsPage() {
     return (
       <MainLayout>
         <Container sx={{ py: 8 }}>
-          <Typography sx={{ color: "#ef4444", textAlign: "center", fontWeight: 700 }}>
+          <Typography sx={{ color: "#b32020", textAlign: "center", fontWeight: 700 }}>
             {error ?? "Results unavailable."}
           </Typography>
         </Container>
@@ -236,11 +236,11 @@ export default function AdaptiveQuizResultsPage() {
 
           <KpiRail
             items={[
-              { value: `${accuracyPct}%`, label: "Accuracy", accent: "#10b981", numeric: false },
-              { value: score.correct, label: "Correct", accent: "#10b981" },
-              { value: score.total - score.correct, label: "Incorrect", accent: "#ef4444" },
-              { value: session.hints_used, label: "Hints used", accent: "#a855f7" },
-              { value: `${timeMinutes}m`, label: "Total time", accent: "#6366f1", numeric: false },
+              { value: `${accuracyPct}%`, label: "Accuracy", accent: "#0e7a3c", numeric: false },
+              { value: score.correct, label: "Correct", accent: "#0e7a3c" },
+              { value: score.total - score.correct, label: "Incorrect", accent: "#b32020" },
+              { value: session.hints_used, label: "Hints used", accent: "#1b4f8a" },
+              { value: `${timeMinutes}m`, label: "Total time", accent: "#1b4f8a", numeric: false },
             ]}
           />
 

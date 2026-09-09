@@ -76,7 +76,7 @@ export function MediaField({
           borderColor:
             "color-mix(in srgb, var(--primary-500) 35%, var(--border-default) 65%)",
           boxShadow:
-            "0 4px 12px color-mix(in srgb, var(--primary-500) 8%, transparent)",
+            "var(--shadow-md)",
         },
       }}
     >

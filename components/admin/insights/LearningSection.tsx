@@ -16,6 +16,9 @@ import { IconWrapper } from "@/components/common/IconWrapper";
 import type { LearningPayload } from "@/lib/services/admin/admin-insights.service";
 import { DefinitionMark, EmptyState, INSIGHT, Panel, SERIES_COLORS } from "./primitives";
 
+/** Stroke patterns paired with SERIES_COLORS so identity never rests on hue alone. */
+const SERIES_DASHES = ["0", "7 3", "2 3", "9 3 2 3"];
+
 /**
  * Learning block of the admin insights dashboard.
  *
@@ -90,9 +93,14 @@ export function LearningSection({
 
     return {
       rows: [...byWeek.values()].sort((a, b) => a.week - b.week),
+      // Colour AND dash, both keyed off the same index, so the lines stay separable in
+      // greyscale - a government report is printed as often as it is read on screen - and
+      // for a reader who cannot tell the gold line from the green one. The two cycles are
+      // different lengths (8 and 4), so a colour repeat never coincides with a dash repeat.
       series: ordered.map((id, i) => ({
         key: keyById.get(id) as string,
         color: SERIES_COLORS[i % SERIES_COLORS.length],
+        dash: SERIES_DASHES[i % SERIES_DASHES.length],
       })),
     };
   }, [data]);
@@ -203,6 +211,7 @@ export function LearningSection({
                     name={s.key}
                     stroke={s.color}
                     strokeWidth={2}
+                    strokeDasharray={s.dash}
                     dot={{ r: 3, strokeWidth: 0, fill: s.color }}
                     activeDot={{ r: 5 }}
                     // Gaps are real here: a course with no data in week 4 did not drop to zero,

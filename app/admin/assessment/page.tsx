@@ -969,9 +969,13 @@ export default function AssessmentPage() {
               borderRadius: "22px",
               p: { xs: 3, md: 4 },
               color: "#fff",
-              // Deep eggplant → dark magenta, per the mockup band
-              background: "linear-gradient(115deg, #2b1244 0%, #3d1663 45%, #6b1a52 82%, #7d2058 100%)",
-              boxShadow: "0 28px 56px -28px rgba(61, 22, 99, 0.55)",
+              // The mockup band was deep eggplant into dark magenta. It now runs
+              // institutional navy into institutional teal across the same four
+              // stops, which keeps the sweep the mockup was after without a
+              // retired hue. The 56px shadow at 55% opacity that sat under it was
+              // a glow, so the band takes the shared elevation token instead.
+              background: "linear-gradient(115deg, #0a1e37 0%, #12365f 45%, #0f6b7a 82%, #0b5260 100%)",
+              boxShadow: "var(--shadow-xl)",
             }}
           >
             <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "1fr 340px" }, gap: 3, alignItems: "start" }}>

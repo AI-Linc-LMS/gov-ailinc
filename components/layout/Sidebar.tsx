@@ -338,8 +338,8 @@ function SidebarNavButton({
               height: 20,
               borderRadius: "50%",
               color: "#fff",
-              background: "linear-gradient(135deg, #7c3aed, #ec4899)",
-              boxShadow: "0 2px 6px -2px rgba(124,58,237,0.8)",
+              background: "linear-gradient(135deg, #14406f, #0f6b7a)",
+              boxShadow: "0 2px 6px -2px rgba(20, 64, 111,0.8)",
               // The (i) button sits absolutely at right: 4 and is ~18px wide including its
               // padding. Without this the padlock renders underneath it.
               ...(hasInfo

@@ -57,10 +57,23 @@ function prettifyRule(rule: string): string {
   return words ? words.charAt(0).toUpperCase() + words.slice(1) : rule;
 }
 
-/** 1 = watch, 2 = concerning, 3+ = urgent. Kept to three steps so the colour still means something. */
+/**
+ * 1 = watch, 2 = concerning, 3+ = urgent. Kept to three steps so the colour still means something.
+ *
+ * This is a status escalation, so it has to read as one: gold, then institutional red, then the
+ * dark red. Middle used to be INSIGHT.pink, which on the government palette is teal - a cool hue
+ * sitting between two warm ones, so "concerning" looked calmer than "watch" and the ramp ran
+ * backwards. The three steps now fall monotonically in lightness (OKLCH L 0.63, 0.50, 0.42), which
+ * is what carries the order in greyscale and for a reader who cannot separate the two reds by hue:
+ * concerning against urgent is only dE 5.9, and one red family is all this palette has.
+ *
+ * KNOWN GAP, not fixable by recolouring: the dot these feed is 10px of colour whose only other
+ * signal is a hover tooltip, so on touch and in print the severity is unlabelled. It needs a
+ * visible label or a per-step icon.
+ */
 function severityColor(severity: number): string {
-  if (severity >= 3) return INSIGHT.red;
-  if (severity === 2) return INSIGHT.pink;
+  if (severity >= 3) return "#8f1919";
+  if (severity === 2) return INSIGHT.red;
   return INSIGHT.amber;
 }
 
@@ -180,7 +193,13 @@ export function PulseTrendPanel({ data, loading }: { data: PulsePayload | null; 
                 a count of activities — and a class of 40 students against 3,000 completions on a
                 shared scale pins the student line flat to the floor, which reads as "nobody is
                 active" when the opposite is true. Each axis is tinted to its series and both are
-                in the legend so it stays clear which line reads against which scale. */}
+                in the legend so it stays clear which line reads against which scale.
+
+                The tinted tick labels are the one place on this dashboard where type is not a
+                neutral. They are doing identity work rather than decoration - on a two-scale
+                chart nothing else says which axis belongs to which series - and both tints clear
+                4.5:1 on the card (blue 8.29:1, green 5.43:1). The series themselves separate
+                three ways: hue, mark (filled area vs bare line), and stroke pattern. */}
             <ComposedChart data={trend} margin={{ top: 8, right: 8, bottom: 4, left: -8 }}>
               <defs>
                 <linearGradient id="pulseItemsFill" x1="0" y1="0" x2="0" y2="1">
@@ -264,6 +283,7 @@ export function PulseTrendPanel({ data, loading }: { data: PulsePayload | null; 
                 name="Students active"
                 stroke={INSIGHT.green}
                 strokeWidth={2}
+                strokeDasharray="7 3"
                 dot={false}
                 activeDot={{ r: 4 }}
               />
@@ -271,9 +291,9 @@ export function PulseTrendPanel({ data, loading }: { data: PulsePayload | null; 
           </ResponsiveContainer>
 
           <Typography sx={{ fontSize: "0.74rem", color: "var(--font-secondary)", mt: 1 }}>
-            These two count different things, so each has its own scale. The purple area is how
-            much work was finished; the green line is how many students showed up. Where they
-            cross means nothing.
+            These two count different things, so each has its own scale. The blue area is how
+            much work was finished; the green dashed line is how many students showed up. Where
+            they cross means nothing.
           </Typography>
 
           <Box

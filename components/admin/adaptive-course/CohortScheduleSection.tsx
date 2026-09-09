@@ -58,7 +58,7 @@ export function CohortScheduleSection({ courseId }: { courseId: number }) {
   return (
     <Box sx={{ borderRadius: 3, p: { xs: 2, md: 2.5 }, mb: 2.5, bgcolor: "var(--card-bg, #fff)", border: "1px solid var(--border-default, #ececf1)" }}>
       <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-        <Icon icon="mdi:calendar-clock" width={20} color="#6366f1" />
+        <Icon icon="mdi:calendar-clock" width={20} color="#1b4f8a" />
         <Typography sx={{ fontWeight: 800, fontSize: "1.05rem" }}>Cohort start date</Typography>
       </Stack>
 

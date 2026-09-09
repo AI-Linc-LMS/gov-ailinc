@@ -199,16 +199,12 @@ export const AssessmentNavigation = memo(function AssessmentNavigation({
               : isSubjective
                 ? "var(--assessment-subjective-fg)"
                 : "var(--accent-purple)";
-            const activeShadow = isCoding
-              ? "0 2px 6px 0 color-mix(in srgb, var(--accent-blue-light) 18%, transparent)"
-              : isSubjective
-                ? "0 2px 6px 0 var(--assessment-subjective-shadow)"
-                : "0 2px 6px 0 color-mix(in srgb, var(--accent-purple) 18%, transparent)";
-            const activeShadowHover = isCoding
-              ? "0 3px 8px 0 color-mix(in srgb, var(--accent-blue-light) 26%, transparent)"
-              : isSubjective
-                ? "0 3px 8px 0 var(--assessment-subjective-shadow-lg)"
-                : "0 3px 8px 0 color-mix(in srgb, var(--accent-purple) 26%, transparent)";
+            // The active tab used to carry a shadow tinted with its own section
+            // colour. The tab already states which section it is through its text,
+            // border and fill, so elevation here is elevation, not a third colour
+            // channel: one resting step, one hovered step, both from the scale.
+            const activeShadow = "var(--shadow-sm)";
+            const activeShadowHover = "var(--shadow-md)";
             const borderHover = isCoding
               ? "var(--accent-blue-light)"
               : isSubjective
@@ -274,7 +270,7 @@ export const AssessmentNavigation = memo(function AssessmentNavigation({
                   transition: "all 0.15s ease-out",
                   boxShadow: isActive
                     ? activeShadow
-                    : "0 1px 2px 0 var(--surface-subtle)",
+                    : "var(--shadow-xs)",
                   whiteSpace: "nowrap",
                   pointerEvents: "auto",
                   opacity: tabClosedByTimer ? 0.55 : 1,
@@ -529,7 +525,7 @@ export const AssessmentNavigation = memo(function AssessmentNavigation({
                 fontWeight: 600,
                 textTransform: "none",
                 boxShadow:
-                  "0 2px 8px 0 color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+                  "var(--shadow-md)",
                 transition: "all 0.2s ease-in-out",
                 "&:hover": {
                   backgroundColor: "var(--accent-indigo-dark)",

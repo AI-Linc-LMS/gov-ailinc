@@ -21,11 +21,11 @@ export interface AttachmentLook {
 }
 
 const LOOKS: Record<string, AttachmentLook> = {
-  pdf: { icon: "mdi:file-pdf-box", accent: "#ef4444", label: "PDF" },
-  slides: { icon: "mdi:file-presentation-box", accent: "#f97316", label: "Slides" },
-  doc: { icon: "mdi:file-word-outline", accent: "#3b82f6", label: "Document" },
-  sheet: { icon: "mdi:file-excel-outline", accent: "#10b981", label: "Spreadsheet" },
-  image: { icon: "mdi:file-image-outline", accent: "#a855f7", label: "Image" },
+  pdf: { icon: "mdi:file-pdf-box", accent: "#b32020", label: "PDF" },
+  slides: { icon: "mdi:file-presentation-box", accent: "#b45309", label: "Slides" },
+  doc: { icon: "mdi:file-word-outline", accent: "#4a7fbb", label: "Document" },
+  sheet: { icon: "mdi:file-excel-outline", accent: "#0e7a3c", label: "Spreadsheet" },
+  image: { icon: "mdi:file-image-outline", accent: "#1b4f8a", label: "Image" },
   file: { icon: "mdi:file-outline", accent: "#64748b", label: "File" },
 };
 

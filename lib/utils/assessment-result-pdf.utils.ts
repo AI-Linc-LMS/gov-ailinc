@@ -29,13 +29,23 @@ import {
   parseSubjectiveAnswerPayload,
 } from "@/utils/assessment.utils";
 
-/** Design tokens - aligned to the assessment-management UI (violet→pink gradient + semantics). */
-const SKY = { r: 124, g: 58, b: 237 };        // violet-600 (primary accent)
-const SKY_LIGHT = { r: 237, g: 233, b: 254 }; // violet-100
-const SKY_DEEP = { r: 109, g: 40, b: 217 };   // violet-700
-/** Signature gradient used for the report header band (matches --gradient-ai). */
-const GRADIENT_START = { r: 124, g: 58, b: 237 }; // #7c3aed
-const GRADIENT_END = { r: 236, g: 72, b: 153 };   // #ec4899
+/**
+ * Design tokens - aligned to the assessment-management UI.
+ *
+ * jsPDF takes colours as decimal channels, so every value here is an {r,g,b}
+ * object and not one hex literal appears. The palette sweep that moved this build
+ * onto the government colours therefore could not see a single one of them: it
+ * rewrote the hex in the trailing comment on GRADIENT_START and GRADIENT_END and
+ * left the triples beside them untouched, which is why those two comments used to
+ * name a navy and a teal while the PDF still printed violet into pink. The
+ * channels below are the values those comments already claimed.
+ */
+const SKY = { r: 27, g: 79, b: 138 };         // #1b4f8a institutional blue
+const SKY_LIGHT = { r: 217, g: 230, b: 244 }; // #d9e6f4 primary-100
+const SKY_DEEP = { r: 18, g: 54, b: 95 };     // #12365f primary-700
+/** Signature gradient used for the report header band. */
+const GRADIENT_START = { r: 20, g: 64, b: 111 }; // #14406f
+const GRADIENT_END = { r: 15, g: 107, b: 122 };  // #0f6b7a institutional teal
 const SLATE_MUTED = { r: 71, g: 85, b: 105 };
 const INK = { r: 15, g: 23, b: 42 };
 const TRACK = { r: 226, g: 232, b: 240 };
@@ -902,8 +912,9 @@ export function generateAssessmentResultPdfVector(
     const tone = PERFORMANCE_TONE_PDF[tier.tone];
     const pad = 3.8;
     const panelH = 60;
-    // White card + hairline violet-tinted border + soft top gradient accent (card-recipe look).
-    pdf.setDrawColor(221, 214, 254);
+    // White card + a hairline border in primary-200 + a soft top gradient accent.
+    // The border was violet-200 in raw channels, which no hex sweep could reach.
+    pdf.setDrawColor(182, 205, 232);
     pdf.setLineWidth(0.4);
     pdf.setFillColor(255, 255, 255);
     pdf.roundedRect(leftX, topY, width, panelH, 2, 2, "FD");
@@ -1109,11 +1120,12 @@ export function generateAssessmentResultPdfVector(
   pdf.setFillColor(SKY_DEEP.r, SKY_DEEP.g, SKY_DEEP.b);
   pdf.rect(margin, heroY + heroH - 5, boxW, 5, "F");
 
-  // Brand pink (the gradient's other end) - pairs with the violet block instead of a jarring
-  // dark slate card.
-  pdf.setFillColor(219, 39, 119);
+  // Institutional teal, the gradient's other end. This pair of hero blocks was
+  // violet beside brand pink; both were written as decimal channels, so the
+  // palette sweep moved neither.
+  pdf.setFillColor(15, 107, 122);
   pdf.rect(margin + boxW + heroGap, heroY, boxW, heroH, "F");
-  pdf.setFillColor(157, 23, 77);
+  pdf.setFillColor(11, 82, 96);
   pdf.rect(margin + boxW + heroGap, heroY + heroH - 5, boxW, 5, "F");
 
   pdf.setTextColor(255, 255, 255);
@@ -1124,7 +1136,8 @@ export function generateAssessmentResultPdfVector(
   pdf.text(String(stats?.attempted_questions ?? 0), margin + 4, heroY + 26);
   pdf.setFont(PDF_FONT, "normal");
   pdf.setFontSize(7.8);
-  pdf.setTextColor(224, 242, 254);
+  // primary-100 on the institutional-blue block: 6.6:1.
+  pdf.setTextColor(217, 230, 244);
   const subL = pdf.splitTextToSize(
     `Out of ${stats?.total_questions ?? 0} total items · ${data?.status ?? ""}`,
     boxW - 8,
@@ -1146,7 +1159,9 @@ export function generateAssessmentResultPdfVector(
   }
   pdf.setFont(PDF_FONT, "normal");
   pdf.setFontSize(7.8);
-  pdf.setTextColor(251, 207, 232);
+  // Teal tint on the institutional-teal block: 5.6:1. Was pink-200 on pink-600,
+  // which only reached about 3.6:1.
+  pdf.setTextColor(213, 231, 233);
   const subR = pdf.splitTextToSize(
     "Strongest skills in this attempt (when provided by the assessment).",
     boxW - 8,
@@ -1301,7 +1316,8 @@ export function generateAssessmentResultPdfVector(
     setInk();
   };
 
-  drawMetricTrend(scoreTrendPts, { r: 99, g: 102, b: 241 }, { r: 79, g: 70, b: 229 });
+  // #1b4f8a line, #12365f dots. Was indigo-500 / indigo-600 in raw channels.
+  drawMetricTrend(scoreTrendPts, { r: 27, g: 79, b: 138 }, { r: 18, g: 54, b: 95 });
   drawMetricTrend(topicTrendPts, SKY_DEEP, SKY);
 
   // --- Time (full width) ---
@@ -1906,7 +1922,8 @@ export function generateAssessmentResultPdfVector(
     y += 4;
   }
 
-  const INDIGO_BAR = { r: 99, g: 102, b: 241 };
+  // The name is kept because it is referenced below; the value is #1b4f8a.
+  const INDIGO_BAR = { r: 27, g: 79, b: 138 };
 
   if (subjectiveResponses.length > 0) {
     fitEntireBlock(26);

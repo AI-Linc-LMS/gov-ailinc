@@ -29,7 +29,7 @@ export function ManageStudentsHeader({
         background:
           "linear-gradient(135deg, color-mix(in srgb, var(--accent-indigo) 7%, var(--card-bg)) 0%, var(--card-bg) 48%, var(--card-bg) 100%)",
         boxShadow:
-          "0 4px 24px color-mix(in srgb, var(--font-primary) 6%, transparent)",
+          "var(--shadow-sm)",
         position: "relative",
         overflow: "hidden",
         "&::before": {
@@ -163,7 +163,7 @@ export function ManageStudentsHeader({
                 minWidth: { xs: "100%", sm: 168 },
                 backgroundColor: "var(--primary-500)",
                 color: "var(--font-light)",
-                boxShadow: "0 2px 8px color-mix(in srgb, var(--primary-500) 35%, transparent)",
+                boxShadow: "var(--shadow-sm)",
                 "&:hover": {
                   backgroundColor: "var(--primary-700)",
                 },

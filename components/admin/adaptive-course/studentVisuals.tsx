@@ -5,23 +5,23 @@ import { Box } from "@mui/material";
 /** Shared visual helpers for the adaptive-course Students surfaces. */
 
 const AVATAR_GRADIENTS = [
-  "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
-  "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-  "linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%)",
-  "linear-gradient(135deg, #10b981 0%, #0ea5e9 100%)",
-  "linear-gradient(135deg, #f59e0b 0%, #ec4899 100%)",
-  "linear-gradient(135deg, #ec4899 0%, #6366f1 100%)",
+  "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
+  "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)",
+  "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
+  "linear-gradient(135deg, #0e7a3c 0%, #1b4f8a 100%)",
+  "linear-gradient(135deg, #b7791f 0%, #0f6b7a 100%)",
+  "linear-gradient(135deg, #0f6b7a 0%, #1b4f8a 100%)",
 ];
 
 /** Brand progress-bar fill (matches the course-builder gradient). */
-export const PROGRESS_GRADIENT = "linear-gradient(90deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)";
+export const PROGRESS_GRADIENT = "linear-gradient(90deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)";
 
 /** Per-content-type accent colors - same palette as the builder's ModuleSummary. */
 export const TYPE_COLOR = {
-  quiz: "#6366f1",
-  coding: "#ec4899",
-  video: "#0ea5e9",
-  article: "#a855f7",
+  quiz: "#1b4f8a",
+  coding: "#0f6b7a",
+  video: "#1b4f8a",
+  article: "#1b4f8a",
 } as const;
 
 export function initials(name: string, email: string): string {
@@ -63,7 +63,7 @@ export function StudentAvatar({
         fontSize: size * 0.36,
         letterSpacing: "0.02em",
         background: gradientFor(email || name),
-        boxShadow: "0 8px 18px -10px rgba(99,102,241,0.55)",
+        boxShadow: "var(--shadow-sm)",
         opacity: dim ? 0.5 : 1,
         userSelect: "none",
       }}
@@ -83,7 +83,7 @@ export function GradientBar({ value, height = 8 }: { value: number; height?: num
         width: "100%",
         height,
         borderRadius: 999,
-        bgcolor: "color-mix(in srgb, #6366f1 12%, transparent)",
+        bgcolor: "color-mix(in srgb, #1b4f8a 12%, transparent)",
         overflow: "hidden",
       }}
     >

@@ -84,7 +84,7 @@ const getInitials = (name: string) => {
 const tablePaperSx = {
   borderRadius: 2,
   border: "1px solid var(--border-default)",
-  boxShadow: "0 2px 12px color-mix(in srgb, var(--font-primary) 6%, transparent)",
+  boxShadow: "var(--shadow-sm)",
   overflow: "hidden" as const,
   backgroundColor: "var(--card-bg)",
 };
@@ -288,7 +288,7 @@ export function StudentsTable({
                       alignItems: "center",
                       gap: 1,
                       cursor: "pointer",
-                      "&:hover": { color: "#6366f1" },
+                      "&:hover": { color: "#1b4f8a" },
                       transition: "color 0.2s",
                     }}
                     onClick={() => onSort("saved_resume")}
@@ -325,7 +325,7 @@ export function StudentsTable({
                       alignItems: "center",
                       gap: 1,
                       cursor: "pointer",
-                      "&:hover": { color: "#6366f1" },
+                      "&:hover": { color: "#1b4f8a" },
                       transition: "color 0.2s",
                     }}
                     onClick={() => onSort("completion_pct")}
@@ -362,7 +362,7 @@ export function StudentsTable({
                       alignItems: "center",
                       gap: 1,
                       cursor: "pointer",
-                      "&:hover": { color: "#6366f1" },
+                      "&:hover": { color: "#1b4f8a" },
                       transition: "color 0.2s",
                     }}
                     onClick={() => onSort("attendance_pct")}
@@ -511,7 +511,7 @@ export function StudentsTable({
                           sx={{
                             width: { xs: 32, sm: 40 },
                             height: { xs: 32, sm: 40 },
-                            bgcolor: "#6366f1",
+                            bgcolor: "#1b4f8a",
                             fontSize: { xs: "0.7rem", sm: "0.875rem" },
                           }}
                         >
@@ -544,7 +544,7 @@ export function StudentsTable({
                                 label={t("adminManageStudents.inactive")}
                                 size="small"
                                 sx={{
-                                  backgroundColor: "#fee2e2",
+                                  backgroundColor: "#fbeaea",
                                   color: "#991b1b",
                                   fontSize: "0.65rem",
                                   height: 18,
@@ -625,8 +625,8 @@ export function StudentsTable({
                         }
                         size="small"
                         sx={{
-                          backgroundColor: student.has_saved_resume ? "#dcfce7" : "#f3f4f6",
-                          color: student.has_saved_resume ? "#166534" : "#6b7280",
+                          backgroundColor: student.has_saved_resume ? "#dff0e6" : "#f3f4f6",
+                          color: student.has_saved_resume ? "#0A4F28" : "#6b7280",
                           fontWeight: 600,
                           fontSize: { xs: "0.7rem", sm: "0.75rem" },
                         }}
@@ -661,10 +661,10 @@ export function StudentsTable({
                                 "& .MuiLinearProgress-bar": {
                                   backgroundColor:
                                     stats.completion_percentage >= 80
-                                      ? "#10b981"
+                                      ? "#0e7a3c"
                                       : stats.completion_percentage >= 50
-                                      ? "#f59e0b"
-                                      : "#ef4444",
+                                      ? "#b7791f"
+                                      : "#b32020",
                                   borderRadius: 1,
                                 },
                               }}
@@ -724,10 +724,10 @@ export function StudentsTable({
                                 "& .MuiLinearProgress-bar": {
                                   backgroundColor:
                                     stats.attendance_percentage >= 80
-                                      ? "#10b981"
+                                      ? "#0e7a3c"
                                       : stats.attendance_percentage >= 50
-                                      ? "#f59e0b"
-                                      : "#ef4444",
+                                      ? "#b7791f"
+                                      : "#b32020",
                                   borderRadius: 1,
                                 },
                               }}
@@ -773,9 +773,9 @@ export function StudentsTable({
                           title={t("profile.tabProfile")}
                           aria-label={t("profile.tabProfile")}
                           sx={{
-                            color: "#6366f1",
+                            color: "#1b4f8a",
                             "&:hover": {
-                              backgroundColor: "#eef2ff",
+                              backgroundColor: "#eef3fa",
                               transform: "scale(1.1)",
                             },
                             transition: "all 0.2s",
@@ -791,9 +791,9 @@ export function StudentsTable({
                           title={t("manageStudents.courseManagement")}
                           aria-label={t("manageStudents.courseManagement")}
                           sx={{
-                            color: "#6366f1",
+                            color: "#1b4f8a",
                             "&:hover": {
-                              backgroundColor: "#eef2ff",
+                              backgroundColor: "#eef3fa",
                               transform: "scale(1.1)",
                             },
                             transition: "all 0.2s",
@@ -808,8 +808,8 @@ export function StudentsTable({
                             title="Delete student"
                             aria-label="Delete student"
                             sx={{
-                              color: "#ef4444",
-                              "&:hover": { backgroundColor: "#fef2f2", transform: "scale(1.1)" },
+                              color: "#b32020",
+                              "&:hover": { backgroundColor: "#fdf5f5", transform: "scale(1.1)" },
                               transition: "all 0.2s",
                             }}
                           >

@@ -62,7 +62,7 @@ const ElectricBorder: React.FC<ElectricBorderProps> = ({
             borderRadius,
             background:
               `radial-gradient(60% 60% at 50% 0%, ${hexToRgba(color, 0.55)}, transparent 70%),` +
-              ` radial-gradient(70% 70% at 50% 100%, ${hexToRgba("#a855f7", 0.42)}, transparent 72%)`,
+              ` radial-gradient(70% 70% at 50% 100%, ${hexToRgba("#1b4f8a", 0.42)}, transparent 72%)`,
             filter: "blur(22px)",
             opacity: 0.9,
           }}
@@ -86,7 +86,7 @@ const ElectricBorder: React.FC<ElectricBorderProps> = ({
           </filter>
           <linearGradient id={coreId} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor={color} />
-            <stop offset="50%" stopColor="#f59e0b" />
+            <stop offset="50%" stopColor="#b7791f" />
             <stop offset="100%" stopColor={color} />
           </linearGradient>
         </defs>

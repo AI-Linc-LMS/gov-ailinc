@@ -120,7 +120,7 @@ export function ImageUrlDialog({
       PaperProps={{
         sx: {
           borderRadius: { xs: 0, sm: 2 },
-          boxShadow: "0 8px 24px color-mix(in srgb, var(--font-primary) 16%, transparent)",
+          boxShadow: "var(--shadow-lg)",
           m: { xs: 0, sm: 2 },
           maxHeight: { xs: "100vh", sm: "90vh" },
           display: "flex",

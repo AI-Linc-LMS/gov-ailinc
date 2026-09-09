@@ -54,12 +54,12 @@ export function StudentDetailDrawer({
           <CircularProgress />
         </Box>
       )}
-      {error && <Typography sx={{ color: "#ef4444", fontWeight: 700 }}>{error}</Typography>}
+      {error && <Typography sx={{ color: "#b32020", fontWeight: 700 }}>{error}</Typography>}
       {detail && (
         <>
           <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 2 }}>
             <Box sx={{ width: 48, height: 48, borderRadius: "50%", display: "grid", placeItems: "center",
-              color: "#fff", background: "linear-gradient(135deg,#6366f1,#a855f7)", fontWeight: 800 }}>
+              color: "#fff", background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)", fontWeight: 800 }}>
               {(detail.name || detail.email || "?").slice(0, 1).toUpperCase()}
             </Box>
             <Box sx={{ minWidth: 0 }}>
@@ -107,7 +107,7 @@ function DetailList({
   return (
     <Box sx={{ mb: 2.5 }}>
       <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-        <Icon icon={icon} width={18} style={{ color: "#6366f1" }} />
+        <Icon icon={icon} width={18} style={{ color: "#1b4f8a" }} />
         <Typography sx={{ fontWeight: 800, fontSize: "0.9rem" }}>{title}</Typography>
       </Stack>
       {items.length === 0 ? (

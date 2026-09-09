@@ -161,7 +161,7 @@ const QuickStartFormComponent = ({
               width: 56,
               height: 56,
               borderRadius: 2,
-              backgroundColor: "#10b981",
+              backgroundColor: "#0e7a3c",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -195,7 +195,7 @@ const QuickStartFormComponent = ({
               <MenuItem value={CUSTOM_TOPIC_VALUE}>Custom Topic</MenuItem>
             </Select>
             {errors.topic && (
-              <Typography variant="caption" sx={{ color: "#ef4444", mt: 0.5 }}>
+              <Typography variant="caption" sx={{ color: "#b32020", mt: 0.5 }}>
                 {errors.topic}
               </Typography>
             )}
@@ -236,14 +236,14 @@ const QuickStartFormComponent = ({
                     borderRadius: 2,
                     border: "2px solid",
                     borderColor:
-                      formData.difficulty === level ? "#10b981" : "#e5e7eb",
+                      formData.difficulty === level ? "#0e7a3c" : "#e5e7eb",
                     backgroundColor:
-                      formData.difficulty === level ? "#ecfdf5" : "#ffffff",
+                      formData.difficulty === level ? "#f0f7f3" : "#ffffff",
                     cursor: "pointer",
                     textAlign: "center",
                     transition: "all 0.2s ease",
                     "&:hover": {
-                      borderColor: "#10b981",
+                      borderColor: "#0e7a3c",
                       backgroundColor: "#f0fdf4",
                     },
                   }}
@@ -253,7 +253,7 @@ const QuickStartFormComponent = ({
                     sx={{
                       fontWeight: 600,
                       color:
-                        formData.difficulty === level ? "#10b981" : "#6b7280",
+                        formData.difficulty === level ? "#0e7a3c" : "#6b7280",
                     }}
                   >
                     {level}
@@ -262,7 +262,7 @@ const QuickStartFormComponent = ({
               ))}
             </Box>
             {errors.difficulty && (
-              <Typography variant="caption" sx={{ color: "#ef4444", mt: 0.5 }}>
+              <Typography variant="caption" sx={{ color: "#b32020", mt: 0.5 }}>
                 {errors.difficulty}
               </Typography>
             )}
@@ -417,9 +417,9 @@ const QuickStartFormComponent = ({
                 fontWeight: 600,
                 px: 3,
                 py: 1.25,
-                backgroundColor: "#10b981",
+                backgroundColor: "#0e7a3c",
                 "&:hover": {
-                  backgroundColor: "#059669",
+                  backgroundColor: "#0B6232",
                 },
               }}
             >
@@ -434,13 +434,13 @@ const QuickStartFormComponent = ({
           sx={{
             mt: 3,
             p: 2,
-            backgroundColor: "#ecfdf5",
+            backgroundColor: "#f0f7f3",
             border: "1px solid #a7f3d0",
             borderRadius: 2,
           }}
         >
           <Box sx={{ display: "flex", gap: 1.5, alignItems: "flex-start" }}>
-            <IconWrapper icon="mdi:information" size={20} color="#10b981" />
+            <IconWrapper icon="mdi:information" size={20} color="#0e7a3c" />
             <Typography
               variant="body2"
               sx={{ color: "#065f46", fontSize: "0.875rem" }}

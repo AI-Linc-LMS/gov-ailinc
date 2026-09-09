@@ -13,10 +13,10 @@ interface ResultStripProps {
 }
 
 function bandColor(accuracy: number): string {
-  if (accuracy >= 0.8) return "#10b981";
-  if (accuracy >= 0.6) return "#6366f1";
-  if (accuracy >= 0.4) return "#f59e0b";
-  return "#ef4444";
+  if (accuracy >= 0.8) return "#0e7a3c";
+  if (accuracy >= 0.6) return "#1b4f8a";
+  if (accuracy >= 0.4) return "#b7791f";
+  return "#b32020";
 }
 
 export function ResultStrip({ narration, hintsUsed }: ResultStripProps) {
@@ -30,10 +30,9 @@ export function ResultStrip({ narration, hintsUsed }: ResultStripProps) {
       sx={{
         p: { xs: 2.5, md: 3.5 },
         borderRadius: 4,
-        bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 65%, transparent)",
-        border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 60%, transparent)",
-        backdropFilter: "blur(18px) saturate(140%)",
-        boxShadow: "0 1px 0 0 color-mix(in srgb, white 14%, transparent) inset, 0 24px 60px -32px rgba(99, 102, 241, 0.35)",
+        bgcolor: "var(--card-bg, #ffffff)",
+        border: "1px solid var(--border-default, #e5e7eb)",
+        boxShadow: "var(--shadow-sm)",
         display: "grid",
         gridTemplateColumns: { xs: "1fr", md: "160px minmax(0, 1fr) 220px" },
         gap: { xs: 2, md: 3 },
@@ -73,14 +72,14 @@ export function ResultStrip({ narration, hintsUsed }: ResultStripProps) {
           gap: 1,
         }}
       >
-        <Stat label="Correct" value={String(score_summary.correct)} accent="#10b981" />
+        <Stat label="Correct" value={String(score_summary.correct)} accent="#0e7a3c" />
         <Stat
           label="Incorrect"
           value={String(score_summary.total - score_summary.correct)}
-          accent="#ef4444"
+          accent="#b32020"
         />
-        <Stat label="Hints" value={String(hintsUsed)} accent="#a855f7" />
-        <Stat label="Time" value={`${totalMinutes}m`} accent="#6366f1" />
+        <Stat label="Hints" value={String(hintsUsed)} accent="#1b4f8a" />
+        <Stat label="Time" value={`${totalMinutes}m`} accent="#1b4f8a" />
       </Box>
     </Box>
   );

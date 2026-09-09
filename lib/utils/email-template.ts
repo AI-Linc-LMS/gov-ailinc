@@ -67,7 +67,7 @@ export function buildAssessmentNotificationEmailHtml(
     clientName,
     logoUrl,
     signOff = "Best regards,",
-    accentColor = "#5a4ea2",
+    accentColor = "#1b4f8a",
     schedule,
   } = opts;
 

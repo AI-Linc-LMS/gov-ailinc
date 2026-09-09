@@ -298,20 +298,20 @@ export function CohortCourseMatrix() {
                                 minHeight: 62,
                                 cursor: busyCell ? "default" : "pointer",
                                 bgcolor: linked
-                                  ? "color-mix(in srgb, #10b981 12%, transparent)"
+                                  ? "color-mix(in srgb, #0e7a3c 12%, transparent)"
                                   : "transparent",
                                 transition: "background-color .15s",
                                 "&:hover": {
                                   bgcolor: linked
-                                    ? "color-mix(in srgb, #ef4444 12%, transparent)"
-                                    : "color-mix(in srgb, #6366f1 10%, transparent)",
+                                    ? "color-mix(in srgb, #b32020 12%, transparent)"
+                                    : "color-mix(in srgb, #1b4f8a 10%, transparent)",
                                 },
                               }}
                             >
                               {busy ? (
                                 <CircularProgress size={16} />
                               ) : linked ? (
-                                <Icon icon="mdi:check-circle" width={22} style={{ color: "#10b981" }} />
+                                <Icon icon="mdi:check-circle" width={22} style={{ color: "#0e7a3c" }} />
                               ) : (
                                 <Icon
                                   icon="mdi:plus-circle-outline"

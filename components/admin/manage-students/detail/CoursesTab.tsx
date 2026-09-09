@@ -42,7 +42,7 @@ function ModuleRow({ module }: { module: JourneyModule }) {
             fontSize: "0.66rem",
             fontWeight: 800,
             color: ADAPTIVE.indigo,
-            bgcolor: "color-mix(in srgb, #6366f1 14%, transparent)",
+            bgcolor: "color-mix(in srgb, #1b4f8a 14%, transparent)",
             flexShrink: 0,
           }}
         >

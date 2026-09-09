@@ -207,7 +207,7 @@ export default function RoomDetailPage() {
                     width: 7,
                     height: 7,
                     borderRadius: "50%",
-                    backgroundColor: "#ef4444",
+                    backgroundColor: "#b32020",
                     ml: "6px !important",
                     animation: "pulse 1.4s infinite",
                     "@keyframes pulse": {
@@ -225,23 +225,23 @@ export default function RoomDetailPage() {
                 fontWeight: 800,
                 letterSpacing: "0.08em",
                 backgroundColor: "rgba(239,68,68,0.12)",
-                color: "#ef4444",
+                color: "#b32020",
                 border: "1px solid rgba(239,68,68,0.4)",
               }}
             />
           )}
           {isModerator && (
             <Chip
-              icon={<IconWrapper icon="mdi:shield-crown-outline" size={12} color="#a78bfa" />}
+              icon={<IconWrapper icon="mdi:shield-crown-outline" size={12} color="#85aad6" />}
               label="Moderator"
               size="small"
               sx={{
                 height: 24,
                 fontSize: "0.7rem",
                 fontWeight: 700,
-                backgroundColor: "rgba(167,139,250,0.12)",
-                color: "#7c3aed",
-                border: "1px solid rgba(167,139,250,0.4)",
+                backgroundColor: "rgba(27,79,138,0.12)",
+                color: "#14406f",
+                border: "1px solid rgba(27,79,138,0.4)",
               }}
             />
           )}
@@ -283,8 +283,8 @@ export default function RoomDetailPage() {
                     gap: 1,
                   }}
                 >
-                  <IconWrapper icon="mdi:alert-circle-outline" size={42} color="#ef4444" />
-                  <Typography variant="body1" fontWeight={700} sx={{ color: "#b91c1c" }}>
+                  <IconWrapper icon="mdi:alert-circle-outline" size={42} color="#b32020" />
+                  <Typography variant="body1" fontWeight={700} sx={{ color: "#8f1919" }}>
                     This room hasn&apos;t been provisioned yet
                   </Typography>
                   <Typography variant="body2" color="text.secondary" textAlign="center">
@@ -311,7 +311,7 @@ export default function RoomDetailPage() {
                     mx: "auto",
                     mb: 2.5,
                     borderRadius: "50%",
-                    background: "linear-gradient(135deg, #ec4899, #a78bfa)",
+                    background: "linear-gradient(135deg, #0f6b7a, #85aad6)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -335,7 +335,7 @@ export default function RoomDetailPage() {
                 )}
 
                 {isBanned ? (
-                  <Typography sx={{ color: "#ef4444", fontWeight: 600 }}>
+                  <Typography sx={{ color: "#b32020", fontWeight: 600 }}>
                     You have been banned from this room.
                   </Typography>
                 ) : room.status === "ended" ? (
@@ -361,9 +361,9 @@ export default function RoomDetailPage() {
                       borderRadius: "10px",
                       px: 3,
                       py: 1.25,
-                      backgroundColor: "#ec4899",
+                      backgroundColor: "#0f6b7a",
                       boxShadow: "none",
-                      "&:hover": { backgroundColor: "#db2777", boxShadow: "none" },
+                      "&:hover": { backgroundColor: "#0b5260", boxShadow: "none" },
                     }}
                   >
                     {joining ? "Joining…" : "Join room"}
@@ -378,9 +378,9 @@ export default function RoomDetailPage() {
                       textTransform: "none",
                       fontWeight: 700,
                       borderRadius: "10px",
-                      backgroundColor: "#10b981",
+                      backgroundColor: "#0e7a3c",
                       boxShadow: "none",
-                      "&:hover": { backgroundColor: "#059669", boxShadow: "none" },
+                      "&:hover": { backgroundColor: "#0B6232", boxShadow: "none" },
                     }}
                   >
                     Go live
@@ -420,9 +420,9 @@ export default function RoomDetailPage() {
                   sx={{
                     textTransform: "none",
                     fontWeight: 600,
-                    borderColor: "#ef4444",
-                    color: "#ef4444",
-                    "&:hover": { backgroundColor: "rgba(239,68,68,0.08)", borderColor: "#ef4444" },
+                    borderColor: "#b32020",
+                    color: "#b32020",
+                    "&:hover": { backgroundColor: "rgba(239,68,68,0.08)", borderColor: "#b32020" },
                   }}
                 >
                   End room for everyone
@@ -485,16 +485,16 @@ export default function RoomDetailPage() {
                       </Typography>
                       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                         {isHost && (
-                          <Typography variant="caption" sx={{ color: "#a78bfa", fontWeight: 700, fontSize: "0.65rem" }}>
+                          <Typography variant="caption" sx={{ color: "#85aad6", fontWeight: 700, fontSize: "0.65rem" }}>
                             HOST
                           </Typography>
                         )}
                         {p.is_active ? (
-                          <Typography variant="caption" sx={{ color: "#10b981", fontWeight: 600, fontSize: "0.65rem" }}>
+                          <Typography variant="caption" sx={{ color: "#0e7a3c", fontWeight: 600, fontSize: "0.65rem" }}>
                             • IN ROOM
                           </Typography>
                         ) : p.role === "banned" ? (
-                          <Typography variant="caption" sx={{ color: "#ef4444", fontWeight: 600, fontSize: "0.65rem" }}>
+                          <Typography variant="caption" sx={{ color: "#b32020", fontWeight: 600, fontSize: "0.65rem" }}>
                             • BANNED
                           </Typography>
                         ) : (
@@ -511,7 +511,7 @@ export default function RoomDetailPage() {
                             <IconButton
                               size="small"
                               onClick={() => handleModerate(p.user.id, "kick")}
-                              sx={{ color: "var(--font-tertiary)", "&:hover": { color: "#f59e0b" } }}
+                              sx={{ color: "var(--font-tertiary)", "&:hover": { color: "#b7791f" } }}
                             >
                               <IconWrapper icon="mdi:logout-variant" size={15} />
                             </IconButton>
@@ -522,7 +522,7 @@ export default function RoomDetailPage() {
                             <IconButton
                               size="small"
                               onClick={() => handleModerate(p.user.id, "unban")}
-                              sx={{ color: "var(--font-tertiary)", "&:hover": { color: "#10b981" } }}
+                              sx={{ color: "var(--font-tertiary)", "&:hover": { color: "#0e7a3c" } }}
                             >
                               <IconWrapper icon="mdi:account-check-outline" size={15} />
                             </IconButton>
@@ -532,7 +532,7 @@ export default function RoomDetailPage() {
                             <IconButton
                               size="small"
                               onClick={() => handleModerate(p.user.id, "ban")}
-                              sx={{ color: "var(--font-tertiary)", "&:hover": { color: "#ef4444" } }}
+                              sx={{ color: "var(--font-tertiary)", "&:hover": { color: "#b32020" } }}
                             >
                               <IconWrapper icon="mdi:account-cancel-outline" size={15} />
                             </IconButton>

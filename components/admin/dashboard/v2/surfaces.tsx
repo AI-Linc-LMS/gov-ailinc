@@ -86,7 +86,7 @@ export function DashboardHero({
             placeItems: "center",
             flexShrink: 0,
             background: CTA_GRADIENT,
-            boxShadow: "0 14px 30px -14px rgba(192,38,211,0.8)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <IconWrapper icon="mdi:chart-box-outline" size={26} color="#fff" />
@@ -361,10 +361,10 @@ export function HeroKpi({
             <IconWrapper
               icon={up ? "mdi:trending-up" : "mdi:trending-down"}
               size={14}
-              color={up ? "#4ade80" : "#fca5a5"}
+              color={up ? "#2f9159" : "#d99b9b"}
             />
             <Typography
-              sx={{ fontSize: "0.72rem", fontWeight: 700, color: up ? "#4ade80" : "#fca5a5" }}
+              sx={{ fontSize: "0.72rem", fontWeight: 700, color: up ? "#2f9159" : "#d99b9b" }}
             >
               {up ? "+" : ""}
               {delta.diff.toLocaleString()}

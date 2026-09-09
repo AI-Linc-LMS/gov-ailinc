@@ -14,73 +14,73 @@
   --foreground: #171717;
 
   /* Primary Colors - Default values (will be overridden by API) */
-  --nav-background: #d7eff6;
-  --font-dark-nav: #0f2b46;
+  --nav-background: #ffffff;
+  --font-dark-nav: #0a1e37;
   --font-light-nav: #ffffff;
-  --primary-50: #d7eff6;
-  --primary-100: #b9e4f2;
-  --primary-200: #80c9e0;
-  --primary-300: #63b6d3;
-  --primary-400: #2a8cb0;
-  --primary-500: #255c79;
-  --primary-600: #1e4a63;
-  --primary-700: #1a5a7a;
-  --primary-800: #124f65;
-  --primary-900: #0f2b46;
+  --primary-50: #eef3fa;
+  --primary-100: #d9e6f4;
+  --primary-200: #b6cde8;
+  --primary-300: #85aad6;
+  --primary-400: #4a7fbb;
+  --primary-500: #1b4f8a;
+  --primary-600: #164274;
+  --primary-700: #12365f;
+  --primary-800: #0e2a4b;
+  --primary-900: #0a1e37;
 
   /* Secondary Colors */
-  --secondary-50: #e6f8f6;
-  --secondary-100: #cde5ce;
-  --secondary-200: #417845;
-  --secondary-300: #ae0606;
-  --secondary-400: #007b9f;
-  --secondary-500: #12293a;
-  --nav-selected: #12293a;
-  --secondary-600: #1a3a4f;
-  --secondary-700: #264d64;
+  --secondary-50: #eef3fa;
+  --secondary-100: #d9e6f4;
+  --secondary-200: #0e7a3c;
+  --secondary-300: #b32020;
+  --secondary-400: #164274;
+  --secondary-500: #0b1b2e;
+  --nav-selected: #17406b;
+  --secondary-600: #10263f;
+  --secondary-700: #071426;
 
   /* Sidebar / mobile bottom nav — overridden by applyDocumentTheme from tenant secondary + primary */
   --shell-sidebar-bg: var(--secondary-500);
-  --shell-primary-rgb: 37 92 121;
+  --shell-primary-rgb: 27 79 138;
 
   /* Accent Colors */
-  --accent-yellow: #facc15;
-  --accent-blue: #3875f9;
-  --accent-green: #38a169;
-  --accent-red: #e53e3e;
-  --accent-orange: #dd6b20;
-  --accent-teal: #319795;
-  --accent-purple: #805ad5;
-  --accent-pink: #d53f8c;
-  --accent-cyan: #06b6d4;
-  --accent-cyan-dark: #0891b2;
+  --accent-yellow: #b7791f;
+  --accent-blue: #1b4f8a;
+  --accent-green: #0e7a3c;
+  --accent-red: #b32020;
+  --accent-orange: #b45309;
+  --accent-teal: #0f6b7a;
+  --accent-purple: #1b4f8a;
+  --accent-pink: #0f6b7a;
+  --accent-cyan: #0f6b7a;
+  --accent-cyan-dark: #0b5260;
 
   /* Neutral Colors */
-  --neutral-50: #f8f9fa;
-  --neutral-100: #e9ecef;
-  --neutral-200: #dde2e6;
-  --neutral-300: #6c757d;
-  --neutral-400: #495057;
-  --neutral-500: #343a40;
+  --neutral-50: #f6f8fb;
+  --neutral-100: #eef1f5;
+  --neutral-200: #dde3eb;
+  --neutral-300: #6b7684;
+  --neutral-400: #4a5563;
+  --neutral-500: #333d4b;
   --neutral-600: #2d3748;
   --neutral-700: #1e1e1e;
   --neutral-800: #1a1a1a;
 
   /* Success Colors */
-  --success-50: #e6f8f6;
-  --success-100: #cde5ce;
-  --success-500: #5fa564;
+  --success-50: #e8f5ed;
+  --success-100: #c8e6d5;
+  --success-500: #0e7a3c;
 
   /* Warning Colors */
-  --warning-100: #fff8e6;
-  --warning-500: #f59e0b;
+  --warning-100: #fdf3e2;
+  --warning-500: #b7791f;
   /* darker amber for TEXT on amber tints (draft chips/panels) — #ffb800 text was unreadable */
-  --warning-600: #b45309;
+  --warning-600: #8a5a12;
 
   /* Error Colors */
-  --error-100: #ffe6e6;
-  --error-500: #ea4335;
-  --error-600: #ae0606;
+  --error-100: #fbeaea;
+  --error-500: #b32020;
+  --error-600: #8f1919;
 
   /* Font Colors */
   /* Contrast pass (user directive): darker text scale so labels/captions stay readable
@@ -92,18 +92,18 @@
   --font-dark: #000000;
   --font-primary-dark: #1f2937;
   --font-muted: #374151;
-  --course-cta: #10b981;
-  --default-primary: #255c79;
+  --course-cta: #0e7a3c;
+  --default-primary: #1b4f8a;
 
-  --border-default: #e5e7eb;
-  --border-light: #d1d5db;
-  --surface: #f9fafb;
-  --accent-indigo: #6366f1;
-  --accent-indigo-dark: #4f46e5;
-  --surface-indigo-light: #eef2ff;
-  --surface-green-light: #d1fae5;
-  --surface-blue-light: #dbeafe;
-  --accent-blue-light: #3b82f6;
+  --border-default: #d8dfe8;
+  --border-light: #c3cddb;
+  --surface: #f6f8fb;
+  --accent-indigo: #1b4f8a;
+  --accent-indigo-dark: #12365f;
+  --surface-indigo-light: #eef3fa;
+  --surface-green-light: #dff0e6;
+  --surface-blue-light: #d9e6f4;
+  --accent-blue-light: #4a7fbb;
 
   /* Card / surface background */
   --card-bg: #ffffff;
@@ -113,14 +113,35 @@
      AI moments + primary actions), an 18px card radius, a mono font stack for
      numeric data, and a cyan=proctored tone. Scoped-in by the assessment module;
      safe additive tokens (nothing else references them yet). */
-  --canvas: #f4f3f8;
-  --gradient-ai: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+  --canvas: #f3f6fa;
+  --gradient-ai: linear-gradient(135deg, #14406f 0%, #0f6b7a 100%);
   --gradient-ai-soft: linear-gradient(135deg,
-    color-mix(in srgb, #7c3aed 14%, var(--card-bg) 86%) 0%,
-    color-mix(in srgb, #ec4899 12%, var(--card-bg) 88%) 100%);
-  --ai-violet: #7c3aed;
-  --ai-pink: #ec4899;
-  --radius-card: 18px;
+    color-mix(in srgb, #14406f 12%, var(--card-bg) 88%) 0%,
+    color-mix(in srgb, #0f6b7a 10%, var(--card-bg) 90%) 100%);
+  --ai-violet: #1b4f8a;
+  --ai-pink: #0f6b7a;
+  --radius-card: 10px;
+
+  /* ── Elevation ───────────────────────────────────────────────────────────
+     A government service should look printed, not floating. Shadows here are
+     short, tight and tinted with the navy ink rather than pure black, so a card
+     reads as a sheet resting on the page instead of hovering above it. Anything
+     that needs more separation than --shadow-md gets a 1px border, which is how
+     official forms and notices actually separate content.
+
+     Replaces the previous scale, which ran to 30px blurs at 25 to 55 percent
+     opacity in saturated cyan and violet. That glow is the single strongest
+     "modern SaaS" signal in a UI and survives every colour change, because the
+     eye reads the halo before it reads the hue. */
+  --shadow-xs: 0 1px 1px rgba(10, 30, 55, 0.05);
+  --shadow-sm: 0 1px 2px rgba(10, 30, 55, 0.07), 0 1px 1px rgba(10, 30, 55, 0.04);
+  --shadow-md: 0 2px 5px rgba(10, 30, 55, 0.09), 0 1px 2px rgba(10, 30, 55, 0.05);
+  --shadow-lg: 0 6px 14px rgba(10, 30, 55, 0.11), 0 2px 4px rgba(10, 30, 55, 0.06);
+  /* The strongest step in the system. Modals and popovers only. */
+  --shadow-xl: 0 12px 28px rgba(10, 30, 55, 0.16);
+  /* Focus ring, deliberately a ring and not a glow: 3px of the primary at low
+     alpha reads as a control state, not as decoration. */
+  --ring-focus: 0 0 0 3px rgba(27, 79, 138, 0.28);
   /* Site-consistent fonts (user directive): headings use the platform's Satoshi stack —
      same as the adaptive content/course-builder surfaces — and numeric accents use the
      generic mono stack those surfaces already use. No third-party font downloads. */
@@ -569,19 +590,19 @@ body {
  * ======================================================================= */
 .ailinc-wizard {
   /* Theme tokens */
-  --aw-bg-0: 5 7 15;
-  --aw-bg-1: 10 14 28;
-  --aw-bg-2: 15 20 38;
-  --aw-bg-3: 22 28 51;
+  --aw-bg-0: 7 20 38;
+  --aw-bg-1: 11 27 46;
+  --aw-bg-2: 16 38 63;
+  --aw-bg-3: 23 64 107;
   --aw-fg: 233 236 246;
   --aw-fg-dim: 154 163 192;
   --aw-fg-mute: 95 104 133;
   --aw-line: 255 255 255;
   --aw-line-alpha: 0.08;
   --aw-line-2-alpha: 0.14;
-  --aw-grad: linear-gradient(90deg, #2356d6 0%, #00e0ff 100%);
-  --aw-radial-1: rgba(0, 224, 255, 0.10);
-  --aw-radial-2: rgba(35, 86, 214, 0.18);
+  --aw-grad: linear-gradient(90deg, #14406f 0%, #0f6b7a 100%);
+  --aw-radial-1: rgba(27, 79, 138, 0.14);
+  --aw-radial-2: rgba(15, 107, 122, 0.14);
   --aw-ease: cubic-bezier(.16, 1, .3, 1);
 
   background: rgb(var(--aw-bg-0));
@@ -595,7 +616,7 @@ body {
   position: relative;
 }
 
-.ailinc-wizard *::selection { background: #00e0ff; color: #05070f; }
+.ailinc-wizard *::selection { background: #2f7fbf; color: #05070f; }
 
 /* Surface backdrop (radial glows behind everything) */
 .ailinc-wizard::before {
@@ -650,16 +671,16 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  color: #00e0ff;
+  color: #2f7fbf;
   padding: 6px 10px;
   border-radius: 9999px;
-  border: 1px solid rgba(0, 224, 255, 0.25);
-  background: rgba(0, 224, 255, 0.04);
+  border: 1px solid rgba(27, 79, 138, 0.25);
+  background: rgba(27, 79, 138, 0.04);
 }
 
 /* Gradient text */
 .ailinc-wizard .aw-gradient-text {
-  background: linear-gradient(90deg, #2356d6 0%, #00e0ff 100%);
+  background: linear-gradient(90deg, #2356d6 0%, #2f7fbf 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -677,14 +698,18 @@ body {
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, var(--aw-line-alpha));
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.01) 100%);
-  backdrop-filter: blur(8px);
+  /* The `backdrop-filter: blur(8px)` that used to sit here is gone. The wizard
+     runs on an opaque page ground, so it blurred nothing, and a backdrop filter
+     promotes every card to its own compositor layer, which is a real cost on the
+     low-end Android hardware a district aspirant is using. The 1px border above
+     is what separates the card. */
 }
 .ailinc-wizard .aw-card-thin { padding: 18px; }
 .ailinc-wizard .aw-card-top-line {
   position: absolute;
   inset: 0 0 auto 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 224, 255, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(27, 79, 138, 0.4), transparent);
   pointer-events: none;
 }
 
@@ -709,7 +734,7 @@ body {
 .ailinc-wizard .aw-input:focus,
 .ailinc-wizard .aw-textarea:focus,
 .ailinc-wizard .aw-select:focus {
-  border-color: rgba(0, 224, 255, 0.4);
+  border-color: rgba(27, 79, 138, 0.4);
   background: rgba(255, 255, 255, 0.04);
 }
 .ailinc-wizard .aw-select option {
@@ -759,30 +784,35 @@ body {
   opacity: 0.4;
   cursor: not-allowed;
 }
-/* Solid azure to match the post-launch LMS primary (azure_bolt_white_bg
-   preset's primary500 = #0ea5e9). The previous gradient ended in pure
-   #00e0ff on the right edge, which on a white canvas read as a bright
-   cyan stripe rather than a button. Clean solid + tonal shadow keeps
-   weight without that edge artifact. */
+/* Solid institutional blue, matching --primary-500. It was a gradient that
+   ended in a bright blue on the right edge, which on a white canvas read as a
+   stripe rather than a button. A clean solid keeps the weight without that edge
+   artifact, and a government primary action should read as a printed block of
+   colour anyway.
+
+   The blue-tinted drop under it (18px then 24px of blur at 55 to 70 percent) was
+   the same halo the rest of the product has just lost, so the button now takes
+   the shared elevation steps: one at rest, one on hover. The 1px inset highlight
+   stays; it is a bevel on the fill, not a glow around it. */
 .ailinc-wizard .aw-btn-primary {
   color: #ffffff;
-  background: #0ea5e9;
-  border-color: #0284c7;
+  background: #1b4f8a;
+  border-color: #12365f;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.18) inset,
-    0 6px 18px -8px rgba(14, 165, 233, 0.55);
+    var(--shadow-sm);
 }
 .ailinc-wizard .aw-btn-primary:hover:not(:disabled) {
-  background: #0284c7;
-  border-color: #0369a1;
+  background: #164274;
+  border-color: #0e2a4b;
   transform: translateY(-1px);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.18) inset,
-    0 10px 24px -8px rgba(14, 165, 233, 0.7);
+    var(--shadow-md);
 }
 .ailinc-wizard .aw-btn-primary:active:not(:disabled) {
   transform: translateY(0);
-  background: #0369a1;
+  background: #12365f;
 }
 .ailinc-wizard .aw-btn-ghost {
   color: rgb(var(--aw-fg-dim));
@@ -816,8 +846,8 @@ body {
 }
 .ailinc-wizard .aw-chip-active {
   color: #05070f;
-  background: linear-gradient(135deg, rgba(0, 224, 255, 0.95), rgba(35, 86, 214, 0.85));
-  border-color: rgba(0, 224, 255, 0.6);
+  background: linear-gradient(135deg, rgba(27, 79, 138, 0.95), rgba(35, 86, 214, 0.85));
+  border-color: rgba(27, 79, 138, 0.6);
 }
 
 /* Option / radio card */
@@ -836,9 +866,9 @@ body {
   background: rgba(255, 255, 255, 0.035);
 }
 .ailinc-wizard .aw-option-active {
-  border-color: rgba(0, 224, 255, 0.5);
-  background: rgba(0, 224, 255, 0.06);
-  box-shadow: 0 8px 30px -10px rgba(0, 224, 255, 0.25);
+  border-color: rgba(27, 79, 138, 0.5);
+  background: rgba(27, 79, 138, 0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Borders */
@@ -853,7 +883,7 @@ body {
 }
 .ailinc-wizard .aw-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #2356d6 0%, #00e0ff 100%);
+  background: linear-gradient(90deg, #2356d6 0%, #2f7fbf 100%);
   transition: width 0.6s var(--aw-ease);
 }
 
@@ -865,15 +895,15 @@ body {
   transition: background 0.3s var(--aw-ease), transform 0.3s var(--aw-ease);
 }
 .ailinc-wizard .aw-step-bar-todo { background: rgba(255, 255, 255, 0.08); }
+/* The 3px step bars used to sit in a 16px blue halo at 55 percent. A progress
+   bar states its position by being filled; the halo only made it glow. */
 .ailinc-wizard .aw-step-bar-active-bg {
-  background: linear-gradient(90deg, #2356d6, #00e0ff);
-  box-shadow: 0 0 16px rgba(0, 224, 255, 0.55);
+  background: linear-gradient(90deg, #2356d6, #2f7fbf);
 }
 .ailinc-wizard .aw-step-bar-active {
-  background: linear-gradient(90deg, #2356d6, #00e0ff);
-  box-shadow: 0 0 16px rgba(0, 224, 255, 0.55);
+  background: linear-gradient(90deg, #2356d6, #2f7fbf);
 }
-.ailinc-wizard .aw-step-bar-done { background: rgba(0, 224, 255, 0.5); }
+.ailinc-wizard .aw-step-bar-done { background: rgba(27, 79, 138, 0.5); }
 
 /* =========================================================================
  * WIZARD LIGHT THEME
@@ -908,7 +938,7 @@ body {
   /* Near-invisible radial tints so the canvas stays white. The dark theme
      uses these glows for atmosphere; on white they read as a blue cast and
      the user wants none of it. */
-  --aw-radial-1: rgba(0, 224, 255, 0.03);
+  --aw-radial-1: rgba(27, 79, 138, 0.03);
   --aw-radial-2: rgba(35, 86, 214, 0.02);
 }
 
@@ -938,7 +968,7 @@ body {
   color: #05070f;
 }
 
-/* Kicker pill: cyan #00e0ff on near-white is ~2.6:1 (fails AA). Switch
+/* Kicker pill: cyan #2f7fbf on near-white is ~2.6:1 (fails AA). Switch
    to the deeper accent blue (~8:1 AAA) and bump tint opacities so the
    chip still reads as a distinct element. */
 .ailinc-wizard[data-aw-theme="light"] .aw-kicker {
@@ -948,14 +978,13 @@ body {
 }
 
 /* Card: the dark base has a near-invisible white→white tint gradient on
-   light. Switch to opaque white + subtle navy border + soft drop shadow
-   so the panel reads as a real surface lifted above the page. */
+   light. Switch to opaque white + subtle navy border + the resting step of
+   the shared elevation scale, so the panel reads as a real surface lifted
+   above the page. */
 .ailinc-wizard[data-aw-theme="light"] .aw-card {
   background: #ffffff;
   border-color: rgba(11, 18, 38, 0.10);
-  box-shadow:
-    0 1px 2px -1px rgba(11, 18, 38, 0.06),
-    0 8px 24px -10px rgba(11, 18, 38, 0.08);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Inputs / selects / textareas — opaque white with the same theme-aware
@@ -990,10 +1019,15 @@ body {
   background: rgba(11, 18, 38, 0.05);
   color: rgb(var(--aw-fg));
 }
+/* The active chip used to end its gradient in a bright cyan, the one
+   place in the wizard where a retired hue survived the palette sweep: it is a
+   gradient stop, so no single-colour rule ever named it. It now runs the same
+   institutional blue into institutional teal as --aw-grad, at the chip's own
+   135deg. White on either stop clears 4.5:1. */
 .ailinc-wizard[data-aw-theme="light"] .aw-chip-active {
   color: #ffffff;
-  background: linear-gradient(135deg, #2356d6 0%, #00a4c4 100%);
-  border-color: rgba(0, 130, 175, 0.55);
+  background: linear-gradient(135deg, #14406f 0%, #0f6b7a 100%);
+  border-color: rgba(15, 107, 122, 0.55);
 }
 
 /* Option/radio cards used by FeaturesStep, AdminCapsStep, ThemeStep, etc. */
@@ -1006,7 +1040,7 @@ body {
 .ailinc-wizard[data-aw-theme="light"] .aw-option-active {
   background: rgba(0, 130, 175, 0.06);
   border-color: rgba(0, 130, 175, 0.5);
-  box-shadow: 0 8px 30px -10px rgba(0, 130, 175, 0.25);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Ghost button (Back / Use a different account / etc.) */
@@ -1031,7 +1065,7 @@ body {
 .ailinc-wizard[data-aw-theme="light"] .aw-watermark {
   background: linear-gradient(180deg,
     rgba(35, 86, 214, 0.20) 0%,
-    rgba(0, 224, 255, 0.10) 40%,
+    rgba(27, 79, 138, 0.10) 40%,
     rgba(35, 86, 214, 0.03) 75%,
     transparent 100%);
   -webkit-background-clip: text;
@@ -1046,8 +1080,8 @@ body {
   border-color: rgba(35, 86, 214, 0.35);
 }
 .ailinc-wizard[data-aw-theme="dark"] .aw-theme-toggle:hover {
-  background: rgba(0, 224, 255, 0.06);
-  border-color: rgba(0, 224, 255, 0.4);
+  background: rgba(27, 79, 138, 0.06);
+  border-color: rgba(27, 79, 138, 0.4);
 }
 
 /* ────────────────────────────────────────────────────────────────────
@@ -1102,17 +1136,17 @@ body {
    instead so the knob stays visible against the on-track gradient. */
 .ailinc-wizard[data-aw-theme="light"] [style*="rgba(255,255,255,0.7)"] {
   background-color: #ffffff !important;
-  box-shadow: 0 1px 3px rgba(11, 18, 38, 0.25) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 /* ────────────────────────────────────────────────────────────────────
    Hardcoded text-color escapes used by individual step components.
-   These bypass `--aw-fg-*` tokens (arbitrary Tailwind like text-[#00e0ff]
+   These bypass `--aw-fg-*` tokens (arbitrary Tailwind like text-[#2f7fbf]
    or inline color: "#fff") so the theme switch doesn't reach them.
    `!important` because Tailwind's arbitrary-class output and inline
    styles outrank scoped CSS without it.
    ──────────────────────────────────────────────────────────────────── */
-.ailinc-wizard[data-aw-theme="light"] .text-\[\#00e0ff\] {
+.ailinc-wizard[data-aw-theme="light"] .text-\[\#2f7fbf\] {
   color: #1d4dc7 !important;
 }
 .ailinc-wizard[data-aw-theme="light"] .text-\[\#ffc66d\] {
@@ -1136,16 +1170,16 @@ body {
   line-height: 0.85;
   color: transparent;
   background: linear-gradient(180deg,
-    rgba(0, 224, 255, 0.28) 0%,
+    rgba(27, 79, 138, 0.28) 0%,
     rgba(35, 86, 214, 0.18) 40%,
-    rgba(0, 224, 255, 0.04) 75%,
+    rgba(27, 79, 138, 0.04) 75%,
     transparent 100%);
   -webkit-background-clip: text;
   background-clip: text;
   pointer-events: none;
   user-select: none;
   z-index: 1;
-  filter: drop-shadow(0 0 60px rgba(0, 224, 255, 0.08));
+  filter: drop-shadow(0 0 60px rgba(27, 79, 138, 0.08));
 }
 
 /* Step bar refinements — thinner, more refined */
@@ -1161,7 +1195,7 @@ body {
   transform: none;
 }
 .ailinc-wizard .aw-step-bar-done:hover {
-  background: linear-gradient(90deg, rgba(0, 224, 255, 0.85), rgba(35, 86, 214, 0.85));
+  background: linear-gradient(90deg, rgba(27, 79, 138, 0.85), rgba(35, 86, 214, 0.85));
   width: 28px;
   transition: all 0.3s var(--aw-ease);
 }
@@ -1176,7 +1210,7 @@ body {
   position: absolute;
   width: 14px;
   height: 14px;
-  border: 1px solid rgba(0, 224, 255, 0.6);
+  border: 1px solid rgba(27, 79, 138, 0.6);
   transition: all 0.4s var(--aw-ease);
 }
 .ailinc-wizard .aw-bracket::before {
@@ -1222,12 +1256,15 @@ body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #00e0ff;
-  box-shadow: 0 0 8px rgba(0, 224, 255, 0.7);
+  background: #2f7fbf;
+  /* The 8px blue halo at 70 percent is gone; the dot already pulses in opacity
+     and scale, which is the signal. */
   animation: aw-pulse-dot 2s ease-in-out infinite;
 }
 
-/* Card hover glow (auto-applied on .aw-card-hover) */
+/* Card hover lift (auto-applied on .aw-card-hover). It was a 2px rise into a
+   36px blue-tinted glow; a government form should not bounce, so it is now a
+   1px rise, a border-colour change and one step up the elevation scale. */
 .ailinc-wizard .aw-card-hover {
   transition:
     transform 0.4s var(--aw-ease),
@@ -1235,9 +1272,9 @@ body {
     box-shadow 0.4s var(--aw-ease);
 }
 .ailinc-wizard .aw-card-hover:hover {
-  transform: translateY(-2px);
-  border-color: rgba(0, 224, 255, 0.25);
-  box-shadow: 0 12px 36px -16px rgba(0, 224, 255, 0.35);
+  transform: translateY(-1px);
+  border-color: rgba(27, 79, 138, 0.25);
+  box-shadow: var(--shadow-md);
 }
 
 /* Field group section divider */
@@ -1248,7 +1285,7 @@ body {
   margin: 28px 0;
 }
 .ailinc-wizard .aw-divider-cyan {
-  background: linear-gradient(90deg, transparent, rgba(0, 224, 255, 0.32), transparent);
+  background: linear-gradient(90deg, transparent, rgba(27, 79, 138, 0.32), transparent);
 }
 
 /* Mini kicker (inside a card, smaller than .aw-kicker) */
@@ -1283,18 +1320,18 @@ body {
   transition: all 0.25s var(--aw-ease);
 }
 .ailinc-wizard .aw-shortcut-done {
-  color: rgba(0, 224, 255, 0.85);
-  border-color: rgba(0, 224, 255, 0.18);
-  background: rgba(0, 224, 255, 0.04);
+  color: rgba(27, 79, 138, 0.85);
+  border-color: rgba(27, 79, 138, 0.18);
+  background: rgba(27, 79, 138, 0.04);
 }
 .ailinc-wizard .aw-shortcut-done:hover {
-  color: #00e0ff;
-  border-color: rgba(0, 224, 255, 0.4);
+  color: #2f7fbf;
+  border-color: rgba(27, 79, 138, 0.4);
 }
 .ailinc-wizard .aw-shortcut-active {
   color: #05070f;
-  background: linear-gradient(90deg, #2356d6, #00e0ff);
-  box-shadow: 0 4px 16px -4px rgba(0, 224, 255, 0.55);
+  background: linear-gradient(90deg, #2356d6, #2f7fbf);
+  box-shadow: var(--shadow-sm);
   cursor: default;
 }
 .ailinc-wizard .aw-shortcut-todo {
@@ -1312,7 +1349,7 @@ body {
   left: -10%;
   right: -10%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 224, 255, 0.65), rgba(35, 86, 214, 0.45), transparent);
+  background: linear-gradient(90deg, transparent, rgba(27, 79, 138, 0.65), rgba(35, 86, 214, 0.45), transparent);
   animation: aw-aurora-shift 12s ease-in-out infinite;
   filter: blur(0.5px);
 }
@@ -1337,7 +1374,7 @@ body {
   100% { background-position: 200% 0; }
 }
 .ailinc-wizard .aw-shimmer {
-  background: linear-gradient(110deg, rgb(var(--aw-fg)) 35%, rgba(0, 224, 255, 0.9) 50%, rgb(var(--aw-fg)) 65%);
+  background: linear-gradient(110deg, rgb(var(--aw-fg)) 35%, rgba(27, 79, 138, 0.9) 50%, rgb(var(--aw-fg)) 65%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -1354,11 +1391,13 @@ body {
   animation: aw-breath 1.4s ease-in-out infinite;
 }
 
-/* Focus ring on inputs becomes cyan glow */
+/* Focus ring on inputs. It was a 4px wash plus a 24px bloom, which read as a
+   glow rather than as a control state; it is now the one focus ring the whole
+   product uses, so a keyboard user sees the same mark everywhere. */
 .ailinc-wizard .aw-input:focus,
 .ailinc-wizard .aw-textarea:focus,
 .ailinc-wizard .aw-select:focus {
-  box-shadow: 0 0 0 4px rgba(0, 224, 255, 0.08), 0 0 24px -8px rgba(0, 224, 255, 0.5);
+  box-shadow: var(--ring-focus);
 }
 
 /* Tip card variant */
@@ -1368,14 +1407,14 @@ body {
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   background:
-    linear-gradient(180deg, rgba(0, 224, 255, 0.06) 0%, rgba(0, 224, 255, 0.01) 100%);
+    linear-gradient(180deg, rgba(27, 79, 138, 0.06) 0%, rgba(27, 79, 138, 0.01) 100%);
 }
 .ailinc-wizard .aw-tip::before {
   content: "";
   position: absolute;
   top: 0; left: 16px; right: 16px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 224, 255, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(27, 79, 138, 0.4), transparent);
 }
 
 /* ---------------------------------------------------------------------------
@@ -1435,21 +1474,28 @@ body {
     box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary-500) 65%, transparent);
   }
   50% {
-    box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary-500) 0%, transparent);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--primary-500) 0%, transparent);
   }
 }
 
-/* ── Profile surface: adopt the shipped dashboard palette ────────────────────
-   The profile components carry ~1,300 references to these variables. Rather than
-   rewrite every one to a literal hex, this scope re-points the variables to the
-   dashboard's values (components/dashboard/v2/*), so the whole surface shifts
-   from indigo #6366f1 to the dashboard violet #7c3aed in one place. Applied by
-   app/profile/page.tsx and app/admin/profile/[id]/page.tsx via className.
+/* ── Profile surface: neutral overrides only ─────────────────────────────────
+   The profile components carry ~1,300 references to these variables, so this one
+   scope is the cheapest place to retune the whole surface. Applied by
+   app/profile/page.tsx, app/profile/preview/page.tsx, app/admin/dashboard/page.tsx
+   and app/admin/profile/[id]/page.tsx via className.
 
-   Deliberately scoped, not global: --accent-indigo is used across other modules
-   that have NOT been redesigned, and flipping it globally would recolor them
-   without review. Structural values (the hero gradient, panel radius, shadows)
-   are NOT variables and live in components/profile/theme/profileTokens.ts.
+   It used to re-point --accent-indigo and --accent-purple as well, to the vendor
+   dashboard's violet ramp. That was invisible to the hex sweep that moved the
+   rest of the build onto the government palette: :root already resolves both
+   names to institutional blue, and every reference here read correctly, but this
+   scope quietly overrode them back to violet for the entire profile surface.
+   The accent overrides are gone, so the profile now inherits the same
+   institutional blue as every other module and there is one fewer place where a
+   colour can be reintroduced without anyone reading a hex.
+
+   What remains are neutrals, which do not conflict with the palette. Structural
+   values (the hero gradient, panel radius, shadows) are NOT variables and live
+   in components/profile/theme/profileTokens.ts.
 
    --background and --card-bg stay #ffffff: several profile cards use them as a
    card fill, not as page canvas. The canvas colour is set on the page wrapper. */
@@ -1469,9 +1515,4 @@ body {
   --card-bg: #ffffff;
   --background: #ffffff;
 
-  --accent-indigo: #7c3aed;
-  --accent-indigo-dark: #6d28d9;
-  --surface-indigo-light: #f5f3ff;
-  --accent-purple: #a855f7;
-  --accent-indigo-muted-fill: color-mix(in srgb, #7c3aed 9%, transparent);
 }

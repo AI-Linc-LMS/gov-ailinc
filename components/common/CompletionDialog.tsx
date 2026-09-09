@@ -51,7 +51,7 @@ export function CompletionDialog({
       PaperProps={{
         sx: {
           borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
+          boxShadow: "var(--shadow-xl)",
         },
       }}
     >
@@ -81,7 +81,7 @@ export function CompletionDialog({
               justifyContent: "center",
             }}
           >
-            <IconWrapper icon="mdi:check-circle" size={40} color="#10b981" />
+            <IconWrapper icon="mdi:check-circle" size={40} color="#0e7a3c" />
           </Box>
           <Box
             sx={{
@@ -90,7 +90,7 @@ export function CompletionDialog({
               gap: 1,
             }}
           >
-            <IconWrapper icon="mdi:party-popper" size={28} color="#6366f1" />
+            <IconWrapper icon="mdi:party-popper" size={28} color="#1b4f8a" />
             <Typography
               variant="h5"
               sx={{
@@ -146,7 +146,7 @@ export function CompletionDialog({
                         <IconWrapper
                           icon="mdi:checkbox-marked-circle-outline"
                           size={24}
-                          color="#6366f1"
+                          color="#1b4f8a"
                         />
                         <Typography variant="body2" sx={{ color: "var(--font-secondary)" }}>
                           Test Cases Passed
@@ -158,7 +158,7 @@ export function CompletionDialog({
                           fontWeight: 600,
                           color:
                             stats.passed === stats.total_test_cases
-                              ? "#10b981"
+                              ? "#0e7a3c"
                               : "#6b7280",
                         }}
                       >
@@ -185,7 +185,7 @@ export function CompletionDialog({
                       <IconWrapper
                         icon="mdi:trophy-outline"
                         size={24}
-                        color="#f59e0b"
+                        color="#b7791f"
                       />
                       <Typography variant="body2" sx={{ color: "var(--font-secondary)" }}>
                         Score
@@ -276,9 +276,9 @@ export function CompletionDialog({
                         alignItems: "center",
                         justifyContent: "space-between",
                         p: 2,
-                        backgroundColor: "#fef3c7",
+                        backgroundColor: "#fdf3e2",
                         borderRadius: 2,
-                        border: "1px solid #fbbf24",
+                        border: "1px solid #c9903a",
                       }}
                     >
                       <Box
@@ -287,7 +287,7 @@ export function CompletionDialog({
                         <IconWrapper
                           icon="mdi:counter"
                           size={24}
-                          color="#f59e0b"
+                          color="#b7791f"
                         />
                         <Typography variant="body2" sx={{ color: "#92400e" }}>
                           Attempts Left
@@ -331,7 +331,7 @@ export function CompletionDialog({
                     <IconWrapper
                       icon="mdi:trophy-outline"
                       size={24}
-                      color="#f59e0b"
+                      color="#b7791f"
                     />
                     <Typography variant="body2" sx={{ color: "var(--font-secondary)" }}>
                       Your Score
@@ -362,11 +362,11 @@ export function CompletionDialog({
               textTransform: "none",
               fontSize: "1rem",
               fontWeight: 600,
-              backgroundColor: "#6366f1",
-              boxShadow: "0 4px 12px rgba(99, 102, 241, 0.3)",
+              backgroundColor: "#1b4f8a",
+              boxShadow: "var(--shadow-sm)",
               "&:hover": {
-                backgroundColor: "#4f46e5",
-                boxShadow: "0 6px 16px rgba(99, 102, 241, 0.4)",
+                backgroundColor: "#12365f",
+                boxShadow: "var(--shadow-md)",
               },
             }}
           >

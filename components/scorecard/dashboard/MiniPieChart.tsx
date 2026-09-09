@@ -29,7 +29,7 @@ export function MiniPieChart({
         borderRadius: 2,
         border: "1px solid rgba(0,0,0,0.08)",
         backgroundColor: "#ffffff",
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)",
+        boxShadow: "var(--shadow-xs)",
         height: "100%",
         display: "flex",
         flexDirection: "column",
@@ -56,7 +56,10 @@ export function MiniPieChart({
               labelLine={false}
               label={({ name, percent }) => `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`}
               outerRadius={height * 0.35}
-              fill="#8884d8"
+              // No `fill` here on purpose. Every slice sets its own via <Cell>, so
+              // the only thing a fill on <Pie> did was leave Recharts' stock violet
+              // in the file for a case that cannot render: an empty `data` draws no
+              // slices at all. Removed rather than recoloured.
               dataKey="value"
               animationBegin={0}
               animationDuration={1000}

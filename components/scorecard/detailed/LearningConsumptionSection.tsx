@@ -95,7 +95,7 @@ function ChartTooltipContent(props: {
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Box sx={{ width: 8, height: 8, borderRadius: "50%", background: "#10b981" }} />
+          <Box sx={{ width: 8, height: 8, borderRadius: "50%", background: "#0e7a3c" }} />
           <Typography variant="body2" sx={{ color: "var(--font-primary)", fontWeight: 600 }}>
             Completed · {Number(completed)}
           </Typography>
@@ -211,25 +211,28 @@ export function LearningConsumptionSection({ data }: LearningConsumptionSectionP
   ];
 
   const kpiItems = [
-    { value: totalContentDisplay, label: "Total Content", tip: KPI_TOOLTIPS.totalContent, accent: "#0a66c2" },
-    { value: totalCompleted, label: "Completed", tip: KPI_TOOLTIPS.totalCompleted, accent: "#10b981" },
+    // The accent is also the tile's small uppercase label, so every value here clears 4.5:1
+    // on the card. The previous emerald/cyan/amber/violet set ran between 2.1:1 and 4.0:1,
+    // so the labels were failing text contrast as well as being off-palette.
+    { value: totalContentDisplay, label: "Total Content", tip: KPI_TOOLTIPS.totalContent, accent: "#1b4f8a" },
+    { value: totalCompleted, label: "Completed", tip: KPI_TOOLTIPS.totalCompleted, accent: "#0e7a3c" },
     {
       value: data.practice.assessmentsAttempted,
       label: "Assessments Taken",
       tip: KPI_TOOLTIPS.assessmentsTaken,
-      accent: "#8b5cf6",
+      accent: "#0f6b7a",
     },
     {
       value: totalAssessmentsPresent,
       label: "Assessments Available",
       tip: KPI_TOOLTIPS.assessmentsAvailable,
-      accent: "#06b6d4",
+      accent: "#4a5563",
     },
     {
       value: data.videos.rewatchCount,
       label: "Video Rewatches",
       tip: KPI_TOOLTIPS.engagementActions,
-      accent: "#f59e0b",
+      accent: "#6b4423",
     },
   ];
 
@@ -500,7 +503,7 @@ export function LearningConsumptionSection({ data }: LearningConsumptionSectionP
                   Content Completion Overview
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                  <LegendDot label="Completed" color="#10b981" />
+                  <LegendDot label="Completed" color="#0e7a3c" />
                   <LegendDot label="Pending" color="var(--border-light)" />
                 </Box>
               </Box>
@@ -509,8 +512,12 @@ export function LearningConsumptionSection({ data }: LearningConsumptionSectionP
                   <BarChart data={chartData} margin={{ top: 12, right: 12, bottom: 0, left: -12 }}>
                     <defs>
                       <linearGradient id={gradientCompletedId} x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#34d399" />
-                        <stop offset="100%" stopColor="#059669" />
+                        {/* Completed is the sanctioned green; Pending stays a neutral remainder
+                            rather than gold, because it is "not done yet" out of a total, not a
+                            risk. The two segments are a legend pair and separate by a very large
+                            contrast step, so the stack never relies on hue alone. */}
+                        <stop offset="0%" stopColor="#0e7a3c" />
+                        <stop offset="100%" stopColor="#0b6232" />
                       </linearGradient>
                     </defs>
                     <CartesianGrid
@@ -858,7 +865,7 @@ function BentoCard({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: `0 12px 24px -10px ${alpha(accent, 0.6)}`,
+              boxShadow: "var(--shadow-sm)",
             }}
           >
             <IconWrapper icon={icon} size={20} color="#ffffff" />

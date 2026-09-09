@@ -126,10 +126,10 @@ export function CsvUploadPanel({
             textAlign: "center",
             border: "1.5px dashed",
             borderColor: dragging
-              ? "#6366f1"
+              ? "#1b4f8a"
               : "color-mix(in srgb, var(--border-default) 90%, transparent)",
             bgcolor: dragging
-              ? "color-mix(in srgb, #6366f1 8%, transparent)"
+              ? "color-mix(in srgb, #1b4f8a 8%, transparent)"
               : "color-mix(in srgb, var(--card-bg) 55%, transparent)",
             transition: "border-color 120ms ease, background 120ms ease",
           }}
@@ -137,7 +137,7 @@ export function CsvUploadPanel({
           <Icon
             icon={parsed ? "mdi:file-check-outline" : "mdi:tray-arrow-up"}
             width={34}
-            style={{ color: "#a855f7" }}
+            style={{ color: "#1b4f8a" }}
           />
           {parsed ? (
             <>
@@ -180,17 +180,17 @@ export function CsvUploadPanel({
         )}
 
         {parsed?.truncated && (
-          <Note icon="mdi:information-outline" color="#f59e0b">
+          <Note icon="mdi:information-outline" color="#b7791f">
             Only the first {CSV_ROW_CAP} rows will be analyzed.
           </Note>
         )}
         {parsed?.parseWarning && (
-          <Note icon="mdi:alert-outline" color="#f59e0b">
+          <Note icon="mdi:alert-outline" color="#b7791f">
             Parser note - {parsed.parseWarning}
           </Note>
         )}
         {parseError && (
-          <Note icon="mdi:alert-circle-outline" color="#ef4444">
+          <Note icon="mdi:alert-circle-outline" color="#b32020">
             {parseError}
           </Note>
         )}
@@ -224,8 +224,8 @@ export function CsvUploadPanel({
             gap: 0.75,
             color: "white",
             opacity: !parsed ? 0.5 : 1,
-            background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
-            boxShadow: "0 16px 32px -16px rgba(168, 85, 247, 0.55)",
+            background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Icon icon="mdi:sparkles" width={18} />

@@ -75,9 +75,8 @@ function ChartTooltip({
         py: 1.25,
         borderRadius: 2,
         backgroundColor: "var(--card-bg)",
-        backdropFilter: "blur(12px)",
         border: "1px solid color-mix(in srgb, var(--border-default) 80%, transparent)",
-        boxShadow: "0 20px 50px -20px rgba(15, 23, 42, 0.35)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       <Typography variant="caption" sx={{ color: "var(--font-secondary)", fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", display: "block", mb: 0.5 }}>
@@ -125,10 +124,10 @@ function ActivityHeatmapMini({ calendar }: { calendar: Record<string, number> })
   }, [calendar]);
 
   const levelColor = (lvl: number) => {
-    if (lvl >= 4) return "#10b981";
-    if (lvl === 3) return "color-mix(in srgb, #10b981 70%, transparent)";
-    if (lvl === 2) return "color-mix(in srgb, #10b981 45%, transparent)";
-    if (lvl === 1) return "color-mix(in srgb, #10b981 22%, transparent)";
+    if (lvl >= 4) return "#0e7a3c";
+    if (lvl === 3) return "color-mix(in srgb, #0e7a3c 70%, transparent)";
+    if (lvl === 2) return "color-mix(in srgb, #0e7a3c 45%, transparent)";
+    if (lvl === 1) return "color-mix(in srgb, #0e7a3c 22%, transparent)";
     return "color-mix(in srgb, var(--border-default) 35%, transparent)";
   };
 
@@ -174,7 +173,7 @@ function StudyTimeDayBars({ data }: { data: StudyTimeDistribution[] }) {
               </Typography>
               <Typography
                 variant="caption"
-                sx={{ fontWeight: 800, color: "var(--accent-cyan, #0891b2)", fontVariantNumeric: "tabular-nums", fontSize: "0.7rem" }}
+                sx={{ fontWeight: 800, color: "var(--accent-cyan, #0b5260)", fontVariantNumeric: "tabular-nums", fontSize: "0.7rem" }}
               >
                 {row.hours.toFixed(1)}h
               </Typography>
@@ -185,7 +184,7 @@ function StudyTimeDayBars({ data }: { data: StudyTimeDistribution[] }) {
                   width: `${Math.max(0, Math.min(100, pct))}%`,
                   height: "100%",
                   borderRadius: 999,
-                  background: "linear-gradient(90deg, var(--accent-cyan, #06b6d4) 0%, color-mix(in srgb, var(--accent-cyan, #06b6d4) 70%, transparent) 100%)",
+                  background: "linear-gradient(90deg, var(--accent-cyan, #0f6b7a) 0%, color-mix(in srgb, var(--accent-cyan, #0f6b7a) 70%, transparent) 100%)",
                   transition: "width 0.6s ease",
                 }}
               />
@@ -211,7 +210,7 @@ export function BehavioralMetricsSection({ data }: BehavioralMetricsSectionProps
   );
 
   const consistencyAccent =
-    data.consistencyScore >= 80 ? "#10b981" : data.consistencyScore >= 60 ? "var(--accent-cyan, #06b6d4)" : data.consistencyScore >= 40 ? "#f59e0b" : "#ef4444";
+    data.consistencyScore >= 80 ? "#0e7a3c" : data.consistencyScore >= 60 ? "var(--accent-cyan, #0f6b7a)" : data.consistencyScore >= 40 ? "#b7791f" : "#b32020";
 
   // Total active days in calendar (sum of any non-zero level)
   const totalActiveDays = useMemo(
@@ -223,7 +222,7 @@ export function BehavioralMetricsSection({ data }: BehavioralMetricsSectionProps
     <Reveal as="section">
       <SectionShell
         radialMesh={[
-          "radial-gradient(55% 70% at 0% 0%, color-mix(in srgb, var(--accent-cyan, #06b6d4) 14%, transparent), transparent 60%)",
+          "radial-gradient(55% 70% at 0% 0%, color-mix(in srgb, var(--accent-cyan, #0f6b7a) 14%, transparent), transparent 60%)",
           "radial-gradient(45% 60% at 100% 100%, color-mix(in srgb, var(--accent-indigo) 10%, transparent), transparent 60%)",
         ]}
       >
@@ -233,7 +232,7 @@ export function BehavioralMetricsSection({ data }: BehavioralMetricsSectionProps
           subtitle="Activity rhythm, study-time patterns, and consistency index over the past 13 weeks."
           iconBadge={{
             icon: "mdi:calendar-clock-outline",
-            gradient: "linear-gradient(135deg, var(--accent-cyan, #06b6d4) 0%, #0891b2 100%)",
+            gradient: "linear-gradient(135deg, var(--accent-cyan, #0f6b7a) 0%, #0b5260 100%)",
           }}
         />
 
@@ -255,8 +254,8 @@ export function BehavioralMetricsSection({ data }: BehavioralMetricsSectionProps
               p: { xs: 2.5, md: 3 },
               borderRadius: 3,
               background:
-                "linear-gradient(160deg, color-mix(in srgb, var(--accent-cyan, #06b6d4) 14%, transparent) 0%, color-mix(in srgb, var(--accent-cyan, #06b6d4) 4%, transparent) 100%)",
-              border: "1px solid color-mix(in srgb, var(--accent-cyan, #06b6d4) 22%, transparent)",
+                "linear-gradient(160deg, color-mix(in srgb, var(--accent-cyan, #0f6b7a) 14%, transparent) 0%, color-mix(in srgb, var(--accent-cyan, #0f6b7a) 4%, transparent) 100%)",
+              border: "1px solid color-mix(in srgb, var(--accent-cyan, #0f6b7a) 22%, transparent)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -271,7 +270,7 @@ export function BehavioralMetricsSection({ data }: BehavioralMetricsSectionProps
               size={160}
               strokeWidth={12}
               color={consistencyAccent}
-              colorEnd="color-mix(in srgb, var(--accent-cyan, #06b6d4) 80%, transparent)"
+              colorEnd="color-mix(in srgb, var(--accent-cyan, #0f6b7a) 80%, transparent)"
               caption=""
               valueFontSize={36}
             />
@@ -321,7 +320,7 @@ export function BehavioralMetricsSection({ data }: BehavioralMetricsSectionProps
                       bgcolor:
                         lvl === 0
                           ? "color-mix(in srgb, var(--border-default) 35%, transparent)"
-                          : `color-mix(in srgb, #10b981 ${22 + lvl * 17}%, transparent)`,
+                          : `color-mix(in srgb, #0e7a3c ${22 + lvl * 17}%, transparent)`,
                     }}
                   />
                 ))}
@@ -353,9 +352,9 @@ export function BehavioralMetricsSection({ data }: BehavioralMetricsSectionProps
         >
           {[
             { label: "Consistency", value: Math.round(data.consistencyScore), suffix: "%", accent: consistencyAccent },
-            { label: "Active days (year)", value: totalActiveDays, accent: "#10b981" },
-            { label: "Total study hrs", value: Math.round(data.studyTimeByWeek.reduce((a, w) => a + w.hours, 0)), accent: "var(--accent-cyan, #0891b2)" },
-            { label: "Missed deadlines", value: data.missedDeadlinesCount, accent: data.missedDeadlinesCount > 0 ? "#ef4444" : "var(--font-secondary)" },
+            { label: "Active days (year)", value: totalActiveDays, accent: "#0e7a3c" },
+            { label: "Total study hrs", value: Math.round(data.studyTimeByWeek.reduce((a, w) => a + w.hours, 0)), accent: "var(--accent-cyan, #0b5260)" },
+            { label: "Missed deadlines", value: data.missedDeadlinesCount, accent: data.missedDeadlinesCount > 0 ? "#b32020" : "var(--font-secondary)" },
           ].map((kpi, idx) => (
             <Box
               key={kpi.label}
@@ -430,7 +429,7 @@ export function BehavioralMetricsSection({ data }: BehavioralMetricsSectionProps
                   <XAxis dataKey="label" tick={{ fill: "var(--font-secondary)", fontSize: 10 }} tickLine={false} axisLine={{ stroke: "color-mix(in srgb, var(--border-default) 60%, transparent)" }} interval="preserveStartEnd" />
                   <YAxis tick={{ fill: "var(--font-secondary)", fontSize: 10 }} tickLine={false} axisLine={false} width={28} />
                   <RTooltip content={<ChartTooltip />} />
-                  <Bar dataKey="active" name="Days" fill="var(--accent-cyan, #06b6d4)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="active" name="Days" fill="var(--accent-cyan, #0f6b7a)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </Box>

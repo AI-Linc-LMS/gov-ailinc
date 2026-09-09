@@ -49,10 +49,10 @@ const KIND_ORDER: FlowKind[] = ["video", "article", "quiz", "coding"];
 
 /** Per-content-type identity - same palette family as the course timeline nodes. */
 const FLOW_META: Record<FlowKind, { label: string; icon: string; action: string; actionIcon: string; color: string; bg: string }> = {
-  video: { label: "WATCH", icon: "mdi:play-circle", action: "Watch", actionIcon: "mdi:play", color: "#0ea5e9", bg: "#e0f2fe" },
-  article: { label: "READ", icon: "mdi:book-open-page-variant", action: "Read", actionIcon: "mdi:book-open-page-variant-outline", color: "#a855f7", bg: "#f5f3ff" },
-  quiz: { label: "QUIZ", icon: "mdi:tune-vertical", action: "Start", actionIcon: "mdi:play", color: "#6366f1", bg: "#eef2ff" },
-  coding: { label: "PRACTICE", icon: "mdi:code-tags", action: "Solve", actionIcon: "mdi:code-tags", color: "#ec4899", bg: "#fdf2f8" },
+  video: { label: "WATCH", icon: "mdi:play-circle", action: "Watch", actionIcon: "mdi:play", color: "#1b4f8a", bg: "#e0f2fe" },
+  article: { label: "READ", icon: "mdi:book-open-page-variant", action: "Read", actionIcon: "mdi:book-open-page-variant-outline", color: "#1b4f8a", bg: "#eef3fa" },
+  quiz: { label: "QUIZ", icon: "mdi:tune-vertical", action: "Start", actionIcon: "mdi:play", color: "#1b4f8a", bg: "#eef3fa" },
+  coding: { label: "PRACTICE", icon: "mdi:code-tags", action: "Solve", actionIcon: "mdi:code-tags", color: "#0f6b7a", bg: "#eef5f6" },
 };
 
 function buildItems(
@@ -214,11 +214,11 @@ export default function AdaptiveCourseSubmodulePage() {
       <Box data-tour-id="submodule-body" sx={{ maxWidth: 1760, mx: "auto", px: { xs: 2, md: 3 }, py: { xs: 3, md: 4 } }}>
         {loading && <AdaptiveSubmoduleSkeleton />}
         {error && (
-          <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 6 }}>{error}</Typography>
+          <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 6 }}>{error}</Typography>
         )}
         {locked && (
           <Box sx={{ textAlign: "center", py: 8, px: 2, maxWidth: 520, mx: "auto" }}>
-            <Box sx={{ width: 56, height: 56, mx: "auto", mb: 1.5, borderRadius: "50%", display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}>
+            <Box sx={{ width: 56, height: 56, mx: "auto", mb: 1.5, borderRadius: "50%", display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}>
               <Icon icon="mdi:lock-outline" width={28} />
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: "1.15rem" }}>This step is locked</Typography>
@@ -226,7 +226,7 @@ export default function AdaptiveCourseSubmodulePage() {
             <ButtonBase
               onMouseEnter={() => prefetch(`/adaptive-courses/${courseId}`)}
               onClick={() => push(`/adaptive-courses/${courseId}`)}
-              sx={{ mt: 2.5, px: 2.5, py: 1, borderRadius: 999, fontWeight: 800, color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}
+              sx={{ mt: 2.5, px: 2.5, py: 1, borderRadius: 999, fontWeight: 800, color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}
             >
               Go to course
             </ButtonBase>
@@ -236,7 +236,7 @@ export default function AdaptiveCourseSubmodulePage() {
         {submodule && (
           <>
             {/* Gradient hero - matches the course page */}
-            <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 55%, #c026d3 100%)", boxShadow: "0 24px 60px -28px rgba(124,58,237,0.6)" }}>
+            <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #14406f 0%, #1b4f8a 55%, #0f6b7a 100%)", boxShadow: "0 24px 60px -28px rgba(20, 64, 111,0.6)" }}>
               <ButtonBase onMouseEnter={() => prefetch(`/adaptive-courses/${courseId}`)} onClick={() => push(`/adaptive-courses/${courseId}`)} sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.8)", mb: 1, gap: 0.5 }}>
                 <Icon icon="mdi:arrow-left" width={14} /> Back to course
               </ButtonBase>
@@ -263,7 +263,7 @@ export default function AdaptiveCourseSubmodulePage() {
               {items.length > 0 && (
                 <Button onClick={() => items[resumeIdx].onClick()} variant="contained"
                   endIcon={<Icon icon="mdi:arrow-right" width={18} />}
-                  sx={{ mt: 2.25, px: 2.5, py: 1, borderRadius: 2, fontWeight: 800, fontSize: "0.85rem", color: "#7c3aed", bgcolor: "white", textTransform: "none", "&:hover": { bgcolor: "#f5f3ff" } }}>
+                  sx={{ mt: 2.25, px: 2.5, py: 1, borderRadius: 2, fontWeight: 800, fontSize: "0.85rem", color: "#14406f", bgcolor: "white", textTransform: "none", "&:hover": { bgcolor: "#eef3fa" } }}>
                   {ctaLabel}
                 </Button>
               )}
@@ -283,7 +283,7 @@ export default function AdaptiveCourseSubmodulePage() {
                 {/* Section header with gradient badge + the topic points total */}
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.75, gap: 1, flexWrap: "wrap" }}>
                   <Stack direction="row" spacing={1.25} alignItems="center">
-                    <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", boxShadow: "0 8px 18px -10px rgba(124,58,237,0.6)" }}>
+                    <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)", boxShadow: "0 8px 18px -10px rgba(20, 64, 111,0.6)" }}>
                       <Icon icon="mdi:map-marker-path" width={19} />
                     </Box>
                     <Box>
@@ -293,7 +293,7 @@ export default function AdaptiveCourseSubmodulePage() {
                   </Stack>
                   {points && (
                     <Stack direction="row" spacing={0.6} alignItems="center" sx={{ pl: 1.25, pr: 0.5, py: 0.5, borderRadius: 999, bgcolor: "#fff7ed", border: "1px solid #fed7aa" }}>
-                      <Icon icon="mdi:trophy" width={15} color="#f59e0b" />
+                      <Icon icon="mdi:trophy" width={15} color="#b7791f" />
                       <Typography sx={{ fontSize: "0.82rem", fontWeight: 800, color: "#9a3412" }}>
                         {points.topic.earned}<Box component="span" sx={{ color: "#c2853a", fontWeight: 700 }}> / {points.topic.on_offer} pts</Box>
                       </Typography>
@@ -344,7 +344,7 @@ function TopicHandouts({ attachments }: { attachments: AdaptiveCourseAttachment[
   return (
     <Box sx={{ mt: 3 }}>
       <Stack direction="row" spacing={1.25} alignItems="center" sx={{ mb: 1.5 }}>
-        <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #14b8a6 0%, #0ea5e9 100%)", boxShadow: "0 8px 18px -10px rgba(20,184,166,0.6)" }}>
+        <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #0f6b7a 0%, #1b4f8a 100%)", boxShadow: "0 8px 18px -10px rgba(20,184,166,0.6)" }}>
           <Icon icon="mdi:paperclip" width={19} />
         </Box>
         <Box>
@@ -402,8 +402,8 @@ function TopicHandouts({ attachments }: { attachments: AdaptiveCourseAttachment[
 
 function FactorChip({ text, tone = "muted" }: { text: string; tone?: "muted" | "warn" | "good" }) {
   const s =
-    tone === "good" ? { color: "#15803d", bgcolor: "#dcfce7" }
-    : tone === "warn" ? { color: "#b45309", bgcolor: "#fef3c7" }
+    tone === "good" ? { color: "#0b6232", bgcolor: "#dff0e6" }
+    : tone === "warn" ? { color: "#8a5a12", bgcolor: "#fdf3e2" }
     : { color: "#475569", bgcolor: "#f1f5f9" };
   return <Box component="span" sx={{ px: 0.75, py: 0.2, borderRadius: 999, fontSize: "0.64rem", fontWeight: 700, ...s }}>{text}</Box>;
 }
@@ -444,11 +444,11 @@ function PathRow({ item, step, last, status, points, onPrefetch }: { item: FlowI
   // Status marker - mirrors the course timeline: green check (done), indigo ring
   // (current), light numbered (upcoming).
   const marker = done ? (
-    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#22c55e", color: "white", flexShrink: 0, zIndex: 1 }}>
+    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#0e7a3c", color: "white", flexShrink: 0, zIndex: 1 }}>
       <Icon icon="mdi:check" width={16} />
     </Box>
   ) : current ? (
-    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#6366f1", color: "white", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, boxShadow: "0 0 0 4px rgba(99,102,241,0.18)" }}>
+    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#1b4f8a", color: "white", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, boxShadow: "0 0 0 4px rgba(27, 79, 138,0.18)" }}>
       {step}
     </Box>
   ) : (
@@ -473,7 +473,7 @@ function PathRow({ item, step, last, status, points, onPrefetch }: { item: FlowI
         sx={{
           flex: 1, mb: 1.5, p: 2, borderRadius: 3, border: "1px solid",
           borderLeft: "4px solid", borderLeftColor: m.color,
-          borderColor: current ? "#c7d2fe" : "#eef2f7",
+          borderColor: current ? "#b6cde8" : "#eef2f7",
           bgcolor: current ? "#fbfbff" : "#fff",
           boxShadow: current ? `0 4px 14px -14px ${m.color}` : "0 1px 2px rgba(16,24,40,0.04)",
           cursor: "pointer",
@@ -489,15 +489,15 @@ function PathRow({ item, step, last, status, points, onPrefetch }: { item: FlowI
             <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap">
               <Typography sx={{ fontSize: "0.64rem", fontWeight: 800, letterSpacing: 0.6, color: m.color }}>{m.label}</Typography>
               {done && (
-                <Stack direction="row" spacing={0.3} alignItems="center" sx={{ px: 0.75, py: 0.2, borderRadius: 999, bgcolor: "#dcfce7" }}>
-                  <Icon icon="mdi:check" width={11} color="#15803d" />
-                  <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, color: "#15803d" }}>Completed</Typography>
+                <Stack direction="row" spacing={0.3} alignItems="center" sx={{ px: 0.75, py: 0.2, borderRadius: 999, bgcolor: "#dff0e6" }}>
+                  <Icon icon="mdi:check" width={11} color="#0b6232" />
+                  <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, color: "#0b6232" }}>Completed</Typography>
                 </Stack>
               )}
               {current && (
-                <Stack direction="row" spacing={0.3} alignItems="center" sx={{ px: 0.75, py: 0.2, borderRadius: 999, bgcolor: "#eef2ff" }}>
-                  <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: "#6366f1" }} />
-                  <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, color: "#4f46e5" }}>Current step</Typography>
+                <Stack direction="row" spacing={0.3} alignItems="center" sx={{ px: 0.75, py: 0.2, borderRadius: 999, bgcolor: "#eef3fa" }}>
+                  <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: "#1b4f8a" }} />
+                  <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, color: "#12365f" }}>Current step</Typography>
                 </Stack>
               )}
             </Stack>
@@ -518,7 +518,7 @@ function PathRow({ item, step, last, status, points, onPrefetch }: { item: FlowI
             <Box sx={{ textAlign: "right", flexShrink: 0, minWidth: 46 }}>
               {done ? (
                 <>
-                  <Typography sx={{ fontWeight: 800, fontSize: "0.92rem", color: "#15803d", lineHeight: 1 }}>
+                  <Typography sx={{ fontWeight: 800, fontSize: "0.92rem", color: "#0b6232", lineHeight: 1 }}>
                     {points.earned}<Box component="span" sx={{ color: "#94a3b8", fontWeight: 600 }}>/{points.on_offer}</Box>
                   </Typography>
                   <Typography sx={{ fontSize: "0.6rem", color: "#94a3b8", fontWeight: 700 }}>earned</Typography>
@@ -544,7 +544,7 @@ function PathRow({ item, step, last, status, points, onPrefetch }: { item: FlowI
           ) : (
             <ButtonBase
               onClick={(e) => { e.stopPropagation(); item.onClick(); }}
-              sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 999, fontWeight: 800, color: "white", fontSize: "0.85rem", gap: 0.5, background: `linear-gradient(135deg, ${m.color} 0%, #a855f7 130%)`, boxShadow: `0 12px 26px -16px ${m.color}` }}
+              sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 999, fontWeight: 800, color: "white", fontSize: "0.85rem", gap: 0.5, background: `linear-gradient(135deg, ${m.color} 0%, #1b4f8a 130%)`, boxShadow: `0 12px 26px -16px ${m.color}` }}
             >
               <Icon icon={m.actionIcon} width={16} />
               {current ? `${m.action} now` : m.action}

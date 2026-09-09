@@ -32,8 +32,8 @@ export function AdaptiveCoursePromoBanner({ course, hasPriorCourses = true, onEx
         position: "relative", mb: 2.5, px: { xs: 2, md: 3 }, py: { xs: 1.75, md: 2 }, borderRadius: 4,
         display: "flex", alignItems: "center", gap: 2, flexWrap: "wrap",
         color: "white", overflow: "hidden",
-        background: "linear-gradient(120deg, #6366f1 0%, #a855f7 55%, #ec4899 100%)",
-        boxShadow: "0 18px 40px -22px rgba(124,58,237,0.65)",
+        background: "linear-gradient(120deg, #1b4f8a 0%, #1b4f8a 55%, #0f6b7a 100%)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       {/* sparkle accent */}
@@ -65,7 +65,7 @@ export function AdaptiveCoursePromoBanner({ course, hasPriorCourses = true, onEx
         onClick={() => (onExplore ? onExplore() : router.push(course.route))}
         variant="contained"
         sx={{ flexShrink: 0, textTransform: "none", fontWeight: 800, borderRadius: 999, px: 2.5,
-          bgcolor: "white", color: "#6d28d9", "&:hover": { bgcolor: "rgba(255,255,255,0.9)" } }}
+          bgcolor: "white", color: "#164274", "&:hover": { bgcolor: "rgba(255,255,255,0.9)" } }}
       >
         Explore Courses
       </Button>

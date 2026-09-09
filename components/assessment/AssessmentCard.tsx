@@ -117,10 +117,8 @@ export const AssessmentCard: React.FC<AssessmentCardProps> = ({
           ? "var(--assessment-catalog-psychometric-cta-solid)"
           : "var(--assessment-catalog-psychometric-cta-gradient)",
         hoverBg: "var(--assessment-catalog-psychometric-cta-hover)",
-        idleShadow: showResults
-          ? "var(--assessment-catalog-psychometric-shadow-cta)"
-          : "var(--assessment-catalog-psychometric-shadow-cta)",
-        hoverShadow: "var(--assessment-catalog-psychometric-shadow-cta-hover)",
+        idleShadow: "var(--shadow-sm)",
+        hoverShadow: "var(--shadow-md)",
       };
     }
     if (isManual) {
@@ -128,30 +126,30 @@ export const AssessmentCard: React.FC<AssessmentCardProps> = ({
         return {
           idleBg: "var(--assessment-catalog-cta-success-solid)",
           hoverBg: "var(--assessment-catalog-cta-success-hover)",
-          idleShadow: "var(--assessment-catalog-cta-success-shadow)",
-          hoverShadow: "var(--assessment-catalog-cta-success-shadow-hover)",
+          idleShadow: "var(--shadow-sm)",
+          hoverShadow: "var(--shadow-md)",
         };
       }
       return {
         idleBg: "var(--assessment-catalog-cta-manual-gradient)",
         hoverBg: "var(--assessment-catalog-cta-manual-hover)",
-        idleShadow: "var(--assessment-catalog-cta-manual-shadow)",
-        hoverShadow: "var(--assessment-catalog-cta-manual-shadow-hover)",
+        idleShadow: "var(--shadow-sm)",
+        hoverShadow: "var(--shadow-md)",
       };
     }
     if (showResults) {
       return {
         idleBg: "var(--assessment-catalog-cta-success-solid)",
         hoverBg: "var(--assessment-catalog-cta-success-hover)",
-        idleShadow: "var(--assessment-catalog-cta-success-shadow)",
-        hoverShadow: "var(--assessment-catalog-cta-success-shadow-hover)",
+        idleShadow: "var(--shadow-sm)",
+        hoverShadow: "var(--shadow-md)",
       };
     }
     return {
       idleBg: "var(--assessment-catalog-cta-auto-gradient)",
       hoverBg: "var(--assessment-catalog-cta-auto-hover)",
-      idleShadow: "var(--assessment-catalog-cta-auto-shadow)",
-      hoverShadow: "var(--assessment-catalog-cta-auto-shadow-hover)",
+      idleShadow: "var(--shadow-sm)",
+      hoverShadow: "var(--shadow-md)",
     };
   }, [isPsychometric, isManual, showResults]);
 
@@ -748,7 +746,7 @@ export const AssessmentCard: React.FC<AssessmentCardProps> = ({
                 background: "var(--assessment-catalog-reattempt-cta-gradient)",
                 color: "var(--font-light)",
                 border: "none",
-                boxShadow: "var(--assessment-catalog-reattempt-cta-shadow)",
+                boxShadow: "var(--shadow-sm)",
                 WebkitTapHighlightColor: "transparent",
                 transition: "box-shadow .2s ease, transform .2s ease",
                 "& .MuiButton-endIcon": { color: "inherit" },
@@ -780,13 +778,12 @@ export const AssessmentCard: React.FC<AssessmentCardProps> = ({
             const textColor = disabledLook
               ? "var(--font-tertiary)"
               : "var(--font-light)";
+            // A filled CTA does not need a coloured bloom under it: these were
+            // 24px to 30px drops at 45 to 60 percent of the accent. Resting and
+            // hovered now come off the shared elevation scale.
             const idleShadow =
-              !showResults && !disabledLook
-                ? "0 10px 24px -10px color-mix(in srgb, var(--ai-violet) 45%, transparent)"
-                : "none";
-            const hoverShadow = showResults
-              ? "0 12px 26px -10px color-mix(in srgb, var(--success-500) 50%, transparent)"
-              : "0 14px 30px -10px color-mix(in srgb, var(--ai-violet) 60%, transparent)";
+              !showResults && !disabledLook ? "var(--shadow-sm)" : "none";
+            const hoverShadow = "var(--shadow-md)";
 
             const primaryButton = (
               <LoadingButton

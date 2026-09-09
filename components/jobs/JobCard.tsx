@@ -52,7 +52,7 @@ const JobCardComponent = ({ job }: JobCardProps) => {
         maxWidth: "100%",
         "&:hover": {
           borderColor: "color-mix(in srgb, var(--font-primary) 24%, transparent)",
-          boxShadow: "0 1px 4px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+          boxShadow: "var(--shadow-md)",
         },
       }}
     >
@@ -333,7 +333,7 @@ const JobCardComponent = ({ job }: JobCardProps) => {
                 minWidth: { xs: "auto", sm: 120 },
                 "&:hover": {
                   backgroundColor: "var(--accent-indigo-dark)",
-                  boxShadow: "0 2px 8px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+                  boxShadow: "var(--shadow-md)",
                 },
               }}
             >

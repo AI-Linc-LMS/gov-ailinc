@@ -13,11 +13,11 @@ export function OverallScoreCard({ score, grade }: OverallScoreCardProps) {
   const getGradeColor = () => {
     switch (grade) {
       case "Interview-Ready":
-        return "#10b981";
+        return "#0e7a3c";
       case "Advanced":
         return "#0a66c2";
       case "Intermediate":
-        return "#f59e0b";
+        return "#b7791f";
       default:
         return "#9ca3af";
     }
@@ -26,11 +26,11 @@ export function OverallScoreCard({ score, grade }: OverallScoreCardProps) {
   const getGradeGradient = () => {
     switch (grade) {
       case "Interview-Ready":
-        return "linear-gradient(135deg, #10b981 0%, #059669 100%)";
+        return "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)";
       case "Advanced":
         return "linear-gradient(135deg, #0a66c2 0%, #004182 100%)";
       case "Intermediate":
-        return "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)";
+        return "linear-gradient(135deg, #b7791f 0%, #8a5a12 100%)";
       default:
         return "linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)";
     }
@@ -49,13 +49,13 @@ export function OverallScoreCard({ score, grade }: OverallScoreCardProps) {
         backgroundColor: "#ffffff",
         border: `2px solid ${getGradeColor()}30`,
         background: `linear-gradient(135deg, ${getGradeColor()}08 0%, ${getGradeColor()}02 100%)`,
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04)",
+        boxShadow: "var(--shadow-sm)",
         position: "relative",
         overflow: "hidden",
         transition: "all 0.3s ease",
         "&:hover": {
-          boxShadow: `0 4px 14px ${getGradeColor()}22`,
-          transform: "translateY(-4px)",
+          boxShadow: "var(--shadow-md)",
+          transform: "translateY(-1px)",
           borderColor: `${getGradeColor()}50`,
         },
         "&::before": {
@@ -91,7 +91,7 @@ export function OverallScoreCard({ score, grade }: OverallScoreCardProps) {
             fontSize: "0.9375rem",
             height: 32,
             px: 1,
-            boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-sm)",
           }}
         />
       </Box>

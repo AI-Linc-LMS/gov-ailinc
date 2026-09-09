@@ -129,7 +129,7 @@ export default function EditAdaptiveQuizPage() {
     return (
       <MainLayout>
         <Container sx={{ py: 8 }}>
-          <Typography sx={{ textAlign: "center", color: "#ef4444", fontWeight: 700 }}>
+          <Typography sx={{ textAlign: "center", color: "#b32020", fontWeight: 700 }}>
             {error ?? "Quiz not found."}
           </Typography>
         </Container>
@@ -173,8 +173,8 @@ export default function EditAdaptiveQuizPage() {
                     fontWeight: 800,
                     color: "white",
                     background: saving
-                      ? "color-mix(in srgb, #10b981 40%, transparent)"
-                      : "linear-gradient(135deg, #10b981 0%, #6366f1 100%)",
+                      ? "color-mix(in srgb, #0e7a3c 40%, transparent)"
+                      : "linear-gradient(135deg, #0e7a3c 0%, #1b4f8a 100%)",
                     fontSize: "0.88rem",
                     "&:disabled": { cursor: "not-allowed" },
                   }}

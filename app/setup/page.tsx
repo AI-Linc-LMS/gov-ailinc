@@ -109,7 +109,7 @@ export default function SetupPage() {
               style={{
                 width: "40%",
                 background:
-                  "linear-gradient(90deg, #2356d6 0%, #00e0ff 100%)",
+                  "linear-gradient(90deg, #2356d6 0%, #2f7fbf 100%)",
                 animation: "aw-marquee-scroll 1.6s ease-in-out infinite",
               }}
             />

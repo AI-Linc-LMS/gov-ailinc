@@ -52,9 +52,9 @@ function cellKey(sub_skill: string, difficulty: Difficulty): string {
 }
 
 const DIFFICULTY_COLORS: Record<Difficulty, string> = {
-  Easy: "#10b981",
-  Medium: "#6366f1",
-  Hard: "#ef4444",
+  Easy: "#0e7a3c",
+  Medium: "#1b4f8a",
+  Hard: "#b32020",
 };
 
 /** Cells that hit OpenAI in parallel - matches the backend's ThreadPoolExecutor
@@ -226,8 +226,8 @@ export function Step2Generate({ draft, setDraft, onComplete }: Step2GenerateProp
           p: { xs: 2.5, md: 3 },
           borderRadius: 4,
           background:
-            "linear-gradient(135deg, color-mix(in srgb, #6366f1 9%, transparent) 0%, color-mix(in srgb, #a855f7 9%, transparent) 60%, color-mix(in srgb, #ec4899 7%, transparent) 100%)",
-          border: "1px solid color-mix(in srgb, #a855f7 25%, transparent)",
+            "linear-gradient(135deg, color-mix(in srgb, #1b4f8a 9%, transparent) 0%, color-mix(in srgb, #1b4f8a 9%, transparent) 60%, color-mix(in srgb, #0f6b7a 7%, transparent) 100%)",
+          border: "1px solid color-mix(in srgb, #1b4f8a 25%, transparent)",
           backdropFilter: "blur(22px) saturate(140%)",
         }}
       >
@@ -248,7 +248,7 @@ export function Step2Generate({ draft, setDraft, onComplete }: Step2GenerateProp
             width: 280,
             height: 280,
             borderRadius: "50%",
-            background: "radial-gradient(circle, #a855f7 0%, transparent 70%)",
+            background: "radial-gradient(circle, #1b4f8a 0%, transparent 70%)",
             filter: "blur(30px)",
             pointerEvents: "none",
           }}
@@ -294,9 +294,9 @@ export function Step2Generate({ draft, setDraft, onComplete }: Step2GenerateProp
               color: "white",
               background:
                 generating || (anyInFlight && !allDone)
-                  ? "color-mix(in srgb, #6366f1 35%, transparent)"
-                  : "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
-              boxShadow: anyInFlight ? "none" : "0 18px 36px -16px rgba(168, 85, 247, 0.55)",
+                  ? "color-mix(in srgb, #1b4f8a 35%, transparent)"
+                  : "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)",
+              boxShadow: anyInFlight ? "none" : "0 18px 36px -16px rgba(27, 79, 138, 0.55)",
               fontSize: "0.92rem",
               minWidth: 200,
               transition: "transform 120ms ease",
@@ -321,27 +321,27 @@ export function Step2Generate({ draft, setDraft, onComplete }: Step2GenerateProp
             icon="mdi:database-arrow-up"
             label="Bank now"
             value={`${bankNow} / ${total}`}
-            accent="#6366f1"
+            accent="#1b4f8a"
             highlight={bankNow > 0}
           />
           <KpiTile
             icon="mdi:check-circle-outline"
             label="Cells done"
             value={`${completedCount} / ${cells.length}`}
-            accent="#10b981"
+            accent="#0e7a3c"
           />
           <KpiTile
             icon="mdi:fountain-pen-tip"
             label="Streaming"
             value={String(revealingCount + generatingCount)}
-            accent="#a855f7"
+            accent="#1b4f8a"
             highlight={revealingCount + generatingCount > 0}
           />
           <KpiTile
             icon="mdi:timer-outline"
             label="Elapsed"
             value={anyInFlight || elapsedMs > 0 ? `${(elapsedMs / 1000).toFixed(1)}s` : "-"}
-            accent="#ec4899"
+            accent="#0f6b7a"
           />
         </Box>
 
@@ -357,9 +357,9 @@ export function Step2Generate({ draft, setDraft, onComplete }: Step2GenerateProp
               inset: 0,
               borderRadius: 999,
               background:
-                "linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)",
+                "linear-gradient(90deg, #1b4f8a 0%, #1b4f8a 50%, #0f6b7a 100%)",
               boxShadow: anyInFlight
-                ? "0 0 18px color-mix(in srgb, #a855f7 60%, transparent)"
+                ? "0 0 18px color-mix(in srgb, #1b4f8a 60%, transparent)"
                 : "none",
             }}
           />
@@ -386,7 +386,7 @@ export function Step2Generate({ draft, setDraft, onComplete }: Step2GenerateProp
       </Box>
 
       {error && (
-        <Typography sx={{ color: "#ef4444", fontWeight: 700 }}>{error}</Typography>
+        <Typography sx={{ color: "#b32020", fontWeight: 700 }}>{error}</Typography>
       )}
 
       {/* ---------- Cell grid ---------- */}
@@ -428,9 +428,9 @@ export function Step2Generate({ draft, setDraft, onComplete }: Step2GenerateProp
             borderRadius: 3,
             bgcolor:
               failedCount > 0
-                ? "color-mix(in srgb, #f59e0b 8%, transparent)"
-                : "color-mix(in srgb, #10b981 8%, transparent)",
-            border: `1px solid color-mix(in srgb, ${failedCount > 0 ? "#f59e0b" : "#10b981"} 25%, transparent)`,
+                ? "color-mix(in srgb, #b7791f 8%, transparent)"
+                : "color-mix(in srgb, #0e7a3c 8%, transparent)",
+            border: `1px solid color-mix(in srgb, ${failedCount > 0 ? "#b7791f" : "#0e7a3c"} 25%, transparent)`,
             display: "flex",
             alignItems: "center",
             gap: 1.5,
@@ -439,7 +439,7 @@ export function Step2Generate({ draft, setDraft, onComplete }: Step2GenerateProp
           <Icon
             icon={failedCount > 0 ? "mdi:alert-circle-outline" : "mdi:check-circle-outline"}
             width={22}
-            style={{ color: failedCount > 0 ? "#f59e0b" : "#10b981" }}
+            style={{ color: failedCount > 0 ? "#b7791f" : "#0e7a3c" }}
           />
           <Typography sx={{ flex: 1, fontWeight: 700 }}>
             {failedCount > 0
@@ -536,25 +536,25 @@ function CellChip({ cell, onMcqTyped, onAllTyped }: CellChipProps) {
 
   const statusUi: Record<CellStatus, { icon: string; label: string; color: string }> = {
     pending: { icon: "mdi:clock-outline", label: "Queued", color: "var(--text-secondary, #6b7280)" },
-    generating: { icon: "mdi:loading", label: "Asking AI…", color: "#6366f1" },
-    revealing: { icon: "mdi:fountain-pen-tip", label: "Writing live…", color: "#a855f7" },
+    generating: { icon: "mdi:loading", label: "Asking AI…", color: "#1b4f8a" },
+    revealing: { icon: "mdi:fountain-pen-tip", label: "Writing live…", color: "#1b4f8a" },
     done: {
       icon: "mdi:check-circle",
       label: `Done · ${cell.mcq_count} MCQ${cell.mcq_count === 1 ? "" : "s"}`,
-      color: "#10b981",
+      color: "#0e7a3c",
     },
-    failed: { icon: "mdi:close-circle", label: "Failed", color: "#ef4444" },
+    failed: { icon: "mdi:close-circle", label: "Failed", color: "#b32020" },
   };
   const s = statusUi[cell.status];
 
   // Tinted background per state for a clearer at-a-glance read.
   const bgTint =
     isDone
-      ? "color-mix(in srgb, #10b981 5%, transparent)"
+      ? "color-mix(in srgb, #0e7a3c 5%, transparent)"
       : isFailed
-        ? "color-mix(in srgb, #ef4444 5%, transparent)"
+        ? "color-mix(in srgb, #b32020 5%, transparent)"
         : isRevealing
-          ? "color-mix(in srgb, #a855f7 6%, transparent)"
+          ? "color-mix(in srgb, #1b4f8a 6%, transparent)"
           : "color-mix(in srgb, var(--card-bg, #ffffff) 60%, transparent)";
 
   return (
@@ -575,14 +575,14 @@ function CellChip({ cell, onMcqTyped, onAllTyped }: CellChipProps) {
         gap: 0.75,
         transition: "border-color 220ms ease, background 220ms ease, box-shadow 220ms ease",
         ...(isDone && {
-          borderColor: "color-mix(in srgb, #10b981 38%, transparent)",
+          borderColor: "color-mix(in srgb, #0e7a3c 38%, transparent)",
         }),
         ...(isFailed && {
-          borderColor: "color-mix(in srgb, #ef4444 38%, transparent)",
+          borderColor: "color-mix(in srgb, #b32020 38%, transparent)",
         }),
         ...(isRevealing && {
-          borderColor: "color-mix(in srgb, #a855f7 48%, transparent)",
-          boxShadow: "0 12px 28px -16px color-mix(in srgb, #a855f7 60%, transparent)",
+          borderColor: "color-mix(in srgb, #1b4f8a 48%, transparent)",
+          boxShadow: "0 12px 28px -16px color-mix(in srgb, #1b4f8a 60%, transparent)",
         }),
       }}
     >
@@ -595,7 +595,7 @@ function CellChip({ cell, onMcqTyped, onAllTyped }: CellChipProps) {
           left: 0,
           right: 0,
           height: 3,
-          background: `linear-gradient(90deg, ${color} 0%, color-mix(in srgb, ${color} 60%, #a855f7) 100%)`,
+          background: `linear-gradient(90deg, ${color} 0%, color-mix(in srgb, ${color} 60%, #1b4f8a) 100%)`,
           opacity: isFailed ? 0.4 : 1,
         }}
       />
@@ -611,7 +611,7 @@ function CellChip({ cell, onMcqTyped, onAllTyped }: CellChipProps) {
             position: "absolute",
             inset: 0,
             borderRadius: 3,
-            background: "radial-gradient(circle at 80% 0%, #6366f1 0%, transparent 60%)",
+            background: "radial-gradient(circle at 80% 0%, #1b4f8a 0%, transparent 60%)",
             opacity: 0.25,
             pointerEvents: "none",
           }}
@@ -674,7 +674,7 @@ function CellChip({ cell, onMcqTyped, onAllTyped }: CellChipProps) {
       )}
 
       {isFailed && cell.error && (
-        <Typography sx={{ fontSize: "0.66rem", color: "#ef4444", fontStyle: "italic", position: "relative" }}>
+        <Typography sx={{ fontSize: "0.66rem", color: "#b32020", fontStyle: "italic", position: "relative" }}>
           {cell.error.slice(0, 80)}
         </Typography>
       )}

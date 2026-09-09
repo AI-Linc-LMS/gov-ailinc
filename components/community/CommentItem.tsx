@@ -16,8 +16,8 @@ import { formatDistanceToNow } from "@/lib/utils/date-utils";
 const XP_TIER_COLORS: Record<string, string> = {
   bronze: "#cd7f32",
   silver: "#94a3b8",
-  gold: "#fbbf24",
-  platinum: "#a78bfa",
+  gold: "#c9903a",
+  platinum: "#85aad6",
 };
 
 function getAvatarRingStyle(tier?: string) {
@@ -242,7 +242,7 @@ export const CommentItem = memo(function CommentItem({
                     <IconWrapper
                       icon={isAccepted ? "mdi:check-decagram" : "mdi:check-decagram-outline"}
                       size={15}
-                      color={isAccepted ? "#16a34a" : undefined}
+                      color={isAccepted ? "#0b6232" : undefined}
                     />
                   }
                   sx={{
@@ -252,14 +252,14 @@ export const CommentItem = memo(function CommentItem({
                     minWidth: "auto",
                     px: 1,
                     py: 0.25,
-                    color: isAccepted ? "#15803d" : "var(--font-secondary)",
+                    color: isAccepted ? "#0b6232" : "var(--font-secondary)",
                     backgroundColor: isAccepted ? "rgba(22,163,74,0.10)" : "transparent",
                     border: isAccepted
                       ? "1px solid rgba(22,163,74,0.32)"
                       : "1px solid transparent",
                     borderRadius: "6px",
                     "&:hover": {
-                      color: "#15803d",
+                      color: "#0b6232",
                       backgroundColor: "rgba(22,163,74,0.14)",
                       borderColor: "rgba(22,163,74,0.36)",
                     },
@@ -278,7 +278,7 @@ export const CommentItem = memo(function CommentItem({
                     p: 0.5,
                     ml: "auto",
                     color: "var(--font-tertiary)",
-                    "&:hover": { color: "#ef4444", backgroundColor: "rgba(239,68,68,0.08)" },
+                    "&:hover": { color: "#b32020", backgroundColor: "rgba(239,68,68,0.08)" },
                   }}
                 >
                   <IconWrapper icon="mdi:flag-outline" size={15} />

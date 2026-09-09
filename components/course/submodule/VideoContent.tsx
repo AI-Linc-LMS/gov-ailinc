@@ -33,11 +33,11 @@ export function VideoContent({
           severity="info"
           sx={{
             mb: 2,
-            backgroundColor: "#eff6ff",
-            color: "#1e40af",
-            border: "1px solid #bfdbfe",
+            backgroundColor: "#eef3fa",
+            color: "#12365f",
+            border: "1px solid #b6cde8",
             "& .MuiAlert-icon": {
-              color: "#3b82f6",
+              color: "#4a7fbb",
             },
           }}
         >

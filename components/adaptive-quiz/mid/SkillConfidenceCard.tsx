@@ -24,10 +24,10 @@ interface SkillConfidenceCardProps {
 }
 
 const BAND_COLOR = (mastery: number): string => {
-  if (mastery >= 0.75) return "#10b981";
-  if (mastery >= 0.55) return "#6366f1";
-  if (mastery >= 0.35) return "#f59e0b";
-  return "#ef4444";
+  if (mastery >= 0.75) return "#0e7a3c";
+  if (mastery >= 0.55) return "#1b4f8a";
+  if (mastery >= 0.35) return "#b7791f";
+  return "#b32020";
 };
 
 /** Map θ ∈ [-4, +4] to a 0–1 mastery view. The sigmoid keeps the middle
@@ -43,10 +43,9 @@ export function SkillConfidenceCard({ skills, activeSkill, nudge }: SkillConfide
       sx={{
         p: 2,
         borderRadius: 3,
-        bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 60%, transparent)",
-        border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 70%, transparent)",
-        backdropFilter: "blur(14px) saturate(140%)",
-        boxShadow: "0 1px 0 0 color-mix(in srgb, white 12%, transparent) inset",
+        bgcolor: "var(--card-bg, #ffffff)",
+        border: "1px solid var(--border-default, #e5e7eb)",
+        boxShadow: "var(--shadow-xs)",
         display: "flex",
         flexDirection: "column",
         gap: 1.5,
@@ -72,12 +71,12 @@ export function SkillConfidenceCard({ skills, activeSkill, nudge }: SkillConfide
                   sx={{
                     fontSize: "0.78rem",
                     fontWeight: 700,
-                    color: isActive ? "var(--accent-indigo, #6366f1)" : "text.primary",
+                    color: isActive ? "var(--accent-indigo, #1b4f8a)" : "text.primary",
                   }}
                 >
                   {prettySkill(row.skill)}
                   {isActive && (
-                    <Box component="span" sx={{ ml: 0.75, fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.14em", color: "var(--accent-indigo, #6366f1)" }}>
+                    <Box component="span" sx={{ ml: 0.75, fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.14em", color: "var(--accent-indigo, #1b4f8a)" }}>
                       • TARGETING
                     </Box>
                   )}
@@ -137,14 +136,14 @@ export function SkillConfidenceCard({ skills, activeSkill, nudge }: SkillConfide
             mt: 0.5,
             p: 1.25,
             borderRadius: 2,
-            bgcolor: "color-mix(in srgb, #a855f7 10%, transparent)",
-            border: "1px solid color-mix(in srgb, #a855f7 22%, transparent)",
+            bgcolor: "color-mix(in srgb, #1b4f8a 10%, transparent)",
+            border: "1px solid color-mix(in srgb, #1b4f8a 22%, transparent)",
             display: "flex",
             gap: 1,
             alignItems: "flex-start",
           }}
         >
-          <Icon icon="mdi:target" width={16} style={{ color: "#a855f7", marginTop: 2 }} />
+          <Icon icon="mdi:target" width={16} style={{ color: "#1b4f8a", marginTop: 2 }} />
           <Typography sx={{ fontSize: "0.78rem", color: "text.primary", lineHeight: 1.45 }}>
             {nudge}
           </Typography>

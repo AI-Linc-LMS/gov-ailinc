@@ -128,7 +128,7 @@ export function SubjectiveResponsesSection({
                 borderRadius: 2,
                 textTransform: "none",
                 boxShadow:
-                  "0 4px 12px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+                  "var(--shadow-sm)",
                 "&:hover": {
                   background:
                     "linear-gradient(135deg, var(--accent-indigo-dark) 0%, var(--accent-indigo) 100%)",

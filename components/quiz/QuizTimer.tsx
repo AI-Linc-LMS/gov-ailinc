@@ -31,7 +31,7 @@ export function QuizTimer({ timeRemaining, totalDurationSeconds, onTimeUp }: Qui
   // Green: >= 2 min, Yellow: < 2 min, Red: <= 0 (handled by onTimeUp)
   const getColor = () => {
     if (timeRemaining <= 120) return "#eab308"; // yellow when < 2 minutes
-    return "#10b981"; // green
+    return "#0e7a3c"; // green
   };
 
   return (
@@ -52,7 +52,7 @@ export function QuizTimer({ timeRemaining, totalDurationSeconds, onTimeUp }: Qui
           size={80}
           thickness={4}
           sx={{
-            color: timeRemaining <= 60 ? "#ef4444" : "#10b981",
+            color: timeRemaining <= 60 ? "#b32020" : "#0e7a3c",
             "& .MuiCircularProgress-circle": {
               strokeLinecap: "round",
             },

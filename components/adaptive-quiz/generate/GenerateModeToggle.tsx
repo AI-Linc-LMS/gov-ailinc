@@ -52,7 +52,7 @@ export function GenerateModeToggle({
               gap: 0.6,
               color: active ? "white" : "text.secondary",
               background: active
-                ? "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)"
+                ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)"
                 : "transparent",
               transition: "color 120ms ease, background 120ms ease",
             }}

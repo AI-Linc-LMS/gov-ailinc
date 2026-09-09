@@ -19,18 +19,18 @@ const KIND_CARDS: { kind: PracticeKind; icon: string; title: string; sub: string
 ];
 
 const DIFFS: { value: PracticeDifficulty; label: string; color: string }[] = [
-  { value: "Easy", label: "Easy", color: "#16a34a" },
-  { value: "Medium", label: "Medium", color: "#d97706" },
-  { value: "Hard", label: "Hard", color: "#dc2626" },
-  { value: "match", label: "✦ Match me", color: "#7c3aed" },
+  { value: "Easy", label: "Easy", color: "#0b6232" },
+  { value: "Medium", label: "Medium", color: "#8a5a12" },
+  { value: "Hard", label: "Hard", color: "#991b1b" },
+  { value: "match", label: "✦ Match me", color: "#14406f" },
 ];
 
 const COUNTS = [3, 5, 10];
 
 const KIND_META: Record<PracticeKind, { icon: string; color: string; bg: string; unit: string }> = {
-  article: { icon: "mdi:file-document-outline", color: "#a855f7", bg: "#f5f3ff", unit: "explainer" },
-  quiz: { icon: "mdi:help-circle", color: "#6366f1", bg: "#eef2ff", unit: "questions" },
-  coding: { icon: "mdi:laptop", color: "#ec4899", bg: "#fdf2f8", unit: "problems" },
+  article: { icon: "mdi:file-document-outline", color: "#1b4f8a", bg: "#eef3fa", unit: "explainer" },
+  quiz: { icon: "mdi:help-circle", color: "#1b4f8a", bg: "#eef3fa", unit: "questions" },
+  coding: { icon: "mdi:laptop", color: "#0f6b7a", bg: "#eef5f6", unit: "problems" },
 };
 
 export function AdditionalPractice({ courseId, submoduleId }: { courseId: number; submoduleId: number }) {
@@ -92,17 +92,17 @@ export function AdditionalPractice({ courseId, submoduleId }: { courseId: number
   const exhausted = left <= 0;
 
   return (
-    <Box sx={{ mt: 3, borderRadius: 4, border: "1.5px solid #ddd6fe", overflow: "hidden", bgcolor: "#fff" }}>
+    <Box sx={{ mt: 3, borderRadius: 4, border: "1.5px solid #d9e6f4", overflow: "hidden", bgcolor: "#fff" }}>
       {/* Header band */}
-      <Box sx={{ p: { xs: 2, md: 2.5 }, background: "linear-gradient(180deg, #faf5ff 0%, #f5f3ff 100%)", borderBottom: open ? "1px solid #ede9fe" : "none" }}>
+      <Box sx={{ p: { xs: 2, md: 2.5 }, background: "linear-gradient(180deg, #eef3fa 0%, #eef3fa 100%)", borderBottom: open ? "1px solid #eef3fa" : "none" }}>
         <Stack direction="row" alignItems="flex-start" spacing={1.5}>
-          <Box sx={{ width: 44, height: 44, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)", boxShadow: "0 8px 20px -8px rgba(124,58,237,0.6)" }}>
+          <Box sx={{ width: 44, height: 44, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #14406f 0%, #0f6b7a 100%)", boxShadow: "var(--shadow-sm)" }}>
             <Icon icon="mdi:auto-fix" width={24} />
           </Box>
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Stack direction="row" alignItems="center" spacing={1} flexWrap="wrap">
-              <Typography sx={{ fontWeight: 800, fontSize: "1.15rem", color: "#1e1b4b" }}>Additional Practice</Typography>
-              <Stack direction="row" spacing={0.3} alignItems="center" sx={{ px: 1, py: 0.3, borderRadius: 999, color: "white", background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)" }}>
+              <Typography sx={{ fontWeight: 800, fontSize: "1.15rem", color: "#071426" }}>Additional Practice</Typography>
+              <Stack direction="row" spacing={0.3} alignItems="center" sx={{ px: 1, py: 0.3, borderRadius: 999, color: "white", background: "linear-gradient(135deg, #14406f 0%, #1b4f8a 100%)" }}>
                 <Icon icon="mdi:plus" width={12} />
                 <Typography sx={{ fontSize: "0.66rem", fontWeight: 800 }}>Generate</Typography>
               </Stack>
@@ -114,15 +114,15 @@ export function AdditionalPractice({ courseId, submoduleId }: { courseId: number
           </Box>
           {/* Quota meter */}
           <Box sx={{ minWidth: 150, textAlign: "right", flexShrink: 0, display: { xs: "none", sm: "block" } }}>
-            <Typography sx={{ fontWeight: 800, fontSize: "0.95rem", color: "#1e1b4b" }}>
-              <Box component="span" sx={{ color: "#7c3aed", fontWeight: 900 }}>{used}</Box> / {limit} generated
+            <Typography sx={{ fontWeight: 800, fontSize: "0.95rem", color: "#071426" }}>
+              <Box component="span" sx={{ color: "#14406f", fontWeight: 900 }}>{used}</Box> / {limit} generated
             </Typography>
-            <Box sx={{ height: 6, borderRadius: 999, bgcolor: "#ede9fe", mt: 0.5, overflow: "hidden" }}>
-              <Box sx={{ height: "100%", width: `${pct}%`, borderRadius: 999, background: "linear-gradient(90deg, #7c3aed 0%, #ec4899 100%)", transition: "width .3s" }} />
+            <Box sx={{ height: 6, borderRadius: 999, bgcolor: "#eef3fa", mt: 0.5, overflow: "hidden" }}>
+              <Box sx={{ height: "100%", width: `${pct}%`, borderRadius: 999, background: "linear-gradient(90deg, #14406f 0%, #0f6b7a 100%)", transition: "width .3s" }} />
             </Box>
             <Typography sx={{ fontSize: "0.7rem", color: "#94a3b8", mt: 0.4 }}>{left} left for this topic</Typography>
           </Box>
-          <ButtonBase onClick={() => setOpen((o) => !o)} sx={{ width: 30, height: 30, borderRadius: 2, border: "1px solid #ddd6fe", color: "#7c3aed", flexShrink: 0 }}>
+          <ButtonBase onClick={() => setOpen((o) => !o)} sx={{ width: 30, height: 30, borderRadius: 2, border: "1px solid #d9e6f4", color: "#14406f", flexShrink: 0 }}>
             <Icon icon={open ? "mdi:chevron-up" : "mdi:chevron-down"} width={20} />
           </ButtonBase>
         </Stack>
@@ -183,8 +183,8 @@ export function AdditionalPractice({ courseId, submoduleId }: { courseId: number
                     return (
                       <ButtonBase key={c} disabled={disabled} onClick={() => { setCustom(false); setCount(c); }} sx={{
                         minWidth: 48, px: 1.5, py: 0.85, borderRadius: 2, fontWeight: 800, fontSize: "0.9rem", border: "1.5px solid",
-                        borderColor: active ? "#7c3aed" : "#e5e7eb", color: active ? "#7c3aed" : disabled ? "#cbd5e1" : "#475569",
-                        bgcolor: active ? "#f5f3ff" : "#fff", opacity: disabled ? 0.5 : 1,
+                        borderColor: active ? "#14406f" : "#e5e7eb", color: active ? "#14406f" : disabled ? "#cbd5e1" : "#475569",
+                        bgcolor: active ? "#eef3fa" : "#fff", opacity: disabled ? 0.5 : 1,
                       }}>
                         {c}
                       </ButtonBase>
@@ -192,7 +192,7 @@ export function AdditionalPractice({ courseId, submoduleId }: { courseId: number
                   })}
                   <ButtonBase onClick={() => setCustom(true)} sx={{
                     px: 1.5, py: 0.85, borderRadius: 2, fontWeight: 700, fontSize: "0.84rem", border: "1.5px solid",
-                    borderColor: custom ? "#7c3aed" : "#e5e7eb", color: custom ? "#7c3aed" : "#475569", bgcolor: custom ? "#f5f3ff" : "#fff",
+                    borderColor: custom ? "#14406f" : "#e5e7eb", color: custom ? "#14406f" : "#475569", bgcolor: custom ? "#eef3fa" : "#fff",
                   }}>
                     Custom…
                   </ButtonBase>
@@ -213,19 +213,19 @@ export function AdditionalPractice({ courseId, submoduleId }: { courseId: number
             <TextField
               fullWidth size="small" value={focus} onChange={(e) => setFocus(e.target.value)}
               placeholder={'Optional: focus on… e.g. "string slicing & f-strings"'}
-              InputProps={{ startAdornment: <Icon icon="mdi:target" width={16} style={{ marginRight: 8, color: "#a855f7", flexShrink: 0 }} /> }}
+              InputProps={{ startAdornment: <Icon icon="mdi:target" width={16} style={{ marginRight: 8, color: "#1b4f8a", flexShrink: 0 }} /> }}
             />
             <ButtonBase onClick={generate} disabled={!canGenerate} sx={{
               flexShrink: 0, px: 3, py: 1.2, borderRadius: 2, fontWeight: 800, fontSize: "0.9rem", color: "white", gap: 0.75, whiteSpace: "nowrap",
-              background: canGenerate ? "linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)" : "#cbd5e1",
-              boxShadow: canGenerate ? "0 12px 28px -14px rgba(124,58,237,0.7)" : "none",
+              background: canGenerate ? "linear-gradient(135deg, #14406f 0%, #0f6b7a 100%)" : "#cbd5e1",
+              boxShadow: canGenerate ? "var(--shadow-sm)" : "none",
             }}>
               {generating ? <CircularProgress size={16} sx={{ color: "white" }} /> : <Icon icon="mdi:auto-fix" width={18} />}
               {generating ? "Generating…" : exhausted ? "Topic limit reached" : `Generate ${btnUnit}`}
             </ButtonBase>
           </Stack>
 
-          {error && <Typography sx={{ fontSize: "0.8rem", color: "#dc2626", mb: 1, fontWeight: 600 }}>{error}</Typography>}
+          {error && <Typography sx={{ fontSize: "0.8rem", color: "#991b1b", mb: 1, fontWeight: 600 }}>{error}</Typography>}
 
           <Stack direction="row" spacing={0.6} alignItems="flex-start">
             <Icon icon="mdi:information-outline" width={14} style={{ color: "#94a3b8", marginTop: 2, flexShrink: 0 }} />

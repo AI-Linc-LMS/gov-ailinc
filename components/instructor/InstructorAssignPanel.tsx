@@ -79,7 +79,7 @@ export function InstructorAssignPanel({ scope, id }: { scope: "course" | "cohort
   return (
     <Box sx={{ p: 2, borderRadius: 3, border: "1px solid var(--border-default)", bgcolor: "var(--card-bg)" }}>
       <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5 }}>
-        <Icon icon="mdi:account-tie-outline" width={20} style={{ color: "#6366f1" }} />
+        <Icon icon="mdi:account-tie-outline" width={20} style={{ color: "#1b4f8a" }} />
         <Typography sx={{ fontWeight: 800, fontSize: "0.95rem" }}>Instructors</Typography>
         <Typography sx={{ color: "text.secondary", fontSize: "0.8rem" }}>
           · assigned instructors own this {scope}&apos;s students.
@@ -146,11 +146,11 @@ export function InstructorAssignPanel({ scope, id }: { scope: "course" | "cohort
                 borderRadius: 2,
                 textTransform: "none",
                 fontWeight: 700,
-                background: "linear-gradient(135deg,#6366f1,#a855f7)",
+                background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)",
                 // Explicit: the custom `background` overrides MUI's contained variant, so without
                 // this the label inherited a dark colour and read as dark-on-dark on the gradient.
                 color: "#fff",
-                "&:hover": { background: "linear-gradient(135deg,#5457e5,#9333ea)" },
+                "&:hover": { background: "linear-gradient(135deg,#164274,#164274)" },
                 "&.Mui-disabled": { background: "var(--border-default)", color: "var(--font-tertiary)" },
               }}
             >

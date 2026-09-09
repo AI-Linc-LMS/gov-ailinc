@@ -41,7 +41,7 @@ export function AnswerDistributionChart({
             border: "1px solid var(--border-default)",
             borderRadius: 2,
             p: 1.5,
-            boxShadow: "0 4px 12px color-mix(in srgb, var(--font-dark) 10%, transparent)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Typography variant="body2" sx={{ fontWeight: 700, color: "var(--font-primary-dark)" }}>

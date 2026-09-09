@@ -70,7 +70,7 @@ const PRESETS: PresetMeta[] = [
     swatches: {
       nav: "#e0f2fe",
       active: "#164e63",
-      primary: "#0ea5e9",
+      primary: "#1b4f8a",
       surface: "#ffffff",
       text: "#0c4a6e",
       textMute: "#64748b",
@@ -83,7 +83,7 @@ const PRESETS: PresetMeta[] = [
     swatches: {
       nav: "#fff7f8",
       active: "#fecdd3",
-      primary: "#e11d48",
+      primary: "#991b1b",
       surface: "#ffffff",
       text: "#7a1230",
       textMute: "#9f1239",
@@ -96,7 +96,7 @@ const PRESETS: PresetMeta[] = [
     swatches: {
       nav: "#f8fcff",
       active: "#bae6fd",
-      primary: "#0ea5e9",
+      primary: "#1b4f8a",
       surface: "#ffffff",
       text: "#0c4a6e",
       textMute: "#64748b",
@@ -154,7 +154,7 @@ export function ThemeStep({ data, onChange }: Props) {
                 }`}
                 style={{
                   border: active
-                    ? "1px solid rgba(0, 224, 255, 0.55)"
+                    ? "1px solid rgba(133, 170, 214, 0.55)"
                     : "1px solid rgba(255,255,255,0.10)",
                   background: "rgba(255,255,255,0.02)",
                 }}
@@ -172,10 +172,13 @@ export function ThemeStep({ data, onChange }: Props) {
                   <span
                     aria-hidden
                     className="absolute right-2.5 top-2.5 grid h-5 w-5 place-items-center rounded-full"
+                    // The halo that used to sit here was a 3px ring of neon cyan
+                    // at 15% opacity on a navy ground: not readable as anything,
+                    // and a glow the palette rules out. The filled badge is the
+                    // signal, and the card already carries a border and a ring.
                     style={{
                       background:
-                        "linear-gradient(135deg, #00e0ff 0%, #2356d6 100%)",
-                      boxShadow: "0 0 0 3px rgba(0,224,255,0.15)",
+                        "linear-gradient(135deg, #2f7fbf 0%, #2356d6 100%)",
                     }}
                   >
                     <svg
@@ -260,7 +263,7 @@ function WelcomeMessageCard({
         background:
           "linear-gradient(135deg, rgb(var(--aw-bg-0)) 0%, rgb(var(--aw-bg-2)) 100%)",
         boxShadow:
-          "0 1px 2px -1px rgba(11, 18, 38, 0.16), 0 8px 22px -14px rgba(11, 18, 38, 0.22)",
+          "var(--shadow-sm)",
       }}
     >
       {/* Soft backdrop bubble in the top-right - matches the watermark vibe
@@ -281,8 +284,8 @@ function WelcomeMessageCard({
             <span
               className="grid h-11 w-11 shrink-0 place-items-center rounded-[14px]"
               style={{
-                background: "linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)",
-                boxShadow: "0 6px 18px -8px #0ea5e9",
+                background: "linear-gradient(135deg, #4a7fbb 0%, #1b4f8a 100%)",
+                boxShadow: "var(--shadow-sm)",
               }}
             >
               <svg
@@ -350,7 +353,7 @@ function WelcomeMessageCard({
               style={{
                 color:
                   remaining < 20
-                    ? "#b45309"
+                    ? "#8a5a12"
                     : "rgb(var(--aw-fg-dim))",
               }}
             >
@@ -398,7 +401,7 @@ function HeroImageCard({
         // Theme-aware surface - flips between light + dark with the wizard.
         background: "rgb(var(--aw-bg-0))",
         boxShadow:
-          "0 1px 2px -1px rgba(11, 18, 38, 0.18), 0 8px 22px -14px rgba(11, 18, 38, 0.22)",
+          "var(--shadow-sm)",
       }}
     >
       {/* Header bar - same shape as BrandingSectionCard header */}
@@ -417,7 +420,7 @@ function HeroImageCard({
           className="grid h-10 w-10 shrink-0 place-items-center rounded-[10px]"
           style={{
             background: "rgba(14, 165, 233, 0.12)",
-            color: "#0284c7",
+            color: "#164274",
           }}
         >
           <svg
@@ -471,7 +474,7 @@ function HeroImageCard({
                   aria-hidden
                   className="inline-block h-2 w-2 shrink-0 rounded-full"
                   style={{
-                    background: hasImage ? "#16a34a" : "rgb(var(--aw-line) / 0.32)",
+                    background: hasImage ? "#0b6232" : "rgb(var(--aw-line) / 0.32)",
                     boxShadow: hasImage
                       ? "0 0 0 3px rgba(22, 163, 74, 0.18)"
                       : "none",
@@ -483,7 +486,7 @@ function HeroImageCard({
                 <span
                   className="aw-mono text-[10px] font-bold uppercase tracking-[0.2em]"
                   style={{
-                    color: hasImage ? "#16a34a" : "rgb(var(--aw-fg-mute))",
+                    color: hasImage ? "#0b6232" : "rgb(var(--aw-fg-mute))",
                   }}
                 >
                   {hasImage ? "Set" : "Not set"}
@@ -586,7 +589,7 @@ function LoginHeroMock({
         background: mockMutedBg,
         height: 280,
         boxShadow:
-          "0 1px 2px -1px rgba(11, 18, 38, 0.05), 0 12px 28px -16px rgba(11, 18, 38, 0.18)",
+          "var(--shadow-sm)",
       }}
     >
       <div className="grid h-full grid-cols-2">
@@ -598,7 +601,7 @@ function LoginHeroMock({
               border: `1px solid ${mockLine}`,
               background: mockSurface,
               boxShadow:
-                "0 1px 2px -1px rgba(11, 18, 38, 0.05), 0 10px 24px -14px rgba(11, 18, 38, 0.18)",
+                "var(--shadow-sm)",
             }}
           >
             <p
@@ -625,8 +628,8 @@ function LoginHeroMock({
               <div
                 className="h-7 w-full rounded-md"
                 style={{
-                  background: "linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)",
-                  boxShadow: "0 6px 18px -8px #0ea5e9",
+                  background: "linear-gradient(135deg, #4a7fbb 0%, #1b4f8a 100%)",
+                  boxShadow: "var(--shadow-sm)",
                 }}
               />
             </div>
@@ -687,10 +690,8 @@ function LoginHeroMock({
                 className="grid h-9 w-9 place-items-center rounded-[10px] text-[12px] font-bold"
                 style={{
                   background: hasImage ? "rgba(255, 255, 255, 0.95)" : mockSurface,
-                  color: "#0ea5e9",
-                  boxShadow: hasImage
-                    ? "0 6px 18px -6px rgba(0, 0, 0, 0.4)"
-                    : "0 2px 6px -2px rgba(11, 18, 38, 0.1)",
+                  color: "#1b4f8a",
+                  boxShadow: hasImage ? "var(--shadow-md)" : "var(--shadow-xs)",
                 }}
               >
                 {initials(orgName)}
@@ -731,15 +732,14 @@ function LoginHeroMock({
         className="pointer-events-none absolute left-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5"
         style={{
           background: "rgba(11, 18, 38, 0.7)",
-          backdropFilter: "blur(4px)",
         }}
       >
         <span
           aria-hidden
           className="inline-block h-1.5 w-1.5 rounded-full"
           style={{
-            background: "#38bdf8",
-            boxShadow: "0 0 6px #38bdf8",
+            background: "#4a7fbb",
+            boxShadow: "var(--shadow-sm)",
           }}
         />
         <span
@@ -780,11 +780,9 @@ function UploadPill({
       style={{
         color: "#ffffff",
         background: uploading
-          ? "#0284c7"
-          : "linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)",
-        boxShadow: uploading
-          ? "0 4px 12px -4px rgba(2, 132, 199, 0.4)"
-          : "0 8px 22px -10px #0ea5e9, inset 0 1px 0 0 #ffffff66",
+          ? "#164274"
+          : "linear-gradient(135deg, #4a7fbb 0%, #1b4f8a 100%)",
+        boxShadow: "var(--shadow-sm)",
         opacity: uploading ? 0.85 : 1,
       }}
     >

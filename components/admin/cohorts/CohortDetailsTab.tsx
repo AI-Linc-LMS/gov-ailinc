@@ -46,7 +46,7 @@ export function CohortDetailsTab({ cohort, onSaved }: { cohort: CohortDetail; on
         borderRadius: "16px",
         bgcolor: "var(--card-bg)",
         border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+        boxShadow: "var(--shadow-sm)",
         p: { xs: 2.5, md: 3 },
       }}
     >
@@ -58,8 +58,8 @@ export function CohortDetailsTab({ cohort, onSaved }: { cohort: CohortDetail; on
             borderRadius: "12px",
             display: "grid",
             placeItems: "center",
-            color: "var(--ai-violet, #7c3aed)",
-            bgcolor: "color-mix(in srgb, var(--ai-violet, #7c3aed) 12%, transparent)",
+            color: "var(--ai-violet, #14406f)",
+            bgcolor: "color-mix(in srgb, var(--ai-violet, #14406f) 12%, transparent)",
           }}
         >
           <Icon icon="mdi:card-text-outline" width={20} />

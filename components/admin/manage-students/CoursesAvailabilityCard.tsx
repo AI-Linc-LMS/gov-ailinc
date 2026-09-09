@@ -24,7 +24,7 @@ export function CoursesAvailabilityCard({
         border: "1px solid var(--border-default)",
         backgroundColor: "var(--card-bg)",
         boxShadow:
-          "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+          "var(--shadow-sm)",
         mb: 3,
       }}
     >

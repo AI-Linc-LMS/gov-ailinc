@@ -146,9 +146,9 @@ const PreviousInterviewsTableComponent = ({
               transition: "all 0.3s ease",
               "&:hover": {
                 boxShadow:
-                  "0 4px 12px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+                  "var(--shadow-md)",
                 borderColor: "var(--success-500)",
-                transform: "translateY(-2px)",
+                transform: "translateY(-1px)",
               },
             }}
           >
@@ -166,7 +166,7 @@ const PreviousInterviewsTableComponent = ({
                   justifyContent: "center",
                   flexShrink: 0,
                   boxShadow:
-                    "0 4px 12px color-mix(in srgb, var(--success-500) 35%, transparent)",
+                    "var(--shadow-sm)",
                 }}
               >
                 <IconWrapper

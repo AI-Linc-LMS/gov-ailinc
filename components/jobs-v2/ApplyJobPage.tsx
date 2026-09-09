@@ -275,7 +275,7 @@ export function ApplyJobPage({
             },
             "&:hover": {
               borderColor: "color-mix(in srgb, var(--accent-indigo) 25%, transparent)",
-              boxShadow: "0 8px 30px color-mix(in srgb, var(--accent-indigo) 10%, transparent)",
+              boxShadow: "var(--shadow-md)",
             },
           }}
         >
@@ -311,7 +311,7 @@ export function ApplyJobPage({
                   color: resumeMode === mode ? "var(--font-primary)" : "var(--font-secondary)",
                   fontWeight: resumeMode === mode ? 600 : 500,
                   fontSize: "0.875rem",
-                  boxShadow: resumeMode === mode ? "0 1px 2px color-mix(in srgb, var(--font-primary) 7%, transparent)" : "none",
+                  boxShadow: resumeMode === mode ? "var(--shadow-xs)" : "none",
                   transition: "all 0.2s ease",
                   "&:hover": { backgroundColor: resumeMode === mode ? "var(--font-light)" : "color-mix(in srgb, var(--font-light) 60%, transparent)" },
                 }}
@@ -468,7 +468,7 @@ export function ApplyJobPage({
             },
             "&:hover": {
               borderColor: "color-mix(in srgb, var(--accent-indigo) 25%, transparent)",
-              boxShadow: "0 8px 30px color-mix(in srgb, var(--accent-indigo) 10%, transparent)",
+              boxShadow: "var(--shadow-md)",
             },
           }}
         >
@@ -643,12 +643,12 @@ export function ApplyJobPage({
           border: "1px solid",
           borderColor:
             "color-mix(in srgb, var(--accent-indigo) 20%, var(--border-default))",
-          boxShadow: "0 1px 3px color-mix(in srgb, var(--accent-indigo) 8%, transparent)",
+          boxShadow: "var(--shadow-sm)",
           transition: "all 0.2s ease",
           "&:hover": {
             borderColor:
               "color-mix(in srgb, var(--accent-indigo) 30%, var(--border-default))",
-            boxShadow: "0 4px 12px color-mix(in srgb, var(--accent-indigo) 12%, transparent)",
+            boxShadow: "var(--shadow-md)",
           },
         }}
       >
@@ -723,7 +723,7 @@ export function ApplyJobPage({
                   border: "1px solid",
                   borderColor:
                     "color-mix(in srgb, var(--accent-indigo) 18%, var(--border-default))",
-                  boxShadow: "0 1px 3px color-mix(in srgb, var(--accent-indigo) 6%, transparent)",
+                  boxShadow: "var(--shadow-sm)",
                 }}
               >
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
@@ -806,7 +806,7 @@ export function ApplyJobPage({
           border: "1px solid",
           borderColor:
             "color-mix(in srgb, var(--accent-indigo) 18%, var(--border-default))",
-          boxShadow: "0 4px 20px color-mix(in srgb, var(--accent-indigo) 8%, transparent)",
+          boxShadow: "var(--shadow-sm)",
           position: "relative",
           overflow: "hidden",
           "&::after": {
@@ -875,7 +875,7 @@ export function ApplyJobPage({
           border: "1px solid",
           borderColor: "color-mix(in srgb, var(--font-primary) 8%, transparent)",
           backgroundColor: "var(--card-bg)",
-          boxShadow: "0 1px 3px color-mix(in srgb, var(--font-primary) 6%, transparent)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <Stepper
@@ -928,7 +928,7 @@ export function ApplyJobPage({
           borderColor: "color-mix(in srgb, var(--font-primary) 8%, transparent)",
           backgroundColor: "var(--card-bg)",
           zIndex: 10,
-          boxShadow: "0 -8px 30px color-mix(in srgb, var(--font-primary) 8%, transparent)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
@@ -976,11 +976,11 @@ export function ApplyJobPage({
                   py: 1.25,
                   borderRadius: 2,
                   backgroundColor: "var(--accent-indigo)",
-                  boxShadow: "0 1px 3px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+                  boxShadow: "var(--shadow-sm)",
                   "&:hover": {
                     backgroundColor: "var(--accent-indigo-dark)",
                     boxShadow:
-                      "0 4px 12px color-mix(in srgb, var(--accent-indigo) 40%, transparent)",
+                      "var(--shadow-md)",
                   },
                   "&.Mui-disabled": {
                     color: "var(--font-secondary)",
@@ -1007,11 +1007,11 @@ export function ApplyJobPage({
                   py: 1.25,
                   borderRadius: 2,
                   backgroundColor: "var(--accent-indigo)",
-                  boxShadow: "0 1px 3px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+                  boxShadow: "var(--shadow-sm)",
                   "&:hover": {
                     backgroundColor: "var(--accent-indigo-dark)",
                     boxShadow:
-                      "0 4px 12px color-mix(in srgb, var(--accent-indigo) 40%, transparent)",
+                      "var(--shadow-md)",
                   },
                   "&.Mui-disabled": {
                     color: "var(--font-secondary)",

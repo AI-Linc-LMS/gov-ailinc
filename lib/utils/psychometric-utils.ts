@@ -33,9 +33,9 @@ export function getPsychometricTags(
   
   // Predefined tags that are always included
   const predefinedTags = [
-    { name: "Personality Assessment", color: "#7c3aed" },
-    { name: "Behavioral Analysis", color: "#6366f1" },
-    { name: "Self-Discovery", color: "#8b5cf6" },
+    { name: "Personality Assessment", color: "#14406f" },
+    { name: "Behavioral Analysis", color: "#1b4f8a" },
+    { name: "Self-Discovery", color: "#4a7fbb" },
   ];
   
   // Add predefined tags
@@ -52,7 +52,7 @@ export function getPsychometricTags(
     instructions.includes("career") ||
     title.includes("career")
   ) {
-    tags.push({ name: "Career Guidance", color: "#a855f7" });
+    tags.push({ name: "Career Guidance", color: "#1b4f8a" });
   }
   
   // Check for learning-related keywords
@@ -61,7 +61,7 @@ export function getPsychometricTags(
     instructions.includes("learning") ||
     description.includes("education")
   ) {
-    tags.push({ name: "Learning Style", color: "#9333ea" });
+    tags.push({ name: "Learning Style", color: "#164274" });
   }
   
   // Check for work-related keywords
@@ -70,7 +70,7 @@ export function getPsychometricTags(
     instructions.includes("work") ||
     description.includes("workplace")
   ) {
-    tags.push({ name: "Work Style", color: "#7e22ce" });
+    tags.push({ name: "Work Style", color: "#12365f" });
   }
   
   // Limit to 4 tags maximum

@@ -115,12 +115,12 @@ function JobsPanel({
       recipients += (j as AssessmentEmailJob).total_emails ?? 0;
     }
     const items = [
-      { value: jobs.length, label: "Total jobs", accent: "#6366f1" },
-      { value: completed, label: "Completed", accent: "#10b981" },
-      { value: pending, label: "Pending", accent: "#f59e0b" },
-      { value: failed, label: "Failed", accent: "#ef4444" },
+      { value: jobs.length, label: "Total jobs", accent: "#1b4f8a" },
+      { value: completed, label: "Completed", accent: "#0e7a3c" },
+      { value: pending, label: "Pending", accent: "#b7791f" },
+      { value: failed, label: "Failed", accent: "#b32020" },
     ];
-    if (showMetrics) items.push({ value: recipients, label: "Recipients", accent: "#a855f7" });
+    if (showMetrics) items.push({ value: recipients, label: "Recipients", accent: "#1b4f8a" });
     return items;
   }, [jobs, showMetrics]);
 
@@ -195,7 +195,7 @@ function JobsPanel({
                 sx={{
                   px: 1.5, py: 0.6, borderRadius: 999, fontSize: "0.8rem", fontWeight: 600,
                   color: active ? "white" : "var(--font-secondary)",
-                  background: active ? "linear-gradient(135deg, #6366f1, #a855f7)" : "transparent",
+                  background: active ? "linear-gradient(135deg, #1b4f8a, #1b4f8a)" : "transparent",
                   border: active ? "none" : "1px solid var(--border-default)",
                 }}
               >

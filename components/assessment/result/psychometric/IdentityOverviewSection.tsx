@@ -51,10 +51,10 @@ export function IdentityOverviewSection({ data, traitInsights = [] }: IdentityOv
   };
 
   return (
-    <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 rounded-3xl shadow-2xl overflow-hidden">
+    <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-[#0a1e37] rounded-3xl shadow-2xl overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -mr-48 -mt-48 animate-pulse"></div>
-      <div className="absolute bottom-0 left-0 w-72 h-72 bg-indigo-500/10 rounded-full blur-2xl -ml-36 -mb-36"></div>
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#1b4f8a]/10 rounded-full blur-2xl -ml-36 -mb-36"></div>
       <div className="absolute inset-0 bg-[url('/images/psychometric-test.png')] bg-cover bg-center opacity-10"></div>
 
       <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-12 text-white">
@@ -93,7 +93,7 @@ export function IdentityOverviewSection({ data, traitInsights = [] }: IdentityOv
             </div>
 
             {/* One-Line Insight */}
-            <div className="bg-gradient-to-r from-blue-600/30 to-indigo-600/30 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/20">
+            <div className="bg-gradient-to-r from-blue-600/30 to-[#164274]/30 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/20">
               <div className="flex items-start gap-2 sm:gap-3">
                 <svg className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-300 mt-0.5 sm:mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />

@@ -219,7 +219,7 @@ export function DailyRoom({
             pointerEvents: "none",
           }}
         >
-          <CircularProgress sx={{ color: "#a78bfa" }} />
+          <CircularProgress sx={{ color: "#85aad6" }} />
           <Typography variant="body2">Connecting to the room…</Typography>
           <Typography variant="caption" sx={{ opacity: 0.7, mt: 1 }}>
             If this stays, allow camera/microphone in your browser.
@@ -238,12 +238,12 @@ export function DailyRoom({
             justifyContent: "center",
             gap: 1.25,
             backgroundColor: "#0f172a",
-            color: "#fca5a5",
+            color: "#d99b9b",
             p: 3,
             textAlign: "center",
           }}
         >
-          <IconWrapper icon="mdi:alert-circle-outline" size={40} color="#f87171" />
+          <IconWrapper icon="mdi:alert-circle-outline" size={40} color="#c94b4b" />
           <Typography variant="body1" fontWeight={600}>
             Couldn&apos;t connect to the room
           </Typography>

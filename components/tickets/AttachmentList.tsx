@@ -90,7 +90,7 @@ export function AttachmentList({ urls, heading, dense = false }: Props) {
                 "&:hover": {
                   borderColor: "var(--info-accent)",
                   backgroundColor: "var(--surface)",
-                  boxShadow: "0 2px 6px rgba(15,23,42,0.06)",
+                  boxShadow: "var(--shadow-md)",
                 },
                 "&:focus-visible": {
                   outline: "2px solid var(--ticket-brand)",

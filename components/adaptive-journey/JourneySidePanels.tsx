@@ -19,9 +19,9 @@ const CertificateCard = dynamic(
 );
 
 // Medal colours for the top-3 rank circles.
-const RANK_BG = ["#fde68a", "#e5e7eb", "#e7c4a0"];
+const RANK_BG = ["#f0ddb8", "#e5e7eb", "#e7c4a0"];
 const RANK_FG = ["#92400e", "#475569", "#7c4a14"];
-const AV_COLORS = ["#6366f1", "#0d9488", "#b91c1c", "#16a34a", "#7c3aed", "#db2777", "#ca8a04", "#0ea5e9"];
+const AV_COLORS = ["#1b4f8a", "#0b5260", "#8f1919", "#0b6232", "#14406f", "#0b5260", "#ca8a04", "#1b4f8a"];
 
 function avatarColor(name: string): string {
   let h = 0;
@@ -84,7 +84,7 @@ export function JourneySidePanels({ courseId, board }: { courseId: number; board
       {/* Your Progress */}
       <Card>
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.25 }}>
-          <Box sx={{ width: 30, height: 30, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1, #a855f7)" }}>
+          <Box sx={{ width: 30, height: 30, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)" }}>
             <Icon icon="mdi:chart-line" width={17} />
           </Box>
           <Box>
@@ -93,7 +93,7 @@ export function JourneySidePanels({ courseId, board }: { courseId: number; board
           </Box>
         </Stack>
 
-        <Box sx={{ p: 1.5, borderRadius: 3, color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}>
+        <Box sx={{ p: 1.5, borderRadius: 3, color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}>
           <Stack direction="row" justifyContent="space-between" alignItems="baseline">
             <Typography sx={{ fontSize: "0.78rem", fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>Overall completion</Typography>
             <Typography sx={{ fontWeight: 900, fontSize: "1.5rem" }}>{completion}%</Typography>
@@ -102,36 +102,36 @@ export function JourneySidePanels({ courseId, board }: { courseId: number; board
         </Box>
 
         <Stack direction="row" spacing={1} sx={{ mt: 1.25 }}>
-          <Box sx={{ flex: 1, p: 1, borderRadius: 2.5, bgcolor: "#f5f3ff", border: "1px solid #ede9fe" }}>
+          <Box sx={{ flex: 1, p: 1, borderRadius: 2.5, bgcolor: "#eef3fa", border: "1px solid #eef3fa" }}>
             <Stack direction="row" spacing={0.25} alignItems="center">
-              <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 0.5, color: "#7c3aed" }}>POINTS EARNED</Typography>
-              <PointsInfo size={12} color="#a78bfa" />
+              <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 0.5, color: "#14406f" }}>POINTS EARNED</Typography>
+              <PointsInfo size={12} color="#85aad6" />
             </Stack>
             <Typography sx={{ fontWeight: 800, color: "#0f172a", fontSize: "0.95rem" }}>
               {pc.pointsEarned}<span style={{ color: "#64748b", fontSize: "0.75rem", fontWeight: 600 }}> / {pc.pointsTotal}</span>
             </Typography>
           </Box>
           {board.contentLocked ? (
-            <Box sx={{ flex: 1, p: 1, borderRadius: 2.5, bgcolor: "#f0fdf4", border: "1px solid #dcfce7" }}>
-              <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 0.5, color: "#15803d" }}>ON-TIME RATE</Typography>
-              <Typography sx={{ fontWeight: 800, color: "#15803d", fontSize: "0.95rem" }}>
+            <Box sx={{ flex: 1, p: 1, borderRadius: 2.5, bgcolor: "#f0fdf4", border: "1px solid #dff0e6" }}>
+              <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 0.5, color: "#0b6232" }}>ON-TIME RATE</Typography>
+              <Typography sx={{ fontWeight: 800, color: "#0b6232", fontSize: "0.95rem" }}>
                 {pc.onTimeRate != null ? `${Math.round(pc.onTimeRate * 100)}%` : "-"}
               </Typography>
             </Box>
           ) : (
             // 'On-time' is meaningless with no deadlines - show progress instead.
-            <Box sx={{ flex: 1, p: 1, borderRadius: 2.5, bgcolor: "#f0fdf4", border: "1px solid #dcfce7" }}>
-              <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 0.5, color: "#15803d" }}>STEPS DONE</Typography>
-              <Typography sx={{ fontWeight: 800, color: "#15803d", fontSize: "0.95rem" }}>
+            <Box sx={{ flex: 1, p: 1, borderRadius: 2.5, bgcolor: "#f0fdf4", border: "1px solid #dff0e6" }}>
+              <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 0.5, color: "#0b6232" }}>STEPS DONE</Typography>
+              <Typography sx={{ fontWeight: 800, color: "#0b6232", fontSize: "0.95rem" }}>
                 {pc.nodesDone}<span style={{ color: "#64748b", fontSize: "0.75rem", fontWeight: 600 }}> / {pc.nodesTotal}</span>
               </Typography>
             </Box>
           )}
         </Stack>
 
-        <Stack direction="row" spacing={0.6} alignItems="flex-start" sx={{ mt: 1.25, p: 1, borderRadius: 2, bgcolor: "#f5f3ff" }}>
-          <Icon icon="mdi:star-four-points" width={13} color="#6d28d9" style={{ flexShrink: 0, marginTop: 3 }} />
-          <Typography sx={{ fontSize: "0.74rem", color: "#6d28d9", fontWeight: 600, lineHeight: 1.45 }}>
+        <Stack direction="row" spacing={0.6} alignItems="flex-start" sx={{ mt: 1.25, p: 1, borderRadius: 2, bgcolor: "#eef3fa" }}>
+          <Icon icon="mdi:star-four-points" width={13} color="#164274" style={{ flexShrink: 0, marginTop: 3 }} />
+          <Typography sx={{ fontSize: "0.74rem", color: "#164274", fontWeight: 600, lineHeight: 1.45 }}>
             <b>AI momentum:</b> {momentum}
           </Typography>
         </Stack>
@@ -141,7 +141,7 @@ export function JourneySidePanels({ courseId, board }: { courseId: number; board
       {leaderboard && (
         <Card>
           <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-            <Box sx={{ width: 30, height: 30, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #f59e0b, #f97316)" }}>
+            <Box sx={{ width: 30, height: 30, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #b7791f, #b45309)" }}>
               <Icon icon="mdi:trophy" width={17} />
             </Box>
             <Box sx={{ flex: 1 }}>
@@ -152,9 +152,9 @@ export function JourneySidePanels({ courseId, board }: { courseId: number; board
           </Stack>
 
           {leaderboard.climb_plan && (
-            <Stack direction="row" spacing={0.6} alignItems="flex-start" sx={{ mb: 1.25, p: 1, borderRadius: 2, background: "linear-gradient(135deg, #f5f3ff, #fdf2f8)" }}>
-              <Icon icon="mdi:star-four-points" width={13} color="#6d28d9" style={{ flexShrink: 0, marginTop: 3 }} />
-              <Typography sx={{ fontSize: "0.74rem", color: "#6d28d9", fontWeight: 600, lineHeight: 1.45 }}>
+            <Stack direction="row" spacing={0.6} alignItems="flex-start" sx={{ mb: 1.25, p: 1, borderRadius: 2, background: "linear-gradient(135deg, #eef3fa, #eef5f6)" }}>
+              <Icon icon="mdi:star-four-points" width={13} color="#164274" style={{ flexShrink: 0, marginTop: 3 }} />
+              <Typography sx={{ fontSize: "0.74rem", color: "#164274", fontWeight: 600, lineHeight: 1.45 }}>
                 {leaderboard.climb_plan.text}
               </Typography>
             </Stack>
@@ -171,8 +171,8 @@ export function JourneySidePanels({ courseId, board }: { courseId: number; board
                   alignItems="center"
                   sx={{
                     p: 0.85, borderRadius: 2.5,
-                    bgcolor: row.is_current_user ? "#eef2ff" : top3 ? "#fffdf2" : "#fff",
-                    border: row.is_current_user ? "1px solid #c7d2fe" : top3 ? "1px solid #fde68a" : "1px solid #eef2f7",
+                    bgcolor: row.is_current_user ? "#eef3fa" : top3 ? "#fffdf2" : "#fff",
+                    border: row.is_current_user ? "1px solid #b6cde8" : top3 ? "1px solid #f0ddb8" : "1px solid #eef2f7",
                   }}
                 >
                   <Box sx={{ width: 22, height: 22, borderRadius: "50%", display: "grid", placeItems: "center", flexShrink: 0, fontWeight: 800, fontSize: "0.7rem", bgcolor: top3 ? RANK_BG[row.rank - 1] : "#e2e8f0", color: top3 ? RANK_FG[row.rank - 1] : "#64748b" }}>
@@ -183,11 +183,11 @@ export function JourneySidePanels({ courseId, board }: { courseId: number; board
                   </Avatar>
                   <Box sx={{ flex: 1, minWidth: 0 }}>
                     <Typography sx={{ fontWeight: row.is_current_user ? 800 : 700, fontSize: "0.84rem", color: "#0f172a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                      {row.is_current_user ? <>You <span style={{ color: "#6366f1", fontWeight: 700 }}>(you)</span></> : row.name}
+                      {row.is_current_user ? <>You <span style={{ color: "#1b4f8a", fontWeight: 700 }}>(you)</span></> : row.name}
                     </Typography>
                     <Typography sx={{ fontSize: "0.66rem", color: "#64748b" }}>Score: {row.score.toLocaleString()}</Typography>
                   </Box>
-                  <Typography sx={{ fontWeight: 800, fontSize: "0.84rem", color: "#6d28d9" }}>#{row.rank}</Typography>
+                  <Typography sx={{ fontWeight: 800, fontSize: "0.84rem", color: "#164274" }}>#{row.rank}</Typography>
                 </Stack>
               );
             })}

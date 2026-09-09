@@ -69,10 +69,10 @@ const SECTIONS: SectionConfig[] = [
     kicker: "What learners see",
     description:
       "These show up in the student app sidebar. Pick the ones your org will actually use - admin tools auto-enable to match.",
-    iconBg: "linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)",
-    accent: "#0ea5e9",
+    iconBg: "linear-gradient(135deg, #4a7fbb 0%, #1b4f8a 100%)",
+    accent: "#1b4f8a",
     accentSoft: "#bae6fd",
-    accentDeep: "#0369a1",
+    accentDeep: "#12365f",
     icon: (
       <svg
         width="14"
@@ -96,9 +96,9 @@ const SECTIONS: SectionConfig[] = [
     kicker: "What your team manages",
     description:
       "These show up in the admin portal for tenant admins, instructors, and course managers. Some auto-toggle with a learner module; others are standalone.",
-    iconBg: "linear-gradient(135deg, #fbbf24 0%, #d97706 100%)",
-    accent: "#d97706",
-    accentSoft: "#fde68a",
+    iconBg: "linear-gradient(135deg, #c9903a 0%, #8a5a12 100%)",
+    accent: "#8a5a12",
+    accentSoft: "#f0ddb8",
     accentDeep: "#92400e",
     icon: (
       <svg
@@ -247,7 +247,7 @@ export function FeaturesStep({ data, onChange }: Props) {
             background: "rgba(217, 119, 6, 0.06)",
           }}
         >
-          <p className="aw-mono text-[10px] uppercase tracking-[0.3em] text-[#d97706]">
+          <p className="aw-mono text-[10px] uppercase tracking-[0.3em] text-[#8a5a12]">
             Modules unavailable
           </p>
           <p className="aw-text-dim mt-2 text-[13px] leading-relaxed">
@@ -292,7 +292,7 @@ export function FeaturesStep({ data, onChange }: Props) {
                       className="grid h-9 w-9 shrink-0 place-items-center rounded-[10px]"
                       style={{
                         background: section.iconBg,
-                        boxShadow: `0 6px 18px -8px ${section.accent}`,
+                        boxShadow: "var(--shadow-sm)",
                       }}
                     >
                       {section.icon}
@@ -434,14 +434,14 @@ function FeatureCard({
           ? {
               border: `1.5px solid ${accent}`,
               background: `linear-gradient(135deg, ${accent}12 0%, ${accentSoft}28 60%, #ffffff 100%)`,
-              boxShadow: `0 18px 40px -18px ${accent}99, 0 2px 6px -2px ${accent}33, inset 0 1px 0 0 #ffffffcc`,
+              boxShadow: "var(--shadow-sm)",
             }
           : {
               border: "1px solid rgb(var(--aw-line) / var(--aw-line-2-alpha))",
               background:
                 "linear-gradient(135deg, #ffffff 0%, rgb(var(--aw-bg-2)) 100%)",
               boxShadow:
-                "0 1px 2px -1px rgba(11, 18, 38, 0.04), 0 8px 22px -14px rgba(11, 18, 38, 0.08)",
+                "var(--shadow-sm)",
             }
       }
     >
@@ -454,7 +454,6 @@ function FeatureCard({
           color: isOn ? accent : "rgb(var(--aw-fg))",
           opacity: isOn ? 0.16 : 0.05,
           transform: "rotate(-8deg)",
-          filter: isOn ? `drop-shadow(0 6px 18px ${accent}55)` : "none",
           transition: "opacity 0.25s, color 0.25s",
         }}
       >
@@ -477,9 +476,7 @@ function FeatureCard({
           style={{
             background: isOn ? iconBg : "#ffffff",
             border: isOn ? "none" : `1px solid ${accent}24`,
-            boxShadow: isOn
-              ? `0 10px 26px -10px ${accentDeep}, inset 0 1px 0 0 #ffffff66`
-              : `0 4px 12px -6px ${accent}33`,
+            boxShadow: isOn ? "var(--shadow-md)" : "var(--shadow-xs)",
             transition: "background 0.25s, box-shadow 0.25s",
           }}
         >
@@ -554,7 +551,7 @@ function StatusBadge({
           ? {
               background: accent,
               border: `1.5px solid ${accentDeep}`,
-              boxShadow: `0 6px 18px -6px ${accent}, inset 0 1px 0 0 #ffffff66`,
+              boxShadow: "var(--shadow-sm)",
             }
           : {
               background: "transparent",
@@ -806,7 +803,7 @@ function PairingBanner() {
         background: "rgba(14, 165, 233, 0.04)",
       }}
     >
-      <p className="aw-mono text-[10px] uppercase tracking-[0.28em] text-[#0284c7]">
+      <p className="aw-mono text-[10px] uppercase tracking-[0.28em] text-[#164274]">
         How pairing works
       </p>
       <p className="aw-text-dim mt-1.5 text-[12.5px] leading-relaxed">
@@ -870,7 +867,7 @@ function FeaturesLoading() {
           className="h-full"
           style={{
             width: "40%",
-            background: "linear-gradient(90deg, #0284c7 0%, #0ea5e9 100%)",
+            background: "linear-gradient(90deg, #164274 0%, #1b4f8a 100%)",
             animation: "aw-marquee-scroll 1.6s ease-in-out infinite",
           }}
         />

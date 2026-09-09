@@ -22,9 +22,9 @@ import {
 } from "@/lib/services/community.service";
 import { useToast } from "@/components/common/Toast";
 
-const RED = "#ef4444";
-const GREEN = "#16a34a";
-const PURPLE = "#a78bfa";
+const RED = "#b32020";
+const GREEN = "#0b6232";
+const PURPLE = "#85aad6";
 
 type TabValue = "active" | "resolved" | "all";
 
@@ -195,7 +195,7 @@ export default function BountiesPage() {
             }}
           >
             <IconWrapper icon="mdi:trophy-variant-outline" size={22} color={GREEN} />
-            <Typography variant="body2" sx={{ color: "#15803d", fontWeight: 600 }}>
+            <Typography variant="body2" sx={{ color: "#0b6232", fontWeight: 600 }}>
               {totalAwarded > 0 ? (
                 <>
                   <strong>{totalAwarded.toLocaleString()} IP</strong> awarded across {items.length} resolved question{items.length === 1 ? "" : "s"}.
@@ -340,9 +340,9 @@ export default function BountiesPage() {
                               height: 20,
                               fontSize: "0.65rem",
                               fontWeight: 700,
-                              backgroundColor: "rgba(167,139,250,0.12)",
+                              backgroundColor: "rgba(27,79,138,0.12)",
                               color: PURPLE,
-                              border: "1px solid rgba(167,139,250,0.3)",
+                              border: "1px solid rgba(27,79,138,0.3)",
                             }}
                           />
                         )}

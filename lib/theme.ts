@@ -1,17 +1,28 @@
 import { createTheme } from "@mui/material/styles";
 
+/**
+ * The MUI base theme. `components/providers/ThemeProvider.tsx` spreads this and
+ * overrides only `primary`, `background` and `text` from the tenant settings, so
+ * every other palette slot below is what the app actually renders. That is why
+ * `secondary` matters: it used to be MUI's stock crimson-pink, and it
+ * reached the screen through `color="secondary"` chips and buttons and through
+ * `theme.palette.secondary.main` in the scorecard widget. It is now the
+ * institutional teal that the government palette reserves for a secondary accent.
+ * `primary` is the fallback for a tenant that ships no branding, so it is the
+ * institutional blue rather than MUI's stock #1976d2.
+ */
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#1976d2",
-      light: "#42a5f5",
-      dark: "#1565c0",
+      main: "#1b4f8a",
+      light: "#4a7fbb",
+      dark: "#164274",
       contrastText: "#fff",
     },
     secondary: {
-      main: "#dc004e",
-      light: "#ff5983",
-      dark: "#9a0036",
+      main: "#0f6b7a",
+      light: "#3f8f9e",
+      dark: "#0b5260",
       contrastText: "#fff",
     },
     background: {

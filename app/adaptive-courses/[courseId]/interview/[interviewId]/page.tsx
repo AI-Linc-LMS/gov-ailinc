@@ -43,7 +43,7 @@ function sanitizeSttFragment(raw: string): string {
   return cleaned.replace(/\s{2,}/g, " ").trim();
 }
 
-const TIER_COLOR: Record<string, string> = { beginner: "#fbbf24", intermediate: "#60a5fa", advanced: "#4ade80" };
+const TIER_COLOR: Record<string, string> = { beginner: "#c9903a", intermediate: "#85aad6", advanced: "#2f9159" };
 const INTERVIEW_AVATAR_SRC = "/videos/Interview.mp4";
 // Auto-advance after the candidate goes quiet for this long (once they've said something
 // and the interviewer has finished speaking) - the same "voice mode" feel as the platform
@@ -570,7 +570,7 @@ function CourseInterviewInner() {
       <Box sx={{ minHeight: "100vh", bgcolor: "#0b1220", color: "white", py: { xs: 3, md: 6 }, px: 2, display: "flex", justifyContent: "center" }}>
         <Box sx={{ width: "100%", maxWidth: 680 }}>
           <Stack alignItems="center" spacing={1} sx={{ mb: 3 }}>
-            <Icon icon="mdi:check-decagram" width={44} color="#4ade80" />
+            <Icon icon="mdi:check-decagram" width={44} color="#2f9159" />
             <Typography sx={{ fontWeight: 800, fontSize: "1.35rem", textAlign: "center" }}>
               {ins ? ins.headline : "Interview submitted"}
             </Typography>
@@ -581,7 +581,7 @@ function CourseInterviewInner() {
 
           {resultLoading && !ins && (
             <Stack alignItems="center" spacing={1.5} sx={{ py: 4 }}>
-              <CircularProgress size={26} sx={{ color: "#a855f7" }} />
+              <CircularProgress size={26} sx={{ color: "#1b4f8a" }} />
               <Typography sx={{ color: "rgba(255,255,255,0.6)" }}>Reading your level…</Typography>
             </Stack>
           )}
@@ -591,10 +591,10 @@ function CourseInterviewInner() {
               <Box sx={CARD}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Typography sx={{ fontWeight: 700 }}>Your level</Typography>
-                  <Chip label={ins.level_label} sx={{ fontWeight: 800, color: "#0b1220", bgcolor: TIER_COLOR[ins.field_tier] ?? "#60a5fa" }} />
+                  <Chip label={ins.level_label} sx={{ fontWeight: 800, color: "#0b1220", bgcolor: TIER_COLOR[ins.field_tier] ?? "#85aad6" }} />
                 </Stack>
                 <Box sx={{ mt: 1.5, height: 8, borderRadius: 4, bgcolor: "rgba(255,255,255,0.08)" }}>
-                  <Box sx={{ width: `${Math.round(ins.ability_index)}%`, height: "100%", borderRadius: 4, bgcolor: TIER_COLOR[ins.field_tier] ?? "#60a5fa" }} />
+                  <Box sx={{ width: `${Math.round(ins.ability_index)}%`, height: "100%", borderRadius: 4, bgcolor: TIER_COLOR[ins.field_tier] ?? "#85aad6" }} />
                 </Box>
                 <Typography sx={{ mt: 1.5, color: "rgba(255,255,255,0.82)", lineHeight: 1.6 }}>{ins.summary}</Typography>
               </Box>
@@ -603,29 +603,29 @@ function CourseInterviewInner() {
                 <Box sx={CARD}>
                   {ins.strengths.length > 0 && (
                     <>
-                      <Typography sx={{ fontWeight: 700, fontSize: "0.82rem", color: "#86efac", mb: 0.75 }}>You came across strong on</Typography>
+                      <Typography sx={{ fontWeight: 700, fontSize: "0.82rem", color: "#a8d6bb", mb: 0.75 }}>You came across strong on</Typography>
                       <Stack direction="row" flexWrap="wrap" sx={{ gap: 0.75, mb: ins.growth_areas.length ? 1.75 : 0 }}>
-                        {ins.strengths.map((s) => <Chip key={s.area} size="small" icon={<Icon icon="mdi:check-circle" width={14} />} label={s.area} sx={{ fontWeight: 700, color: "#86efac", bgcolor: "rgba(34,197,94,0.12)" }} />)}
+                        {ins.strengths.map((s) => <Chip key={s.area} size="small" icon={<Icon icon="mdi:check-circle" width={14} />} label={s.area} sx={{ fontWeight: 700, color: "#a8d6bb", bgcolor: "rgba(34,197,94,0.12)" }} />)}
                       </Stack>
                     </>
                   )}
                   {ins.growth_areas.length > 0 && (
                     <>
-                      <Typography sx={{ fontWeight: 700, fontSize: "0.82rem", color: "#fcd34d", mb: 0.75 }}>We&apos;ll support you on</Typography>
+                      <Typography sx={{ fontWeight: 700, fontSize: "0.82rem", color: "#d9b169", mb: 0.75 }}>We&apos;ll support you on</Typography>
                       <Stack direction="row" flexWrap="wrap" sx={{ gap: 0.75 }}>
-                        {ins.growth_areas.map((g) => <Chip key={g.area} size="small" icon={<Icon icon="mdi:trending-up" width={14} />} label={g.area} sx={{ fontWeight: 700, color: "#fcd34d", bgcolor: "rgba(245,158,11,0.12)" }} />)}
+                        {ins.growth_areas.map((g) => <Chip key={g.area} size="small" icon={<Icon icon="mdi:trending-up" width={14} />} label={g.area} sx={{ fontWeight: 700, color: "#d9b169", bgcolor: "rgba(245,158,11,0.12)" }} />)}
                       </Stack>
                     </>
                   )}
                 </Box>
               )}
 
-              <Box sx={{ ...CARD, bgcolor: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.25)" }}>
-                <Typography sx={{ fontWeight: 800, color: "#c4b5fd", mb: 1 }}>✦ How TSEM will adapt to you</Typography>
+              <Box sx={{ ...CARD, bgcolor: "rgba(20, 64, 111,0.12)", border: "1px solid rgba(20, 64, 111,0.25)" }}>
+                <Typography sx={{ fontWeight: 800, color: "#b6cde8", mb: 1 }}>✦ How TSEM will adapt to you</Typography>
                 <Stack spacing={1}>
                   {ins.how_ai_helps.map((h, i) => (
                     <Stack key={i} direction="row" spacing={1}>
-                      <Icon icon="mdi:arrow-right-thin" width={18} color="#c4b5fd" style={{ flexShrink: 0, marginTop: 2 }} />
+                      <Icon icon="mdi:arrow-right-thin" width={18} color="#b6cde8" style={{ flexShrink: 0, marginTop: 2 }} />
                       <Typography sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.88rem" }}>{h}</Typography>
                     </Stack>
                   ))}
@@ -642,7 +642,7 @@ function CourseInterviewInner() {
 
           <Stack alignItems="center" sx={{ mt: 3 }}>
             <Button variant="contained" onClick={() => push(`/adaptive-courses/${courseId}`)}
-              sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, px: 4, py: 1.1, color: "white", background: "linear-gradient(135deg, #7c3aed, #db2777)" }}>
+              sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, px: 4, py: 1.1, color: "white", background: "linear-gradient(135deg, #14406f, #0b5260)" }}>
               Start my personalized journey →
             </Button>
           </Stack>
@@ -655,12 +655,12 @@ function CourseInterviewInner() {
     return (
       <Box sx={{ minHeight: "100vh", display: "grid", placeItems: "center", bgcolor: "#0b1220", color: "white", p: 3 }}>
         <Stack alignItems="center" spacing={1.5} sx={{ maxWidth: 420, textAlign: "center" }}>
-          <Icon icon="mdi:alert-circle-outline" width={44} color="#fca5a5" />
+          <Icon icon="mdi:alert-circle-outline" width={44} color="#d99b9b" />
           <Typography sx={{ color: "rgba(255,255,255,0.8)" }}>{error}</Typography>
           <Stack direction="row" spacing={1.5}>
             <Button variant="contained" disabled={busy} onClick={() => { setError(null); void begin(); }}
               startIcon={busy ? <CircularProgress size={15} sx={{ color: "white" }} /> : <Icon icon="mdi:refresh" width={18} />}
-              sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, background: "linear-gradient(135deg, #7c3aed, #db2777)" }}>
+              sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, background: "linear-gradient(135deg, #14406f, #0b5260)" }}>
               Try again
             </Button>
             <Button variant="outlined" onClick={() => push(`/adaptive-courses/${courseId}`)} sx={{ color: "white", borderColor: "rgba(255,255,255,0.3)", textTransform: "none" }}>Back to course</Button>
@@ -707,7 +707,7 @@ function CourseInterviewInner() {
           <Button variant="contained" disabled={busy || !deviceCheck.speechOk} onClick={begin}
             startIcon={busy ? <CircularProgress size={16} sx={{ color: "white" }} /> : <Icon icon="mdi:microphone" width={20} />}
             sx={{ mt: 1, textTransform: "none", fontWeight: 800, borderRadius: 2, px: 4, py: 1.2,
-              background: "linear-gradient(135deg, #7c3aed, #db2777)",
+              background: "linear-gradient(135deg, #14406f, #0b5260)",
               "&.Mui-disabled": { background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.45)" } }}>
             {busy ? "Connecting…" : deviceCheck.speechOk ? "Begin interview" : "Pass the mic check to begin"}
           </Button>
@@ -724,7 +724,7 @@ function CourseInterviewInner() {
   }
 
   const phase = aiSpeaking ? "Interviewer speaking" : stt.isListening ? "Listening…" : busy ? "Thinking…" : "Your turn";
-  const phaseColor = aiSpeaking ? "#a855f7" : stt.isListening ? "#22c55e" : "#64748b";
+  const phaseColor = aiSpeaking ? "#1b4f8a" : stt.isListening ? "#0e7a3c" : "#64748b";
   const liveAnswer = (answer + (interim ? ` ${interim}` : "")).trim();
   const finishing = !question && !!closingRemark;
 
@@ -735,7 +735,7 @@ function CourseInterviewInner() {
         <Box>
           <Stack direction="row" spacing={0.75} alignItems="center">
             <Typography sx={{ fontWeight: 800, fontSize: "0.95rem" }}>AI Mock Interviewer</Typography>
-            <Chip size="small" label="LIVE" sx={{ height: 18, fontSize: "0.58rem", fontWeight: 800, color: "white", background: "linear-gradient(135deg, #7c3aed, #db2777)" }} />
+            <Chip size="small" label="LIVE" sx={{ height: 18, fontSize: "0.58rem", fontWeight: 800, color: "white", background: "linear-gradient(135deg, #14406f, #0b5260)" }} />
           </Stack>
           <Typography sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.5)" }}>
             {topic ? `${topic} · ` : ""}{difficulty} round
@@ -744,9 +744,9 @@ function CourseInterviewInner() {
         <Stack direction="row" spacing={1.25} alignItems="center">
           <Chip size="small" icon={<Icon icon="mdi:clock-outline" width={14} />} label={`${fmtClock(elapsed)}`}
             sx={{ color: "rgba(255,255,255,0.8)", bgcolor: "rgba(255,255,255,0.06)", fontWeight: 700, fontSize: "0.72rem", "& .MuiChip-icon": { color: "rgba(255,255,255,0.6)" } }} />
-          <Chip size="small" label={`Q${turn}${maxTurns ? ` of ~${maxTurns}` : ""}`} sx={{ color: "#c4b5fd", bgcolor: "rgba(124,58,237,0.18)", fontWeight: 800, fontSize: "0.72rem", display: { xs: "none", sm: "inline-flex" } }} />
+          <Chip size="small" label={`Q${turn}${maxTurns ? ` of ~${maxTurns}` : ""}`} sx={{ color: "#b6cde8", bgcolor: "rgba(20, 64, 111,0.18)", fontWeight: 800, fontSize: "0.72rem", display: { xs: "none", sm: "inline-flex" } }} />
           <Button variant="contained" disabled={busy} onClick={doSubmit}
-            sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, bgcolor: "rgba(239,68,68,0.15)", color: "#fca5a5", boxShadow: "none", "&:hover": { bgcolor: "rgba(239,68,68,0.25)" } }}>
+            sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, bgcolor: "rgba(239,68,68,0.15)", color: "#d99b9b", boxShadow: "none", "&:hover": { bgcolor: "rgba(239,68,68,0.25)" } }}>
             End &amp; get level
           </Button>
         </Stack>
@@ -776,7 +776,7 @@ function CourseInterviewInner() {
             sx={{
               position: "relative", width: "100%", aspectRatio: "16 / 10", maxHeight: "100%", m: "auto",
               borderRadius: 4, overflow: "hidden",
-              border: stt.isListening ? "2px solid #22c55e" : "1px solid rgba(255,255,255,0.1)",
+              border: stt.isListening ? "2px solid #0e7a3c" : "1px solid rgba(255,255,255,0.1)",
               transition: "border-color 200ms ease",
               boxShadow: "0 24px 60px -32px rgba(0,0,0,0.9)",
             }}
@@ -824,13 +824,13 @@ function CourseInterviewInner() {
           {finishing ? (
             <Button fullWidth variant="contained" disabled={busy} onClick={doSubmit}
               endIcon={busy ? <CircularProgress size={15} sx={{ color: "white" }} /> : <Icon icon="mdi:flag-checkered" width={18} />}
-              sx={{ py: 1.3, borderRadius: 2.5, textTransform: "none", fontWeight: 800, color: "#fff", background: "linear-gradient(135deg, #16a34a, #22c55e)" }}>
+              sx={{ py: 1.3, borderRadius: 2.5, textTransform: "none", fontWeight: 800, color: "#fff", background: "linear-gradient(135deg, #0b6232, #0e7a3c)" }}>
               {busy ? "Finishing…" : "Finish & see my level"}
             </Button>
           ) : typing ? (
             <Box>
               <TextField fullWidth multiline minRows={2} placeholder="Type your answer…" value={answer} onChange={(e) => setAnswer(e.target.value)}
-                inputProps={{ style: { color: "#ffffff", WebkitTextFillColor: "#ffffff", caretColor: "#a855f7" } }}
+                inputProps={{ style: { color: "#ffffff", WebkitTextFillColor: "#ffffff", caretColor: "#1b4f8a" } }}
                 sx={{
                   "& .MuiOutlinedInput-root": { bgcolor: "rgba(255,255,255,0.06)", borderRadius: 2, "& fieldset": { borderColor: "rgba(255,255,255,0.18)" }, "&:hover fieldset": { borderColor: "rgba(255,255,255,0.3)" } },
                   "& .MuiInputBase-input, & .MuiOutlinedInput-input, & textarea": { color: "#fff !important", WebkitTextFillColor: "#fff !important" },
@@ -839,7 +839,7 @@ function CourseInterviewInner() {
               <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
                 <Button fullWidth variant="contained" disabled={busy || !answer.trim()} onClick={() => void sendAnswer()}
                   endIcon={busy ? <CircularProgress size={15} sx={{ color: "white" }} /> : <Icon icon="mdi:send" width={16} />}
-                  sx={{ py: 1.05, borderRadius: 2.5, textTransform: "none", fontWeight: 800, color: "#fff", background: "linear-gradient(135deg, #6366f1, #a855f7)", "&.Mui-disabled": { background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.45)" } }}>
+                  sx={{ py: 1.05, borderRadius: 2.5, textTransform: "none", fontWeight: 800, color: "#fff", background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)", "&.Mui-disabled": { background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.45)" } }}>
                   {busy ? "Sending…" : currentIsFinal ? "Send & finish" : "Send answer"}
                 </Button>
                 <Button onClick={() => setTyping(false)} sx={{ textTransform: "none", color: "rgba(255,255,255,0.6)", fontSize: "0.8rem", whiteSpace: "nowrap" }}>Use voice</Button>
@@ -851,7 +851,7 @@ function CourseInterviewInner() {
               <Box sx={{ p: 1.25, borderRadius: 2.5, bgcolor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 0.75 }}>
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <MicWaveform levelRef={micLevelRef} active={!aiSpeaking && !busy} color="#22c55e" />
+                    <MicWaveform levelRef={micLevelRef} active={!aiSpeaking && !busy} color="#0e7a3c" />
                     <Typography sx={{ fontSize: "0.74rem", color: "rgba(255,255,255,0.6)" }}>
                       {aiSpeaking ? "Interviewer speaking" : answer.trim() ? "Pause to send" : "Listening…"}
                     </Typography>
@@ -865,7 +865,7 @@ function CourseInterviewInner() {
               </Box>
               <Button fullWidth variant="contained" disabled={busy || aiSpeaking || !answer.trim()} onClick={() => void sendAnswer()}
                 endIcon={busy ? <CircularProgress size={15} sx={{ color: "white" }} /> : <Icon icon="mdi:send" width={16} />}
-                sx={{ py: 1.3, borderRadius: 2.5, textTransform: "none", fontWeight: 800, color: "#fff", background: "linear-gradient(135deg, #6366f1, #a855f7)", "&.Mui-disabled": { background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.4)" } }}>
+                sx={{ py: 1.3, borderRadius: 2.5, textTransform: "none", fontWeight: 800, color: "#fff", background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)", "&.Mui-disabled": { background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.4)" } }}>
                 {busy ? "Sending…" : answer.trim() ? (currentIsFinal ? "Done - send & finish" : "Done answering") : aiSpeaking ? "Interviewer is speaking…" : "Listening - speak your answer"}
               </Button>
             </Stack>
@@ -877,20 +877,20 @@ function CourseInterviewInner() {
           {error && (
             <Stack direction="row" spacing={1} alignItems="center"
               sx={{ mt: 1.5, p: 1.25, borderRadius: 2, bgcolor: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.35)" }}>
-              <Icon icon="mdi:alert-circle-outline" width={18} color="#fca5a5" style={{ flexShrink: 0 }} />
-              <Typography sx={{ flex: 1, fontSize: "0.78rem", color: "#fecaca" }}>{error}</Typography>
+              <Icon icon="mdi:alert-circle-outline" width={18} color="#d99b9b" style={{ flexShrink: 0 }} />
+              <Typography sx={{ flex: 1, fontSize: "0.78rem", color: "#f2d3d3" }}>{error}</Typography>
               <Button size="small" disabled={busy}
                 onClick={() => {
                   setError(null);
                   if (retryActionRef.current === "submit") void doSubmit();
                   else void sendAnswer();
                 }}
-                sx={{ textTransform: "none", fontWeight: 800, color: "#fecaca", bgcolor: "rgba(239,68,68,0.2)", "&:hover": { bgcolor: "rgba(239,68,68,0.3)" } }}>
+                sx={{ textTransform: "none", fontWeight: 800, color: "#f2d3d3", bgcolor: "rgba(239,68,68,0.2)", "&:hover": { bgcolor: "rgba(239,68,68,0.3)" } }}>
                 Retry
               </Button>
             </Stack>
           )}
-          {stt.error && <Typography sx={{ mt: 1, fontSize: "0.7rem", color: "#fca5a5", textAlign: "center" }}>{stt.error}</Typography>}
+          {stt.error && <Typography sx={{ mt: 1, fontSize: "0.7rem", color: "#d99b9b", textAlign: "center" }}>{stt.error}</Typography>}
         </Box>
 
         {/* Conversation - beside the call on desktop, between stage and controls on mobile
@@ -904,18 +904,18 @@ function CourseInterviewInner() {
             <Stack spacing={2}>
               {transcript.map((b, i) => (
                 <Stack key={i} direction="row" justifyContent={b.role === "ai" ? "flex-start" : "flex-end"} spacing={1}>
-                  {b.role === "ai" && <Box sx={{ width: 26, height: 26, flexShrink: 0, mt: 0.5, borderRadius: "50%", background: "linear-gradient(135deg, #7c3aed, #db2777)", display: "grid", placeItems: "center" }}><Icon icon="mdi:robot-happy-outline" width={15} color="white" /></Box>}
+                  {b.role === "ai" && <Box sx={{ width: 26, height: 26, flexShrink: 0, mt: 0.5, borderRadius: "50%", background: "linear-gradient(135deg, #14406f, #0b5260)", display: "grid", placeItems: "center" }}><Icon icon="mdi:robot-happy-outline" width={15} color="white" /></Box>}
                   <Box sx={{ maxWidth: "82%", p: 1.5, borderRadius: 3,
-                    bgcolor: b.role === "ai" ? "rgba(255,255,255,0.05)" : "#4f46e5",
+                    bgcolor: b.role === "ai" ? "rgba(255,255,255,0.05)" : "#12365f",
                     border: b.role === "ai" ? "1px solid rgba(255,255,255,0.08)" : "none" }}>
                     <Typography sx={{ fontSize: "0.92rem", lineHeight: 1.5 }}>{b.text}</Typography>
                   </Box>
-                  {b.role === "student" && <Box sx={{ width: 26, height: 26, flexShrink: 0, mt: 0.5, borderRadius: "50%", bgcolor: "#6366f1", display: "grid", placeItems: "center", fontSize: "0.7rem", fontWeight: 800 }}>You</Box>}
+                  {b.role === "student" && <Box sx={{ width: 26, height: 26, flexShrink: 0, mt: 0.5, borderRadius: "50%", bgcolor: "#1b4f8a", display: "grid", placeItems: "center", fontSize: "0.7rem", fontWeight: 800 }}>You</Box>}
                 </Stack>
               ))}
               {liveAnswer && !aiSpeaking && (
                 <Stack direction="row" justifyContent="flex-end">
-                  <Box sx={{ maxWidth: "82%", p: 1.5, borderRadius: 3, bgcolor: "rgba(79,70,229,0.6)" }}>
+                  <Box sx={{ maxWidth: "82%", p: 1.5, borderRadius: 3, bgcolor: "rgba(27,79,138,0.6)" }}>
                     <Typography sx={{ fontSize: "0.92rem", lineHeight: 1.5 }}>{liveAnswer}<Box component="span" sx={{ ml: 0.5, display: "inline-block", width: 8, height: 16, bgcolor: "white", animation: "blink 1s steps(2) infinite", "@keyframes blink": { "50%": { opacity: 0 } } }} /></Typography>
                   </Box>
                 </Stack>
@@ -929,7 +929,7 @@ function CourseInterviewInner() {
       {evaluating && (
         <Box sx={{ position: "fixed", inset: 0, bgcolor: "rgba(11,18,32,0.88)", display: "grid", placeItems: "center", zIndex: 20 }}>
           <Stack alignItems="center" spacing={2}>
-            <CircularProgress size={48} sx={{ color: "#a855f7" }} />
+            <CircularProgress size={48} sx={{ color: "#1b4f8a" }} />
             <Typography sx={{ color: "white", fontWeight: 700 }}>Reading your level…</Typography>
           </Stack>
         </Box>
@@ -943,7 +943,7 @@ export default function CourseInterviewPage() {
     <Suspense
       fallback={
         <Box sx={{ minHeight: "100vh", display: "grid", placeItems: "center", bgcolor: "#0b1220" }}>
-          <CircularProgress sx={{ color: "#a855f7" }} />
+          <CircularProgress sx={{ color: "#1b4f8a" }} />
         </Box>
       }
     >

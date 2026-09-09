@@ -29,9 +29,9 @@ interface MCQReviewTableProps {
 const PAGE_SIZE = 5;
 const DIFFICULTIES = ["Easy", "Medium", "Hard"] as const;
 const DIFFICULTY_COLORS: Record<(typeof DIFFICULTIES)[number], string> = {
-  Easy: "#10b981",
-  Medium: "#6366f1",
-  Hard: "#ef4444",
+  Easy: "#0e7a3c",
+  Medium: "#1b4f8a",
+  Hard: "#b32020",
 };
 
 function prettySkill(s: string): string {
@@ -172,7 +172,7 @@ export function MCQReviewTable({
         {pageMcqs.map((mcq, pageIdx) => {
           const absoluteIdx = page * PAGE_SIZE + pageIdx;
           const isExpanded = expandedIdx === absoluteIdx;
-          const color = DIFFICULTY_COLORS[mcq.difficulty_level as (typeof DIFFICULTIES)[number]] || "#6366f1";
+          const color = DIFFICULTY_COLORS[mcq.difficulty_level as (typeof DIFFICULTIES)[number]] || "#1b4f8a";
           const isRegenTarget = regenIdx === absoluteIdx;
           const showAsking = isRegenTarget && regenStage === "asking";
           const showReveal = isRegenTarget && regenStage === "revealing" && pendingReplacement !== null;
@@ -188,15 +188,15 @@ export function MCQReviewTable({
                 position: "relative",
                 borderRadius: 3,
                 bgcolor: showReveal
-                  ? "color-mix(in srgb, #a855f7 6%, transparent)"
+                  ? "color-mix(in srgb, #1b4f8a 6%, transparent)"
                   : "color-mix(in srgb, var(--card-bg, #ffffff) 60%, transparent)",
                 border: showReveal
-                  ? "1px solid color-mix(in srgb, #a855f7 45%, transparent)"
+                  ? "1px solid color-mix(in srgb, #1b4f8a 45%, transparent)"
                   : showAsking
-                    ? "1px solid color-mix(in srgb, #6366f1 35%, transparent)"
+                    ? "1px solid color-mix(in srgb, #1b4f8a 35%, transparent)"
                     : "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 70%, transparent)",
                 boxShadow: showReveal
-                  ? "0 12px 28px -16px color-mix(in srgb, #a855f7 60%, transparent)"
+                  ? "var(--shadow-sm)"
                   : "none",
                 overflow: "hidden",
                 transition: "background 220ms ease, border-color 220ms ease, box-shadow 220ms ease",
@@ -246,7 +246,7 @@ export function MCQReviewTable({
                         icon={showAsking ? "mdi:loading" : "mdi:fountain-pen-tip"}
                         width={14}
                         style={{
-                          color: showAsking ? "#6366f1" : "#a855f7",
+                          color: showAsking ? "#1b4f8a" : "#1b4f8a",
                           animation: showAsking ? "mcq-row-spin 1s linear infinite" : undefined,
                         }}
                       />
@@ -254,7 +254,7 @@ export function MCQReviewTable({
                         sx={{
                           fontSize: "0.78rem",
                           fontWeight: 800,
-                          color: showAsking ? "#6366f1" : "#a855f7",
+                          color: showAsking ? "#1b4f8a" : "#1b4f8a",
                           letterSpacing: "0.02em",
                         }}
                       >
@@ -303,8 +303,8 @@ export function MCQReviewTable({
                       sx={{
                         p: 1.5,
                         borderRadius: 2,
-                        bgcolor: "color-mix(in srgb, #6366f1 6%, transparent)",
-                        border: "1px solid color-mix(in srgb, #6366f1 22%, transparent)",
+                        bgcolor: "color-mix(in srgb, #1b4f8a 6%, transparent)",
+                        border: "1px solid color-mix(in srgb, #1b4f8a 22%, transparent)",
                         display: "flex",
                         alignItems: "center",
                         gap: 1,
@@ -313,11 +313,11 @@ export function MCQReviewTable({
                       <Icon
                         icon="mdi:loading"
                         width={18}
-                        style={{ color: "#6366f1", animation: "mcq-row-spin 1s linear infinite" }}
+                        style={{ color: "#1b4f8a", animation: "mcq-row-spin 1s linear infinite" }}
                       />
                       <Typography sx={{ fontSize: "0.85rem", color: "text.primary", fontWeight: 700 }}>
                         Asking AI for a fresh question on{" "}
-                        <Box component="span" sx={{ color: "#6366f1" }}>
+                        <Box component="span" sx={{ color: "#1b4f8a" }}>
                           {prettySkill(mcq.skills || "this skill")}
                         </Box>{" "}
                         · {mcq.difficulty_level} …
@@ -366,7 +366,7 @@ export function MCQReviewTable({
                             isCorrect
                               ? {
                                   "& .MuiOutlinedInput-root fieldset": {
-                                    borderColor: "#10b981",
+                                    borderColor: "#0e7a3c",
                                     borderWidth: 1.5,
                                   },
                                 }
@@ -415,7 +415,7 @@ export function MCQReviewTable({
                     onChange={(e) => updateAt(absoluteIdx, { explanation: e.target.value })}
                   />
                   {regenError && regenIdx === absoluteIdx && (
-                    <Typography sx={{ fontSize: "0.78rem", color: "#ef4444", fontWeight: 700 }}>
+                    <Typography sx={{ fontSize: "0.78rem", color: "#b32020", fontWeight: 700 }}>
                       {regenError}
                     </Typography>
                   )}
@@ -431,7 +431,7 @@ export function MCQReviewTable({
                           fontWeight: 800,
                           fontSize: "0.78rem",
                           color: "white",
-                          background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+                          background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
                           display: "inline-flex",
                           alignItems: "center",
                           gap: 0.5,
@@ -450,8 +450,8 @@ export function MCQReviewTable({
                         borderRadius: 999,
                         fontWeight: 800,
                         fontSize: "0.78rem",
-                        color: "#ef4444",
-                        border: "1px solid color-mix(in srgb, #ef4444 40%, transparent)",
+                        color: "#b32020",
+                        border: "1px solid color-mix(in srgb, #b32020 40%, transparent)",
                         display: "inline-flex",
                         alignItems: "center",
                         gap: 0.5,

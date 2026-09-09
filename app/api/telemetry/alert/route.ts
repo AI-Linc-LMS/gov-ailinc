@@ -59,26 +59,26 @@ const CATEGORY_META: Record<
   overload: {
     label: "Overload",
     emoji: "🔴",
-    color: "#dc2626",
+    color: "#991b1b",
     description: "Rate-limited (429) or service unavailable (503)",
   },
   latency: {
     label: "High Latency",
     emoji: "🟡",
-    color: "#d97706",
+    color: "#8a5a12",
     description: "API call exceeded latency threshold",
   },
   "jobs-api": {
     label: "Enrollment Job Failure",
     emoji: "🟠",
-    color: "#ea580c",
+    color: "#9a4708",
     description:
       "HTTP error on the student-enrollment-jobs API",
   },
   other: {
     label: "API Failure",
     emoji: "🔵",
-    color: "#2563eb",
+    color: "#1b4f8a",
     description: "HTTP 4xx/5xx error on an API endpoint",
   },
 };

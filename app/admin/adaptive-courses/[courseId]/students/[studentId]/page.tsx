@@ -133,10 +133,10 @@ export default function StudentPerformancePage() {
                   sx={{
                     display: "flex", alignItems: "center", gap: 0.5,
                     px: 1.5, py: 0.75, borderRadius: 999,
-                    fontSize: "0.82rem", fontWeight: 700, color: "#6366f1",
-                    border: "1px solid color-mix(in srgb, #6366f1 30%, transparent)",
-                    "&:hover": { bgcolor: "color-mix(in srgb, #6366f1 8%, transparent)" },
-                    "&:focus-visible": { outline: "2px solid color-mix(in srgb,#6366f1 60%,transparent)", outlineOffset: 2 },
+                    fontSize: "0.82rem", fontWeight: 700, color: "#1b4f8a",
+                    border: "1px solid color-mix(in srgb, #1b4f8a 30%, transparent)",
+                    "&:hover": { bgcolor: "color-mix(in srgb, #1b4f8a 8%, transparent)" },
+                    "&:focus-visible": { outline: "2px solid color-mix(in srgb,#1b4f8a 60%,transparent)", outlineOffset: 2 },
                   }}
                 >
                   <Icon icon="mdi:arrow-left" width={17} /> Back to {data.course.title}

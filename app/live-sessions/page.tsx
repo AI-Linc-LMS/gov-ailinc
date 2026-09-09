@@ -32,12 +32,12 @@ function hhmm(iso?: string | null): string {
 
 type Tab = "upcoming" | "recordings" | "history";
 const PAST = new Set(["ended", "expired"]);
-const AI_GRAD = "linear-gradient(135deg,#7c3aed,#ec4899)";
+const AI_GRAD = "linear-gradient(135deg,#14406f,#0f6b7a)";
 
 function providerOf(s: StudentLiveSession): { label: string; icon: string; color: string } {
-  if (s.is_google_meet) return { label: "Meet", icon: "mdi:google", color: "#16a34a" };
-  if (s.zoom_meeting_type === "webinar") return { label: "Webinar", icon: "mdi:presentation", color: "#7c3aed" };
-  if (s.is_zoom) return { label: "Zoom", icon: "mdi:video-outline", color: "#2563eb" };
+  if (s.is_google_meet) return { label: "Meet", icon: "mdi:google", color: "#0b6232" };
+  if (s.zoom_meeting_type === "webinar") return { label: "Webinar", icon: "mdi:presentation", color: "#14406f" };
+  if (s.is_zoom) return { label: "Zoom", icon: "mdi:video-outline", color: "#1b4f8a" };
   return { label: "Online", icon: "mdi:web", color: "#6b7280" };
 }
 function courseOf(s: StudentLiveSession): string {
@@ -379,7 +379,7 @@ export default function LiveSessionsPage() {
             <Icon icon="mdi:broadcast" width={26} />
           </Box>
           <Box>
-            <Typography sx={{ fontSize: "0.68rem", fontWeight: 800, letterSpacing: 1, color: "#7c3aed" }}>LEARN · LIVE</Typography>
+            <Typography sx={{ fontSize: "0.68rem", fontWeight: 800, letterSpacing: 1, color: "#14406f" }}>LEARN · LIVE</Typography>
             <Typography sx={{ fontWeight: 900, fontSize: { xs: "1.6rem", md: "2rem" }, lineHeight: 1.1 }}>Live Sessions</Typography>
             <Typography sx={{ color: "text.secondary", fontSize: "0.9rem", maxWidth: 520, mt: 0.25 }}>
               Join live classes, prepare before you arrive, and catch up on anything you missed with recordings and notes.
@@ -405,7 +405,7 @@ export default function LiveSessionsPage() {
               <Box sx={{ p: { xs: 2.5, md: 3.5 } }}>
                 <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 1.5, flexWrap: "wrap", gap: 1 }}>
                   <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, px: 1, py: 0.4, borderRadius: 999, bgcolor: "rgba(239,68,68,0.25)", border: "1px solid rgba(239,68,68,0.5)", fontSize: "0.68rem", fontWeight: 800 }}>
-                    <Box sx={{ width: 7, height: 7, borderRadius: "50%", bgcolor: "#f87171", animation: "pulse 1.4s infinite" }} /> LIVE NOW
+                    <Box sx={{ width: 7, height: 7, borderRadius: "50%", bgcolor: "#c94b4b", animation: "pulse 1.4s infinite" }} /> LIVE NOW
                   </Box>
                   <Typography sx={{ color: "rgba(255,255,255,0.7)", fontSize: "0.82rem" }}>{startedAgo(live.class_datetime)}</Typography>
                   <LiveTimeLeft start={live.class_datetime} durationMinutes={live.duration_minutes} />
@@ -436,7 +436,7 @@ export default function LiveSessionsPage() {
                   ) : (
                     <Button component="a" href={joinUrlOf(live)} target="_blank" rel="noopener"
                       startIcon={<Icon icon="mdi:video" width={18} />}
-                      sx={{ px: 3, py: 1.1, borderRadius: 2.5, fontWeight: 800, textTransform: "none", color: "#047857", bgcolor: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.9)" } }}>
+                      sx={{ px: 3, py: 1.1, borderRadius: 2.5, fontWeight: 800, textTransform: "none", color: "#0B6232", bgcolor: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.9)" } }}>
                       Join now
                     </Button>
                   )}
@@ -469,7 +469,7 @@ export default function LiveSessionsPage() {
                     <Stack direction="row" spacing={-0.8} sx={{ mb: 0.75 }}>
                       {[0, 1, 2, 3].map((i) => (
                         <Box key={i} sx={{ width: 26, height: 26, borderRadius: "50%", border: "2px solid #052e16", ml: i ? "-8px" : 0,
-                          background: ["#a855f7", "#6366f1", "#ec4899", "#f59e0b"][i] }} />
+                          background: ["#1b4f8a", "#1b4f8a", "#0f6b7a", "#b7791f"][i] }} />
                       ))}
                     </Stack>
                     <Typography sx={{ fontWeight: 800, fontSize: "0.9rem" }}>{(liveJoined ?? live.attendance_count) || 0} joined</Typography>
@@ -482,10 +482,10 @@ export default function LiveSessionsPage() {
           {/* KPI cards */}
           {stats && (
             <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr 1fr", md: "repeat(4,1fr)" }, gap: 2, mb: 3 }}>
-              <StatCard icon="mdi:check-circle-outline" tint="#7c3aed" value={stats.sessions_attended} label="Sessions attended" sub={`of ${stats.sessions_held} held`} />
-              <StatCard icon="mdi:calendar-check-outline" tint="#10b981" value={`${stats.attendance_rate}%`} label="Attendance rate" sub={`cohort avg ${stats.cohort_avg_rate}%`} />
-              <StatCard icon="mdi:clock-outline" tint="#ec4899" value={stats.live_hours} label="Live hours" sub="attended" />
-              <StatCard icon="mdi:play-circle-outline" tint="#f59e0b" value={stats.recordings_left} label="Recordings left" sub="to catch up" />
+              <StatCard icon="mdi:check-circle-outline" tint="#14406f" value={stats.sessions_attended} label="Sessions attended" sub={`of ${stats.sessions_held} held`} />
+              <StatCard icon="mdi:calendar-check-outline" tint="#0e7a3c" value={`${stats.attendance_rate}%`} label="Attendance rate" sub={`cohort avg ${stats.cohort_avg_rate}%`} />
+              <StatCard icon="mdi:clock-outline" tint="#0f6b7a" value={stats.live_hours} label="Live hours" sub="attended" />
+              <StatCard icon="mdi:play-circle-outline" tint="#b7791f" value={stats.recordings_left} label="Recordings left" sub="to catch up" />
             </Box>
           )}
 
@@ -642,7 +642,7 @@ function LiveProgress({ start, durationMinutes }: { start?: string | null; durat
   return (
     <Box sx={{ mt: 1.5, maxWidth: 620 }}>
       <Box sx={{ height: 5, borderRadius: 3, bgcolor: "rgba(255,255,255,0.14)", overflow: "hidden" }}>
-        <Box sx={{ width: `${pct}%`, height: "100%", background: "linear-gradient(90deg,#34d399,#10b981)", transition: "width 1s linear" }} />
+        <Box sx={{ width: `${pct}%`, height: "100%", background: "linear-gradient(90deg,#2f9159,#0e7a3c)", transition: "width 1s linear" }} />
       </Box>
     </Box>
   );
@@ -674,7 +674,7 @@ function SessionNotice({ s }: { s: StudentLiveSession }) {
   const kind = s.notice_type;
   if (kind !== "cancelled" && kind !== "rescheduled") return null;
   const cancelled = kind === "cancelled";
-  const tone = cancelled ? "#ef4444" : "#f59e0b";
+  const tone = cancelled ? "#b32020" : "#b7791f";
   return (
     <Box sx={{ display: "flex", gap: 1, px: 2.25, py: 1.25,
       bgcolor: `color-mix(in srgb, ${tone} 10%, transparent)`,
@@ -714,19 +714,19 @@ function UpcomingCard({ s, isNext, reminderOn, prepDone, onAddCalendar, onRemind
     <Box sx={{ borderRadius: 3.5, bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)", overflow: "hidden" }}>
       <SessionNotice s={s} />
       {isNext && countdown && (
-        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ px: 2.25, py: 0.75, background: "color-mix(in srgb,#7c3aed 8%,transparent)" }}>
-          <Typography sx={{ fontSize: "0.66rem", fontWeight: 800, letterSpacing: 0.6, color: "#7c3aed" }}>✦ STARTS NEXT</Typography>
-          <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", fontVariantNumeric: "tabular-nums", color: "#7c3aed" }}>{countdown}</Typography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ px: 2.25, py: 0.75, background: "color-mix(in srgb,#14406f 8%,transparent)" }}>
+          <Typography sx={{ fontSize: "0.66rem", fontWeight: 800, letterSpacing: 0.6, color: "#14406f" }}>✦ STARTS NEXT</Typography>
+          <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", fontVariantNumeric: "tabular-nums", color: "#14406f" }}>{countdown}</Typography>
         </Stack>
       )}
       <Box sx={{ p: 2.25, display: "flex", gap: 2, alignItems: "flex-start", flexWrap: "wrap" }}>
         <DateBadge dt={s.class_datetime} tz={s.timezone} />
         <Box sx={{ flex: 1, minWidth: 200 }}>
           <Stack direction="row" spacing={0.75} alignItems="center" sx={{ mb: 0.5, flexWrap: "wrap", gap: 0.5 }}>
-            <Box sx={{ px: 0.9, py: 0.2, borderRadius: 999, bgcolor: "color-mix(in srgb,#8b5cf6 14%,transparent)", color: "#6d28d9", fontSize: "0.66rem", fontWeight: 800 }}>Scheduled</Box>
+            <Box sx={{ px: 0.9, py: 0.2, borderRadius: 999, bgcolor: "color-mix(in srgb,#4a7fbb 14%,transparent)", color: "#164274", fontSize: "0.66rem", fontWeight: 800 }}>Scheduled</Box>
             <Stack direction="row" spacing={0.35} alignItems="center" sx={{ color: p.color }}><Icon icon={p.icon} width={14} /><Typography sx={{ fontSize: "0.72rem", fontWeight: 700 }}>{p.label}</Typography></Stack>
             <Typography sx={{ fontSize: "0.72rem", color: "text.secondary" }}>{formatSessionClock(s.class_datetime, s.timezone)} · {s.duration_minutes || 0}m</Typography>
-            {recurring && <Box sx={{ px: 0.8, py: 0.2, borderRadius: 999, bgcolor: "color-mix(in srgb,#6366f1 12%,transparent)", color: "#4f46e5", fontSize: "0.64rem", fontWeight: 800 }}>Recurring</Box>}
+            {recurring && <Box sx={{ px: 0.8, py: 0.2, borderRadius: 999, bgcolor: "color-mix(in srgb,#1b4f8a 12%,transparent)", color: "#12365f", fontSize: "0.64rem", fontWeight: 800 }}>Recurring</Box>}
           </Stack>
           <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", lineHeight: 1.2 }}>{s.topic_name}</Typography>
           <Stack direction="row" spacing={1.25} alignItems="center" sx={{ mt: 0.4, color: "text.secondary", flexWrap: "wrap", gap: 0.5 }}>
@@ -736,7 +736,7 @@ function UpcomingCard({ s, isNext, reminderOn, prepDone, onAddCalendar, onRemind
           {recurring && (
             <Box sx={{ mt: 1 }}>
               <Button onClick={() => setOpen((o) => !o)} size="small" endIcon={<Icon icon={open ? "mdi:chevron-up" : "mdi:chevron-down"} width={16} />}
-                sx={{ textTransform: "none", fontWeight: 700, color: "#6366f1", px: 0, minWidth: 0 }}>
+                sx={{ textTransform: "none", fontWeight: 700, color: "#1b4f8a", px: 0, minWidth: 0 }}>
                 {s.recurrence_summary || `${s.occurrences?.length} sessions in this series`}
               </Button>
               {open && (
@@ -744,11 +744,11 @@ function UpcomingCard({ s, isNext, reminderOn, prepDone, onAddCalendar, onRemind
                   {(s.occurrences || []).slice(0, 12).map((o: StudentLiveOccurrence) => (
                     <Stack key={o.id} direction="row" spacing={1} alignItems="center">
                       <Icon icon={o.meeting_status === "ended" ? "mdi:check-circle" : o.meeting_status === "live" ? "mdi:access-point" : "mdi:calendar-blank-outline"} width={14}
-                        style={{ color: o.meeting_status === "ended" ? "#10b981" : o.meeting_status === "live" ? "#ef4444" : "#94a3b8" }} />
+                        style={{ color: o.meeting_status === "ended" ? "#0e7a3c" : o.meeting_status === "live" ? "#b32020" : "#94a3b8" }} />
                       <Typography sx={{ fontSize: "0.78rem", color: "text.secondary" }}>
                         {o.occurrence_datetime ? formatSessionTime(o.occurrence_datetime, s.timezone, { format: { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }, dual: false }) : ""}
                       </Typography>
-                      {o.has_recording && <Icon icon="mdi:play-circle-outline" width={13} style={{ color: "#7c3aed" }} />}
+                      {o.has_recording && <Icon icon="mdi:play-circle-outline" width={13} style={{ color: "#14406f" }} />}
                     </Stack>
                   ))}
                 </Stack>
@@ -765,7 +765,7 @@ function UpcomingCard({ s, isNext, reminderOn, prepDone, onAddCalendar, onRemind
           <Button onClick={onRemind}
             startIcon={<Icon icon={reminderOn ? "mdi:bell-check" : "mdi:bell-outline"} width={16} />}
             sx={{ textTransform: "none", fontWeight: 700, py: 1, borderRadius: 2, border: "1px solid var(--border-default)",
-              color: reminderOn ? "#059669" : "var(--font-primary)", bgcolor: reminderOn ? "color-mix(in srgb,#10b981 8%,transparent)" : "transparent" }}>
+              color: reminderOn ? "#0B6232" : "var(--font-primary)", bgcolor: reminderOn ? "color-mix(in srgb,#0e7a3c 8%,transparent)" : "transparent" }}>
             {reminderOn ? "Reminder on" : "Remind me"}
           </Button>
         </Stack>
@@ -773,10 +773,10 @@ function UpcomingCard({ s, isNext, reminderOn, prepDone, onAddCalendar, onRemind
 
       {/* Come prepared (AI-generated) */}
       {prepItems.length > 0 && (
-        <Box sx={{ mx: 2.25, mb: 2.25, p: 1.75, borderRadius: 2.5, border: "1px solid var(--border-default)", bgcolor: "color-mix(in srgb,#7c3aed 4%,transparent)" }}>
+        <Box sx={{ mx: 2.25, mb: 2.25, p: 1.75, borderRadius: 2.5, border: "1px solid var(--border-default)", bgcolor: "color-mix(in srgb,#14406f 4%,transparent)" }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
             <Typography sx={{ fontSize: "0.64rem", fontWeight: 800, letterSpacing: 0.6, color: "text.secondary" }}>COME PREPARED</Typography>
-            <Typography sx={{ fontSize: "0.7rem", fontWeight: 800, color: doneCount === prepItems.length ? "#059669" : "#b45309" }}>
+            <Typography sx={{ fontSize: "0.7rem", fontWeight: 800, color: doneCount === prepItems.length ? "#0B6232" : "#8a5a12" }}>
               {doneCount}/{prepItems.length} DONE
             </Typography>
           </Stack>
@@ -788,7 +788,7 @@ function UpcomingCard({ s, isNext, reminderOn, prepDone, onAddCalendar, onRemind
                   role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") onTogglePrep(i); }}
                   sx={{ cursor: "pointer", py: 0.25, "&:hover .prep-text": { color: "var(--font-primary)" } }}>
                   <Icon icon={done ? "mdi:check-circle" : "mdi:checkbox-blank-circle-outline"} width={18}
-                    style={{ color: done ? "#10b981" : "var(--font-tertiary)", flexShrink: 0 }} />
+                    style={{ color: done ? "#0e7a3c" : "var(--font-tertiary)", flexShrink: 0 }} />
                   <Typography className="prep-text" sx={{ fontSize: "0.84rem", color: done ? "text.secondary" : "var(--font-primary)", textDecoration: done ? "line-through" : "none" }}>
                     {item}
                   </Typography>
@@ -819,7 +819,7 @@ function RecordingCard({ s, watching, onWatch, onSummary }: { s: StudentLiveSess
       <Stack direction="row" spacing={1}>
         {hasSummary && (
           <Button onClick={onSummary} startIcon={<Icon icon="mdi:text-box-outline" width={16} />}
-            sx={{ textTransform: "none", fontWeight: 700, color: "#6366f1", px: 1.5, py: 0.8, borderRadius: 2, border: "1px solid var(--border-default)" }}>
+            sx={{ textTransform: "none", fontWeight: 700, color: "#1b4f8a", px: 1.5, py: 0.8, borderRadius: 2, border: "1px solid var(--border-default)" }}>
             Notes
           </Button>
         )}
@@ -838,7 +838,7 @@ function HistoryRow({ s, onGiveFeedback }: { s: StudentLiveSession; onGiveFeedba
   return (
     <Box sx={{ borderRadius: 3, bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)", p: 1.75 }}>
     <Box sx={{ display: "flex", gap: 1.5, alignItems: "center" }}>
-      <Icon icon={attended ? "mdi:check-circle" : "mdi:close-circle-outline"} width={22} style={{ color: attended ? "#10b981" : "#94a3b8", flexShrink: 0 }} />
+      <Icon icon={attended ? "mdi:check-circle" : "mdi:close-circle-outline"} width={22} style={{ color: attended ? "#0e7a3c" : "#94a3b8", flexShrink: 0 }} />
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Typography sx={{ fontWeight: 700, fontSize: "0.92rem" }} noWrap>{s.topic_name}</Typography>
         <Typography sx={{ fontSize: "0.78rem", color: "text.secondary" }}>
@@ -847,14 +847,14 @@ function HistoryRow({ s, onGiveFeedback }: { s: StudentLiveSession; onGiveFeedba
         </Typography>
       </Box>
       <Box sx={{ px: 1, py: 0.3, borderRadius: 999, fontSize: "0.68rem", fontWeight: 800,
-        color: attended ? "#059669" : "#64748b", bgcolor: attended ? "color-mix(in srgb,#10b981 12%,transparent)" : "color-mix(in srgb,#64748b 12%,transparent)" }}>
+        color: attended ? "#0B6232" : "#64748b", bgcolor: attended ? "color-mix(in srgb,#0e7a3c 12%,transparent)" : "color-mix(in srgb,#64748b 12%,transparent)" }}>
         {attended ? "Attended" : "Missed"}
       </Box>
-      {s.has_recording && <Icon icon="mdi:play-circle-outline" width={18} style={{ color: "#7c3aed" }} />}
+      {s.has_recording && <Icon icon="mdi:play-circle-outline" width={18} style={{ color: "#14406f" }} />}
       {/* Nothing to rate on a session that was called off. */}
       {onGiveFeedback && s.notice_type !== "cancelled" && (
         <Button onClick={onGiveFeedback} size="small" startIcon={<Icon icon="mdi:star-outline" width={16} />}
-          sx={{ textTransform: "none", fontWeight: 700, color: "#7c3aed", minWidth: 0, flexShrink: 0 }}>
+          sx={{ textTransform: "none", fontWeight: 700, color: "#14406f", minWidth: 0, flexShrink: 0 }}>
           Rate
         </Button>
       )}
@@ -877,10 +877,10 @@ function AttendanceRail({ stats }: { stats: MyLiveStats }) {
         <Typography sx={{ fontSize: "0.66rem", fontWeight: 800, letterSpacing: 0.8, color: "text.secondary", mb: 1.5 }}>YOUR ATTENDANCE</Typography>
         <Box sx={{ display: "grid", placeItems: "center" }}>
           <AnimatedRing value={rate} size={148} asPercent caption={band}
-            color={rate >= 80 ? "#10b981" : rate >= 50 ? "#7c3aed" : "#f59e0b"} />
+            color={rate >= 80 ? "#0e7a3c" : rate >= 50 ? "#14406f" : "#b7791f"} />
         </Box>
         {rate < 100 && (
-          <Box sx={{ mt: 2, p: 1.5, borderRadius: 2.5, bgcolor: "color-mix(in srgb,#10b981 8%,transparent)" }}>
+          <Box sx={{ mt: 2, p: 1.5, borderRadius: 2.5, bgcolor: "color-mix(in srgb,#0e7a3c 8%,transparent)" }}>
             <Typography sx={{ fontSize: "0.8rem", color: "var(--font-secondary)" }}>
               Attend <b>{missing || 1} more</b> session{(missing || 1) === 1 ? "" : "s"} to push your rate higher.
             </Typography>
@@ -893,9 +893,9 @@ function AttendanceRail({ stats }: { stats: MyLiveStats }) {
         <Stack direction="row" justifyContent="space-between">
           {stats.week.map((d, i) => {
             const meta: Record<string, { bg: string; fg: string; icon?: string }> = {
-              attended: { bg: "color-mix(in srgb,#10b981 16%,transparent)", fg: "#059669", icon: "mdi:check" },
-              live: { bg: "color-mix(in srgb,#ef4444 16%,transparent)", fg: "#dc2626", icon: "mdi:circle" },
-              upcoming: { bg: "color-mix(in srgb,#8b5cf6 16%,transparent)", fg: "#7c3aed", icon: "mdi:calendar-blank" },
+              attended: { bg: "color-mix(in srgb,#0e7a3c 16%,transparent)", fg: "#0B6232", icon: "mdi:check" },
+              live: { bg: "color-mix(in srgb,#b32020 16%,transparent)", fg: "#991b1b", icon: "mdi:circle" },
+              upcoming: { bg: "color-mix(in srgb,#4a7fbb 16%,transparent)", fg: "#14406f", icon: "mdi:calendar-blank" },
               missed: { bg: "color-mix(in srgb,#64748b 12%,transparent)", fg: "#94a3b8", icon: "mdi:minus" },
               none: { bg: "transparent", fg: "var(--font-tertiary)" },
             };
@@ -911,7 +911,7 @@ function AttendanceRail({ stats }: { stats: MyLiveStats }) {
           })}
         </Stack>
         <Stack direction="row" spacing={1.5} sx={{ mt: 1.5, flexWrap: "wrap" }}>
-          {[["#10b981", "Attended"], ["#ef4444", "Live"], ["#7c3aed", "Upcoming"]].map(([c, l]) => (
+          {[["#0e7a3c", "Attended"], ["#b32020", "Live"], ["#14406f", "Upcoming"]].map(([c, l]) => (
             <Stack key={l} direction="row" spacing={0.5} alignItems="center">
               <Box sx={{ width: 9, height: 9, borderRadius: "50%", bgcolor: c }} />
               <Typography sx={{ fontSize: "0.68rem", color: "text.secondary" }}>{l}</Typography>

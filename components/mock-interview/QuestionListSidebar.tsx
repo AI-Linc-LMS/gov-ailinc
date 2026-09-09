@@ -125,11 +125,11 @@ export const QuestionListSidebar = memo(function QuestionListSidebar({
                           mt: 1,
                         }}
                       >
-                        <CheckCircle size={14} color="var(--success-500, #10b981)" />
+                        <CheckCircle size={14} color="var(--success-500, #0e7a3c)" />
                         <Typography
                           variant="caption"
                           sx={{
-                            color: "var(--success-500, #10b981)",
+                            color: "var(--success-500, #0e7a3c)",
                             fontSize: "0.75rem",
                           }}
                         >

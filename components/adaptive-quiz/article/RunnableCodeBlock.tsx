@@ -60,7 +60,7 @@ export function RunnableCodeBlock({ initialCode, language }: { initialCode: stri
         borderRadius: 3,
         overflow: "hidden",
         border: "1px solid #232a36",
-        boxShadow: "0 14px 36px -20px rgba(0,0,0,0.65)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       {/* Toolbar */}
@@ -76,7 +76,7 @@ export function RunnableCodeBlock({ initialCode, language }: { initialCode: stri
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.85 }}>
-          <Icon icon="mdi:flask-outline" width={16} style={{ color: "#a855f7" }} />
+          <Icon icon="mdi:flask-outline" width={16} style={{ color: "#1b4f8a" }} />
           <Box component="span" sx={{ fontSize: "0.72rem", fontWeight: 700, color: "#94a3b8", letterSpacing: "0.05em" }}>
             Try it yourself · {label}
           </Box>
@@ -103,9 +103,9 @@ export function RunnableCodeBlock({ initialCode, language }: { initialCode: stri
               fontWeight: 800,
               borderRadius: 999,
               px: 1.75,
-              background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+              background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
               boxShadow: "none",
-              "&:hover": { boxShadow: "0 6px 18px -8px #a855f7" },
+              "&:hover": { boxShadow: "var(--shadow-md)" },
             }}
           >
             {running ? "Running…" : "Run"}

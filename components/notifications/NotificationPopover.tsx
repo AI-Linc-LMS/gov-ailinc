@@ -80,8 +80,8 @@ const NOTIFICATION_TYPE_CONFIG: Record<
   },
   community_bounty_won: {
     icon: "mdi:fire",
-    color: "#f59e0b",
-    bgColor: "color-mix(in srgb, #f59e0b 14%, var(--surface) 86%)",
+    color: "#b7791f",
+    bgColor: "color-mix(in srgb, #b7791f 14%, var(--surface) 86%)",
   },
   community_new_follower: {
     icon: "mdi:account-plus",
@@ -161,7 +161,7 @@ export function NotificationPopover({
           border: "1px solid",
           borderColor: "divider",
           boxShadow:
-            "0 12px 40px color-mix(in srgb, var(--font-primary) 14%, transparent), 0 4px 12px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+            "var(--shadow-xl)",
           overflow: "hidden",
         },
       }}
@@ -443,7 +443,7 @@ export function NotificationBell({ unreadCount, onClick }: NotificationBellProps
               color: "var(--font-light)",
               border: "2px solid var(--card-bg)",
               boxShadow:
-                "0 1px 3px color-mix(in srgb, var(--font-primary) 14%, transparent)",
+                "var(--shadow-sm)",
             },
           }}
         >

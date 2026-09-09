@@ -14,7 +14,7 @@ import type { LeaderboardPayload } from "@/lib/services/admin/admin-insights.ser
  * earned.
  */
 
-const MEDAL = ["#f59e0b", "#94a3b8", "#b45309"];
+const MEDAL = ["#b7791f", "#94a3b8", "#8a5a12"];
 
 export function LeaderboardPanel({
   data,
@@ -88,11 +88,11 @@ export function LeaderboardPanel({
                   color: r.rank <= 3 ? "#fff" : "var(--font-secondary)",
                   background:
                     r.rank <= 3
-                      ? `linear-gradient(140deg, ${MEDAL[r.rank - 1]}, color-mix(in srgb, ${MEDAL[r.rank - 1]} 65%, #7c3aed))`
+                      ? `linear-gradient(140deg, ${MEDAL[r.rank - 1]}, color-mix(in srgb, ${MEDAL[r.rank - 1]} 65%, #14406f))`
                       : "color-mix(in srgb, var(--border-default) 40%, transparent)",
                   boxShadow:
                     r.rank <= 3
-                      ? `0 6px 14px -8px color-mix(in srgb, ${MEDAL[r.rank - 1]} 90%, transparent)`
+                      ? "var(--shadow-sm)"
                       : "none",
                 }}
               >

@@ -10,9 +10,9 @@ import { SectionShell } from "@/components/scorecard/shared";
  * like part of the same atlas as the scorecard.
  */
 export const ADAPTIVE_RADIAL_MESH = [
-  "radial-gradient(circle at 8% 0%, color-mix(in srgb, #6366f1 22%, transparent) 0%, transparent 55%)",
-  "radial-gradient(circle at 95% 5%, color-mix(in srgb, #ec4899 18%, transparent) 0%, transparent 55%)",
-  "radial-gradient(circle at 50% 110%, color-mix(in srgb, #a855f7 22%, transparent) 0%, transparent 60%)",
+  "radial-gradient(circle at 8% 0%, color-mix(in srgb, #1b4f8a 22%, transparent) 0%, transparent 55%)",
+  "radial-gradient(circle at 95% 5%, color-mix(in srgb, #0f6b7a 18%, transparent) 0%, transparent 55%)",
+  "radial-gradient(circle at 50% 110%, color-mix(in srgb, #1b4f8a 22%, transparent) 0%, transparent 60%)",
 ];
 
 interface AdaptiveSectionShellProps {
@@ -41,12 +41,12 @@ export function AdaptiveSectionShell({
 /** Bundle of accent values used by every AdaptiveSectionHero call. Mirrors the
  *  scorecard's per-section accent gradient convention. */
 export const ADAPTIVE_ACCENTS = {
-  indigo: { top: "#6366f1", bottom: "#4338ca" },
-  purple: { top: "#a855f7", bottom: "#7c3aed" },
-  pink: { top: "#ec4899", bottom: "#db2777" },
-  emerald: { top: "#10b981", bottom: "#047857" },
+  indigo: { top: "#1b4f8a", bottom: "#0e2a4b" },
+  purple: { top: "#1b4f8a", bottom: "#14406f" },
+  pink: { top: "#0f6b7a", bottom: "#0b5260" },
+  emerald: { top: "#0e7a3c", bottom: "#0B6232" },
   // For states that are waiting on a person rather than failing or succeeding.
-  amber: { top: "#f59e0b", bottom: "#d97706" },
+  amber: { top: "#b7791f", bottom: "#8a5a12" },
 } as const;
 
 export type AdaptiveAccent = keyof typeof ADAPTIVE_ACCENTS;

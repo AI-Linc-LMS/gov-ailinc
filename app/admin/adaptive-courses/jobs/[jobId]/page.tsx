@@ -26,7 +26,7 @@ const STEPS: Array<{ key: string; label: string; detail: string }> = [
   { key: "generating_content", label: "Generating content", detail: "Quizzes & articles per topic" },
   { key: "completed", label: "Done", detail: "Every topic has an adaptive quiz" },
 ];
-const DIFF_COLOR: Record<string, string> = { Easy: "#10b981", Medium: "#f59e0b", Hard: "#ef4444" };
+const DIFF_COLOR: Record<string, string> = { Easy: "#0e7a3c", Medium: "#b7791f", Hard: "#b32020" };
 type LogFilter = "all" | "Easy" | "Medium" | "Hard";
 
 export default function AdaptiveCourseJobPage() {
@@ -112,7 +112,7 @@ export default function AdaptiveCourseJobPage() {
       <Container maxWidth="xl" sx={{ py: { xs: 3, md: 5 } }}>
         <ButtonBase
           onClick={() => push("/admin/adaptive-courses")}
-          sx={{ mb: 2, color: "#6366f1", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
+          sx={{ mb: 2, color: "#1b4f8a", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
         >
           <Icon icon="mdi:arrow-left" width={18} />
           Back to Course Builder
@@ -120,7 +120,7 @@ export default function AdaptiveCourseJobPage() {
 
         <AdaptiveSectionShell>
           {error && (
-            <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>
+            <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>
               {error}
             </Typography>
           )}
@@ -167,7 +167,7 @@ export default function AdaptiveCourseJobPage() {
                       onClick={() => push(`/admin/adaptive-courses/${job.generated_course_id}`)}
                       sx={{
                         px: 3, py: 1.3, borderRadius: 999, fontWeight: 800, color: "white", gap: 0.6,
-                        background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                        background: "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)",
                       }}
                     >
                       <Icon icon="mdi:open-in-new" width={16} />
@@ -185,8 +185,8 @@ export default function AdaptiveCourseJobPage() {
 
               {stalled && isActive && (
                 <Box sx={{ mt: 2, p: 2, borderRadius: 3, display: "flex", gap: 1.25, alignItems: "flex-start",
-                  bgcolor: "color-mix(in srgb, #f59e0b 10%, var(--card-bg))", border: "1px solid color-mix(in srgb, #f59e0b 35%, transparent)" }}>
-                  <Icon icon="mdi:alert" width={20} style={{ color: "#f59e0b", flexShrink: 0, marginTop: 2 }} />
+                  bgcolor: "color-mix(in srgb, #b7791f 10%, var(--card-bg))", border: "1px solid color-mix(in srgb, #b7791f 35%, transparent)" }}>
+                  <Icon icon="mdi:alert" width={20} style={{ color: "#b7791f", flexShrink: 0, marginTop: 2 }} />
                   <Box>
                     <Typography sx={{ fontWeight: 800, fontSize: "0.9rem" }}>Generation has stalled</Typography>
                     <Typography sx={{ fontSize: "0.82rem", color: "text.secondary", lineHeight: 1.5 }}>
@@ -207,10 +207,10 @@ export default function AdaptiveCourseJobPage() {
                   const active = job.status === step.key;
                   return (
                     <Box key={step.key} sx={{ display: "inline-flex", alignItems: "center", gap: 0.6, px: 1.25, py: 0.6, borderRadius: 999,
-                      bgcolor: active ? "color-mix(in srgb, #a855f7 14%, var(--card-bg))" : done ? "color-mix(in srgb, #10b981 12%, var(--card-bg))" : "color-mix(in srgb, var(--card-bg) 55%, transparent)",
+                      bgcolor: active ? "color-mix(in srgb, #1b4f8a 14%, var(--card-bg))" : done ? "color-mix(in srgb, #0e7a3c 12%, var(--card-bg))" : "color-mix(in srgb, var(--card-bg) 55%, transparent)",
                       border: "1px solid color-mix(in srgb, var(--border-default) 70%, transparent)" }}>
                       <Icon icon={done ? "mdi:check-circle" : active ? "mdi:loading" : "mdi:circle-outline"} width={15}
-                        className={active ? "acb-spin" : ""} style={{ color: done ? "#10b981" : active ? "#a855f7" : "#94a3b8" }} />
+                        className={active ? "acb-spin" : ""} style={{ color: done ? "#0e7a3c" : active ? "#1b4f8a" : "#94a3b8" }} />
                       <Typography sx={{ fontWeight: 800, fontSize: "0.78rem" }}>{step.label}</Typography>
                     </Box>
                   );
@@ -224,8 +224,8 @@ export default function AdaptiveCourseJobPage() {
               )}
 
               {job.error_log.length > 0 && (
-                <Box sx={{ mt: 2.5, borderRadius: 3, p: 2, bgcolor: "color-mix(in srgb, #ef4444 8%, var(--card-bg))", border: "1px solid color-mix(in srgb, #ef4444 30%, transparent)" }}>
-                  <Typography sx={{ fontWeight: 800, color: "#ef4444", mb: 1, fontSize: "0.9rem" }}>Issues</Typography>
+                <Box sx={{ mt: 2.5, borderRadius: 3, p: 2, bgcolor: "color-mix(in srgb, #b32020 8%, var(--card-bg))", border: "1px solid color-mix(in srgb, #b32020 30%, transparent)" }}>
+                  <Typography sx={{ fontWeight: 800, color: "#b32020", mb: 1, fontSize: "0.9rem" }}>Issues</Typography>
                   {job.error_log.map((entry, i) => (
                     <Typography key={i} sx={{ fontSize: "0.8rem", color: "text.secondary", mb: 0.5 }}>
                       [{entry.type}] {entry.message}
@@ -250,7 +250,7 @@ export default function AdaptiveCourseJobPage() {
                     <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 0.75, mb: 1 }}>
                       {(["all", "Easy", "Medium", "Hard"] as LogFilter[]).map((f) => {
                         const active = logFilter === f;
-                        const color = f === "all" ? "#6366f1" : DIFF_COLOR[f];
+                        const color = f === "all" ? "#1b4f8a" : DIFF_COLOR[f];
                         return (
                           <ButtonBase key={f} onClick={() => setLogFilter(f)}
                             sx={{ px: 1.1, py: 0.35, borderRadius: 999, fontWeight: 800, fontSize: "0.68rem",
@@ -260,7 +260,7 @@ export default function AdaptiveCourseJobPage() {
                         );
                       })}
                       <ButtonBase onClick={() => setAutoScroll((v) => !v)} title="Auto-scroll"
-                        sx={{ px: 0.6, py: 0.35, borderRadius: 999, color: autoScroll ? "#6366f1" : "#94a3b8" }}>
+                        sx={{ px: 0.6, py: 0.35, borderRadius: 999, color: autoScroll ? "#1b4f8a" : "#94a3b8" }}>
                         <Icon icon={autoScroll ? "mdi:arrow-down-bold-circle" : "mdi:arrow-down-bold-circle-outline"} width={18} />
                       </ButtonBase>
                     </Box>
@@ -308,34 +308,34 @@ function StatsRail({ stats, status, percent, stalled }: { stats: AdaptiveCourseJ
         <Typography sx={{ fontWeight: 800, fontSize: "0.85rem" }}>
           {barTitle}
           {live && stalled && (
-            <Box component="span" sx={{ ml: 1, fontSize: "0.7rem", fontWeight: 800, color: "#f59e0b" }}>
-              <Box component="span" sx={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", bgcolor: "#f59e0b", mr: 0.5 }} />
+            <Box component="span" sx={{ ml: 1, fontSize: "0.7rem", fontWeight: 800, color: "#b7791f" }}>
+              <Box component="span" sx={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", bgcolor: "#b7791f", mr: 0.5 }} />
               STALLED
             </Box>
           )}
           {live && !stalled && (
-            <Box component="span" sx={{ ml: 1, fontSize: "0.7rem", fontWeight: 800, color: "#10b981" }}>
-              <Box component="span" sx={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", bgcolor: "#10b981", mr: 0.5, animation: "acb-pulse 1.2s ease-in-out infinite" }} />
+            <Box component="span" sx={{ ml: 1, fontSize: "0.7rem", fontWeight: 800, color: "#0e7a3c" }}>
+              <Box component="span" sx={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", bgcolor: "#0e7a3c", mr: 0.5, animation: "acb-pulse 1.2s ease-in-out infinite" }} />
               LIVE
             </Box>
           )}
         </Typography>
-        <Typography sx={{ fontWeight: 800, fontSize: "0.85rem", color: "#a855f7" }}>
+        <Typography sx={{ fontWeight: 800, fontSize: "0.85rem", color: "#1b4f8a" }}>
           {barValue}
         </Typography>
       </Box>
       <Box sx={{ height: 8, borderRadius: 999, bgcolor: "color-mix(in srgb, var(--border-default) 60%, transparent)", overflow: "hidden" }}>
-        <Box sx={{ height: "100%", width: `${Math.max(2, qPct)}%`, background: "linear-gradient(90deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)", transition: "width 500ms ease" }} />
+        <Box sx={{ height: "100%", width: `${Math.max(2, qPct)}%`, background: "linear-gradient(90deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)", transition: "width 500ms ease" }} />
       </Box>
 
       {/* Stat cards */}
       <Box sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(7, 1fr)" }, gap: 1.5, mt: 2 }}>
-        <StatCard label="Topics" value={`${stats.submodules_done} / ${stats.submodules_total}`} accent="#6366f1" icon="mdi:file-tree-outline" />
-        <StatCard label="Questions" value={qPlanned > 0 ? `${qDone} / ~${qPlanned}` : `${qDone}`} accent="#a855f7" icon="mdi:help-box-multiple-outline" />
-        <StatCard label="Articles" value={`${stats.articles_generated ?? 0}`} accent="#10b981" icon="mdi:book-open-variant" />
-        <StatCard label="Coding" value={`${stats.coding_generated ?? 0}`} accent="#ec4899" icon="mdi:robot-happy-outline" />
-        <StatCard label="Videos" value={`${stats.videos_generated ?? 0}`} accent="#6366f1" icon="mdi:play-circle-outline" />
-        <StatCard label="Elapsed" value={fmtElapsed(stats.elapsed_seconds)} accent="#f59e0b" icon="mdi:timer-outline" />
+        <StatCard label="Topics" value={`${stats.submodules_done} / ${stats.submodules_total}`} accent="#1b4f8a" icon="mdi:file-tree-outline" />
+        <StatCard label="Questions" value={qPlanned > 0 ? `${qDone} / ~${qPlanned}` : `${qDone}`} accent="#1b4f8a" icon="mdi:help-box-multiple-outline" />
+        <StatCard label="Articles" value={`${stats.articles_generated ?? 0}`} accent="#0e7a3c" icon="mdi:book-open-variant" />
+        <StatCard label="Coding" value={`${stats.coding_generated ?? 0}`} accent="#0f6b7a" icon="mdi:robot-happy-outline" />
+        <StatCard label="Videos" value={`${stats.videos_generated ?? 0}`} accent="#1b4f8a" icon="mdi:play-circle-outline" />
+        <StatCard label="Elapsed" value={fmtElapsed(stats.elapsed_seconds)} accent="#b7791f" icon="mdi:timer-outline" />
         <DifficultyCard byDifficulty={stats.by_difficulty} />
       </Box>
     </Box>
@@ -445,7 +445,7 @@ function GenerationLog({
       ref={scrollRef}
       sx={{
         borderRadius: 3, p: 2, minHeight: 300, maxHeight: 480, overflowY: "auto",
-        bgcolor: "#0b1020", border: "1px solid color-mix(in srgb, #6366f1 30%, transparent)",
+        bgcolor: "#071426", border: "1px solid color-mix(in srgb, #1b4f8a 30%, transparent)",
         fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: "0.78rem", lineHeight: 1.6,
       }}
     >
@@ -466,7 +466,7 @@ function LogLine({ entry, text, done }: { entry: AdaptiveCourseJobLogEntry; text
   const isArticle = entry.kind === "article";
   const isCoding = entry.kind === "coding";
   const isVideo = entry.kind === "video";
-  const dColor = isArticle ? "#a855f7" : isCoding ? "#ec4899" : isVideo ? "#6366f1" : DIFF_COLOR[entry.difficulty] ?? "#94a3b8";
+  const dColor = isArticle ? "#1b4f8a" : isCoding ? "#0f6b7a" : isVideo ? "#1b4f8a" : DIFF_COLOR[entry.difficulty] ?? "#94a3b8";
   const tag = isArticle
     ? `article·${entry.title || ""}`.slice(0, 28)
     : isCoding
@@ -476,7 +476,7 @@ function LogLine({ entry, text, done }: { entry: AdaptiveCourseJobLogEntry; text
         : `${entry.skill || "general"}·${entry.difficulty}`;
   return (
     <Box sx={{ mb: 0.75, display: "flex", gap: 0.75, alignItems: "flex-start" }}>
-      <Box component="span" sx={{ color: done ? "#10b981" : "#a855f7", flexShrink: 0 }}>
+      <Box component="span" sx={{ color: done ? "#0e7a3c" : "#1b4f8a", flexShrink: 0 }}>
         {done ? "✓" : "✎"}
       </Box>
       <Box component="span" sx={{ color: dColor, flexShrink: 0, fontSize: "0.7rem", pt: "1px", fontWeight: 700 }}>
@@ -485,11 +485,11 @@ function LogLine({ entry, text, done }: { entry: AdaptiveCourseJobLogEntry; text
       <Box component="span" sx={{ color: "#e2e8f0", wordBreak: "break-word" }}>
         {text}
         {!done && (
-          <Box component="span" aria-hidden sx={{ display: "inline-block", width: "0.5em", ml: 0.3, borderRight: "1.5px solid #a855f7", animation: "acb-blink 0.9s steps(2) infinite" }} />
+          <Box component="span" aria-hidden sx={{ display: "inline-block", width: "0.5em", ml: 0.3, borderRight: "1.5px solid #1b4f8a", animation: "acb-blink 0.9s steps(2) infinite" }} />
         )}
       </Box>
       <style jsx global>{`
-        @keyframes acb-blink { 0%, 49% { border-right-color: #a855f7; } 50%, 100% { border-right-color: transparent; } }
+        @keyframes acb-blink { 0%, 49% { border-right-color: #1b4f8a; } 50%, 100% { border-right-color: transparent; } }
       `}</style>
     </Box>
   );
@@ -513,7 +513,7 @@ function GatedPanel({
   onBack: () => void;
 }) {
   const rejected = job.status === "rejected";
-  const tone = rejected ? "#ef4444" : "#f59e0b";
+  const tone = rejected ? "#b32020" : "#b7791f";
 
   const weeks = Number(brief.duration_weeks ?? 0);
   const topics = Number(brief.submodules_count ?? 0);
@@ -618,7 +618,7 @@ function GatedPanel({
               sx={{
                 px: 2.5, py: 1.1, borderRadius: 999, fontWeight: 800, gap: 0.6, fontSize: "0.85rem",
                 color: "white",
-                background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+                background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
               }}
             >
               <Icon icon="mdi:pencil-ruler" width={16} />

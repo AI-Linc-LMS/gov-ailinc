@@ -105,10 +105,10 @@ const InterviewModeSelectorComponent = () => {
             backgroundColor: "color-mix(in srgb, var(--success-500) 10%, var(--surface))",
             position: "relative",
             transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-            transform: quickStartHover ? "translateY(-8px)" : "translateY(0)",
+            transform: quickStartHover ? "translateY(-1px)" : "translateY(0)",
             boxShadow: quickStartHover
-              ? "0 20px 40px color-mix(in srgb, var(--success-500) 35%, transparent)"
-              : "0 4px 12px color-mix(in srgb, var(--success-500) 18%, transparent)",
+              ? "var(--shadow-md)"
+              : "var(--shadow-sm)",
             overflow: "visible",
           }}
         >
@@ -140,7 +140,7 @@ const InterviewModeSelectorComponent = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 8px 16px color-mix(in srgb, var(--success-500) 35%, transparent)",
+                boxShadow: "var(--shadow-sm)",
                 transition: "all 0.3s ease",
                 transform: quickStartHover ? "scale(1.05) rotate(5deg)" : "scale(1)",
               }}
@@ -239,12 +239,12 @@ const InterviewModeSelectorComponent = () => {
               fontSize: "1.05rem",
               borderRadius: 2.5,
               textTransform: "none",
-              boxShadow: "0 4px 14px color-mix(in srgb, var(--success-500) 40%, transparent)",
+              boxShadow: "var(--shadow-sm)",
               transition: "all 0.3s ease",
               "&:hover": {
                 backgroundColor:
                   "color-mix(in srgb, var(--success-500) 84%, var(--accent-indigo-dark))",
-                boxShadow: "0 6px 20px color-mix(in srgb, var(--success-500) 50%, transparent)",
+                boxShadow: "var(--shadow-md)",
                 transform: "scale(1.02)",
               },
               "&.Mui-disabled": {
@@ -273,10 +273,10 @@ const InterviewModeSelectorComponent = () => {
             backgroundColor: "color-mix(in srgb, var(--accent-indigo) 8%, var(--surface))",
             position: "relative",
             transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-            transform: scheduleHover ? "translateY(-8px)" : "translateY(0)",
+            transform: scheduleHover ? "translateY(-1px)" : "translateY(0)",
             boxShadow: scheduleHover
-              ? "0 20px 40px color-mix(in srgb, var(--accent-indigo) 35%, transparent)"
-              : "0 4px 12px color-mix(in srgb, var(--accent-indigo) 18%, transparent)",
+              ? "var(--shadow-md)"
+              : "var(--shadow-sm)",
             overflow: "visible",
           }}
         >
@@ -308,7 +308,7 @@ const InterviewModeSelectorComponent = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 8px 16px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+                boxShadow: "var(--shadow-sm)",
                 transition: "all 0.3s ease",
                 transform: scheduleHover ? "scale(1.05) rotate(-5deg)" : "scale(1)",
               }}
@@ -409,7 +409,7 @@ const InterviewModeSelectorComponent = () => {
               textTransform: "none",
               borderWidth: 2,
               boxShadow:
-                "0 4px 14px color-mix(in srgb, var(--accent-indigo) 30%, transparent)",
+                "var(--shadow-sm)",
               transition: "all 0.3s ease",
               "&:hover": {
                 borderColor: "var(--accent-indigo-dark)",
@@ -417,7 +417,7 @@ const InterviewModeSelectorComponent = () => {
                   "color-mix(in srgb, var(--accent-indigo) 10%, transparent)",
                 borderWidth: 2,
                 boxShadow:
-                  "0 6px 20px color-mix(in srgb, var(--accent-indigo) 40%, transparent)",
+                  "var(--shadow-md)",
                 transform: "scale(1.02)",
               },
               "&.Mui-disabled": {

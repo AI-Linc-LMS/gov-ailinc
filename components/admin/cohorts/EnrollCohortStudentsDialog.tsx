@@ -126,7 +126,7 @@ export function EnrollCohortStudentsDialog({
                   borderRadius: 2,
                   cursor: already ? "default" : "pointer",
                   opacity: already ? 0.5 : 1,
-                  "&:hover": { bgcolor: already ? "transparent" : "color-mix(in srgb, #6366f1 8%, transparent)" },
+                  "&:hover": { bgcolor: already ? "transparent" : "color-mix(in srgb, #1b4f8a 8%, transparent)" },
                 }}
               >
                 <Checkbox checked={already || selected.has(s.id)} disabled={already} size="small" />

@@ -297,7 +297,7 @@ export function AppliedJobsSection({ onBrowseJobs }: AppliedJobsSectionProps) {
                     backgroundColor: "color-mix(in srgb, var(--font-light) 90%, transparent)",
                     borderColor: "var(--success-500)",
                     boxShadow:
-                      "0 2px 8px color-mix(in srgb, var(--success-500) 20%, transparent)",
+                      "var(--shadow-md)",
                   },
                 }}
               >
@@ -524,7 +524,7 @@ export function AppliedJobsSection({ onBrowseJobs }: AppliedJobsSectionProps) {
                     },
                     "&:hover": {
                       borderColor: "color-mix(in srgb, var(--accent-indigo) 45%, transparent)",
-                      boxShadow: "0 4px 16px color-mix(in srgb, var(--accent-indigo) 12%, transparent)",
+                      boxShadow: "var(--shadow-md)",
                       "&::before": { opacity: 1 },
                     },
                   }}

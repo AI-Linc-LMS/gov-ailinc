@@ -967,7 +967,7 @@ function createCourse(body: Record<string, unknown>, authoredHere = true): Build
     rating: 0,
     rating_count: 0,
     enrolled_count: 0,
-    thumbnail: courseArt({ title, accent: ["#6366f1", "#a855f7"] }),
+    thumbnail: courseArt({ title, accent: ["#1b4f8a", "#1b4f8a"] }),
     created_at: now,
     updated_at: now,
     authored_here: authoredHere,

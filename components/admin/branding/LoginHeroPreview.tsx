@@ -49,7 +49,7 @@ export function LoginHeroPreview({
         position: "relative",
         bgcolor: "var(--surface)",
         boxShadow:
-          "0 4px 24px color-mix(in srgb, var(--font-primary) 12%, transparent), 0 0 0 1px color-mix(in srgb, var(--font-primary) 7%, transparent)",
+          "var(--shadow-sm)",
       }}
     >
       {hero ? (

@@ -141,9 +141,9 @@ function InterviewCard({ interview, expanded, onToggle }: {
           bgcolor: "var(--card-bg)",
           transition: "border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease",
           "&:hover": {
-            borderColor: "color-mix(in srgb, #a855f7 35%, transparent)",
+            borderColor: "color-mix(in srgb, #1b4f8a 35%, transparent)",
             transform: "translateY(-1px)",
-            boxShadow: "0 18px 40px -24px color-mix(in srgb, #a855f7 30%, transparent)",
+            boxShadow: "var(--shadow-md)",
           },
         }}
       >
@@ -195,8 +195,8 @@ function InterviewCard({ interview, expanded, onToggle }: {
                     height: 20,
                     fontSize: "0.65rem",
                     fontWeight: 800,
-                    bgcolor: "color-mix(in srgb, #a855f7 14%, transparent)",
-                    color: "#6d28d9",
+                    bgcolor: "color-mix(in srgb, #1b4f8a 14%, transparent)",
+                    color: "#164274",
                   }}
                 />
               )}
@@ -238,8 +238,8 @@ function InterviewCard({ interview, expanded, onToggle }: {
                   gap: 1.5,
                 }}
               >
-                <FeedbackList title="Strengths" items={interview.feedback.strengths} icon="mdi:thumb-up-outline" color="#10b981" />
-                <FeedbackList title="Areas to improve" items={interview.feedback.areasOfImprovement} icon="mdi:lightbulb-on-outline" color="#f59e0b" />
+                <FeedbackList title="Strengths" items={interview.feedback.strengths} icon="mdi:thumb-up-outline" color="#0e7a3c" />
+                <FeedbackList title="Areas to improve" items={interview.feedback.areasOfImprovement} icon="mdi:lightbulb-on-outline" color="#b7791f" />
                 {interview.feedback.mentorComments && (
                   <Box>
                     <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, mb: 0.5, color: "var(--accent-indigo-dark)" }}>
@@ -299,7 +299,7 @@ function InterviewCard({ interview, expanded, onToggle }: {
               onClick={onToggle}
               sx={{
                 color: "var(--font-secondary)",
-                "&:hover": { color: "#6d28d9", bgcolor: "color-mix(in srgb, #a855f7 10%, transparent)" },
+                "&:hover": { color: "#164274", bgcolor: "color-mix(in srgb, #1b4f8a 10%, transparent)" },
               }}
               aria-label={expanded ? "Hide interview feedback" : "Show interview feedback"}
             >
@@ -330,13 +330,13 @@ export function MockInterviewSection({ data }: MockInterviewSectionProps) {
 
   const improvement = data.improvementSinceFirst;
   const improvementColor =
-    improvement == null ? "var(--font-secondary)" : improvement >= 0 ? "#10b981" : "#ef4444";
+    improvement == null ? "var(--font-secondary)" : improvement >= 0 ? "#0e7a3c" : "#b32020";
 
   return (
     <Reveal as="section">
       <SectionShell
         radialMesh={[
-          "radial-gradient(55% 70% at 100% 0%, color-mix(in srgb, #a855f7 16%, transparent), transparent 60%)",
+          "radial-gradient(55% 70% at 100% 0%, color-mix(in srgb, #1b4f8a 16%, transparent), transparent 60%)",
           "radial-gradient(45% 60% at 0% 0%, color-mix(in srgb, var(--accent-indigo) 12%, transparent), transparent 60%)",
         ]}
       >
@@ -346,7 +346,7 @@ export function MockInterviewSection({ data }: MockInterviewSectionProps) {
           subtitle="Latest score, readiness index, parameter breakdown, and mentor feedback per attempt."
           iconBadge={{
             icon: "mdi:account-voice",
-            gradient: "linear-gradient(135deg, #a855f7 0%, #6d28d9 100%)",
+            gradient: "linear-gradient(135deg, #1b4f8a 0%, #164274 100%)",
           }}
         />
 
@@ -386,15 +386,15 @@ export function MockInterviewSection({ data }: MockInterviewSectionProps) {
                     p: { xs: 2, md: 2.5 },
                     borderRadius: 3,
                     background:
-                      "linear-gradient(160deg, color-mix(in srgb, #a855f7 10%, transparent) 0%, color-mix(in srgb, var(--accent-indigo) 6%, transparent) 100%)",
-                    border: "1px solid color-mix(in srgb, #a855f7 22%, transparent)",
+                      "linear-gradient(160deg, color-mix(in srgb, #1b4f8a 10%, transparent) 0%, color-mix(in srgb, var(--accent-indigo) 6%, transparent) 100%)",
+                    border: "1px solid color-mix(in srgb, #1b4f8a 22%, transparent)",
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
                     <Box>
                       <Typography
                         variant="caption"
-                        sx={{ color: "#6d28d9", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", fontSize: "0.68rem" }}
+                        sx={{ color: "#164274", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", fontSize: "0.68rem" }}
                       >
                         Latest interview · {formatDate(latest.date)}
                       </Typography>
@@ -438,9 +438,9 @@ export function MockInterviewSection({ data }: MockInterviewSectionProps) {
                           <Radar
                             name="Score"
                             dataKey="score"
-                            stroke="#a855f7"
+                            stroke="#1b4f8a"
                             strokeWidth={2}
-                            fill="#a855f7"
+                            fill="#1b4f8a"
                             fillOpacity={0.3}
                             isAnimationActive
                           />
@@ -460,8 +460,8 @@ export function MockInterviewSection({ data }: MockInterviewSectionProps) {
                     p: { xs: 2.5, md: 3 },
                     borderRadius: 3,
                     background:
-                      "linear-gradient(160deg, color-mix(in srgb, #a855f7 14%, transparent) 0%, color-mix(in srgb, #6d28d9 6%, transparent) 100%)",
-                    border: "1px solid color-mix(in srgb, #a855f7 26%, transparent)",
+                      "linear-gradient(160deg, color-mix(in srgb, #1b4f8a 14%, transparent) 0%, color-mix(in srgb, #164274 6%, transparent) 100%)",
+                    border: "1px solid color-mix(in srgb, #1b4f8a 26%, transparent)",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -474,14 +474,14 @@ export function MockInterviewSection({ data }: MockInterviewSectionProps) {
                     value={data.interviewReadinessIndex}
                     size={140}
                     strokeWidth={11}
-                    color="#a855f7"
-                    colorEnd="#6d28d9"
+                    color="#1b4f8a"
+                    colorEnd="#164274"
                     caption=""
                     valueFontSize={32}
                   />
                   <Typography
                     variant="caption"
-                    sx={{ color: "#6d28d9", fontWeight: 800, letterSpacing: "0.18em", fontSize: "0.66rem", textTransform: "uppercase", mt: 1 }}
+                    sx={{ color: "#164274", fontWeight: 800, letterSpacing: "0.18em", fontSize: "0.66rem", textTransform: "uppercase", mt: 1 }}
                   >
                     Interview Readiness
                   </Typography>
@@ -516,7 +516,7 @@ export function MockInterviewSection({ data }: MockInterviewSectionProps) {
               }}
             >
               {[
-                { label: "Interviews", value: data.totalInterviews, accent: "#6d28d9" },
+                { label: "Interviews", value: data.totalInterviews, accent: "#164274" },
                 { label: "Latest", value: Math.round(data.latestInterviewScore), suffix: "%", accent: proficiencyBandColor(data.latestInterviewScore) },
                 { label: "Readiness", value: Math.round(data.interviewReadinessIndex), suffix: "%", accent: proficiencyBandColor(data.interviewReadinessIndex) },
                 {

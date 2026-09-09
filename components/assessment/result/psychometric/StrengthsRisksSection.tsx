@@ -140,7 +140,7 @@ export function StrengthsRisksSection({ data }: StrengthsRisksSectionProps) {
               {data.hidden_strengths.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border-2 border-blue-200 hover:shadow-lg transition-all"
+                  className="bg-gradient-to-br from-blue-50 to-[#eef3fa] rounded-xl p-5 border-2 border-blue-200 hover:shadow-lg transition-all"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <h4 className="text-lg font-bold text-slate-900">{item.strength}</h4>
@@ -168,7 +168,7 @@ export function StrengthsRisksSection({ data }: StrengthsRisksSectionProps) {
             {data.risk_zones.map((item, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-red-50 to-rose-50 rounded-xl p-5 border-2 border-red-200 hover:shadow-lg transition-all"
+                className="bg-gradient-to-br from-red-50 to-[#fbeaea] rounded-xl p-5 border-2 border-red-200 hover:shadow-lg transition-all"
               >
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="text-lg font-bold text-slate-900">{item.risk}</h4>
@@ -203,7 +203,7 @@ export function StrengthsRisksSection({ data }: StrengthsRisksSectionProps) {
       {selectedView === "development" && (
         <div className="space-y-6">
           {/* Growth Trajectory Chart */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+          <div className="bg-gradient-to-br from-blue-50 to-[#eef3fa] rounded-2xl p-6 border border-blue-100">
             <h3 className="text-xl font-bold text-slate-900 mb-6">Development Trajectory</h3>
             <div className="w-full h-[400px]">
               <ResponsiveContainer>

@@ -38,7 +38,7 @@ const SURFACE: Record<
     label: "Header banner",
     caption: "Top of the course page",
     radius: 4,
-    shadow: "0 18px 44px -22px rgba(99,102,241,0.45)",
+    shadow: "var(--shadow-md)",
     responsive: true,
     aspect: { desktop: "1024 / 300", mobile: "16 / 9" },
   },
@@ -87,7 +87,7 @@ export function CourseCoverArtPanel({
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, mb: 0.25 }}>
-        <Icon icon="mdi:image-multiple-outline" width={18} style={{ color: "#a855f7" }} />
+        <Icon icon="mdi:image-multiple-outline" width={18} style={{ color: "#1b4f8a" }} />
         <Typography sx={{ fontWeight: 800, fontSize: "0.95rem" }}>Cover art</Typography>
       </Box>
       <Typography sx={{ color: "text.secondary", fontSize: "0.8rem", mb: 1.75 }}>
@@ -231,14 +231,14 @@ function CoverSlot({
           aspectRatio: cfg.responsive ? cfg.aspect[device] : cfg.aspect.desktop,
           borderRadius: cfg.radius,
           overflow: "hidden",
-          bgcolor: "color-mix(in srgb, #6366f1 8%, transparent)",
+          bgcolor: "color-mix(in srgb, #1b4f8a 8%, transparent)",
           // Faithful to the real surface only when an image is actually shown;
           // empty/hidden slots get the editor's dashed dropzone affordance.
           boxShadow: url && !hidden ? cfg.shadow : "none",
           border: url
             ? "none"
-            : `1px dashed color-mix(in srgb, ${dragOver ? "#6366f1" : "var(--border-default)"} 90%, transparent)`,
-          outline: dragOver ? "2px solid #6366f1" : "none",
+            : `1px dashed color-mix(in srgb, ${dragOver ? "#1b4f8a" : "var(--border-default)"} 90%, transparent)`,
+          outline: dragOver ? "2px solid #1b4f8a" : "none",
           outlineOffset: -2,
           cursor: !url && !anyBusy ? "pointer" : "default",
           transition: "box-shadow .2s ease, outline-color .15s ease, border-color .15s ease",
@@ -374,9 +374,9 @@ function DeviceToggle({ device, onChange }: { device: Device; onChange: (d: Devi
                 height: 22,
                 borderRadius: 999,
                 color: active ? "white" : "text.secondary",
-                bgcolor: active ? "#6366f1" : "transparent",
+                bgcolor: active ? "#1b4f8a" : "transparent",
                 transition: "background-color .15s ease, color .15s ease",
-                "&:hover": { bgcolor: active ? "#6366f1" : "color-mix(in srgb, #6366f1 14%, transparent)" },
+                "&:hover": { bgcolor: active ? "#1b4f8a" : "color-mix(in srgb, #1b4f8a 14%, transparent)" },
               }}
             >
               <Icon icon={opt.icon} width={14} />
@@ -417,22 +417,22 @@ function SlotBtn({
         gap: 0.5,
         display: "inline-flex",
         alignItems: "center",
-        color: primary ? "white" : "#6366f1",
-        bgcolor: primary ? "#6366f1" : "transparent",
+        color: primary ? "white" : "#1b4f8a",
+        bgcolor: primary ? "#1b4f8a" : "transparent",
         border: primary
-          ? "1px solid #6366f1"
-          : "1px solid color-mix(in srgb, #6366f1 40%, transparent)",
+          ? "1px solid #1b4f8a"
+          : "1px solid color-mix(in srgb, #1b4f8a 40%, transparent)",
         opacity: disabled && !loading ? 0.5 : 1,
         transition: "background-color .15s ease, opacity .15s ease",
         "&:hover": {
           bgcolor: primary
-            ? "color-mix(in srgb, #6366f1 88%, black)"
-            : "color-mix(in srgb, #6366f1 10%, transparent)",
+            ? "color-mix(in srgb, #1b4f8a 88%, black)"
+            : "color-mix(in srgb, #1b4f8a 10%, transparent)",
         },
       }}
     >
       {loading ? (
-        <CircularProgress size={14} sx={{ color: primary ? "white" : "#6366f1" }} />
+        <CircularProgress size={14} sx={{ color: primary ? "white" : "#1b4f8a" }} />
       ) : (
         <Icon icon={icon} width={15} />
       )}

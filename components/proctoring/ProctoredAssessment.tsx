@@ -103,11 +103,11 @@ export function ProctoredAssessment({
   const getStatusColor = () => {
     switch (status) {
       case "NORMAL":
-        return "#10b981";
+        return "#0e7a3c";
       case "WARNING":
-        return "#f59e0b";
+        return "#b7791f";
       case "VIOLATION":
-        return "#ef4444";
+        return "#b32020";
     }
   };
 
@@ -120,7 +120,7 @@ export function ProctoredAssessment({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          background: "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)",
         }}
       >
         <Paper
@@ -134,7 +134,7 @@ export function ProctoredAssessment({
           <IconWrapper
             icon="mdi:shield-account"
             size={64}
-            color="#667eea"
+            color="#1b4f8a"
             style={{ marginBottom: 16 }}
           />
           <Typography variant="h4" fontWeight={700} gutterBottom>
@@ -194,7 +194,7 @@ export function ProctoredAssessment({
             sx={{
               py: 1.5,
               fontSize: "1.1rem",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              background: "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)",
             }}
           >
             {isInitializing ? "Initializing Camera..." : "Start Assessment"}
@@ -245,7 +245,7 @@ export function ProctoredAssessment({
             <strong
               style={{
                 color:
-                  violations.length >= maxViolations ? "#ef4444" : "inherit",
+                  violations.length >= maxViolations ? "#b32020" : "inherit",
               }}
             >
               {violations.length}/{maxViolations}
@@ -295,7 +295,7 @@ export function ProctoredAssessment({
             sx={{ color: "#fff", fontWeight: 600, fontSize: "0.7rem" }}
           >
             <Box component="span" sx={{ marginInlineEnd: 0.5, display: "inline-flex", animation: "pulse 2s infinite" }}>
-              <IconWrapper icon="mdi:record-circle" size={12} color="#ef4444" />
+              <IconWrapper icon="mdi:record-circle" size={12} color="#b32020" />
             </Box>
             RECORDING
           </Typography>
@@ -312,7 +312,7 @@ export function ProctoredAssessment({
       >
         <DialogTitle>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <IconWrapper icon="mdi:alert" size={24} color="#f59e0b" />
+            <IconWrapper icon="mdi:alert" size={24} color="#b7791f" />
             <Typography variant="h6" fontWeight={600}>
               Proctoring Warning
             </Typography>
@@ -348,7 +348,7 @@ export function ProctoredAssessment({
       >
         <DialogTitle>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <IconWrapper icon="mdi:alert-octagon" size={24} color="#ef4444" />
+            <IconWrapper icon="mdi:alert-octagon" size={24} color="#b32020" />
             <Typography variant="h6" fontWeight={600} color="error">
               Assessment Terminated
             </Typography>

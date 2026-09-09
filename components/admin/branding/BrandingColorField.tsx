@@ -72,7 +72,7 @@ export function BrandingColorField({
         "&:hover": {
           borderColor: "color-mix(in srgb, var(--primary-500) 35%, var(--border-default) 65%)",
           boxShadow:
-            "0 4px 12px color-mix(in srgb, var(--primary-500) 8%, transparent)",
+            "var(--shadow-md)",
         },
       }}
     >
@@ -190,7 +190,7 @@ export function BrandingColorField({
                   <IconWrapper
                     icon="mdi:check-circle"
                     size={16}
-                    color="var(--success-500, #5fa564)"
+                    color="var(--success-500, #0e7a3c)"
                   />
                 </InputAdornment>
               ) : undefined,

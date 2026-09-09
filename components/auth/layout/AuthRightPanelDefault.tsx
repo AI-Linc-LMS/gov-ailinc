@@ -49,7 +49,7 @@ function PanelTexture() {
           zIndex: 1,
           pointerEvents: "none",
           background:
-            "radial-gradient(60% 44% at 82% 16%, rgba(168,85,247,0.24) 0%, transparent 70%), radial-gradient(52% 40% at 6% 62%, rgba(236,72,153,0.15) 0%, transparent 72%)",
+            "radial-gradient(60% 44% at 82% 16%, rgba(27, 79, 138,0.24) 0%, transparent 70%), radial-gradient(52% 40% at 6% 62%, rgba(15, 107, 122,0.15) 0%, transparent 72%)",
         }}
       />
     </>

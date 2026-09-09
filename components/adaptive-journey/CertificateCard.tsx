@@ -25,7 +25,7 @@ function Pill({
 }) {
   const active = !disabled;
   const color = active ? (tone === "primary" ? "white" : "#0a66c2") : "#64748b";
-  const bgcolor = active && tone === "primary" ? "#6366f1" : "#f1f5f9";
+  const bgcolor = active && tone === "primary" ? "#1b4f8a" : "#f1f5f9";
   return (
     <ButtonBase
       onClick={onClick}
@@ -84,7 +84,7 @@ export function CertificateCard({ board }: { board: JourneyBoard }) {
       {cert.portal}
 
       <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-        <Box sx={{ width: 30, height: 30, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #f59e0b, #f97316)" }}>
+        <Box sx={{ width: 30, height: 30, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #b7791f, #b45309)" }}>
           <Icon icon="mdi:certificate" width={17} />
         </Box>
         <Typography sx={{ fontWeight: 800, color: "#0f172a", fontSize: "0.92rem" }}>Certificate</Typography>

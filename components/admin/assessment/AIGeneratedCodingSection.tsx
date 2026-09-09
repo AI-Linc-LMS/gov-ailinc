@@ -234,7 +234,7 @@ export function AIGeneratedCodingSection({
           borderRadius: "var(--radius-card)",
           bgcolor: "var(--card-bg)",
           border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
-          boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -306,7 +306,7 @@ export function AIGeneratedCodingSection({
               color: "#fff",
               background: "var(--gradient-ai)",
               boxShadow:
-                "0 10px 22px -12px color-mix(in srgb, var(--ai-violet) 70%, transparent)",
+                "var(--shadow-sm)",
               "&:hover": { filter: "brightness(1.05)" },
               "&.Mui-disabled": {
                 color: "var(--font-secondary)",
@@ -376,7 +376,7 @@ export function AIGeneratedCodingSection({
             sx={{
               borderRadius: "16px",
               boxShadow:
-                "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+                "var(--shadow-sm)",
               border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
               backgroundColor: "var(--card-bg)",
               overflow: "hidden",

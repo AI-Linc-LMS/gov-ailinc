@@ -133,8 +133,8 @@ export function LiveSessionRosterSection({
               size="small"
               sx={{
                 fontWeight: 700, fontSize: "0.72rem",
-                bgcolor: "color-mix(in srgb, var(--ai-violet, #7c3aed) 14%, transparent)",
-                color: "var(--ai-violet, #7c3aed)",
+                bgcolor: "color-mix(in srgb, var(--ai-violet, #14406f) 14%, transparent)",
+                color: "var(--ai-violet, #14406f)",
               }}
             />
           )}

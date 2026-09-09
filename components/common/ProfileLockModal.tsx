@@ -44,7 +44,7 @@ export function ProfileLockModal({
       maxWidth="xs"
       slotProps={{
         paper: { sx: { borderRadius: 4, p: 1 } },
-        backdrop: { sx: { backdropFilter: "blur(3px)", bgcolor: "rgba(15,23,42,0.55)" } },
+        backdrop: { sx: { bgcolor: "rgba(15,23,42,0.55)" } },
       }}
     >
       <Box sx={{ p: 3, textAlign: "center" }}>
@@ -58,7 +58,7 @@ export function ProfileLockModal({
             display: "grid",
             placeItems: "center",
             color: "white",
-            background: "linear-gradient(135deg, #7c3aed, #ec4899)",
+            background: "linear-gradient(135deg, #14406f, #0f6b7a)",
           }}
         >
           <Icon icon="mdi:lock-outline" width={28} />
@@ -80,7 +80,7 @@ export function ProfileLockModal({
               bgcolor: "#eef2f7",
               "& .MuiLinearProgress-bar": {
                 borderRadius: 4,
-                background: "linear-gradient(90deg, #7c3aed, #ec4899)",
+                background: "linear-gradient(90deg, #14406f, #0f6b7a)",
               },
             }}
           />
@@ -124,8 +124,8 @@ export function ProfileLockModal({
             fontSize: "0.92rem",
             color: "white",
             textTransform: "none",
-            background: "linear-gradient(135deg, #7c3aed, #ec4899)",
-            "&:hover": { background: "linear-gradient(135deg, #6d28d9, #db2777)" },
+            background: "linear-gradient(135deg, #14406f, #0f6b7a)",
+            "&:hover": { background: "linear-gradient(135deg, #164274, #0b5260)" },
           }}
         >
           Complete profile

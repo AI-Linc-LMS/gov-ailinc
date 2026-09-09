@@ -73,7 +73,7 @@ export function AdaptiveCodingSubmissions({
           background: "color-mix(in srgb, var(--border-default) 14%, transparent)",
         }}
       >
-        <Icon icon="mdi:history" width={18} style={{ color: "#6366f1" }} />
+        <Icon icon="mdi:history" width={18} style={{ color: "#1b4f8a" }} />
         <Typography sx={{ fontWeight: 800, fontSize: "0.85rem" }}>Submissions</Typography>
         <Box
           sx={{
@@ -83,8 +83,8 @@ export function AdaptiveCodingSubmissions({
             borderRadius: 999,
             fontSize: "0.7rem",
             fontWeight: 800,
-            color: "#6366f1",
-            background: "color-mix(in srgb, #6366f1 12%, transparent)",
+            color: "#1b4f8a",
+            background: "color-mix(in srgb, #1b4f8a 12%, transparent)",
           }}
         >
           {items.length}
@@ -120,7 +120,7 @@ function SubmissionRow({
   onToggle: () => void;
   onRestore?: (source: string, language: string) => void;
 }) {
-  const color = sub.all_passed ? "#10b981" : "#ef4444";
+  const color = sub.all_passed ? "#0e7a3c" : "#b32020";
   const verdict = sub.all_passed ? "Accepted" : `${sub.passed_count}/${sub.total_count} passed`;
 
   return (
@@ -203,8 +203,8 @@ function SubmissionRow({
                 borderRadius: 999,
                 fontSize: "0.68rem",
                 fontWeight: 700,
-                color: "#b45309",
-                background: "color-mix(in srgb, #f59e0b 14%, transparent)",
+                color: "#8a5a12",
+                background: "color-mix(in srgb, #b7791f 14%, transparent)",
               }}
             >
               <Icon icon="mdi:lightbulb-alert-outline" width={13} />
@@ -246,9 +246,9 @@ function SubmissionRow({
                   borderRadius: 1.5,
                   fontSize: "0.75rem",
                   fontWeight: 800,
-                  color: "#6366f1",
-                  border: "1px solid color-mix(in srgb, #6366f1 40%, transparent)",
-                  "&:hover": { background: "color-mix(in srgb, #6366f1 10%, transparent)" },
+                  color: "#1b4f8a",
+                  border: "1px solid color-mix(in srgb, #1b4f8a 40%, transparent)",
+                  "&:hover": { background: "color-mix(in srgb, #1b4f8a 10%, transparent)" },
                 }}
               >
                 <Icon icon="mdi:pencil-box-outline" width={15} />

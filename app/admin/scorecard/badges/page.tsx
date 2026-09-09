@@ -300,8 +300,8 @@ export default function AdminScorecardBadgesPage() {
             mb: 3,
           }}
         >
-          <StatChip label="Badges" value={summary.total} color="#f59e0b" />
-          <StatChip label="Awards given" value={summary.totalAwarded} color="#10b981" />
+          <StatChip label="Badges" value={summary.total} color="#b7791f" />
+          <StatChip label="Awards given" value={summary.totalAwarded} color="#0e7a3c" />
           <StatChip label="Total points" value={summary.totalPoints} color="var(--accent-indigo-dark)" />
         </Box>
 
@@ -369,8 +369,8 @@ export default function AdminScorecardBadgesPage() {
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                bgcolor: "color-mix(in srgb, #fbbf24 16%, transparent)",
-                                color: "#d97706",
+                                bgcolor: "color-mix(in srgb, #c9903a 16%, transparent)",
+                                color: "#8a5a12",
                               }}
                             >
                               <IconWrapper icon={b.iconSlug || "mdi:trophy-outline"} size={16} />
@@ -402,7 +402,7 @@ export default function AdminScorecardBadgesPage() {
                             />
                           </Tooltip>
                         </TableCell>
-                        <TableCell sx={{ textAlign: "right", fontWeight: 700, color: "#f59e0b", fontVariantNumeric: "tabular-nums" }}>
+                        <TableCell sx={{ textAlign: "right", fontWeight: 700, color: "#b7791f", fontVariantNumeric: "tabular-nums" }}>
                           {b.points}
                         </TableCell>
                         <TableCell sx={{ textAlign: "right" }}>
@@ -432,7 +432,7 @@ export default function AdminScorecardBadgesPage() {
                                 onClick={() => void handleDelete(b)}
                                 sx={{
                                   color: "var(--font-secondary)",
-                                  "&:hover": { color: "#ef4444", bgcolor: "color-mix(in srgb, #ef4444 8%, transparent)" },
+                                  "&:hover": { color: "#b32020", bgcolor: "color-mix(in srgb, #b32020 8%, transparent)" },
                                 }}
                                 aria-label={`Deactivate ${b.name}`}
                               >
@@ -562,8 +562,8 @@ export default function AdminScorecardBadgesPage() {
               startIcon={saving ? <CircularProgress size={14} color="inherit" /> : null}
               sx={{
                 textTransform: "none",
-                bgcolor: "#f59e0b",
-                "&:hover": { bgcolor: "#d97706" },
+                bgcolor: "#b7791f",
+                "&:hover": { bgcolor: "#8a5a12" },
               }}
             >
               {editing ? "Save changes" : "Create"}

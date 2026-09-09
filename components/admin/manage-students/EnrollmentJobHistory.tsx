@@ -226,7 +226,7 @@ export function EnrollmentJobHistory({
           border: "1px solid var(--border-default)",
           overflow: "hidden",
           backgroundColor: "var(--card-bg)",
-          boxShadow: "0 1px 3px color-mix(in srgb, var(--font-primary) 8%, transparent)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <Table size="small" stickyHeader>

@@ -747,10 +747,10 @@ function ControlButton({
   onClick: () => void;
 }) {
   const styles: Record<string, object> = {
-    primary: { color: "white", background: "linear-gradient(135deg, #6366f1 0%, #4338ca 100%)" },
-    success: { color: "white", background: "linear-gradient(135deg, #10b981 0%, #047857 100%)" },
+    primary: { color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #0e2a4b 100%)" },
+    success: { color: "white", background: "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)" },
     outline: { color: "var(--font-primary)", border: "1px solid color-mix(in srgb, var(--border-default) 80%, transparent)" },
-    danger: { color: "#ef4444", border: "1px solid color-mix(in srgb, #ef4444 35%, transparent)" },
+    danger: { color: "#b32020", border: "1px solid color-mix(in srgb, #b32020 35%, transparent)" },
   };
   return (
     <ButtonBase

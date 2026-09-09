@@ -44,7 +44,8 @@ export function MockInterviewsTab({
           label="Avg score"
           value={summary.average_score != null ? `${summary.average_score}%` : "-"}
           icon="mdi:chart-bell-curve"
-          accent={ADAPTIVE.purple}
+          // teal: ADAPTIVE.purple is the same blue as the "Total" pill's accent above
+          accent={ADAPTIVE.pink}
         />
         <StatPill
           label="Best score"

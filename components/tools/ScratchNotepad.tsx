@@ -148,7 +148,7 @@ export function ScratchNotepad({
             },
             "&.Mui-focused": {
               borderColor: "success.main",
-              boxShadow: `0 0 0 3px ${alpha(theme.palette.success.main, 0.2)}`,
+              boxShadow: "var(--ring-focus)",
             },
           },
           "& .MuiOutlinedInput-notchedOutline": {

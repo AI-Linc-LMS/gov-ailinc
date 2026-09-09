@@ -19,7 +19,7 @@ type Step = { icon: string; accent: string; title: string; body: string };
 const buildSteps = (hasPriorCourses: boolean): Step[] => [
   {
     icon: "mdi:auto-awesome",
-    accent: "#6366f1",
+    accent: "#1b4f8a",
     title: "Meet Courses",
     body: hasPriorCourses
       ? "A brand-new way to learn - find it in the Courses section. The course adjusts itself to you instead of one-size-fits-all. It's a fresh start: your adaptive progress begins at 0 and earlier (non-adaptive) course progress doesn't transfer."
@@ -27,19 +27,19 @@ const buildSteps = (hasPriorCourses: boolean): Step[] => [
   },
   {
     icon: "mdi:target-account",
-    accent: "#a855f7",
+    accent: "#1b4f8a",
     title: "It calibrates to your level",
     body: "A quick calibration reads where you are, so you start at the right depth - no time wasted on what you already know.",
   },
   {
     icon: "mdi:chart-line-variant",
-    accent: "#ec4899",
+    accent: "#0f6b7a",
     title: "Difficulty adapts in real time",
     body: "Get a streak right and it steps up; struggle and it eases off and offers hints, a mentor, and re-explains - live.",
   },
   {
     icon: "mdi:trophy-variant",
-    accent: "#10b981",
+    accent: "#0e7a3c",
     title: "Earn points & a certificate",
     body: "Every quiz, video and coding problem earns time-decayed points and feeds your journey toward a shareable certificate.",
   },
@@ -63,7 +63,7 @@ export function AdaptiveCourseIntroModal({ course, hasPriorCourses = true, onClo
       maxWidth="xs"
       fullWidth
       slotProps={{ paper: { sx: { borderRadius: 5, overflow: "hidden", position: "relative",
-        boxShadow: "0 30px 80px -30px rgba(124,58,237,0.6)" } } }}
+        boxShadow: "var(--shadow-xl)" } } }}
     >
       <IconButton
         aria-label="Skip"
@@ -94,8 +94,8 @@ export function AdaptiveCourseIntroModal({ course, hasPriorCourses = true, onClo
               animate={{ y: [0, -7, 0] }}
               transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
               sx={{ width: 88, height: 88, borderRadius: "28%", display: "grid", placeItems: "center", color: "white",
-                background: `linear-gradient(135deg, ${s.accent}, color-mix(in srgb, ${s.accent} 55%, #ec4899))`,
-                boxShadow: `0 18px 40px -16px ${s.accent}` }}
+                background: `linear-gradient(135deg, ${s.accent}, color-mix(in srgb, ${s.accent} 55%, #0f6b7a))`,
+                boxShadow: "var(--shadow-sm)" }}
             >
               <Icon icon={s.icon} width={44} />
             </Box>
@@ -139,7 +139,7 @@ export function AdaptiveCourseIntroModal({ course, hasPriorCourses = true, onClo
           variant="contained"
           endIcon={<Icon icon={isLast ? "mdi:arrow-right-circle" : "mdi:arrow-right"} width={18} />}
           sx={{ textTransform: "none", fontWeight: 800, borderRadius: 999, px: 2.5,
-            background: "linear-gradient(135deg,#6366f1,#a855f7)" }}
+            background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)" }}
         >
           {isLast ? "Open Courses" : "Next"}
         </Button>

@@ -63,7 +63,7 @@ export function AdaptiveInfoTip({
           p: 0.25,
           ml: 0.25,
           color: "text.secondary",
-          "&:hover": { color: "#6366f1", bgcolor: "color-mix(in srgb, #6366f1 8%, transparent)" },
+          "&:hover": { color: "#1b4f8a", bgcolor: "color-mix(in srgb, #1b4f8a 8%, transparent)" },
         }}
       >
         <Icon icon="mdi:information-outline" width={15} />
@@ -83,20 +83,20 @@ export function AdaptiveInfoTip({
               borderRadius: 3,
               bgcolor: "var(--card-bg)",
               border: "1px solid color-mix(in srgb, var(--border-default) 70%, transparent)",
-              boxShadow: "0 24px 50px -16px rgba(15, 23, 42, 0.25)",
+              boxShadow: "var(--shadow-lg)",
             },
           },
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, mb: 1 }}>
-          <Icon icon="mdi:lightbulb-on-outline" width={16} style={{ color: "#a855f7" }} />
+          <Icon icon="mdi:lightbulb-on-outline" width={16} style={{ color: "#1b4f8a" }} />
           <Typography
             sx={{
               fontSize: "0.78rem",
               fontWeight: 800,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
-              color: "#a855f7",
+              color: "#1b4f8a",
             }}
           >
             {title}
@@ -115,8 +115,8 @@ export function AdaptiveInfoTip({
               px: 0.45,
               py: 0.1,
               borderRadius: 0.5,
-              bgcolor: "color-mix(in srgb, #6366f1 10%, transparent)",
-              color: "#4338ca",
+              bgcolor: "color-mix(in srgb, #1b4f8a 10%, transparent)",
+              color: "#0e2a4b",
             },
             "& strong": { fontWeight: 800, color: "text.primary" },
           }}

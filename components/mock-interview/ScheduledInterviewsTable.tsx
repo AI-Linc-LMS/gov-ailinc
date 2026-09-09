@@ -159,9 +159,9 @@ const ScheduledInterviewsTableComponent = ({
                 transition: "all 0.3s ease",
                 "&:hover": {
                   boxShadow:
-                    "0 4px 12px color-mix(in srgb, var(--warning-500) 25%, transparent)",
+                    "var(--shadow-md)",
                   borderColor: "var(--warning-500)",
-                  transform: "translateY(-2px)",
+                  transform: "translateY(-1px)",
                 },
               }}
             >
@@ -180,7 +180,7 @@ const ScheduledInterviewsTableComponent = ({
                     justifyContent: "center",
                     flexShrink: 0,
                     boxShadow:
-                      "0 4px 12px color-mix(in srgb, var(--warning-500) 35%, transparent)",
+                      "var(--shadow-sm)",
                   }}
                 >
                   <Typography

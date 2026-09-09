@@ -152,7 +152,7 @@ export function ReopenTicketDialog({
             alignItems: "center",
             justifyContent: "center",
             flexShrink: 0,
-            boxShadow: "0 4px 12px rgba(249,115,22,0.28)",
+            boxShadow: "var(--shadow-md)",
           }}
         >
           <IconWrapper icon="mdi:lock-reset" size={22} color="var(--font-light)" />
@@ -345,11 +345,11 @@ export function ReopenTicketDialog({
             background:
               "linear-gradient(135deg, var(--ticket-reopen) 0%, var(--warning-amber) 100%)",
             color: "var(--font-light)",
-            boxShadow: "0 4px 12px rgba(249,115,22,0.28)",
+            boxShadow: "var(--shadow-md)",
             "&:hover": {
               background:
                 "linear-gradient(135deg, var(--ticket-reopen-hover) 0%, var(--proctoring-strong-dark) 100%)",
-              boxShadow: "0 6px 16px rgba(249,115,22,0.36)",
+              boxShadow: "var(--shadow-md)",
             },
             "&.Mui-disabled": {
               background: "var(--border-default)",

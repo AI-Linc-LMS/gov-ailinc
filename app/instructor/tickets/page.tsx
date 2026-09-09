@@ -23,9 +23,9 @@ import { ticketService, type Ticket, type TicketStatus } from "@/lib/services/ti
  */
 
 const STATUS_TONES: Record<string, { bg: string; fg: string }> = {
-  OPEN: { bg: "color-mix(in srgb,#f59e0b 14%,transparent)", fg: "#b45309" },
-  IN_PROGRESS: { bg: "color-mix(in srgb,#6366f1 14%,transparent)", fg: "#4338ca" },
-  RESOLVED: { bg: "color-mix(in srgb,#10b981 14%,transparent)", fg: "#047857" },
+  OPEN: { bg: "color-mix(in srgb,#b7791f 14%,transparent)", fg: "#8a5a12" },
+  IN_PROGRESS: { bg: "color-mix(in srgb,#1b4f8a 14%,transparent)", fg: "#0e2a4b" },
+  RESOLVED: { bg: "color-mix(in srgb,#0e7a3c 14%,transparent)", fg: "#0B6232" },
   CLOSED: { bg: "color-mix(in srgb,#64748b 14%,transparent)", fg: "#475569" },
 };
 

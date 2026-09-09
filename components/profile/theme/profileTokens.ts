@@ -29,17 +29,20 @@ export const PROFILE = {
   hairline: "#e4e7f0",
   hairlineSoft: "#eef2f7",
 
-  violet: "#7c3aed",
-  violetLight: "#a855f7",
-  violetSoft: "#f5f3ff",
-  violetBorder: "#ede9fe",
-  indigo: "#6366f1",
-  pink: "#ec4899",
+  violet: "#14406f",
+  violetLight: "#1b4f8a",
+  violetSoft: "#eef3fa",
+  violetBorder: "#eef3fa",
+  indigo: "#1b4f8a",
+  pink: "#0f6b7a",
 
-  /** Dark hero base stops. Mirrors AiBriefingHero. */
-  night: "#100a2c",
-  night2: "#181040",
-  night3: "#271a5c",
+  /** Dark hero base stops. Mirrors AiBriefingHero. These were the vendor's
+   *  violet-black ladder; they are now the three darkest government surfaces
+   *  named in the palette, in the same lightest-to-darkest order, so the hero
+   *  reads as deep navy rather than deep violet. */
+  night: "#071426",
+  night2: "#0b1b2e",
+  night3: "#10263f",
 } as const;
 
 /**
@@ -47,10 +50,21 @@ export const PROFILE = {
  * dashboard hero are the same object, not two things that look similar.
  */
 export const HERO_BG =
-  "radial-gradient(110% 130% at 12% 112%, rgba(192,38,211,0.45) 0%, rgba(124,58,237,0.30) 30%, rgba(15,10,40,0) 60%), " +
-  "linear-gradient(150deg, #271a5c 0%, #181040 55%, #100a2c 100%)";
+  // The bottom-left bloom was fuchsia at 45%. It is doing real work (without it
+  // the hero is a flat slab), so it is recoloured rather than removed, to the
+  // institutional teal at the same alpha. The mid stop was already blue; the
+  // outer stop is fully transparent, so only its channels changed.
+  "radial-gradient(110% 130% at 12% 112%, rgba(15,107,122,0.45) 0%, rgba(20, 64, 111,0.30) 30%, rgba(7,20,38,0) 60%), " +
+  "linear-gradient(150deg, #10263f 0%, #0b1b2e 55%, #071426 100%)";
 
-export const HERO_SHADOW = "0 24px 60px -30px rgba(76,29,149,0.7)";
+/**
+ * Was a 60px violet glow at 70% opacity, which the palette rules rule out three
+ * times over: blur past ~16px, alpha past ~15%, and a saturated hue instead of
+ * navy ink. A government service should look printed, so this is the shared
+ * elevation token, and the hero's own dark fill supplies the rest of the
+ * separation it needs against the canvas.
+ */
+export const HERO_SHADOW = "var(--shadow-lg)";
 
 /** MUI spacing unit, so `borderRadius: HERO_RADIUS` reads as 40px. */
 export const HERO_RADIUS = 5;
@@ -58,9 +72,12 @@ export const HERO_RADIUS = 5;
 /**
  * White card on canvas. From parts.tsx PanelCard: a defined border plus a soft shadow so
  * the cards read as cards next to the dark hero rather than as plain rectangles.
+ *
+ * Was a 28px indigo-tinted drop. Now the shared token, which is the same short
+ * two-layer shape in navy ink. The border is what actually separates a white
+ * card from the canvas, which is why losing the reach costs nothing.
  */
-export const PANEL_SHADOW =
-  "0 1px 2px rgba(16,24,40,0.04), 0 12px 28px -20px rgba(30,27,75,0.28)";
+export const PANEL_SHADOW = "var(--shadow-sm)";
 
 export const PANEL_BORDER = `1px solid ${PROFILE.hairline}`;
 
@@ -68,12 +85,14 @@ export const PANEL_BORDER = `1px solid ${PROFILE.hairline}`;
 export const PANEL_RADIUS = 4;
 
 /** The 30px section-header icon tile. */
-export const TILE_GRADIENT = "linear-gradient(135deg, #6366f1, #a855f7)";
+export const TILE_GRADIENT = "linear-gradient(135deg, #1b4f8a, #1b4f8a)";
 
 /** Primary action. The dashboard's gradient pill; see the DESIGN.md note above. */
-export const CTA_GRADIENT = "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)";
+export const CTA_GRADIENT = "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)";
 
-export const CTA_SHADOW = "0 14px 34px -12px rgba(192,38,211,0.7)";
+/** Was a 34px fuchsia glow at 70% opacity under the primary action. The CTA is
+ *  already a filled institutional-blue pill, so it needs lift, not a halo. */
+export const CTA_SHADOW = "var(--shadow-md)";
 
 /** Translucent surfaces used on top of the dark hero. */
 export const ON_DARK = {
@@ -90,17 +109,17 @@ export const ON_DARK = {
 } as const;
 
 /** Activity heatmap intensity ladder, violet rather than the old indigo. */
-export const HEAT_SCALE = ["#f1f5f9", "#ede9fe", "#c4b5fd", "#a78bfa", "#7c3aed"] as const;
+export const HEAT_SCALE = ["#f1f5f9", "#eef3fa", "#b6cde8", "#85aad6", "#14406f"] as const;
 
 /**
  * Stat tile accents. Same four the dashboard StatCards row uses, in the same order, so a
  * student reading both surfaces learns one colour language.
  */
 export const STAT_ACCENT = {
-  violet: "#7c3aed",
-  amber: "#f59e0b",
-  blue: "#3b82f6",
-  green: "#22c55e",
+  violet: "#14406f",
+  amber: "#b7791f",
+  blue: "#4a7fbb",
+  green: "#0e7a3c",
 } as const;
 
 /** Entrance motion. Matches the dashboard's Reveal. */

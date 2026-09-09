@@ -56,7 +56,7 @@ function isValidHttpUrl(s: string): boolean {
   }
 }
 
-const NEXT_GRADIENT = "linear-gradient(135deg, #6366f1 0%, #4338ca 100%)";
+const NEXT_GRADIENT = "linear-gradient(135deg, #1b4f8a 0%, #0e2a4b 100%)";
 
 export default function CreateLiveSessionPage() {
   const { t } = useTranslation("common");
@@ -446,7 +446,7 @@ export default function CreateLiveSessionPage() {
                 sx={{
                   width: 52, height: 52, borderRadius: "14px", flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)", color: "#fff",
+                  background: "linear-gradient(135deg, #1b4f8a 0%, #12365f 100%)", color: "#fff",
                 }}
               >
                 <IconWrapper icon="mdi:video-plus" size={26} color="#fff" />
@@ -820,8 +820,8 @@ export default function CreateLiveSessionPage() {
                     sx={{
                       width: 64, height: 64, borderRadius: 3,
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      background: "linear-gradient(135deg, #10b981 0%, #047857 100%)",
-                      boxShadow: "0 16px 32px -16px color-mix(in srgb, #047857 60%, transparent)",
+                      background: "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)",
+                      boxShadow: "0 16px 32px -16px color-mix(in srgb, #0B6232 60%, transparent)",
                     }}
                   >
                     <IconWrapper icon="mdi:check" size={34} color="#fff" />
@@ -836,7 +836,7 @@ export default function CreateLiveSessionPage() {
                     {zoomStartUrl && (
                       <ButtonBase
                         onClick={() => window.open(zoomStartUrl, "_blank")}
-                        sx={{ px: 2.5, py: 1.1, borderRadius: 999, fontWeight: 800, color: "white", display: "inline-flex", alignItems: "center", gap: 0.75, background: isMeet ? "linear-gradient(135deg, #10b981 0%, #047857 100%)" : NEXT_GRADIENT }}
+                        sx={{ px: 2.5, py: 1.1, borderRadius: 999, fontWeight: 800, color: "white", display: "inline-flex", alignItems: "center", gap: 0.75, background: isMeet ? "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)" : NEXT_GRADIENT }}
                       >
                         <IconWrapper icon="mdi:video" size={18} color="#fff" />
                         {isMeet ? t("adminLiveSessions.openGoogleMeet") : t("adminLiveSessions.startMeeting", "Start session")}
@@ -895,7 +895,7 @@ export default function CreateLiveSessionPage() {
                     disabled={!stepValid}
                     sx={{
                       px: 3.25, py: 1.2, borderRadius: "12px", fontWeight: 700, color: "white", fontSize: "0.9rem",
-                      background: stepValid ? "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)" : "color-mix(in srgb, #6366f1 35%, transparent)",
+                      background: stepValid ? "linear-gradient(135deg, #1b4f8a 0%, #12365f 100%)" : "color-mix(in srgb, #1b4f8a 35%, transparent)",
                       "&:disabled": { cursor: "not-allowed" },
                     }}
                   >
@@ -908,7 +908,7 @@ export default function CreateLiveSessionPage() {
                     sx={{
                       px: 3.25, py: 1.2, borderRadius: "12px", fontWeight: 700, color: "white", fontSize: "0.9rem",
                       display: "inline-flex", alignItems: "center", gap: 0.75,
-                      background: detailsValid && !creating ? "linear-gradient(135deg, #10b981 0%, #059669 100%)" : "color-mix(in srgb, #10b981 40%, transparent)",
+                      background: detailsValid && !creating ? "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)" : "color-mix(in srgb, #0e7a3c 40%, transparent)",
                       "&:disabled": { cursor: "not-allowed" },
                     }}
                   >

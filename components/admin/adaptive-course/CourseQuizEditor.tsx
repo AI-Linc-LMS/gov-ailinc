@@ -121,7 +121,7 @@ export function CourseQuizEditor({ configId, topic, onSaved }: CourseQuizEditorP
   }
   if (error) {
     return (
-      <Typography sx={{ color: "#ef4444", fontSize: "0.82rem", fontWeight: 700, py: 2 }}>
+      <Typography sx={{ color: "#b32020", fontSize: "0.82rem", fontWeight: 700, py: 2 }}>
         {error}
       </Typography>
     );
@@ -137,7 +137,7 @@ export function CourseQuizEditor({ configId, topic, onSaved }: CourseQuizEditorP
           disabled={adding}
           sx={{
             px: 2, py: 0.85, borderRadius: 999, fontWeight: 800, fontSize: "0.8rem",
-            color: "#6366f1", border: "1px solid color-mix(in srgb, #6366f1 40%, transparent)",
+            color: "#1b4f8a", border: "1px solid color-mix(in srgb, #1b4f8a 40%, transparent)",
             display: "inline-flex", alignItems: "center", gap: 0.5,
             "&:disabled": { opacity: 0.6, cursor: "not-allowed" },
           }}
@@ -151,7 +151,7 @@ export function CourseQuizEditor({ configId, topic, onSaved }: CourseQuizEditorP
           sx={{
             px: 2.5, py: 0.85, borderRadius: 999, fontWeight: 800, fontSize: "0.8rem", color: "white",
             gap: 0.5, display: "inline-flex", alignItems: "center",
-            background: saving ? "color-mix(in srgb, #10b981 45%, transparent)" : "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+            background: saving ? "color-mix(in srgb, #0e7a3c 45%, transparent)" : "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)",
             "&:disabled": { cursor: "not-allowed", opacity: 0.6 },
           }}
         >

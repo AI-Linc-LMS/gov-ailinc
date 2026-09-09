@@ -30,8 +30,8 @@ export function triggerChip(source?: string): { label: string; icon: string; col
     const lead = m ? map[m[1]] ?? `${m[1]}m` : "";
     return { label: lead ? `Reminder · ${lead} before` : "Reminder", icon: "mdi:bell-ring-outline", color: "var(--accent-indigo)" };
   }
-  if (s.includes("publish")) return { label: "On publish", icon: "mdi:rocket-launch-outline", color: "#a855f7" };
-  if (s.includes("create")) return { label: "On create", icon: "mdi:plus-circle-outline", color: "#0ea5e9" };
+  if (s.includes("publish")) return { label: "On publish", icon: "mdi:rocket-launch-outline", color: "#1b4f8a" };
+  if (s.includes("create")) return { label: "On create", icon: "mdi:plus-circle-outline", color: "#1b4f8a" };
   if (s === "manual") return { label: "Manual", icon: "mdi:cursor-default-click-outline", color: "var(--font-secondary)" };
   return null;
 }
@@ -74,16 +74,15 @@ export function EmailJobCard({ job, displayName, createdLabel, isFailed, retryin
         p: 2,
         borderRadius: 4,
         border: "1px solid var(--border-default)",
-        background: "color-mix(in srgb, var(--card-bg) 75%, transparent)",
-        backdropFilter: "blur(6px)",
+        background: "var(--card-bg)",
         display: "flex",
         flexDirection: "column",
         gap: 1.25,
         height: "100%",
         transition: "transform 120ms ease, box-shadow 120ms ease",
         "&:hover": {
-          transform: "translateY(-2px)",
-          boxShadow: "0 20px 40px -24px color-mix(in srgb, var(--font-primary) 40%, transparent)",
+          transform: "translateY(-1px)",
+          boxShadow: "var(--shadow-md)",
         },
       }}
     >

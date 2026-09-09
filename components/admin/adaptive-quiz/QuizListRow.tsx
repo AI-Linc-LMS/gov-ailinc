@@ -116,7 +116,7 @@ export function QuizListRow({ quiz, onAfterToggle, onRequestDelete }: QuizListRo
             onClick={() => onRequestDelete(quiz)}
             size="small"
             aria-label="Delete adaptive quiz"
-            sx={{ color: "#ef4444" }}
+            sx={{ color: "#b32020" }}
           >
             <Icon icon="mdi:trash-can-outline" width={18} />
           </IconButton>

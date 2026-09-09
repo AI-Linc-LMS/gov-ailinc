@@ -245,7 +245,7 @@ export default function AssessmentEmailJobDetailPage() {
                     height: "100%",
                     width: `${recipientsCount ? (successfulCount / recipientsCount) * 100 : 0}%`,
                     borderRadius: 999,
-                    background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)",
+                    background: "linear-gradient(90deg, #1b4f8a, #1b4f8a, #0f6b7a)",
                     transition: "width 400ms ease",
                   }}
                 />
@@ -256,9 +256,9 @@ export default function AssessmentEmailJobDetailPage() {
           <Box sx={{ mt: 2.5 }}>
             <KpiRail
               items={[
-                { value: recipientsCount, label: "Recipients", accent: "#6366f1" },
-                { value: successfulCount, label: "Delivered", accent: "#10b981" },
-                { value: failedCount, label: "Failed", accent: failedCount > 0 ? "#ef4444" : "#94a3b8" },
+                { value: recipientsCount, label: "Recipients", accent: "#1b4f8a" },
+                { value: successfulCount, label: "Delivered", accent: "#0e7a3c" },
+                { value: failedCount, label: "Failed", accent: failedCount > 0 ? "#b32020" : "#94a3b8" },
               ]}
             />
           </Box>

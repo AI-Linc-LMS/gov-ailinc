@@ -66,7 +66,7 @@ export function SocioEconomicSection({ data }: SocioEconomicSectionProps) {
     <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border-2 border-slate-200">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500 to-[#0f6b7a] flex items-center justify-center shadow-lg">
           <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -78,7 +78,7 @@ export function SocioEconomicSection({ data }: SocioEconomicSectionProps) {
       </div>
 
       {/* Policy-Grade Note */}
-      <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-5 border-2 border-teal-200 mb-8">
+      <div className="bg-gradient-to-r from-teal-50 to-[#e6f1f2] rounded-xl p-5 border-2 border-teal-200 mb-8">
         <div className="flex items-start gap-3">
           <svg className="w-6 h-6 text-teal-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
@@ -159,7 +159,7 @@ export function SocioEconomicSection({ data }: SocioEconomicSectionProps) {
 
       {/* Environmental Context */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+        <div className="bg-gradient-to-br from-blue-50 to-[#eef3fa] rounded-xl p-6 border border-blue-200">
           <h4 className="text-lg font-bold text-slate-900 mb-4">Family Background Influence</h4>
           <div className="space-y-3">
             <div>

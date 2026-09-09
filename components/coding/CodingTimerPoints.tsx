@@ -65,7 +65,7 @@ export function CodingTimerPoints({
   const inGrace = elapsedSec < decay.grace;
   const atFloor = livePts <= decay.floor;
   const pct = decay.base > 0 ? Math.max(0, Math.min(100, (pts / decay.base) * 100)) : 0;
-  const color = submitted ? "#7c3aed" : inGrace ? "#10b981" : atFloor ? "#ef4444" : "#f59e0b";
+  const color = submitted ? "#14406f" : inGrace ? "#0e7a3c" : atFloor ? "#b32020" : "#b7791f";
   const graceLeft = Math.max(0, Math.ceil(decay.grace - elapsedSec));
 
   return (
@@ -95,7 +95,7 @@ export function CodingTimerPoints({
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Stack direction="row" alignItems="baseline" justifyContent="space-between">
           <Stack direction="row" spacing={0.4} alignItems="center" sx={{ color: "text.secondary" }}>
-            <Icon icon="mdi:star-four-points" width={12} color="#7c3aed" />
+            <Icon icon="mdi:star-four-points" width={12} color="#14406f" />
             <Typography sx={{ fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" }}>
               {submitted ? "Earned" : "Points on offer"}
             </Typography>
@@ -116,7 +116,7 @@ export function CodingTimerPoints({
             "& .MuiLinearProgress-bar": { bgcolor: color, borderRadius: 4, transition: "transform .4s ease, background-color .3s" } }}
         />
         <Typography sx={{ fontSize: "0.68rem", fontWeight: 700, mt: 0.5,
-          color: submitted ? "#6d28d9" : inGrace ? "#15803d" : atFloor ? "#b91c1c" : "#b45309" }}>
+          color: submitted ? "#164274" : inGrace ? "#0b6232" : atFloor ? "#8f1919" : "#8a5a12" }}>
           {submitted
             ? "Locked in on submit"
             : inGrace

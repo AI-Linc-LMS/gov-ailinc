@@ -260,11 +260,11 @@ describe("course builder round trips", () => {
     expect(state.organisation_name).toContain("Telangana Skills");
 
     const saved = (await call("PATCH", "/api/tenant/wizard/state/", {
-      wizard_state: { brand: { primary: "#6366f1" } },
+      wizard_state: { brand: { primary: "#1b4f8a" } },
       setup_step: 3,
     })) as { setup_step: number; wizard_state: { brand: { primary: string } } };
     expect(saved.setup_step).toBe(3);
-    expect(saved.wizard_state.brand.primary).toBe("#6366f1");
+    expect(saved.wizard_state.brand.primary).toBe("#1b4f8a");
 
     const catalogue = (await call("GET", "/api/tenant/wizard/catalogue/")) as {
       courses: Array<{ id: number; modules: Array<{ submodules: unknown[] }>; thumbnail: string }>;

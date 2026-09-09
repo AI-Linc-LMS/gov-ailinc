@@ -47,7 +47,7 @@ export const AssessmentTimerBar = memo(function AssessmentTimerBar({
   
   return (
     <Paper
-      elevation={2}
+      elevation={0}
       sx={{
         position: "fixed",
         top: 0,
@@ -57,6 +57,9 @@ export const AssessmentTimerBar = memo(function AssessmentTimerBar({
         p: 1.2,
         backgroundColor: "var(--font-light)",
         borderBottom: "1px solid var(--border-default)",
+        // MUI elevation 2 is a black-tinted three-layer drop. The bar already has
+        // a 1px rule under it, so it takes the resting step of the scale instead.
+        boxShadow: "var(--shadow-sm)",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -223,9 +226,7 @@ export const AssessmentTimerBar = memo(function AssessmentTimerBar({
           fontSize: { xs: "0.875rem", md: "1rem" },
           textTransform: "none",
           borderRadius: 2,
-          boxShadow: isLastQuestion
-            ? "var(--assessment-catalog-cta-success-shadow)"
-            : "var(--assessment-catalog-cta-auto-shadow)",
+          boxShadow: "var(--shadow-sm)",
           transition: "all 0.2s ease-in-out",
           "&:hover": {
             backgroundColor: isLastQuestion ? "var(--assessment-success-strong)" : "var(--accent-indigo-dark)",

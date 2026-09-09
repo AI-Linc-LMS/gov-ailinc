@@ -279,11 +279,11 @@ This certificate represents my dedication to continuous learning and professiona
           onClick={handleDownload}
           startIcon={<IconWrapper icon="mdi:download" size={20} />}
           sx={{
-            borderColor: "#6366f1",
-            color: "#6366f1",
+            borderColor: "#1b4f8a",
+            color: "#1b4f8a",
             "&:hover": {
-              borderColor: "#4f46e5",
-              backgroundColor: "#eef2ff",
+              borderColor: "#12365f",
+              backgroundColor: "#eef3fa",
             },
             flex: { xs: 1, sm: "none" },
             minWidth: { xs: "auto", sm: 200 },

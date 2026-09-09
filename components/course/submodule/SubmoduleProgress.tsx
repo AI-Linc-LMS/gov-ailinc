@@ -78,17 +78,17 @@ export function SubmoduleProgress({
   const getTypeColor = (type: string) => {
     switch (type) {
       case "VideoTutorial":
-        return "#ef4444";
+        return "#b32020";
       case "Quiz":
-        return "#f59e0b";
+        return "#b7791f";
       case "Article":
-        return "#3b82f6";
+        return "#4a7fbb";
       case "CodingProblem":
-        return "#10b981";
+        return "#0e7a3c";
       case "SubjectiveQuestion":
-        return "#0d9488";
+        return "#0b5260";
       case "Assignment":
-        return "#8b5cf6";
+        return "#4a7fbb";
       default:
         return "#6b7280";
     }
@@ -152,7 +152,7 @@ export function SubmoduleProgress({
             variant="h6"
             sx={{
               fontWeight: 700,
-              color: "#6366f1",
+              color: "#1b4f8a",
               fontSize: "1.5rem",
               flexShrink: 0,
             }}
@@ -175,7 +175,7 @@ export function SubmoduleProgress({
               size={120}
               thickness={4}
               sx={{
-                color: "#6366f1",
+                color: "#1b4f8a",
                 "& .MuiCircularProgress-circle": {
                   strokeLinecap: "round",
                 },

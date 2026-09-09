@@ -91,7 +91,7 @@ export function PersonalityRadarChart({ traits, traitInsights = [] }: Personalit
   return (
     <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 border border-slate-200 hover:shadow-xl transition-shadow duration-300">
       <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
-        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg flex-shrink-0">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500 to-[#164274] flex items-center justify-center shadow-lg flex-shrink-0">
           <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
@@ -104,7 +104,7 @@ export function PersonalityRadarChart({ traits, traitInsights = [] }: Personalit
 
       {/* Detailed Stats Summary */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6">
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg sm:rounded-xl p-2 sm:p-3 border border-blue-100">
+        <div className="bg-gradient-to-br from-blue-50 to-[#eef3fa] rounded-lg sm:rounded-xl p-2 sm:p-3 border border-blue-100">
           <p className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-0.5 sm:mb-1">Total Traits</p>
           <p className="text-xl sm:text-2xl font-bold text-blue-900">{traits.length}</p>
         </div>
@@ -114,9 +114,9 @@ export function PersonalityRadarChart({ traits, traitInsights = [] }: Personalit
             {Math.round(traits.reduce((sum, t) => sum + t.score, 0) / traits.length)}
           </p>
         </div>
-        <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg sm:rounded-xl p-2 sm:p-3 border border-purple-100">
-          <p className="text-xs font-semibold text-purple-600 uppercase tracking-wide mb-0.5 sm:mb-1">Highest</p>
-          <p className="text-xl sm:text-2xl font-bold text-purple-900">
+        <div className="bg-gradient-to-br from-[#eef3fa] to-[#eef3fa] rounded-lg sm:rounded-xl p-2 sm:p-3 border border-[#d9e6f4]">
+          <p className="text-xs font-semibold text-[#164274] uppercase tracking-wide mb-0.5 sm:mb-1">Highest</p>
+          <p className="text-xl sm:text-2xl font-bold text-[#0a1e37]">
             {Math.max(...traits.map(t => t.score))}
           </p>
         </div>

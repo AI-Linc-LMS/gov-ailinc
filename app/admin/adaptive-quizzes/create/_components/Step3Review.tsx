@@ -22,7 +22,7 @@ export function Step3Review({ draft, setDraft }: Step3ReviewProps) {
           border: "1px dashed color-mix(in srgb, var(--border-default, #e5e7eb) 90%, transparent)",
         }}
       >
-        <Icon icon="mdi:robot-confused-outline" width={36} style={{ color: "#a855f7" }} />
+        <Icon icon="mdi:robot-confused-outline" width={36} style={{ color: "#1b4f8a" }} />
         <Typography sx={{ fontWeight: 700, mt: 1 }}>
           Generate the bank first.
         </Typography>

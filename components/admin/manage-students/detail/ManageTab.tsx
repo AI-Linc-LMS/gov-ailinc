@@ -180,10 +180,10 @@ export function ManageTab({
                   height: 20,
                   fontWeight: 700,
                   fontSize: "0.68rem",
-                  color: pi.is_active ? ADAPTIVE.green : "#94a3b8",
+                  color: pi.is_active ? ADAPTIVE.green : "#6b7684",
                   bgcolor: pi.is_active
-                    ? "color-mix(in srgb, #10b981 14%, transparent)"
-                    : "color-mix(in srgb, #94a3b8 16%, transparent)",
+                    ? "color-mix(in srgb, #0e7a3c 14%, transparent)"
+                    : "color-mix(in srgb, #6b7684 16%, transparent)",
                 }}
               />
             </Box>
@@ -200,7 +200,7 @@ export function ManageTab({
                 pi.last_login ? (
                   formatDate(pi.last_login)
                 ) : (
-                  <Box component="span" sx={{ color: "#b45309" }}>Never logged in</Box>
+                  <Box component="span" sx={{ color: "#8a5a12" }}>Never logged in</Box>
                 )
               }
               info={
@@ -228,10 +228,10 @@ export function ManageTab({
               gap: 2,
               p: 2,
               borderRadius: 2.5,
-              border: `1px solid ${pi.is_active ? "color-mix(in srgb, #10b981 40%, transparent)" : "color-mix(in srgb, #ef4444 40%, transparent)"}`,
+              border: `1px solid ${pi.is_active ? "color-mix(in srgb, #0e7a3c 40%, transparent)" : "color-mix(in srgb, #b32020 40%, transparent)"}`,
               bgcolor: pi.is_active
-                ? "color-mix(in srgb, #10b981 8%, transparent)"
-                : "color-mix(in srgb, #ef4444 8%, transparent)",
+                ? "color-mix(in srgb, #0e7a3c 8%, transparent)"
+                : "color-mix(in srgb, #b32020 8%, transparent)",
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, minWidth: 0 }}>

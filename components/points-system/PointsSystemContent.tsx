@@ -15,15 +15,15 @@ const CARD = {
   borderRadius: 4,
   border: "1px solid #eef2f7",
   bgcolor: "#fff",
-  boxShadow: "0 1px 2px rgba(16,24,40,0.04)",
+  boxShadow: "var(--shadow-xs)",
   transition: "transform .15s, box-shadow .15s",
-  "&:hover": { transform: "translateY(-2px)", boxShadow: "0 16px 34px -22px rgba(16,24,40,0.25)" },
+  "&:hover": { transform: "translateY(-1px)", boxShadow: "var(--shadow-md)" },
 };
 
-function SectionHeader({ icon, title, subtitle, gradient = "linear-gradient(135deg, #6366f1, #a855f7)" }: { icon: string; title: string; subtitle: string; gradient?: string }) {
+function SectionHeader({ icon, title, subtitle, gradient = "linear-gradient(135deg, #1b4f8a, #1b4f8a)" }: { icon: string; title: string; subtitle: string; gradient?: string }) {
   return (
     <Stack direction="row" spacing={1.25} alignItems="center" sx={{ mb: 1.75 }}>
-      <Box sx={{ width: 34, height: 34, borderRadius: 2.5, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: gradient, boxShadow: "0 8px 18px -10px rgba(124,58,237,0.6)" }}>
+      <Box sx={{ width: 34, height: 34, borderRadius: 2.5, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: gradient, boxShadow: "var(--shadow-sm)" }}>
         <Icon icon={icon} width={19} />
       </Box>
       <Box>
@@ -48,16 +48,16 @@ function DecayChart({ spec }: { spec: DecaySpec }) {
     <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ display: "block" }}>
       <defs>
         <linearGradient id={`fill-${gid}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#a855f7" stopOpacity={0.3} />
-          <stop offset="100%" stopColor="#a855f7" stopOpacity={0.02} />
+          <stop offset="0%" stopColor="#1b4f8a" stopOpacity={0.3} />
+          <stop offset="100%" stopColor="#1b4f8a" stopOpacity={0.02} />
         </linearGradient>
         <linearGradient id={`line-${gid}`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#6366f1" />
-          <stop offset="100%" stopColor="#c026d3" />
+          <stop offset="0%" stopColor="#1b4f8a" />
+          <stop offset="100%" stopColor="#0f6b7a" />
         </linearGradient>
       </defs>
-      <rect x={padL} y={padT} width={x(spec.grace) - padL} height={innerH} fill="#22c55e" opacity={0.1} rx={3} />
-      <text x={x(spec.grace / 2)} y={padT + 14} textAnchor="middle" fontSize="9" fontWeight="700" fill="#16a34a">full</text>
+      <rect x={padL} y={padT} width={x(spec.grace) - padL} height={innerH} fill="#0e7a3c" opacity={0.1} rx={3} />
+      <text x={x(spec.grace / 2)} y={padT + 14} textAnchor="middle" fontSize="9" fontWeight="700" fill="#0b6232">full</text>
       {[spec.base, Math.round(spec.base / 2), 0].map((p) => (
         <text key={p} x={padL - 6} y={y(p) + 3} textAnchor="end" fontSize="9" fill="#94a3b8">{p}</text>
       ))}
@@ -66,7 +66,7 @@ function DecayChart({ spec }: { spec: DecaySpec }) {
       ))}
       <path d={area} fill={`url(#fill-${gid})`} />
       <path d={line} fill="none" stroke={`url(#line-${gid})`} strokeWidth={2.5} strokeLinejoin="round" />
-      <circle cx={x(0)} cy={y(spec.base)} r={3.5} fill="#6366f1" />
+      <circle cx={x(0)} cy={y(spec.base)} r={3.5} fill="#1b4f8a" />
     </svg>
   );
 }
@@ -87,14 +87,14 @@ function ChartCard({ spec }: { spec: DecaySpec }) {
 }
 
 const DIFF_STYLE: Record<string, { color: string; bg: string }> = {
-  Easy: { color: "#15803d", bg: "#f0fdf4" },
-  Medium: { color: "#b45309", bg: "#fffbeb" },
-  Hard: { color: "#b91c1c", bg: "#fef2f2" },
+  Easy: { color: "#0b6232", bg: "#f0fdf4" },
+  Medium: { color: "#8a5a12", bg: "#fdf9f0" },
+  Hard: { color: "#8f1919", bg: "#fdf5f5" },
 };
 const LATE_STYLE = [
-  { color: "#15803d", bg: "#f0fdf4", border: "#bbf7d0" },
-  { color: "#b45309", bg: "#fffbeb", border: "#fde68a" },
-  { color: "#b91c1c", bg: "#fef2f2", border: "#fecaca" },
+  { color: "#0b6232", bg: "#f0fdf4", border: "#c8e6d5" },
+  { color: "#8a5a12", bg: "#fdf9f0", border: "#f0ddb8" },
+  { color: "#8f1919", bg: "#fdf5f5", border: "#f2d3d3" },
 ];
 
 function HeroChip({ icon, text }: { icon: string; text: string }) {
@@ -118,8 +118,8 @@ export function PointsSystemContent() {
     return () => { cancelled = true; };
   }, []);
 
-  if (loading) return <Box sx={{ display: "grid", placeItems: "center", py: 12 }}><CircularProgress sx={{ color: "#7c3aed" }} /></Box>;
-  if (!data) return <Typography sx={{ color: "#b91c1c", py: 6, textAlign: "center", fontWeight: 600 }}>Couldn&apos;t load the points system.</Typography>;
+  if (loading) return <Box sx={{ display: "grid", placeItems: "center", py: 12 }}><CircularProgress sx={{ color: "#14406f" }} /></Box>;
+  if (!data) return <Typography sx={{ color: "#8f1919", py: 6, textAlign: "center", fontWeight: 600 }}>Couldn&apos;t load the points system.</Typography>;
 
   const wkDay = (n: number) => (n - 1) * data.late.staggerDays + 1;
 
@@ -127,7 +127,7 @@ export function PointsSystemContent() {
     <Box>
       {/* Hero */}
       <Reveal>
-        <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 3, color: "white", position: "relative", overflow: "hidden", background: "radial-gradient(110% 130% at 90% -10%, rgba(236,72,153,0.45) 0%, rgba(124,58,237,0.0) 55%), linear-gradient(135deg, #7c3aed 0%, #a855f7 55%, #c026d3 100%)", boxShadow: "0 24px 60px -30px rgba(124,58,237,0.7)" }}>
+        <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 3, color: "white", position: "relative", overflow: "hidden", background: "radial-gradient(110% 130% at 90% -10%, rgba(15, 107, 122,0.45) 0%, rgba(20, 64, 111,0.0) 55%), linear-gradient(135deg, #14406f 0%, #1b4f8a 55%, #0f6b7a 100%)", boxShadow: "var(--shadow-sm)" }}>
           <Stack direction="row" spacing={1.75} alignItems="flex-start">
             <Box sx={{ width: 52, height: 52, borderRadius: 3, flexShrink: 0, display: "grid", placeItems: "center", bgcolor: "rgba(255,255,255,0.16)", border: "1px solid rgba(255,255,255,0.25)" }}>
               <Icon icon="mdi:star-four-points" width={28} />
@@ -135,7 +135,7 @@ export function PointsSystemContent() {
             <Box sx={{ minWidth: 0 }}>
               <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
                 <Typography sx={{ fontWeight: 900, fontSize: { xs: "1.6rem", md: "2.1rem" }, lineHeight: 1.1 }}>{data.title}</Typography>
-                <Box sx={{ px: 1, py: 0.3, borderRadius: 999, fontSize: "0.62rem", fontWeight: 800, color: "#7c3aed", bgcolor: "white" }}>UNIFIED</Box>
+                <Box sx={{ px: 1, py: 0.3, borderRadius: 999, fontSize: "0.62rem", fontWeight: 800, color: "#14406f", bgcolor: "white" }}>UNIFIED</Box>
               </Stack>
               <Typography sx={{ fontSize: "0.92rem", color: "rgba(255,255,255,0.88)", mt: 1, maxWidth: 720, lineHeight: 1.55 }}>{data.subtitle}</Typography>
               <Stack direction="row" gap={1} flexWrap="wrap" sx={{ mt: 1.75 }}>
@@ -152,7 +152,7 @@ export function PointsSystemContent() {
       {/* 1 · Points by activity */}
       <Reveal>
         <Box sx={{ mb: 4 }}>
-          <SectionHeader icon="mdi:medal" title="Points by activity" subtitle="Every activity awards points - harder + faster earns more." gradient="linear-gradient(135deg, #6366f1, #a855f7)" />
+          <SectionHeader icon="mdi:medal" title="Points by activity" subtitle="Every activity awards points - harder + faster earns more." gradient="linear-gradient(135deg, #1b4f8a, #1b4f8a)" />
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2,1fr)", lg: "repeat(4,1fr)" }, gap: 1.5 }}>
             {data.activities.map((a) => (
               <Stack key={a.key} direction="row" alignItems="center" spacing={1.25} sx={{ ...CARD, p: 1.75, borderLeft: "3px solid", borderLeftColor: a.accent }}>
@@ -176,16 +176,16 @@ export function PointsSystemContent() {
       {/* 2 · Time-decay */}
       <Reveal>
         <Box sx={{ mb: 4 }}>
-          <SectionHeader icon="mdi:timer-sand" title="Time-decay" subtitle="Answer well & quickly to keep more." gradient="linear-gradient(135deg, #8b5cf6, #ec4899)" />
+          <SectionHeader icon="mdi:timer-sand" title="Time-decay" subtitle="Answer well & quickly to keep more." gradient="linear-gradient(135deg, #4a7fbb, #0f6b7a)" />
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "1fr 1fr 340px" }, gap: 1.5 }}>
             <ChartCard spec={data.decay.quizEasy} />
             <ChartCard spec={data.decay.codingHard} />
-            <Box sx={{ p: 2.25, borderRadius: 4, color: "#fff", backgroundColor: "#0f0a28", backgroundImage: "linear-gradient(160deg, #1a1442, #0f0a28)", boxShadow: "0 18px 40px -24px rgba(76,29,149,0.6)" }}>
+            <Box sx={{ p: 2.25, borderRadius: 4, color: "#fff", backgroundColor: "#071426", backgroundImage: "linear-gradient(160deg, #10263f, #071426)", boxShadow: "var(--shadow-sm)" }}>
               <Stack direction="row" spacing={0.75} alignItems="center" sx={{ mb: 1 }}>
-                <Icon icon="mdi:function-variant" width={16} color="#c4b5fd" />
+                <Icon icon="mdi:function-variant" width={16} color="#b6cde8" />
                 <Typography sx={{ fontSize: "0.66rem", fontWeight: 800, letterSpacing: 0.8, color: "rgba(255,255,255,0.6)" }}>THE FORMULA</Typography>
               </Stack>
-              <Box sx={{ p: 1.5, borderRadius: 2, bgcolor: "rgba(0,0,0,0.35)", fontFamily: "monospace", fontSize: "0.8rem", color: "#c4b5fd", lineHeight: 1.6, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+              <Box sx={{ p: 1.5, borderRadius: 2, bgcolor: "rgba(0,0,0,0.35)", fontFamily: "monospace", fontSize: "0.8rem", color: "#b6cde8", lineHeight: 1.6, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
                 {data.formula}
               </Box>
               <Typography sx={{ fontSize: "0.74rem", color: "rgba(255,255,255,0.65)", mt: 1.5, lineHeight: 1.55 }}>{data.formulaNote}</Typography>
@@ -198,7 +198,7 @@ export function PointsSystemContent() {
       <Reveal>
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "1fr 1fr" }, gap: 2, mb: 4 }}>
           <Box sx={{ ...CARD, p: 2.25, "&:hover": undefined }}>
-            <SectionHeader icon="mdi:speedometer" title="Difficulty multiplier" subtitle="Harder items are worth more." gradient="linear-gradient(135deg, #f59e0b, #ef4444)" />
+            <SectionHeader icon="mdi:speedometer" title="Difficulty multiplier" subtitle="Harder items are worth more." gradient="linear-gradient(135deg, #b7791f, #b32020)" />
             <Stack spacing={1}>
               {data.difficulty.map((d) => {
                 const s = DIFF_STYLE[d.label] ?? DIFF_STYLE.Medium;
@@ -211,16 +211,16 @@ export function PointsSystemContent() {
                 );
               })}
             </Stack>
-            <Stack direction="row" spacing={0.6} alignItems="flex-start" sx={{ mt: 1.5, p: 1.25, borderRadius: 2, bgcolor: "#f5f3ff" }}>
-              <Icon icon="mdi:star-four-points" width={13} color="#6d28d9" style={{ flexShrink: 0, marginTop: 2 }} />
-              <Typography sx={{ fontSize: "0.74rem", color: "#6d28d9", fontWeight: 600, lineHeight: 1.45 }}>
+            <Stack direction="row" spacing={0.6} alignItems="flex-start" sx={{ mt: 1.5, p: 1.25, borderRadius: 2, bgcolor: "#eef3fa" }}>
+              <Icon icon="mdi:star-four-points" width={13} color="#164274" style={{ flexShrink: 0, marginTop: 2 }} />
+              <Typography sx={{ fontSize: "0.74rem", color: "#164274", fontWeight: 600, lineHeight: 1.45 }}>
                 The AI serves difficulty matched to your level - so the points you earn reflect real stretch, not farming easy items.
               </Typography>
             </Stack>
           </Box>
 
           <Box sx={{ ...CARD, p: 2.25, "&:hover": undefined }}>
-            <SectionHeader icon="mdi:calendar-clock" title="Weekly late penalty" subtitle="Beat the deadline to keep full credit." gradient="linear-gradient(135deg, #ef4444, #f59e0b)" />
+            <SectionHeader icon="mdi:calendar-clock" title="Weekly late penalty" subtitle="Beat the deadline to keep full credit." gradient="linear-gradient(135deg, #b32020, #b7791f)" />
             <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
               {data.late.bands.map((b, i) => {
                 const s = LATE_STYLE[i] ?? LATE_STYLE[0];
@@ -247,7 +247,7 @@ export function PointsSystemContent() {
 
       {/* Worked example */}
       <Reveal>
-        <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, color: "white", position: "relative", overflow: "hidden", background: "radial-gradient(110% 130% at 10% 110%, rgba(236,72,153,0.4) 0%, rgba(124,58,237,0) 55%), linear-gradient(135deg, #7c3aed 0%, #a855f7 55%, #c026d3 100%)", boxShadow: "0 24px 60px -30px rgba(124,58,237,0.7)" }}>
+        <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, color: "white", position: "relative", overflow: "hidden", background: "radial-gradient(110% 130% at 10% 110%, rgba(15, 107, 122,0.4) 0%, rgba(20, 64, 111,0) 55%), linear-gradient(135deg, #14406f 0%, #1b4f8a 55%, #0f6b7a 100%)", boxShadow: "var(--shadow-sm)" }}>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "300px 1fr" }, gap: { xs: 2.5, md: 4 }, alignItems: "center" }}>
             <Box>
               <Stack direction="row" spacing={0.75} alignItems="center" sx={{ mb: 1 }}>

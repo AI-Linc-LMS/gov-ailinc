@@ -92,14 +92,14 @@ export function CredentialView({ credentialId }: { credentialId: string }) {
         display: "grid",
         placeItems: "center",
         p: { xs: 2, md: 4 },
-        background: "linear-gradient(135deg, #eef2ff 0%, #faf5ff 50%, #fdf2f8 100%)",
+        background: "linear-gradient(135deg, #eef3fa 0%, #eef3fa 50%, #eef5f6 100%)",
       }}
     >
-      {status === "loading" && <CircularProgress sx={{ color: "#6366f1" }} />}
+      {status === "loading" && <CircularProgress sx={{ color: "#1b4f8a" }} />}
 
       {status === "notfound" && (
         <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, borderRadius: 4, maxWidth: 460, textAlign: "center", border: "1px solid #ececf1" }}>
-          <Icon icon="mdi:alert-circle-outline" width={48} style={{ color: "#f59e0b" }} />
+          <Icon icon="mdi:alert-circle-outline" width={48} style={{ color: "#b7791f" }} />
           <Typography sx={{ fontWeight: 800, fontSize: "1.25rem", mt: 1 }}>Credential not found</Typography>
           <Typography sx={{ color: "text.secondary", mt: 1 }}>
             We couldn&apos;t find a credential with the ID <b>{credentialId}</b>. It may have been mistyped.
@@ -121,7 +121,7 @@ export function CredentialView({ credentialId }: { credentialId: string }) {
           }}
         >
           {/* Accent header */}
-          <Box sx={{ height: 8, background: "linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)" }} />
+          <Box sx={{ height: 8, background: "linear-gradient(90deg, #1b4f8a 0%, #1b4f8a 50%, #0f6b7a 100%)" }} />
 
           <Box sx={{ p: { xs: 3, md: 5 } }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
@@ -131,7 +131,7 @@ export function CredentialView({ credentialId }: { credentialId: string }) {
               ) : (
                 <Typography sx={{ fontWeight: 900, fontSize: "1.1rem", color: "#0f172a" }}>{cred.issuer_name}</Typography>
               )}
-              <Stack direction="row" spacing={0.5} alignItems="center" sx={{ px: 1.25, py: 0.5, borderRadius: 999, bgcolor: "#dcfce7", color: "#15803d" }}>
+              <Stack direction="row" spacing={0.5} alignItems="center" sx={{ px: 1.25, py: 0.5, borderRadius: 999, bgcolor: "#dff0e6", color: "#0b6232" }}>
                 <Icon icon="mdi:check-decagram" width={18} />
                 <Typography sx={{ fontWeight: 800, fontSize: "0.78rem" }}>Verified Credential</Typography>
               </Stack>
@@ -144,7 +144,7 @@ export function CredentialView({ credentialId }: { credentialId: string }) {
               {cred.recipient_name}
             </Typography>
             <Typography sx={{ color: "text.secondary", mt: 1.5 }}>has successfully completed</Typography>
-            <Typography sx={{ fontWeight: 800, fontSize: { xs: "1.2rem", md: "1.5rem" }, mt: 0.5, color: "#4f46e5" }}>
+            <Typography sx={{ fontWeight: 800, fontSize: { xs: "1.2rem", md: "1.5rem" }, mt: 0.5, color: "#12365f" }}>
               {cred.course_title}
             </Typography>
 
@@ -176,7 +176,7 @@ export function CredentialView({ credentialId }: { credentialId: string }) {
                 onClick={copyLink}
                 variant="outlined"
                 startIcon={<Icon icon={copied ? "mdi:check" : "mdi:link-variant"} width={18} />}
-                sx={{ textTransform: "none", fontWeight: 700, borderColor: "#c7d2fe", color: "#4f46e5", borderRadius: 2 }}
+                sx={{ textTransform: "none", fontWeight: 700, borderColor: "#b6cde8", color: "#12365f", borderRadius: 2 }}
               >
                 {copied ? "Link copied" : "Copy verify link"}
               </Button>

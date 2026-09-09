@@ -55,7 +55,7 @@ const CARD_SX = {
   borderRadius: "16px",
   bgcolor: "var(--card-bg)",
   border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
-  boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+  boxShadow: "var(--shadow-sm)",
 } as const;
 
 /** Secondary (outline) button per the redesign button rules. */
@@ -79,7 +79,7 @@ const PRIMARY_BUTTON_SX = {
   color: "#fff",
   background: "var(--gradient-ai)",
   boxShadow:
-    "0 10px 22px -12px color-mix(in srgb, var(--ai-violet) 70%, transparent)",
+    "var(--shadow-sm)",
   "&:hover": { filter: "brightness(1.05)" },
 } as const;
 
@@ -555,7 +555,7 @@ export function CodingCSVUploadSection({
               color: "#fff",
               bgcolor: "var(--success-500)",
               boxShadow:
-                "0 10px 22px -12px color-mix(in srgb, var(--success-500) 70%, transparent)",
+                "var(--shadow-sm)",
               "&:hover": { bgcolor: "var(--success-500)", filter: "brightness(1.05)" },
               alignSelf: { xs: "stretch", sm: "center" },
             }}

@@ -28,10 +28,10 @@ interface Props {
 }
 
 const STATUS_TONE: Record<string, string> = {
-  active: "#10b981",
-  scheduled: "#6366f1",
+  active: "#0e7a3c",
+  scheduled: "#1b4f8a",
   draft: "#94a3b8",
-  completed: "#a855f7",
+  completed: "#1b4f8a",
   archived: "#94a3b8",
 };
 
@@ -160,9 +160,9 @@ export function AssignToCohortsDialog({ open, onClose, courseId, courseTitle }: 
                     borderRadius: 2,
                     cursor: "pointer",
                     border: "1px solid",
-                    borderColor: checked ? "#6366f1" : "var(--border-default)",
-                    bgcolor: checked ? "color-mix(in srgb,#6366f1 6%,transparent)" : "transparent",
-                    "&:hover": { borderColor: "#6366f1" },
+                    borderColor: checked ? "#1b4f8a" : "var(--border-default)",
+                    bgcolor: checked ? "color-mix(in srgb,#1b4f8a 6%,transparent)" : "transparent",
+                    "&:hover": { borderColor: "#1b4f8a" },
                   }}
                 >
                   <Checkbox checked={checked} size="small" sx={{ p: 0.5 }} />
@@ -209,7 +209,7 @@ export function AssignToCohortsDialog({ open, onClose, courseId, courseTitle }: 
             color: "#fff",
             px: 2.5,
             borderRadius: 2,
-            background: "linear-gradient(135deg,#6366f1,#a855f7)",
+            background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)",
             "&.Mui-disabled": { color: "rgba(255,255,255,0.7)", opacity: 0.6 },
           }}
         >

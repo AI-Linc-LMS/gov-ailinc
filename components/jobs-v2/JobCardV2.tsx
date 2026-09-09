@@ -96,12 +96,12 @@ const JobCardV2Component = ({ job, onFavoriteChange }: JobCardV2Props) => {
         transition: "all 0.2s ease",
         width: "100%",
         maxWidth: "100%",
-        boxShadow: "0 1px 3px color-mix(in srgb, var(--font-primary) 6%, transparent)",
+        boxShadow: "var(--shadow-sm)",
         "&:hover": {
           borderColor:
             "color-mix(in srgb, var(--accent-indigo) 40%, var(--border-default))",
           boxShadow:
-            "0 8px 24px color-mix(in srgb, var(--accent-indigo) 20%, transparent)",
+            "var(--shadow-md)",
         },
       }}
     >
@@ -323,7 +323,7 @@ const JobCardV2Component = ({ job, onFavoriteChange }: JobCardV2Props) => {
                 minWidth: { xs: "auto", sm: 140 },
                 "&:hover": {
                   backgroundColor: "var(--accent-indigo-dark)",
-                  boxShadow: "0 4px 12px color-mix(in srgb, var(--accent-indigo) 45%, transparent)",
+                  boxShadow: "var(--shadow-md)",
                 },
               }}
             >

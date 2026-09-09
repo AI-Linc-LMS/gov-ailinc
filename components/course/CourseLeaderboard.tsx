@@ -208,7 +208,7 @@ export function CourseLeaderboard({ leaderboard }: CourseLeaderboardProps) {
                 border: "1px solid var(--border-default)",
                 borderRadius: 2,
                 boxShadow:
-                  "0 4px 6px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+                  "var(--shadow-sm)",
                 maxWidth: 300,
               },
             },
@@ -350,7 +350,7 @@ export function CourseLeaderboard({ leaderboard }: CourseLeaderboardProps) {
                       fontSize: "0.8125rem",
                       flexShrink: 0,
                       boxShadow:
-                        "0 2px 4px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+                        "var(--shadow-sm)",
                     }}
                   >
                     {getRankIcon(rank)}
@@ -364,7 +364,7 @@ export function CourseLeaderboard({ leaderboard }: CourseLeaderboardProps) {
                       flexShrink: 0,
                       border: "2px solid var(--card-bg)",
                       boxShadow:
-                        "0 2px 4px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+                        "var(--shadow-sm)",
                     }}
                   >
                     {userName[0]}
@@ -457,7 +457,7 @@ export function CourseLeaderboard({ leaderboard }: CourseLeaderboardProps) {
                 fontSize: "0.8125rem",
                 flexShrink: 0,
                 boxShadow:
-                  "0 2px 8px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+                  "var(--shadow-sm)",
               }}
             >
               {currentUserEntry.rank ?? "?"}
@@ -476,7 +476,7 @@ export function CourseLeaderboard({ leaderboard }: CourseLeaderboardProps) {
                 border:
                   "2px solid color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
                 boxShadow:
-                  "0 2px 8px color-mix(in srgb, var(--accent-indigo) 18%, transparent)",
+                  "var(--shadow-sm)",
               }}
             >
               {getDisplayName(currentUserEntry)[0]}
@@ -518,7 +518,7 @@ export function CourseLeaderboard({ leaderboard }: CourseLeaderboardProps) {
                   "linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-purple) 100%)",
                 flexShrink: 0,
                 boxShadow:
-                  "0 2px 4px color-mix(in srgb, var(--accent-indigo) 28%, transparent)",
+                  "var(--shadow-sm)",
               }}
             >
               <Typography

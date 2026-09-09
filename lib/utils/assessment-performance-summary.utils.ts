@@ -118,23 +118,23 @@ export const SUBMISSION_BADGE_PDF = {
 
 /** Web hex */
 export const PERFORMANCE_TONE_HEX = {
-  danger: { text: "#b91c1c", bg: "#fee2e2", border: "#f87171" },
-  warning: { text: "#b45309", bg: "#fff7ed", border: "#fbbf24" },
-  success: { text: "#15803d", bg: "#dcfce7", border: "#4ade80" },
+  danger: { text: "#8f1919", bg: "#fbeaea", border: "#c94b4b" },
+  warning: { text: "#8a5a12", bg: "#fff7ed", border: "#c9903a" },
+  success: { text: "#0b6232", bg: "#dff0e6", border: "#2f9159" },
 } as const;
 
 export const STATUS_INFO_HEX = {
-  text: "#1d4ed8",
-  bg: "#eff6ff",
-  border: "#60a5fa",
+  text: "#12365f",
+  bg: "#eef3fa",
+  border: "#85aad6",
 } as const;
 
 export const SUBMISSION_BADGE_HEX: Record<
   SubmissionBadgeKind,
   { text: string; bg: string; border: string }
 > = {
-  success: { text: "#15803d", bg: "#dcfce7", border: "#4ade80" },
-  warning: { text: "#b45309", bg: "#fff7ed", border: "#fbbf24" },
+  success: { text: "#0b6232", bg: "#dff0e6", border: "#2f9159" },
+  warning: { text: "#8a5a12", bg: "#fff7ed", border: "#c9903a" },
   info: STATUS_INFO_HEX,
   neutral: { text: "#475569", bg: "#f1f5f9", border: "#cbd5e1" },
 };

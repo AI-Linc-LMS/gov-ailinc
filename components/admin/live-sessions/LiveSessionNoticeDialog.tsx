@@ -127,7 +127,7 @@ export function LiveSessionNoticeDialog({ open, session, onClose, onSaved }: Pro
   return (
     <Dialog open={open} onClose={saving ? undefined : onClose} fullWidth maxWidth="sm">
       <DialogTitle sx={{ fontWeight: 800, display: "flex", alignItems: "center", gap: 1 }}>
-        <IconWrapper icon="mdi:calendar-alert" size={22} color="#f59e0b" />
+        <IconWrapper icon="mdi:calendar-alert" size={22} color="#b7791f" />
         {session?.topic_name || "Live session"}
       </DialogTitle>
       <DialogContent dividers>
@@ -210,7 +210,7 @@ export function LiveSessionNoticeDialog({ open, session, onClose, onSaved }: Pro
           )}
 
           {error && (
-            <Typography sx={{ color: "#ef4444", fontWeight: 700, fontSize: "0.84rem" }}>{error}</Typography>
+            <Typography sx={{ color: "#b32020", fontWeight: 700, fontSize: "0.84rem" }}>{error}</Typography>
           )}
         </Stack>
       </DialogContent>
@@ -227,8 +227,8 @@ export function LiveSessionNoticeDialog({ open, session, onClose, onSaved }: Pro
           onClick={save}
           disabled={!canSave}
           variant="contained"
-          sx={{ textTransform: "none", fontWeight: 800, bgcolor: mode === "cancelled" ? "#ef4444" : "#f59e0b",
-            "&:hover": { bgcolor: mode === "cancelled" ? "#dc2626" : "#d97706" } }}
+          sx={{ textTransform: "none", fontWeight: 800, bgcolor: mode === "cancelled" ? "#b32020" : "#b7791f",
+            "&:hover": { bgcolor: mode === "cancelled" ? "#991b1b" : "#8a5a12" } }}
         >
           {saving ? "Saving…" : mode === "cancelled" ? "Cancel session" : "Reschedule"}
         </Button>

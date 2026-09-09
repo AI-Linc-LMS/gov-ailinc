@@ -97,14 +97,14 @@ export function AssessmentCard({
         border: isDraft
           ? "1.5px dashed color-mix(in srgb, var(--warning-500) 45%, var(--border-default) 55%)"
           : "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+        boxShadow: "var(--shadow-sm)",
         overflow: "hidden",
         cursor: onClick ? "pointer" : "default",
         transition: "box-shadow 0.15s ease, transform 0.15s ease",
         "&:hover": onClick
           ? {
-              boxShadow: "0 14px 32px -18px color-mix(in srgb, var(--font-primary) 40%, transparent)",
-              transform: "translateY(-2px)",
+              boxShadow: "var(--shadow-md)",
+              transform: "translateY(-1px)",
             }
           : {},
       }}

@@ -88,7 +88,7 @@ export function CodingProblemsTable({
       sx={{
         borderRadius: 2,
         boxShadow:
-          "0 1px 3px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+          "var(--shadow-sm)",
         border: "1px solid var(--border-default)",
         backgroundColor: "var(--card-bg)",
         overflow: "hidden",

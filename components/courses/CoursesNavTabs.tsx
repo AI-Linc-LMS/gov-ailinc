@@ -58,7 +58,7 @@ export function CoursesNavTabs({ active }: { active: "courses" | "adaptive" }) {
         maxWidth: "100%",
         bgcolor: "color-mix(in srgb, var(--card-bg) 70%, transparent)",
         border: "1px solid color-mix(in srgb, var(--border-default) 70%, transparent)",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.04)",
+        boxShadow: "var(--shadow-xs)",
       }}
     >
       {tabs.map((t) => {
@@ -77,11 +77,11 @@ export function CoursesNavTabs({ active }: { active: "courses" | "adaptive" }) {
               textAlign: "left",
               color: isActive ? "white" : "text.primary",
               background: isActive
-                ? "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)"
+                ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)"
                 : "transparent",
-              boxShadow: isActive ? "0 14px 28px -14px rgba(124,58,237,0.6)" : "none",
+              boxShadow: isActive ? "var(--shadow-sm)" : "none",
               transition: "background 140ms ease, box-shadow 140ms ease",
-              "&:hover": { background: isActive ? "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" : "color-mix(in srgb, #6366f1 8%, transparent)" },
+              "&:hover": { background: isActive ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" : "color-mix(in srgb, #1b4f8a 8%, transparent)" },
             }}
           >
             <Stack direction="row" spacing={1.25} alignItems="center">
@@ -93,8 +93,8 @@ export function CoursesNavTabs({ active }: { active: "courses" | "adaptive" }) {
                   flexShrink: 0,
                   display: "grid",
                   placeItems: "center",
-                  color: isActive ? "white" : "#6366f1",
-                  bgcolor: isActive ? "rgba(255,255,255,0.18)" : "color-mix(in srgb, #6366f1 12%, transparent)",
+                  color: isActive ? "white" : "#1b4f8a",
+                  bgcolor: isActive ? "rgba(255,255,255,0.18)" : "color-mix(in srgb, #1b4f8a 12%, transparent)",
                 }}
               >
                 <Icon icon={t.icon} width={20} />

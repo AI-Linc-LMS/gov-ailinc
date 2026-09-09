@@ -917,10 +917,10 @@ export default function ManageStudentsPage() {
           </Box>
           {(
             [
-              { key: "at_risk", label: "At risk", icon: "mdi:alert-circle-outline", color: "var(--danger-500, #ef4444)" },
-              { key: "inactive", label: "Inactive 30d", icon: "mdi:sleep", color: "#f59e0b" },
-              { key: "low_completion", label: "Low completion", icon: "mdi:chart-line-variant", color: "#a855f7" },
-              { key: "high_performers", label: "High performers", icon: "mdi:trophy-outline", color: "#10b981" },
+              { key: "at_risk", label: "At risk", icon: "mdi:alert-circle-outline", color: "var(--danger-500, #b32020)" },
+              { key: "inactive", label: "Inactive 30d", icon: "mdi:sleep", color: "#b7791f" },
+              { key: "low_completion", label: "Low completion", icon: "mdi:chart-line-variant", color: "#1b4f8a" },
+              { key: "high_performers", label: "High performers", icon: "mdi:trophy-outline", color: "#0e7a3c" },
             ] as Array<{ key: SegmentKey; label: string; icon: string; color: string }>
           ).map((seg) => {
             const active = segment === seg.key;

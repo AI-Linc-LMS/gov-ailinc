@@ -26,12 +26,12 @@ export function AIPill({ children, variant = "soft", icon }: AIPillProps) {
         py: 0.4,
         borderRadius: 999,
         background: isSolid
-          ? "linear-gradient(135deg, #6366f1 0%, #a855f7 55%, #ec4899 100%)"
-          : "color-mix(in srgb, #a855f7 12%, transparent)",
+          ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 55%, #0f6b7a 100%)"
+          : "color-mix(in srgb, #1b4f8a 12%, transparent)",
         border: isSolid
           ? "1px solid color-mix(in srgb, white 18%, transparent)"
-          : "1px solid color-mix(in srgb, #a855f7 32%, transparent)",
-        color: isSolid ? "white" : "color-mix(in srgb, #a855f7 90%, var(--text-primary, #1a1f2e))",
+          : "1px solid color-mix(in srgb, #1b4f8a 32%, transparent)",
+        color: isSolid ? "white" : "color-mix(in srgb, #1b4f8a 90%, var(--text-primary, #1a1f2e))",
       }}
     >
       {icon}

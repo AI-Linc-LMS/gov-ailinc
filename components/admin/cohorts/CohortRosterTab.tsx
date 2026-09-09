@@ -72,7 +72,7 @@ export function CohortRosterTab({
     <Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2, flexWrap: "wrap" }}>
         <Typography sx={{ fontWeight: 800, fontSize: "1.05rem" }}>
-          Members <span style={{ color: "#a855f7" }}>{count}</span>
+          Members <span style={{ color: "#1b4f8a" }}>{count}</span>
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <TextField
@@ -144,7 +144,7 @@ export function CohortRosterTab({
                 fontWeight: 800,
                 fontSize: "0.85rem",
                 color: "white",
-                background: "linear-gradient(135deg, #6366f1, #a855f7)",
+                background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)",
               }}
             >
               {(m.name || m.email || "?").slice(0, 1).toUpperCase()}
@@ -159,7 +159,7 @@ export function CohortRosterTab({
             </Box>
             <ButtonBase
               onClick={() => void remove(m)}
-              sx={{ p: 0.75, borderRadius: 2, color: "text.secondary", "&:hover": { color: "#ef4444" } }}
+              sx={{ p: 0.75, borderRadius: 2, color: "text.secondary", "&:hover": { color: "#b32020" } }}
               aria-label="Remove member"
             >
               <Icon icon="mdi:account-remove-outline" width={18} />

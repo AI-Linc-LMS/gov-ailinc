@@ -86,13 +86,13 @@ export function MockInterviewTopicsView({
               p: 3,
               borderRadius: 2,
               boxShadow:
-                "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+                "var(--shadow-sm)",
               border: "1px solid var(--border-default)",
               backgroundColor: "var(--card-bg)",
               transition: "all 0.2s",
               "&:hover": {
                 boxShadow:
-                  "0 4px 12px color-mix(in srgb, var(--accent-indigo) 20%, transparent)",
+                  "var(--shadow-md)",
                 borderColor:
                   "color-mix(in srgb, var(--accent-indigo) 35%, var(--border-default) 65%)",
               },

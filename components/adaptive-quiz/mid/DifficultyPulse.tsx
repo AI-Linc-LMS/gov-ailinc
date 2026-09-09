@@ -22,7 +22,7 @@ interface DifficultyPulseProps {
   theta?: number;
 }
 
-const GRADIENT = "linear-gradient(90deg, #10b981 0%, #6366f1 50%, #ef4444 100%)";
+const GRADIENT = "linear-gradient(90deg, #0e7a3c 0%, #1b4f8a 50%, #b32020 100%)";
 
 export function DifficultyPulse({
   predictedPCorrect,
@@ -51,10 +51,9 @@ export function DifficultyPulse({
         gap: 2,
         p: 1.75,
         borderRadius: 3,
-        bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 55%, transparent)",
-        border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 70%, transparent)",
-        backdropFilter: "blur(14px) saturate(140%)",
-        boxShadow: "0 1px 0 0 color-mix(in srgb, white 14%, transparent) inset, 0 16px 36px -24px rgba(99, 102, 241, 0.4)",
+        bgcolor: "var(--card-bg, #ffffff)",
+        border: "1px solid var(--border-default, #e5e7eb)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
@@ -99,9 +98,9 @@ export function DifficultyPulse({
               px: 1,
               py: 0.3,
               borderRadius: 999,
-              bgcolor: "color-mix(in srgb, #6366f1 12%, transparent)",
-              border: "1px solid color-mix(in srgb, #6366f1 32%, transparent)",
-              color: "#6366f1",
+              bgcolor: "color-mix(in srgb, #1b4f8a 12%, transparent)",
+              border: "1px solid color-mix(in srgb, #1b4f8a 32%, transparent)",
+              color: "#1b4f8a",
               fontSize: "0.78rem",
               fontWeight: 800,
               letterSpacing: "-0.005em",
@@ -165,7 +164,7 @@ export function DifficultyPulse({
               inset: 0,
               borderRadius: 999,
               border: "1px solid color-mix(in srgb, white 30%, transparent)",
-              boxShadow: "0 1px 0 0 color-mix(in srgb, white 25%, transparent) inset",
+              boxShadow: "var(--shadow-xs)",
             }}
           />
           <Box
@@ -182,8 +181,9 @@ export function DifficultyPulse({
               height: 18,
               borderRadius: "50%",
               background: "white",
-              boxShadow:
-                "0 0 0 2px #6366f1, 0 6px 14px -4px rgba(99, 102, 241, 0.55)",
+              // The 2px ring is the marker's edge against the track; only the
+              // 14px blue drop under it went.
+              boxShadow: "0 0 0 2px #1b4f8a, var(--shadow-sm)",
             }}
           />
         </Box>
@@ -199,8 +199,8 @@ export function DifficultyPulse({
 
         {/* Always-visible reminder of which way the bar moves and why. */}
         <Typography sx={{ fontSize: "0.7rem", color: "text.secondary", textAlign: "center", mt: 0.5, lineHeight: 1.45 }}>
-          Answer <Box component="span" sx={{ fontWeight: 800, color: "#10b981" }}>correctly</Box> → steps up toward Hard ·{" "}
-          <Box component="span" sx={{ fontWeight: 800, color: "#ef4444" }}>miss one</Box> → eases toward Easy
+          Answer <Box component="span" sx={{ fontWeight: 800, color: "#0e7a3c" }}>correctly</Box> → steps up toward Hard ·{" "}
+          <Box component="span" sx={{ fontWeight: 800, color: "#b32020" }}>miss one</Box> → eases toward Easy
         </Typography>
       </Box>
     </Box>

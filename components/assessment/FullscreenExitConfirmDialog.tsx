@@ -51,7 +51,6 @@ export function FullscreenExitConfirmDialog({
           sx: {
             zIndex: 14000,
             backgroundColor: "color-mix(in srgb, var(--primary-900) 78%, transparent)",
-            backdropFilter: "blur(4px)",
           },
         },
       }}
@@ -63,7 +62,7 @@ export function FullscreenExitConfirmDialog({
           overflow: "hidden",
           border: "1px solid color-mix(in srgb, var(--accent-indigo) 22%, var(--border-default))",
           boxShadow:
-            "0 24px 64px color-mix(in srgb, var(--primary-900) 28%, transparent), 0 0 0 1px color-mix(in srgb, var(--font-light) 6%, transparent)",
+            "var(--shadow-xl)",
           bgcolor: "var(--card-bg)",
         },
       }}
@@ -159,7 +158,7 @@ export function FullscreenExitConfirmDialog({
             textAlign: "left",
             alignItems: "flex-start",
             bgcolor: "var(--accent-indigo)",
-            boxShadow: "0 4px 18px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+            boxShadow: "var(--shadow-lg)",
             "& .MuiButton-startIcon": { mt: 0.35 },
             "&:hover": {
               bgcolor: "var(--accent-indigo-dark)",

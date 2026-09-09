@@ -199,7 +199,7 @@ export default function AdminCertificatesHubPage() {
   }, [courses, qCourse]);
 
   const primary = theme.palette.primary.main;
-  const secondary = theme.palette.secondary?.main ?? "#0d9488";
+  const secondary = theme.palette.secondary?.main ?? "#0b5260";
 
   if (loadingClient) {
     return (

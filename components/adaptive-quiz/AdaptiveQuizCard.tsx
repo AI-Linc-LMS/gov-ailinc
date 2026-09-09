@@ -58,8 +58,8 @@ export function AdaptiveQuizCard({ data, onStart }: AdaptiveQuizCardProps) {
 
   // Three palettes: public adaptive (indigo), active personal re-quiz (amber -
   // signals "in flight, finish this"), archived (pink/purple - celebratory).
-  const accentStart = isArchived ? "#ec4899" : isPersonal ? "#f59e0b" : "#6366f1";
-  const accentEnd = isArchived ? "#a855f7" : isPersonal ? "#ec4899" : "#4338ca";
+  const accentStart = isArchived ? "#0f6b7a" : isPersonal ? "#b7791f" : "#1b4f8a";
+  const accentEnd = isArchived ? "#1b4f8a" : isPersonal ? "#0f6b7a" : "#0e2a4b";
   const badgeIcon = isArchived
     ? "mdi:trophy"
     : isPersonal
@@ -101,13 +101,13 @@ export function AdaptiveQuizCard({ data, onStart }: AdaptiveQuizCardProps) {
         // BentoCard pattern where the card colour-codes itself by its content.
         border: `1px solid color-mix(in srgb, ${accentStart} 22%, transparent)`,
         boxShadow:
-          "0 1px 0 0 color-mix(in srgb, white 16%, transparent) inset, 0 24px 50px -32px rgba(15, 23, 42, 0.18)",
+          "var(--shadow-sm)",
         display: "flex",
         flexDirection: "column",
         transition: "box-shadow 200ms ease, border-color 200ms ease",
         "&:hover": {
           borderColor: `color-mix(in srgb, ${accentStart} 38%, transparent)`,
-          boxShadow: `0 1px 0 0 color-mix(in srgb, white 16%, transparent) inset, 0 36px 70px -32px color-mix(in srgb, ${accentStart} 30%, transparent)`,
+          boxShadow: "var(--shadow-md)",
         },
       }}
     >
@@ -159,7 +159,7 @@ export function AdaptiveQuizCard({ data, onStart }: AdaptiveQuizCardProps) {
               justifyContent: "center",
               background: `linear-gradient(135deg, ${accentStart} 0%, ${accentEnd} 100%)`,
               color: "white",
-              boxShadow: `0 12px 28px -10px color-mix(in srgb, ${accentEnd} 60%, transparent)`,
+              boxShadow: "var(--shadow-sm)",
               flexShrink: 0,
             }}
           >
@@ -287,7 +287,7 @@ export function AdaptiveQuizCard({ data, onStart }: AdaptiveQuizCardProps) {
             fontWeight: 800,
             color: "white",
             background: `linear-gradient(135deg, ${accentStart} 0%, ${accentEnd} 100%)`,
-            boxShadow: `0 14px 30px -14px color-mix(in srgb, ${accentEnd} 70%, transparent)`,
+            boxShadow: "var(--shadow-sm)",
             fontSize: "0.92rem",
             letterSpacing: "0.01em",
             display: "inline-flex",

@@ -22,10 +22,10 @@ export interface CalendarEvent {
 }
 
 export const CALENDAR_TYPE_META: Record<CalendarEventType, { label: string; color: string }> = {
-  live: { label: "Live session", color: "#ef4444" },
-  deadline: { label: "Deadline", color: "#f59e0b" },
-  assessment: { label: "Assessment", color: "#6366f1" },
-  interview: { label: "Interview", color: "#14b8a6" },
+  live: { label: "Live session", color: "#b32020" },
+  deadline: { label: "Deadline", color: "#b7791f" },
+  assessment: { label: "Assessment", color: "#1b4f8a" },
+  interview: { label: "Interview", color: "#0f6b7a" },
 };
 
 const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
@@ -156,8 +156,8 @@ export function ScheduleCalendar({
                 borderRadius: "12px",
                 cursor: "pointer",
                 position: "relative",
-                border: isToday && !isSelected ? "1px solid color-mix(in srgb,#7c3aed 45%,transparent)" : "1px solid transparent",
-                background: isSelected ? "linear-gradient(135deg,#7c3aed,#a855f7)" : "transparent",
+                border: isToday && !isSelected ? "1px solid color-mix(in srgb,#14406f 45%,transparent)" : "1px solid transparent",
+                background: isSelected ? "linear-gradient(135deg,#14406f,#1b4f8a)" : "transparent",
                 color: isSelected ? "#fff" : "var(--font-primary)",
                 transition: "background .15s, border-color .15s",
                 "&:hover": { background: isSelected ? undefined : "color-mix(in srgb,var(--border-default) 40%,transparent)" },
@@ -285,7 +285,7 @@ function NavBtn({ icon, onClick, label }: { icon: string; onClick: () => void; l
         bgcolor: "transparent",
         color: "var(--font-secondary)",
         cursor: "pointer",
-        "&:hover": { borderColor: "#7c3aed", color: "#7c3aed" },
+        "&:hover": { borderColor: "#14406f", color: "#14406f" },
       }}
     >
       <Icon icon={icon} width={18} />

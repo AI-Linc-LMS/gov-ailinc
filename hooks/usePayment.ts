@@ -129,7 +129,7 @@ export const usePayment = () => {
             email: user?.email || "",
             contact: user?.phone || "",
           },
-          theme: { color: "#6366f1" },
+          theme: { color: "#1b4f8a" },
         };
 
         const RazorpayCtor = (

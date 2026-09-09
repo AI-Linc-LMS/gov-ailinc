@@ -62,7 +62,7 @@ export default function InstructorCohortPage() {
         }
       />
 
-      {error && <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
+      {error && <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
 
       {!error && (
         <>

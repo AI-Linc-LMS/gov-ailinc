@@ -95,10 +95,10 @@ export function CourseLibraryStep({ data, onChange }: Props) {
                 className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full transition"
                 style={{
                   border: on
-                    ? "1px solid #00e0ff"
+                    ? "1px solid #2f7fbf"
                     : "1px solid rgb(var(--aw-line) / var(--aw-line-2-alpha))",
                   background: on
-                    ? "linear-gradient(135deg, #00e0ff, #2356d6)"
+                    ? "linear-gradient(135deg, #2f7fbf, #2356d6)"
                     : "transparent",
                 }}
               >
@@ -235,7 +235,7 @@ function CatalogueBrowser({
     >
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="aw-mono text-[10px] uppercase tracking-[0.28em] text-[#00e0ff]">
+          <p className="aw-mono text-[10px] uppercase tracking-[0.28em] text-[#2f7fbf]">
             TSEM catalogue
           </p>
           <h4 className="aw-text mt-1 text-[16px] font-semibold">
@@ -257,9 +257,9 @@ function CatalogueBrowser({
             disabled={loading || filtered.length === 0}
             className="aw-mono rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
             style={{
-              color: "#00e0ff",
-              borderColor: "rgba(0, 224, 255, 0.4)",
-              background: "rgba(0, 224, 255, 0.06)",
+              color: "#2f7fbf",
+              borderColor: "rgba(133, 170, 214, 0.4)",
+              background: "rgba(133, 170, 214, 0.06)",
             }}
           >
             Select all
@@ -321,10 +321,10 @@ function CatalogueBrowser({
                 className="rounded-[12px] transition-all"
                 style={{
                   border: on
-                    ? "1px solid rgba(0, 224, 255, 0.55)"
+                    ? "1px solid rgba(133, 170, 214, 0.55)"
                     : "1px solid rgb(var(--aw-line) / var(--aw-line-alpha))",
                   background: on
-                    ? "rgba(0, 224, 255, 0.06)"
+                    ? "rgba(133, 170, 214, 0.06)"
                     : "rgb(var(--aw-line) / 0.02)",
                 }}
               >
@@ -336,10 +336,10 @@ function CatalogueBrowser({
                     aria-pressed={on}
                     style={{
                       border: on
-                        ? "1px solid #00e0ff"
+                        ? "1px solid #2f7fbf"
                         : "1px solid rgb(var(--aw-line) / var(--aw-line-2-alpha))",
                       background: on
-                        ? "linear-gradient(135deg, #00e0ff, #2356d6)"
+                        ? "linear-gradient(135deg, #2f7fbf, #2356d6)"
                         : "transparent",
                     }}
                   >
@@ -368,9 +368,9 @@ function CatalogueBrowser({
                         <span
                           className="aw-mono shrink-0 rounded-full px-2 py-0.5 text-[9px] uppercase tracking-[0.22em]"
                           style={{
-                            color: "#00e0ff",
-                            border: "1px solid rgba(0, 224, 255, 0.3)",
-                            background: "rgba(0, 224, 255, 0.06)",
+                            color: "#2f7fbf",
+                            border: "1px solid rgba(133, 170, 214, 0.3)",
+                            background: "rgba(133, 170, 214, 0.06)",
                           }}
                         >
                           {c.difficulty_level}
@@ -436,7 +436,7 @@ function CatalogueBrowser({
                                 <div className="flex items-baseline gap-2">
                                   <span
                                     className="aw-mono text-[10px] uppercase tracking-[0.22em]"
-                                    style={{ color: "#00e0ff" }}
+                                    style={{ color: "#2f7fbf" }}
                                   >
                                     W{m.weekno}
                                   </span>

@@ -39,10 +39,10 @@ export interface MentorAnalysisCardProps {
 }
 
 const BAND_COLOR: Record<string, string> = {
-  emerging: "#ef4444",
-  developing: "#f59e0b",
-  proficient: "#6366f1",
-  mastered: "#10b981",
+  emerging: "#b32020",
+  developing: "#b7791f",
+  proficient: "#1b4f8a",
+  mastered: "#0e7a3c",
 };
 
 const GAP_LABELS: Record<string, string> = {
@@ -85,7 +85,7 @@ export function MentorAnalysisCard({
       sx={{
         borderRadius: 3,
         overflow: "hidden",
-        border: "1.5px solid color-mix(in srgb, #ef4444 28%, transparent)",
+        border: "1.5px solid color-mix(in srgb, #b32020 28%, transparent)",
         background: "var(--card-bg, #fff)",
       }}
     >
@@ -97,14 +97,14 @@ export function MentorAnalysisCard({
           gap: 1.25,
           px: 2,
           py: 1.5,
-          background: "linear-gradient(135deg, color-mix(in srgb,#ef4444 14%,transparent), color-mix(in srgb,#ec4899 8%,transparent))",
+          background: "linear-gradient(135deg, color-mix(in srgb,#b32020 14%,transparent), color-mix(in srgb,#0f6b7a 8%,transparent))",
         }}
       >
         <Box
           sx={{
             width: 30, height: 30, borderRadius: "50%", flexShrink: 0,
             display: "grid", placeItems: "center", color: "white",
-            background: "linear-gradient(135deg,#ef4444,#ec4899)",
+            background: "linear-gradient(135deg,#b32020,#0f6b7a)",
           }}
         >
           <Icon icon="mdi:close" width={18} />
@@ -180,8 +180,8 @@ export function MentorAnalysisCard({
                 sx={{
                   alignSelf: "flex-start", textTransform: "none", fontWeight: 800, fontSize: "0.8rem",
                   px: 1.75, py: 0.6, borderRadius: 999, color: "white",
-                  background: "linear-gradient(135deg,#6366f1,#a855f7)",
-                  "&:hover": { background: "linear-gradient(135deg,#5558e0,#9a4ee6)" },
+                  background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)",
+                  "&:hover": { background: "linear-gradient(135deg,#164274,#164274)" },
                 }}
               >
                 {hintsRevealed === 0 ? "Reveal a hint - it guides, never solves" : `Reveal hint ${hintsRevealed + 1}`}
@@ -211,7 +211,7 @@ function Section({ label, children }: { label: string; children: React.ReactNode
 }
 
 function ChipCard({ tone, title, body }: { tone: "warn" | "good"; title: string; body: string }) {
-  const accent = tone === "warn" ? "#f59e0b" : "#10b981";
+  const accent = tone === "warn" ? "#b7791f" : "#0e7a3c";
   return (
     <Box
       sx={{
@@ -235,8 +235,8 @@ function HintRung({ hint }: { hint: HintResult }) {
     <Box
       sx={{
         p: 1.25, borderRadius: 2,
-        border: `1px solid color-mix(in srgb, ${isSkeleton ? "#a855f7" : "#10b981"} 35%, transparent)`,
-        background: `color-mix(in srgb, ${isSkeleton ? "#a855f7" : "#10b981"} 7%, transparent)`,
+        border: `1px solid color-mix(in srgb, ${isSkeleton ? "#1b4f8a" : "#0e7a3c"} 35%, transparent)`,
+        background: `color-mix(in srgb, ${isSkeleton ? "#1b4f8a" : "#0e7a3c"} 7%, transparent)`,
       }}
     >
       <Typography sx={{ fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase", color: "text.secondary" }}>
@@ -269,7 +269,7 @@ function MasteryDeltaSection({ delta }: { delta?: MasteryDelta | null }) {
       <Box sx={{ display: "flex", flexDirection: "column", gap: 0.6 }}>
         {rows.map(([skill, d]) => {
           const up = d.after >= d.before;
-          const color = BAND_COLOR[d.band] ?? "#6366f1";
+          const color = BAND_COLOR[d.band] ?? "#1b4f8a";
           return (
             <Box key={skill} sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
               <Typography sx={{ fontSize: "0.82rem", fontWeight: 700, flex: 1, minWidth: 90 }}>{skill}</Typography>
@@ -279,8 +279,8 @@ function MasteryDeltaSection({ delta }: { delta?: MasteryDelta | null }) {
               <Box
                 sx={{
                   display: "inline-flex", alignItems: "center", gap: 0.25, px: 0.75, py: 0.2, borderRadius: 999,
-                  fontSize: "0.7rem", fontWeight: 800, color: up ? "#10b981" : "#ef4444",
-                  background: `color-mix(in srgb, ${up ? "#10b981" : "#ef4444"} 12%, transparent)`,
+                  fontSize: "0.7rem", fontWeight: 800, color: up ? "#0e7a3c" : "#b32020",
+                  background: `color-mix(in srgb, ${up ? "#0e7a3c" : "#b32020"} 12%, transparent)`,
                 }}
               >
                 <Icon icon={up ? "mdi:arrow-up-bold" : "mdi:arrow-down-bold"} width={11} />
@@ -315,14 +315,14 @@ function ChallengePanel({
     <Box
       sx={{
         borderRadius: 3, overflow: "hidden",
-        border: "1.5px solid color-mix(in srgb, #10b981 32%, transparent)",
+        border: "1.5px solid color-mix(in srgb, #0e7a3c 32%, transparent)",
         background: "var(--card-bg, #fff)",
       }}
     >
       <Box
         sx={{
           display: "flex", alignItems: "center", gap: 1.25, px: 2, py: 1.5,
-          background: "linear-gradient(135deg, color-mix(in srgb,#10b981 14%,transparent), color-mix(in srgb,#6366f1 8%,transparent))",
+          background: "linear-gradient(135deg, color-mix(in srgb,#0e7a3c 14%,transparent), color-mix(in srgb,#1b4f8a 8%,transparent))",
         }}
       >
         <AIBeacon size={28} />
@@ -341,8 +341,8 @@ function ChallengePanel({
               <Box
                 sx={{
                   p: 1.5, borderRadius: 2,
-                  background: "color-mix(in srgb,#6366f1 8%,transparent)",
-                  border: "1px solid color-mix(in srgb,#6366f1 28%,transparent)",
+                  background: "color-mix(in srgb,#1b4f8a 8%,transparent)",
+                  border: "1px solid color-mix(in srgb,#1b4f8a 28%,transparent)",
                 }}
               >
                 <Typography sx={{ fontSize: "0.9rem", fontWeight: 700, lineHeight: 1.5 }}>

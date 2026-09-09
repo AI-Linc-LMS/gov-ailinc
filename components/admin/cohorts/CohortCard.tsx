@@ -5,10 +5,10 @@ import { Icon } from "@iconify/react";
 import type { CohortListItem, CohortStatus } from "@/lib/services/admin/admin-cohorts.service";
 
 const STATUS: Record<CohortStatus, { label: string; color: string; bar: string }> = {
-  draft: { label: "Draft", color: "var(--warning-500, #f59e0b)", bar: "linear-gradient(90deg, #f59e0b, #fbbf24)" },
-  scheduled: { label: "Scheduled", color: "var(--accent-indigo, #6366f1)", bar: "linear-gradient(90deg, var(--accent-indigo, #6366f1), var(--ai-violet, #7c3aed))" },
-  active: { label: "Active", color: "var(--success-500, #5fa564)", bar: "var(--gradient-ai)" },
-  completed: { label: "Completed", color: "var(--tone-proctored, #06b6d4)", bar: "linear-gradient(90deg, #06b6d4, #0ea5e9)" },
+  draft: { label: "Draft", color: "var(--warning-500, #b7791f)", bar: "linear-gradient(90deg, #b7791f, #c9903a)" },
+  scheduled: { label: "Scheduled", color: "var(--accent-indigo, #1b4f8a)", bar: "linear-gradient(90deg, var(--accent-indigo, #1b4f8a), var(--ai-violet, #14406f))" },
+  active: { label: "Active", color: "var(--success-500, #0e7a3c)", bar: "var(--gradient-ai)" },
+  completed: { label: "Completed", color: "var(--tone-proctored, #0f6b7a)", bar: "linear-gradient(90deg, #0f6b7a, #1b4f8a)" },
   archived: { label: "Archived", color: "var(--font-tertiary, #6b7280)", bar: "linear-gradient(90deg, #9ca3af, #6b7280)" },
 };
 
@@ -16,7 +16,7 @@ function MiniStat({ icon, value, label }: { icon: string; value: number | string
   return (
     <Box sx={{ flex: 1, px: 1.5, py: 1.25, textAlign: "center" }}>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0.5 }}>
-        <Icon icon={icon} width={14} style={{ color: "var(--ai-violet, #7c3aed)" }} />
+        <Icon icon={icon} width={14} style={{ color: "var(--ai-violet, #14406f)" }} />
         <Typography sx={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: "1rem", color: "var(--font-primary)" }}>
           {value}
         </Typography>
@@ -53,11 +53,11 @@ export function CohortCard({
         overflow: "hidden",
         bgcolor: "var(--card-bg)",
         border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+        boxShadow: "var(--shadow-sm)",
         transition: "box-shadow 180ms ease, transform 180ms ease",
         "&:hover": {
-          boxShadow: "0 14px 32px -18px color-mix(in srgb, var(--font-primary) 40%, transparent)",
-          transform: "translateY(-2px)",
+          boxShadow: "var(--shadow-md)",
+          transform: "translateY(-1px)",
         },
       }}
     >
@@ -78,10 +78,10 @@ export function CohortCard({
             {/* Archive and delete are DIFFERENT things and must not share one button: archive keeps
                 the cohort (it moves to the Archived tab and can be brought back), delete removes it
                 from the working set entirely. */}
-            <IconButton size="small" onClick={onArchive} aria-label="Archive cohort" title="Archive — keeps it, moves it to the Archived tab" sx={{ color: "var(--font-tertiary)", "&:hover": { color: "#6366f1" } }}>
+            <IconButton size="small" onClick={onArchive} aria-label="Archive cohort" title="Archive — keeps it, moves it to the Archived tab" sx={{ color: "var(--font-tertiary)", "&:hover": { color: "#1b4f8a" } }}>
               <Icon icon="mdi:archive-outline" width={17} />
             </IconButton>
-            <IconButton size="small" onClick={onDelete} aria-label="Delete cohort" title="Delete — removes it from the working set" sx={{ color: "var(--font-tertiary)", "&:hover": { color: "var(--error-500, #ea4335)" } }}>
+            <IconButton size="small" onClick={onDelete} aria-label="Delete cohort" title="Delete — removes it from the working set" sx={{ color: "var(--font-tertiary)", "&:hover": { color: "var(--error-500, #b32020)" } }}>
               <Icon icon="mdi:trash-can-outline" width={17} />
             </IconButton>
           </Box>
@@ -123,9 +123,9 @@ export function CohortCard({
             borderRadius: "10px",
             fontWeight: 700,
             fontSize: "0.88rem",
-            color: "var(--ai-violet, #7c3aed)",
-            border: "1px solid color-mix(in srgb, var(--ai-violet, #7c3aed) 30%, transparent)",
-            "&:hover": { bgcolor: "color-mix(in srgb, var(--ai-violet, #7c3aed) 8%, transparent)" },
+            color: "var(--ai-violet, #14406f)",
+            border: "1px solid color-mix(in srgb, var(--ai-violet, #14406f) 30%, transparent)",
+            "&:hover": { bgcolor: "color-mix(in srgb, var(--ai-violet, #14406f) 8%, transparent)" },
           }}
         >
           Open

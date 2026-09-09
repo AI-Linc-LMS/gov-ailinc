@@ -45,7 +45,7 @@ export function DemoCredentialsPanel({ onSelect, busy }: DemoCredentialsPanelPro
         p: 2,
         borderRadius: `${RADIUS}px`,
         background: AUTH.violetSoft,
-        boxShadow: hairlineRing("#e4d9ff"),
+        boxShadow: hairlineRing("#d9e6f4"),
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
@@ -95,7 +95,7 @@ export function DemoCredentialsPanel({ onSelect, busy }: DemoCredentialsPanelPro
               cursor: busy ? "default" : "pointer",
               borderRadius: `${RADIUS}px`,
               background: AUTH.surface,
-              boxShadow: hairlineRing("#e9deff"),
+              boxShadow: hairlineRing("#d9e6f4"),
               transition: `box-shadow 160ms ${EASE}, transform 160ms ${EASE}`,
               opacity: busy ? 0.6 : 1,
               "&:hover": busy

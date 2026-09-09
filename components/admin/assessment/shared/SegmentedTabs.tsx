@@ -40,7 +40,7 @@ export function SegmentedTabs<T extends string>({
         borderRadius: 999,
         border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
         bgcolor: "var(--card-bg)",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+        boxShadow: "var(--shadow-sm)",
         maxWidth: "100%",
         overflowX: "auto",
         ...(fullWidth ? { display: "flex", width: "100%" } : {}),
@@ -77,7 +77,7 @@ export function SegmentedTabs<T extends string>({
               color: active ? "var(--font-light)" : "var(--font-secondary)",
               bgcolor: active ? "var(--ai-violet)" : "transparent",
               boxShadow: active
-                ? "0 6px 14px -8px color-mix(in srgb, var(--ai-violet) 70%, transparent)"
+                ? "var(--shadow-sm)"
                 : "none",
               transition: "background-color 0.15s ease, color 0.15s ease",
               "&:hover": active

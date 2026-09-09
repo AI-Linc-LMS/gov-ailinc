@@ -85,7 +85,7 @@ export function AssessmentCameraPreview({
           : "none",
         backgroundColor: "var(--assessment-video-letterbox-bg)",
         boxShadow: visible
-          ? "0 4px 12px color-mix(in srgb, var(--font-dark) 32%, transparent)"
+          ? "var(--shadow-md)"
           : "none",
         opacity: visible ? 1 : 0,
         visibility: visible ? "visible" : "hidden",

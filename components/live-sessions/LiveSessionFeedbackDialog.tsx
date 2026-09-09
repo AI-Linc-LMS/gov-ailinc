@@ -45,7 +45,7 @@ function StarRow({
     <Box>
       <Typography sx={{ fontWeight: 700, fontSize: "0.86rem" }}>
         {label}
-        {required && <Box component="span" sx={{ color: "#ef4444", ml: 0.5 }}>*</Box>}
+        {required && <Box component="span" sx={{ color: "#b32020", ml: 0.5 }}>*</Box>}
       </Typography>
       {hint && (
         <Typography sx={{ color: "var(--font-tertiary)", fontSize: "0.76rem", mb: 0.5 }}>{hint}</Typography>
@@ -65,7 +65,7 @@ function StarRow({
             <IconWrapper
               icon={value != null && n <= value ? "mdi:star" : "mdi:star-outline"}
               size={28}
-              color={value != null && n <= value ? "#f59e0b" : "var(--border-default)"}
+              color={value != null && n <= value ? "#b7791f" : "var(--border-default)"}
             />
           </Box>
         ))}
@@ -184,7 +184,7 @@ export function LiveSessionFeedbackDialog({
             />
 
             {error && (
-              <Typography sx={{ color: "#ef4444", fontWeight: 700, fontSize: "0.84rem" }}>{error}</Typography>
+              <Typography sx={{ color: "#b32020", fontWeight: 700, fontSize: "0.84rem" }}>{error}</Typography>
             )}
           </Stack>
         )}

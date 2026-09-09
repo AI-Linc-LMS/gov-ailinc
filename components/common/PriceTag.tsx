@@ -29,7 +29,7 @@ export function PriceTag({
 
   const amount = withAmount ? formatMoney(price, currency) : "";
   const label = isPaid ? amount || "Paid" : "Free";
-  const hue = isPaid ? "#f59e0b" : "#94a3b8";
+  const hue = isPaid ? "#b7791f" : "#94a3b8";
 
   return (
     <Box

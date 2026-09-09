@@ -25,7 +25,7 @@ export default async function Image({ params }: { params: Promise<{ credentialId
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "64px 72px",
-          background: "linear-gradient(135deg, #4f46e5 0%, #7c3aed 55%, #db2777 100%)",
+          background: "linear-gradient(135deg, #12365f 0%, #14406f 55%, #0b5260 100%)",
           color: "white",
           fontFamily: "sans-serif",
         }}
@@ -52,7 +52,7 @@ export default async function Image({ params }: { params: Promise<{ credentialId
           <div style={{ fontSize: 28, opacity: 0.85, marginBottom: 12 }}>This certifies that</div>
           <div style={{ fontSize: 72, fontWeight: 800, lineHeight: 1.05 }}>{recipient}</div>
           <div style={{ fontSize: 28, opacity: 0.85, margin: "18px 0 6px" }}>has successfully completed</div>
-          <div style={{ fontSize: 46, fontWeight: 700, color: "#fde68a" }}>{course}</div>
+          <div style={{ fontSize: 46, fontWeight: 700, color: "#f0ddb8" }}>{course}</div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 24, opacity: 0.9 }}>

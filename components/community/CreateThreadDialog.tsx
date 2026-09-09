@@ -102,26 +102,26 @@ const BODY_LABEL: Record<PostType, string> = {
 };
 
 const EDITOR_BG: Record<PostType, string> = {
-  question: "#f7f8ff",
-  poll: "#faf8ff",
+  question: "#eef3fa",
+  poll: "#e6f1f2",
   resource: "#f0f9ff",
   humorous: "#fffcf0",
   discussion: "#f0fdf8",
 };
 
 const HUMOR_TONES = [
-  { key: "relatable", emoji: "😅", label: "Relatable", color: "#f59e0b" },
-  { key: "hot_take", emoji: "🌶️", label: "Hot Take", color: "#ef4444" },
-  { key: "meme", emoji: "🤣", label: "Pure Meme", color: "#8b5cf6" },
-  { key: "vibes", emoji: "✨", label: "Just Vibes", color: "#ec4899" },
+  { key: "relatable", emoji: "😅", label: "Relatable", color: "#b7791f" },
+  { key: "hot_take", emoji: "🌶️", label: "Hot Take", color: "#b32020" },
+  { key: "meme", emoji: "🤣", label: "Pure Meme", color: "#4a7fbb" },
+  { key: "vibes", emoji: "✨", label: "Just Vibes", color: "#0f6b7a" },
 ] as const;
 
 type HumorTone = (typeof HUMOR_TONES)[number]["key"] | "";
 
 const STANCES = [
-  { key: "for", emoji: "👍", label: "I'm For It", color: "#10b981" },
-  { key: "against", emoji: "👎", label: "I'm Against", color: "#ef4444" },
-  { key: "neutral", emoji: "🤔", label: "Neutral / Curious", color: "#f59e0b" },
+  { key: "for", emoji: "👍", label: "I'm For It", color: "#0e7a3c" },
+  { key: "against", emoji: "👎", label: "I'm Against", color: "#b32020" },
+  { key: "neutral", emoji: "🤔", label: "Neutral / Curious", color: "#b7791f" },
 ] as const;
 
 type Stance = (typeof STANCES)[number]["key"] | "";
@@ -391,7 +391,7 @@ export function CreateThreadDialog({
     "& h3": { fontSize: "1.05rem" },
     "& p": { mb: 0.75, lineHeight: 1.7, color: "var(--font-primary)", fontSize: "0.9rem" },
     "& code": { fontFamily: "monospace", fontSize: "0.84rem", backgroundColor: "rgba(0,0,0,0.05)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: "4px", px: "4px", py: "1px" },
-    "& pre": { backgroundColor: "#1a1b26", color: "#c0caf5", borderRadius: "8px", p: 1.5, overflowX: "auto", "& code": { backgroundColor: "transparent", border: "none", color: "inherit", p: 0 } },
+    "& pre": { backgroundColor: "#111a26", color: "#dde3eb", borderRadius: "8px", p: 1.5, overflowX: "auto", "& code": { backgroundColor: "transparent", border: "none", color: "inherit", p: 0 } },
     "& blockquote": { borderLeft: `3px solid ${typeConfig.color}`, pl: 2, ml: 0, color: "var(--font-secondary)", fontStyle: "italic" },
     "& ul,& ol": { pl: 2.5, mb: 0.75 },
     "& li": { mb: 0.2, fontSize: "0.9rem" },
@@ -413,7 +413,7 @@ export function CreateThreadDialog({
         sx: {
           borderRadius: "16px",
           border: "1px solid var(--border-default)",
-          boxShadow: "0 24px 64px rgba(0,0,0,0.13)",
+          boxShadow: "var(--shadow-xl)",
           overflow: "hidden",
         },
       }}
@@ -486,13 +486,13 @@ export function CreateThreadDialog({
 
           {/* Question */}
           {postType === "question" && (
-            <Box sx={{ mb: 2, borderRadius: "10px", border: "1px solid #c7d2fe", overflow: "hidden", backgroundColor: "#f5f7ff" }}>
-              <Box sx={{ px: 2, py: 1.25, display: "flex", alignItems: "center", gap: 1, borderBottom: "1px solid #c7d2fe", backgroundColor: "#eef2ff" }}>
-                <IconWrapper icon="mdi:wrench-clock-outline" size={15} color="#6366f1" />
-                <Typography variant="body2" fontWeight={700} sx={{ color: "#6366f1" }}>
+            <Box sx={{ mb: 2, borderRadius: "10px", border: "1px solid #b6cde8", overflow: "hidden", backgroundColor: "#f6f8fb" }}>
+              <Box sx={{ px: 2, py: 1.25, display: "flex", alignItems: "center", gap: 1, borderBottom: "1px solid #b6cde8", backgroundColor: "#eef3fa" }}>
+                <IconWrapper icon="mdi:wrench-clock-outline" size={15} color="#1b4f8a" />
+                <Typography variant="body2" fontWeight={700} sx={{ color: "#1b4f8a" }}>
                   What have you already tried?
                 </Typography>
-                <Chip label="optional" size="small" sx={{ ml: "auto", height: 18, fontSize: "0.65rem", backgroundColor: "#c7d2fe", color: "#4338ca" }} />
+                <Chip label="optional" size="small" sx={{ ml: "auto", height: 18, fontSize: "0.65rem", backgroundColor: "#b6cde8", color: "#0e2a4b" }} />
               </Box>
               <TextField
                 placeholder="e.g. I tried X but got error Y. Also checked the docs for Z - didn't help because..."
@@ -502,7 +502,7 @@ export function CreateThreadDialog({
                 InputProps={{
                   sx: {
                     borderRadius: 0, border: "none", "& fieldset": { border: "none" },
-                    fontSize: "0.875rem", lineHeight: 1.6, backgroundColor: "#f5f7ff",
+                    fontSize: "0.875rem", lineHeight: 1.6, backgroundColor: "#f6f8fb",
                     fontFamily: "inherit", "& textarea": { px: 2, py: 1.25 },
                   },
                 }}
@@ -513,12 +513,12 @@ export function CreateThreadDialog({
           {/* Humorous */}
           {postType === "humorous" && (
             <Box sx={{ mb: 2, display: "flex", flexDirection: "column", gap: 1.5 }}>
-              <Box sx={{ p: 2, borderRadius: "10px", border: "1px solid #fde68a", backgroundColor: "#fffbeb" }}>
+              <Box sx={{ p: 2, borderRadius: "10px", border: "1px solid #f0ddb8", backgroundColor: "#fdf9f0" }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, mb: 1.25 }}>
-                  <Typography variant="body2" fontWeight={700} sx={{ color: "#b45309" }}>
+                  <Typography variant="body2" fontWeight={700} sx={{ color: "#8a5a12" }}>
                     What&apos;s the vibe?
                   </Typography>
-                  <Chip label="optional" size="small" sx={{ height: 18, fontSize: "0.65rem", backgroundColor: "#fde68a", color: "#92400e" }} />
+                  <Chip label="optional" size="small" sx={{ height: 18, fontSize: "0.65rem", backgroundColor: "#f0ddb8", color: "#92400e" }} />
                 </Box>
                 <Box sx={{ display: "flex", gap: 0.75, flexWrap: "wrap" }}>
                   {HUMOR_TONES.map((tone) => {
@@ -611,7 +611,7 @@ export function CreateThreadDialog({
               InputProps={{
                 startAdornment: (
                   <Box sx={{ mr: 1, display: "flex" }}>
-                    <IconWrapper icon="mdi:link-variant" size={18} color="#3b82f6" />
+                    <IconWrapper icon="mdi:link-variant" size={18} color="#4a7fbb" />
                   </Box>
                 ),
               }}
@@ -896,7 +896,7 @@ export function CreateThreadDialog({
                           sx={{
                             width: 80, height: 80, objectFit: "cover",
                             borderRadius: "8px",
-                            border: `1px solid ${file.uploadFailed ? "#ef4444" : "var(--border-default)"}`,
+                            border: `1px solid ${file.uploadFailed ? "#b32020" : "var(--border-default)"}`,
                             display: "block",
                             opacity: file.uploading ? 0.5 : 1,
                             transition: "opacity 0.2s",
@@ -923,13 +923,13 @@ export function CreateThreadDialog({
                             alignItems: "center", justifyContent: "center",
                             borderRadius: "8px", backgroundColor: "rgba(239,68,68,0.18)",
                           }}>
-                            <IconWrapper icon="mdi:alert-circle-outline" size={22} color="#ef4444" />
+                            <IconWrapper icon="mdi:alert-circle-outline" size={22} color="#b32020" />
                           </Box>
                         )}
                         {!file.uploading && !file.uploadFailed && file.s3Url && (
                           <Box sx={{
                             position: "absolute", bottom: 4, right: 4,
-                            backgroundColor: "#10b981", borderRadius: "50%",
+                            backgroundColor: "#0e7a3c", borderRadius: "50%",
                             width: 14, height: 14, display: "flex",
                             alignItems: "center", justifyContent: "center",
                           }}>

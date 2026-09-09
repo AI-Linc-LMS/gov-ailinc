@@ -57,7 +57,7 @@ function ResumePreviewCard({ label, children }: { label: string; children: React
         mt: 2,
         borderRadius: 2,
         overflow: "hidden",
-        boxShadow: "0 1px 3px color-mix(in srgb, var(--font-primary) 8%, transparent)",
+        boxShadow: "var(--shadow-sm)",
         border: "1px solid",
         borderColor: "color-mix(in srgb, var(--font-primary) 8%, transparent)",
       }}
@@ -285,7 +285,7 @@ export function ApplyJobDialog({
           borderRadius: 3,
           maxHeight: "90vh",
           boxShadow:
-            "0 25px 50px -12px color-mix(in srgb, var(--font-primary) 30%, transparent)",
+            "var(--shadow-xl)",
           overflow: "hidden",
         },
       }}
@@ -341,7 +341,7 @@ export function ApplyJobDialog({
                 color: resumeMode === mode ? "var(--font-primary)" : "var(--font-secondary)",
                 fontWeight: resumeMode === mode ? 600 : 500,
                 fontSize: "0.875rem",
-                boxShadow: resumeMode === mode ? "0 1px 2px color-mix(in srgb, var(--font-primary) 7%, transparent)" : "none",
+                boxShadow: resumeMode === mode ? "var(--shadow-xs)" : "none",
                 transition: "all 0.2s ease",
                 "&:hover": {
                   backgroundColor: resumeMode === mode ? "var(--font-light)" : "color-mix(in srgb, var(--font-light) 60%, transparent)",

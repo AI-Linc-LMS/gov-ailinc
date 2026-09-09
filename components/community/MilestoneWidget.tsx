@@ -7,8 +7,8 @@ import type { UserXP } from "@/lib/services/community.service";
 const TIER_COLORS = {
   bronze:   "#cd7f32",
   silver:   "#94a3b8",
-  gold:     "#fbbf24",
-  platinum: "#a78bfa",
+  gold:     "#c9903a",
+  platinum: "#85aad6",
 } as const;
 
 const TIER_ICON = {

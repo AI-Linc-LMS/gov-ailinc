@@ -8,7 +8,7 @@ import { useToast } from "@/components/common/Toast";
 import { adminAdaptiveCourseService } from "@/lib/services/admin/admin-adaptive-course.service";
 import { getAxiosErrorDetail } from "@/lib/utils/api-error";
 
-const INDIGO = "#6366f1";
+const INDIGO = "#1b4f8a";
 
 type GhostAddRowProps = {
   /** Text shown in the collapsed ghost state. */
@@ -121,7 +121,7 @@ function GhostAddRow({
           "&:hover": {
             borderColor: INDIGO,
             color: INDIGO,
-            bgcolor: "rgba(99, 102, 241, 0.06)",
+            bgcolor: "rgba(27, 79, 138, 0.06)",
           },
         }}
       >
@@ -150,7 +150,7 @@ function GhostAddRow({
         border: `1px dashed ${INDIGO}`,
         borderRadius: "10px",
         bgcolor: "var(--card-bg)",
-        boxShadow: "0 0 0 3px rgba(99, 102, 241, 0.10)",
+        boxShadow: "0 0 0 3px rgba(27, 79, 138, 0.10)",
       }}
     >
       <Icon icon="mdi:plus" width={16} color={INDIGO} />
@@ -210,7 +210,7 @@ function GhostAddRow({
           px: 2,
           borderRadius: "8px",
           bgcolor: INDIGO,
-          "&:hover": { bgcolor: "#4f46e5" },
+          "&:hover": { bgcolor: "#12365f" },
         }}
       >
         Add

@@ -25,15 +25,15 @@ interface AchievementsSectionProps {
   data: Achievements;
 }
 
-const GOLD = "#fbbf24";
-const GOLD_DEEP = "#d97706";
-const AMBER = "#f59e0b";
+const GOLD = "#c9903a";
+const GOLD_DEEP = "#8a5a12";
+const AMBER = "#b7791f";
 const SILVER = "#cbd5e1";
-const BRONZE = "#b45309";
-const STREAK = "#ef4444";
+const BRONZE = "#8a5a12";
+const STREAK = "#b32020";
 const ACCENT = "var(--accent-indigo)";
 const ACCENT_DARK = "var(--accent-indigo-dark)";
-const EMERALD = "#10b981";
+const EMERALD = "#0e7a3c";
 
 function formatEarnedDate(iso: string | null): string {
   if (!iso) return "-";
@@ -138,10 +138,10 @@ function PodiumCard({ badge, rank }: { badge: BadgeEarned; rank: 1 | 2 | 3 }) {
         overflow: "hidden",
         boxShadow:
           rank === 1
-            ? `0 28px 60px -28px color-mix(in srgb, ${GOLD} 55%, transparent)`
+            ? "var(--shadow-sm)"
             : "none",
         transition: "transform 0.25s ease",
-        "&:hover": { transform: "translateY(-3px)" },
+        "&:hover": { transform: "translateY(-1px)" },
       }}
     >
       {/* Rank ribbon */}
@@ -158,7 +158,7 @@ function PodiumCard({ badge, rank }: { badge: BadgeEarned; rank: 1 | 2 | 3 }) {
           borderRadius: 999,
           bgcolor: `color-mix(in srgb, ${style.ringColor} 90%, transparent)`,
           color: "#fff",
-          boxShadow: `0 6px 14px -8px color-mix(in srgb, ${style.ringColor} 80%, transparent)`,
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <IconWrapper icon={style.crown} size={12} color="#fff" />
@@ -246,7 +246,7 @@ function PodiumCard({ badge, rank }: { badge: BadgeEarned; rank: 1 | 2 | 3 }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: `0 14px 30px -12px color-mix(in srgb, ${style.ringColor} 75%, transparent), inset 0 -4px 12px color-mix(in srgb, ${style.ringColor} 40%, transparent)`,
+              boxShadow: "var(--shadow-sm)",
               color: "#fff",
             }}
           >
@@ -361,9 +361,9 @@ function EarnedBadgeChip({ badge, index }: { badge: BadgeEarned; index: number }
             transition: "all 0.2s ease",
             cursor: "default",
             "&:hover": {
-              transform: "translateY(-3px)",
+              transform: "translateY(-1px)",
               borderColor: `color-mix(in srgb, ${GOLD} 50%, transparent)`,
-              boxShadow: `0 18px 30px -18px color-mix(in srgb, ${GOLD} 55%, transparent)`,
+              boxShadow: "var(--shadow-md)",
             },
           }}
         >
@@ -377,7 +377,7 @@ function EarnedBadgeChip({ badge, index }: { badge: BadgeEarned; index: number }
               justifyContent: "center",
               background: `linear-gradient(135deg, ${GOLD} 0%, ${GOLD_DEEP} 100%)`,
               color: "#fff",
-              boxShadow: `0 12px 24px -12px color-mix(in srgb, ${GOLD_DEEP} 65%, transparent), inset 0 -3px 8px color-mix(in srgb, ${GOLD_DEEP} 40%, transparent)`,
+              boxShadow: "var(--shadow-sm)",
             }}
           >
             <IconWrapper icon={badge.iconSlug || "mdi:trophy-outline"} size={24} color="#fff" />
@@ -430,14 +430,14 @@ function EarnedBadgeChip({ badge, index }: { badge: BadgeEarned; index: number }
  * rather than a monotone list.
  */
 const MILESTONE_PALETTES: Array<{ key: string; primary: string; secondary: string }> = [
-  { key: "indigo", primary: "#6366f1", secondary: "#8b5cf6" },
-  { key: "rose", primary: "#f43f5e", secondary: "#ec4899" },
-  { key: "emerald", primary: "#10b981", secondary: "#14b8a6" },
-  { key: "amber", primary: "#f59e0b", secondary: "#ef4444" },
-  { key: "cyan", primary: "#06b6d4", secondary: "#3b82f6" },
-  { key: "fuchsia", primary: "#d946ef", secondary: "#a855f7" },
-  { key: "lime", primary: "#65a30d", secondary: "#22c55e" },
-  { key: "sky", primary: "#0ea5e9", secondary: "#6366f1" },
+  { key: "indigo", primary: "#1b4f8a", secondary: "#4a7fbb" },
+  { key: "rose", primary: "#b32020", secondary: "#0f6b7a" },
+  { key: "emerald", primary: "#0e7a3c", secondary: "#0f6b7a" },
+  { key: "amber", primary: "#b7791f", secondary: "#b32020" },
+  { key: "cyan", primary: "#0f6b7a", secondary: "#4a7fbb" },
+  { key: "fuchsia", primary: "#0f6b7a", secondary: "#1b4f8a" },
+  { key: "lime", primary: "#65a30d", secondary: "#0e7a3c" },
+  { key: "sky", primary: "#1b4f8a", secondary: "#1b4f8a" },
 ];
 
 function paletteFor(id: string): { primary: string; secondary: string; key: string } {
@@ -493,7 +493,6 @@ function ProgressMedallion({
           position: "absolute",
           inset: 0,
           transform: "rotate(-90deg)",
-          filter: `drop-shadow(0 0 10px color-mix(in srgb, ${primary} 35%, transparent))`,
         }}
       >
         <defs>
@@ -536,7 +535,7 @@ function ProgressMedallion({
           justifyContent: "center",
           background: `linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`,
           color: "#fff",
-          boxShadow: `0 12px 24px -12px color-mix(in srgb, ${primary} 70%, transparent), inset 0 -4px 10px color-mix(in srgb, ${primary} 40%, transparent), inset 0 2px 3px color-mix(in srgb, #fff 40%, transparent)`,
+          boxShadow: "var(--shadow-sm)",
           border: `2px solid color-mix(in srgb, #fff 75%, ${primary})`,
         }}
       >
@@ -580,8 +579,8 @@ function MilestoneCard({ milestone, index }: { milestone: BadgeMilestone; index:
           transition: "all 0.3s ease",
           "&:hover": {
             borderColor: `color-mix(in srgb, ${primary} 55%, transparent)`,
-            transform: "translateY(-3px)",
-            boxShadow: `0 28px 50px -28px color-mix(in srgb, ${primary} 60%, transparent)`,
+            transform: "translateY(-1px)",
+            boxShadow: "var(--shadow-md)",
           },
         }}
       >
@@ -622,7 +621,7 @@ function MilestoneCard({ milestone, index }: { milestone: BadgeMilestone; index:
             bottom: 0,
             width: 5,
             background: gradient,
-            boxShadow: `0 0 14px color-mix(in srgb, ${primary} 55%, transparent)`,
+            boxShadow: "var(--shadow-sm)",
           }}
         />
 
@@ -746,7 +745,7 @@ function MilestoneCard({ milestone, index }: { milestone: BadgeMilestone; index:
                     height: "100%",
                     borderRadius: 999,
                     background: gradient,
-                    boxShadow: `0 0 12px color-mix(in srgb, ${primary} 55%, transparent)`,
+                    boxShadow: "var(--shadow-sm)",
                     zIndex: 2,
                   }}
                 />
@@ -827,7 +826,6 @@ function MilestoneCard({ milestone, index }: { milestone: BadgeMilestone; index:
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  filter: `drop-shadow(0 6px 16px color-mix(in srgb, ${primary} 38%, transparent))`,
                 }}
               >
                 {pct}
@@ -1107,11 +1105,11 @@ export function AchievementsSection({ data }: AchievementsSectionProps) {
                       width: 52,
                       height: 52,
                       borderRadius: 2,
-                      background: `linear-gradient(135deg, ${STREAK} 0%, #f97316 100%)`,
+                      background: `linear-gradient(135deg, ${STREAK} 0%, #b45309 100%)`,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      boxShadow: `0 14px 30px -14px color-mix(in srgb, ${STREAK} 60%, transparent)`,
+                      boxShadow: "var(--shadow-sm)",
                       flexShrink: 0,
                     }}
                   >
@@ -1228,10 +1226,10 @@ export function AchievementsSection({ data }: AchievementsSectionProps) {
                                 height: 8,
                                 borderRadius: 4,
                                 background: filled
-                                  ? `linear-gradient(90deg, ${STREAK} 0%, #f97316 100%)`
+                                  ? `linear-gradient(90deg, ${STREAK} 0%, #b45309 100%)`
                                   : "color-mix(in srgb, var(--border-default) 35%, transparent)",
                                 boxShadow: filled
-                                  ? `0 4px 10px -4px color-mix(in srgb, ${STREAK} 55%, transparent)`
+                                  ? "var(--shadow-sm)"
                                   : "none",
                                 transition: "background 0.3s ease",
                               }}

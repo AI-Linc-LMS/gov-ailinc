@@ -192,7 +192,7 @@ export default function AdaptiveCourseCatalogPage() {
       {loading && <AdaptiveCourseListSkeleton />}
 
       {error && (
-        <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>
+        <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>
           {error}
         </Typography>
       )}
@@ -220,7 +220,7 @@ export default function AdaptiveCourseCatalogPage() {
             border: "1px dashed color-mix(in srgb, var(--border-default) 90%, transparent)",
           }}
         >
-          <Icon icon="mdi:magnify-close" width={44} style={{ color: "#a855f7" }} />
+          <Icon icon="mdi:magnify-close" width={44} style={{ color: "#1b4f8a" }} />
           <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.05rem" }}>
             No courses match your search.
           </Typography>
@@ -266,7 +266,7 @@ function CatalogEmptyState({ onBack }: { onBack: () => void }) {
         border: "1px dashed color-mix(in srgb, var(--border-default) 90%, transparent)",
       }}
     >
-      <Icon icon="mdi:compass-off-outline" width={48} style={{ color: "#a855f7" }} />
+      <Icon icon="mdi:compass-off-outline" width={48} style={{ color: "#1b4f8a" }} />
       <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.1rem" }}>
         No courses are open to join right now.
       </Typography>

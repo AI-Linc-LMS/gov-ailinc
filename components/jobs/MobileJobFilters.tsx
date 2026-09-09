@@ -83,7 +83,7 @@ const MobileJobFiltersComponent = ({
         borderBottom: "1px solid",
         borderColor: "divider",
         borderRadius: 2,
-        boxShadow: hideSearch ? "0 1px 3px color-mix(in srgb, var(--font-primary) 8%, transparent)" : "none",
+        boxShadow: hideSearch ? "var(--shadow-sm)" : "none",
       }}
     >
       {!hideSearch && (

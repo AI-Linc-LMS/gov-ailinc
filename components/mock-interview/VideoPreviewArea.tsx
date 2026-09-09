@@ -109,8 +109,11 @@ export const VideoPreviewArea = memo(function VideoPreviewArea({
               borderColor: isUserSpeaking
                 ? "var(--ats-success)"
                 : "var(--border-default)",
+              // A ring, not a halo: the speaking state keeps a hard 4px ring in the
+              // status colour (and the pulse below) so it still reads at a glance,
+              // but the 24px coloured bloom that sat under it is gone.
               boxShadow: isUserSpeaking
-                ? "0 0 0 4px color-mix(in srgb, var(--ats-success) 32%, transparent), 0 0 24px color-mix(in srgb, var(--ats-success) 28%, transparent)"
+                ? "0 0 0 4px color-mix(in srgb, var(--ats-success) 32%, transparent)"
                 : "none",
               transition: "border-color 0.2s ease, box-shadow 0.2s ease",
               position: "relative",
@@ -120,11 +123,11 @@ export const VideoPreviewArea = memo(function VideoPreviewArea({
               "@keyframes meet-speaking-pulse": {
                 "0%, 100%": {
                   boxShadow:
-                    "0 0 0 4px color-mix(in srgb, var(--ats-success) 32%, transparent), 0 0 24px color-mix(in srgb, var(--ats-success) 28%, transparent)",
+                    "0 0 0 4px color-mix(in srgb, var(--ats-success) 32%, transparent)",
                 },
                 "50%": {
                   boxShadow:
-                    "0 0 0 7px color-mix(in srgb, var(--ats-success) 22%, transparent), 0 0 32px color-mix(in srgb, var(--ats-success) 36%, transparent)",
+                    "0 0 0 7px color-mix(in srgb, var(--ats-success) 22%, transparent)",
                 },
               },
             }}
@@ -150,7 +153,6 @@ export const VideoPreviewArea = memo(function VideoPreviewArea({
                 py: 0.5,
                 backgroundColor: "rgba(0, 0, 0, 0.6)",
                 borderRadius: 1,
-                backdropFilter: "blur(10px)",
               }}
             >
               <Typography
@@ -184,7 +186,7 @@ export const VideoPreviewArea = memo(function VideoPreviewArea({
                 ? "var(--accent-indigo)"
                 : "var(--border-default)",
               boxShadow: isSpeaking
-                ? "0 0 0 4px color-mix(in srgb, var(--accent-indigo) 32%, transparent), 0 0 24px color-mix(in srgb, var(--accent-indigo) 28%, transparent)"
+                ? "0 0 0 4px color-mix(in srgb, var(--accent-indigo) 32%, transparent)"
                 : "none",
               transition: "border-color 0.2s ease, box-shadow 0.2s ease",
               position: "relative",
@@ -194,11 +196,11 @@ export const VideoPreviewArea = memo(function VideoPreviewArea({
               "@keyframes meet-ai-speaking-pulse": {
                 "0%, 100%": {
                   boxShadow:
-                    "0 0 0 4px color-mix(in srgb, var(--accent-indigo) 32%, transparent), 0 0 24px color-mix(in srgb, var(--accent-indigo) 28%, transparent)",
+                    "0 0 0 4px color-mix(in srgb, var(--accent-indigo) 32%, transparent)",
                 },
                 "50%": {
                   boxShadow:
-                    "0 0 0 7px color-mix(in srgb, var(--accent-indigo) 22%, transparent), 0 0 32px color-mix(in srgb, var(--accent-indigo) 36%, transparent)",
+                    "0 0 0 7px color-mix(in srgb, var(--accent-indigo) 22%, transparent)",
                 },
               },
             }}
@@ -218,9 +220,12 @@ export const VideoPreviewArea = memo(function VideoPreviewArea({
                 left: 10,
                 px: 1.5,
                 py: 0.5,
-                backgroundColor: "var(--interview-badge-speaking-bg)",
+                // Literal, not --interview-badge-speaking-bg: that variable is
+                // still indigo-500 at 90% in app/globals.css. Institutional blue
+                // keeps the badge distinct from the green "listening" badge it
+                // alternates with.
+                backgroundColor: "rgba(27, 79, 138, 0.9)",
                 borderRadius: 1,
-                backdropFilter: "blur(10px)",
               }}
             >
               <Typography

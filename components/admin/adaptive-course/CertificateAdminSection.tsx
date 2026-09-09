@@ -19,8 +19,8 @@ import { adaptiveJourneyService } from "@/lib/services/adaptive-journey.service"
 import type { AdminCertificateConfig } from "@/lib/types/adaptive-journey";
 import { getAxiosErrorDetail } from "@/lib/utils/api-error";
 
-const AMBER_GRADIENT = "linear-gradient(135deg, #f59e0b 0%, #f97316 100%)";
-const INDIGO_GRADIENT = "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)";
+const AMBER_GRADIENT = "linear-gradient(135deg, #b7791f 0%, #b45309 100%)";
+const INDIGO_GRADIENT = "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)";
 
 const panelSx = {
   p: { xs: 2.25, md: 3 },
@@ -145,7 +145,7 @@ export function CertificateAdminSection({ courseId }: { courseId: number }) {
   if (loading) {
     return (
       <Box sx={{ display: "grid", placeItems: "center", py: 6 }}>
-        <CircularProgress sx={{ color: "#f59e0b" }} />
+        <CircularProgress sx={{ color: "#b7791f" }} />
       </Box>
     );
   }

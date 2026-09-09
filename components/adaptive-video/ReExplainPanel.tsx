@@ -39,7 +39,7 @@ export function ReExplainPanel({ onReExplain }: Props) {
   };
 
   return (
-    <CompanionCard accent="#ec4899" title="Feeling lost?" icon="mdi:lifebuoy">
+    <CompanionCard accent="#0f6b7a" title="Feeling lost?" icon="mdi:lifebuoy">
       <Button
         fullWidth
         variant="contained"
@@ -52,9 +52,9 @@ export function ReExplainPanel({ onReExplain }: Props) {
           fontSize: "0.92rem",
           borderRadius: 2.5,
           py: 1.25,
-          background: "linear-gradient(135deg, #6366f1 0%, #a855f7 55%, #ec4899 100%)",
-          boxShadow: "0 16px 32px -16px rgba(168,85,247,0.6)",
-          "&:hover": { transform: "translateY(-1px)", boxShadow: "0 20px 40px -18px rgba(236,72,153,0.65)" },
+          background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 55%, #0f6b7a 100%)",
+          boxShadow: "var(--shadow-sm)",
+          "&:hover": { transform: "translateY(-1px)", boxShadow: "var(--shadow-md)" },
           transition: "all 140ms ease",
         }}
       >
@@ -74,9 +74,9 @@ export function ReExplainPanel({ onReExplain }: Props) {
             onClick={() => run(s.key)}
             sx={{
               textTransform: "none", borderRadius: 999, flex: 1, fontSize: "0.74rem", fontWeight: 700,
-              borderColor: "color-mix(in srgb, #a855f7 30%, transparent)", color: "text.primary",
+              borderColor: "color-mix(in srgb, #1b4f8a 30%, transparent)", color: "text.primary",
               "& .MuiButton-startIcon": { mr: 0.4 },
-              "&:hover": { borderColor: "#a855f7", background: "color-mix(in srgb, #a855f7 8%, transparent)" },
+              "&:hover": { borderColor: "#1b4f8a", background: "color-mix(in srgb, #1b4f8a 8%, transparent)" },
             }}
           >
             {s.label}
@@ -85,8 +85,8 @@ export function ReExplainPanel({ onReExplain }: Props) {
       </Box>
       {result && (
         <Box sx={{ mt: 1.75, p: 1.75, borderRadius: 2.5, position: "relative", overflow: "hidden",
-          background: "color-mix(in srgb, #a855f7 8%, transparent)",
-          border: "1px solid color-mix(in srgb, #a855f7 20%, transparent)" }}>
+          background: "color-mix(in srgb, #1b4f8a 8%, transparent)",
+          border: "1px solid color-mix(in srgb, #1b4f8a 20%, transparent)" }}>
           <Box sx={{ display: "flex", gap: 1, mb: 0.75, alignItems: "center" }}>
             <AIPill icon={<Icon icon="mdi:sparkles" />}>{result.style}</AIPill>
             {result.cached && (

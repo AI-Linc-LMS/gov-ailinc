@@ -22,7 +22,7 @@ function SolveInner() {
 
   if (!valid) {
     return (
-      <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 6 }}>
+      <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 6 }}>
         Missing problem or coding-set reference.
       </Typography>
     );

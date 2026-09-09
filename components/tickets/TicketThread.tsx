@@ -64,7 +64,7 @@ function Bubble({
       ? {
           paperBg: "var(--surface-success-light)",
           paperBorder: "var(--ticket-success-border)",
-          paperShadow: "0 1px 2px rgba(22,163,74,0.06)",
+          paperShadow: "var(--shadow-xs)",
           avatarBg: "var(--ats-success-muted)",
           avatarColor: "var(--font-light)",
           authorColor: "var(--ticket-success-strong)",
@@ -79,7 +79,7 @@ function Bubble({
         ? {
             paperBg: "var(--ticket-reopen-bg)",
             paperBorder: "var(--ticket-reopen-border)",
-            paperShadow: "0 1px 2px rgba(249,115,22,0.05)",
+            paperShadow: "var(--shadow-xs)",
             avatarBg: "var(--ticket-reopen)",
             avatarColor: "var(--font-light)",
             authorColor: "var(--warning-strong)",
@@ -93,7 +93,7 @@ function Bubble({
         : {
             paperBg: "var(--card-bg)",
             paperBorder: "var(--border-default)",
-            paperShadow: "0 1px 2px rgba(15,23,42,0.04)",
+            paperShadow: "var(--shadow-xs)",
             avatarBg: "var(--surface-blue-light)",
             avatarColor: "var(--ticket-brand-hover)",
             authorColor: "var(--ticket-text-strong)",

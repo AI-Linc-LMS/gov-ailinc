@@ -224,7 +224,7 @@ export function ProfileBriefingHero({ profile, coverPhotoUrl, onJumpTo }: Profil
                 bgcolor: "rgba(255,255,255,0.18)",
                 "& .MuiLinearProgress-bar": {
                   borderRadius: 999,
-                  background: "linear-gradient(90deg, #a855f7, #ec4899)",
+                  background: "linear-gradient(90deg, #1b4f8a, #0f6b7a)",
                 },
               }}
             />

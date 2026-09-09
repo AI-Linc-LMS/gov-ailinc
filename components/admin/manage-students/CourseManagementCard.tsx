@@ -30,7 +30,7 @@ interface CourseManagementCardProps {
   onEnrollmentChange: () => void;
 }
 
-const INDIGO = "#6366f1";
+const INDIGO = "#1b4f8a";
 
 function errMessage(error: unknown, fallback: string): string {
   return (
@@ -178,7 +178,7 @@ export function CourseManagementCard({
               borderRadius: 999,
               textTransform: "none",
               fontWeight: 700,
-              bgcolor: "#10b981",
+              bgcolor: "#0e7a3c",
               "&:hover": { bgcolor: "#0e9f70" },
             }}
           >
@@ -197,7 +197,7 @@ export function CourseManagementCard({
               borderRadius: 999,
               textTransform: "none",
               fontWeight: 700,
-              bgcolor: "#f59e0b",
+              bgcolor: "#b7791f",
               "&:hover": { bgcolor: "#d98a09" },
             }}
           >
@@ -219,9 +219,9 @@ export function CourseManagementCard({
               borderRadius: 999,
               textTransform: "none",
               fontWeight: 700,
-              borderColor: "#f59e0b",
-              color: "#b45309",
-              "&:hover": { borderColor: "#d98a09", bgcolor: "color-mix(in srgb, #f59e0b 10%, transparent)" },
+              borderColor: "#b7791f",
+              color: "#8a5a12",
+              "&:hover": { borderColor: "#d98a09", bgcolor: "color-mix(in srgb, #b7791f 10%, transparent)" },
             }}
           >
             {t("manageStudents.resetProgress")}

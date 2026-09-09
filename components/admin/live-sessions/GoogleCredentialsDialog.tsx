@@ -174,7 +174,7 @@ export function GoogleCredentialsDialog({ open, creds, redirectUri, onClose, onC
                 onClick={handleDisconnect}
                 loading={disconnecting}
                 loadingText={t("adminLiveSessions.disconnecting", "Disconnecting…")}
-                sx={{ borderRadius: "12px", textTransform: "none", fontWeight: 700, color: "var(--error-500, #ef4444)" }}
+                sx={{ borderRadius: "12px", textTransform: "none", fontWeight: 700, color: "var(--error-500, #b32020)" }}
               >
                 {t("adminLiveSessions.disconnect", "Disconnect")}
               </LoadingButton>

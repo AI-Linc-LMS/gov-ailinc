@@ -91,12 +91,12 @@ export default function AdminAdaptiveCoursesPage() {
       articles += c.article_count ?? 0;
     }
     return [
-      { label: "Courses", value: courses.length, icon: "mdi:book-multiple-outline", tone: "#6366f1" },
-      { label: "Published", value: published, icon: "mdi:earth", tone: "#10b981" },
+      { label: "Courses", value: courses.length, icon: "mdi:book-multiple-outline", tone: "#1b4f8a" },
+      { label: "Published", value: published, icon: "mdi:earth", tone: "#0e7a3c" },
       { label: "Drafts", value: courses.length - published, icon: "mdi:file-document-edit-outline", tone: "#94a3b8" },
-      { label: "Articles", value: articles, icon: "mdi:book-open-variant", tone: "#a855f7" },
-      { label: "Quizzes", value: quizzes, icon: "mdi:tune-vertical", tone: "#ec4899" },
-      { label: "Coding problems", value: coding, icon: "mdi:robot-happy-outline", tone: "#0ea5e9" },
+      { label: "Articles", value: articles, icon: "mdi:book-open-variant", tone: "#1b4f8a" },
+      { label: "Quizzes", value: quizzes, icon: "mdi:tune-vertical", tone: "#0f6b7a" },
+      { label: "Coding problems", value: coding, icon: "mdi:robot-happy-outline", tone: "#1b4f8a" },
     ];
   }, [courses]);
 
@@ -219,8 +219,10 @@ export default function AdminAdaptiveCoursesPage() {
           p: { xs: 3, md: 4 },
           color: "#fff",
           background:
-            "linear-gradient(115deg, #2b1244 0%, #3d1663 45%, #6b1a52 82%, #7d2058 100%)",
-          boxShadow: "0 28px 56px -28px rgba(61, 22, 99, 0.55)",
+            // Was the mockup's deep eggplant into dark magenta. Same four stops,
+            // now institutional navy into institutional teal.
+            "linear-gradient(115deg, #0a1e37 0%, #12365f 45%, #0f6b7a 82%, #0b5260 100%)",
+          boxShadow: "var(--shadow-xl)",
         }}
       >
         <Box
@@ -331,12 +333,12 @@ export default function AdminAdaptiveCoursesPage() {
             <Box
               sx={{
                 mb: 3, borderRadius: 4, p: 2.25,
-                bgcolor: "color-mix(in srgb, #6366f1 6%, var(--card-bg))",
-                border: "1px solid color-mix(in srgb, #6366f1 30%, transparent)",
+                bgcolor: "color-mix(in srgb, #1b4f8a 6%, var(--card-bg))",
+                border: "1px solid color-mix(in srgb, #1b4f8a 30%, transparent)",
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 1.25 }}>
-                <Icon icon="mdi:account-school-outline" width={19} style={{ color: "#6366f1" }} />
+                <Icon icon="mdi:account-school-outline" width={19} style={{ color: "#1b4f8a" }} />
                 <Typography sx={{ fontWeight: 800, fontSize: "0.9rem" }}>
                   Courses built by instructors
                 </Typography>
@@ -363,7 +365,7 @@ export default function AdminAdaptiveCoursesPage() {
                         {c.submodule_count} topic{c.submodule_count === 1 ? "" : "s"}
                       </Typography>
                     </Box>
-                    <Typography sx={{ fontWeight: 800, fontSize: "0.78rem", color: "#6366f1" }}>
+                    <Typography sx={{ fontWeight: 800, fontSize: "0.78rem", color: "#1b4f8a" }}>
                       Review
                     </Typography>
                   </ButtonBase>
@@ -385,15 +387,15 @@ export default function AdminAdaptiveCoursesPage() {
                     display: "block",
                     borderRadius: 4,
                     p: 2.25,
-                    bgcolor: "color-mix(in srgb, #6366f1 8%, var(--card-bg))",
-                    border: "1px solid color-mix(in srgb, #6366f1 35%, transparent)",
+                    bgcolor: "color-mix(in srgb, #1b4f8a 8%, var(--card-bg))",
+                    border: "1px solid color-mix(in srgb, #1b4f8a 35%, transparent)",
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1 }}>
                     <Typography sx={{ fontWeight: 800 }}>
                       {job.title}
                     </Typography>
-                    <Typography sx={{ fontSize: "0.8rem", fontWeight: 800, color: "#6366f1" }}>
+                    <Typography sx={{ fontSize: "0.8rem", fontWeight: 800, color: "#1b4f8a" }}>
                       {job.progress_percentage}%
                     </Typography>
                   </Box>
@@ -412,7 +414,7 @@ export default function AdminAdaptiveCoursesPage() {
             </Typography>
           )}
           {error && (
-            <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>
+            <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>
               {error}
             </Typography>
           )}
@@ -427,7 +429,7 @@ export default function AdminAdaptiveCoursesPage() {
                 border: "1px dashed color-mix(in srgb, var(--border-default) 90%, transparent)",
               }}
             >
-              <Icon icon="mdi:robot-outline" width={48} style={{ color: "#a855f7" }} />
+              <Icon icon="mdi:robot-outline" width={48} style={{ color: "#1b4f8a" }} />
               <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.1rem" }}>
                 No courses yet.
               </Typography>
@@ -594,9 +596,9 @@ function CourseCard({
               fontWeight: 800,
               textTransform: "uppercase",
               letterSpacing: 0.4,
-              color: course.is_published ? "#10b981" : "#94a3b8",
+              color: course.is_published ? "#0e7a3c" : "#94a3b8",
               bgcolor: course.is_published
-                ? "color-mix(in srgb, #10b981 14%, transparent)"
+                ? "color-mix(in srgb, #0e7a3c 14%, transparent)"
                 : "color-mix(in srgb, #94a3b8 16%, transparent)",
             }}
           >
@@ -610,14 +612,14 @@ function CourseCard({
           />
         </Box>
         {canDelete && (
-          <ButtonBase onClick={onDelete} sx={{ p: 0.5, borderRadius: 2, color: "#ef4444" }}>
+          <ButtonBase onClick={onDelete} sx={{ p: 0.5, borderRadius: 2, color: "#b32020" }}>
             <Icon icon="mdi:trash-can-outline" width={18} />
           </ButtonBase>
         )}
       </Box>
 
       {course.card_image_url && (
-        <Box sx={{ position: "relative", width: "100%", aspectRatio: "16 / 9", borderRadius: 2.5, overflow: "hidden", mb: 1.5, bgcolor: "color-mix(in srgb, #6366f1 8%, transparent)" }}>
+        <Box sx={{ position: "relative", width: "100%", aspectRatio: "16 / 9", borderRadius: 2.5, overflow: "hidden", mb: 1.5, bgcolor: "color-mix(in srgb, #1b4f8a 8%, transparent)" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={course.card_image_url}
@@ -672,7 +674,7 @@ function CourseCard({
             color: course.is_published ? "text.primary" : "white",
             background: course.is_published
               ? "color-mix(in srgb, var(--card-bg) 60%, transparent)"
-              : "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              : "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)",
             border: course.is_published
               ? "1px solid color-mix(in srgb, var(--border-default) 75%, transparent)"
               : "1px solid transparent",
@@ -689,8 +691,8 @@ function CourseCard({
             borderRadius: 999,
             fontWeight: 800,
             fontSize: "0.82rem",
-            color: "#6366f1",
-            border: "1px solid color-mix(in srgb, #6366f1 40%, transparent)",
+            color: "#1b4f8a",
+            border: "1px solid color-mix(in srgb, #1b4f8a 40%, transparent)",
           }}
         >
           Open
@@ -724,8 +726,8 @@ function CourseRow({
         border: "1px solid var(--border-default)",
         transition: "all .15s",
         "&:hover": {
-          borderColor: "#a855f7",
-          boxShadow: "0 6px 16px -8px rgba(124,58,237,0.35)",
+          borderColor: "#1b4f8a",
+          boxShadow: "0 6px 16px -8px rgba(20, 64, 111,0.35)",
         },
       }}
     >
@@ -739,7 +741,7 @@ function CourseRow({
           alignItems: "center",
           justifyContent: "center",
           color: "white",
-          background: "linear-gradient(135deg, #a855f7 0%, #6366f1 100%)",
+          background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
         }}
       >
         <Icon icon="mdi:robot-excited-outline" width={24} />
@@ -785,7 +787,7 @@ function RowStat({ value, label }: { value: number; label: string }) {
 function Metric({ icon, value, label }: { icon: string; value: number; label: string }) {
   return (
     <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}>
-      <Icon icon={icon} width={15} style={{ color: "#6366f1" }} />
+      <Icon icon={icon} width={15} style={{ color: "#1b4f8a" }} />
       <Typography component="span" sx={{ fontWeight: 800, fontSize: "0.82rem" }}>
         {value}
       </Typography>
@@ -804,7 +806,7 @@ function ProgressBar({ pct }: { pct: number }) {
           height: "100%",
           width: `${Math.min(100, Math.max(2, pct))}%`,
           borderRadius: 999,
-          background: "linear-gradient(90deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
+          background: "linear-gradient(90deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)",
           transition: "width 400ms ease",
         }}
       />
@@ -874,21 +876,21 @@ function RequestTray({
     <Box
       sx={{
         mb: 3, borderRadius: 4, overflow: "hidden",
-        bgcolor: "color-mix(in srgb, #f59e0b 6%, var(--card-bg))",
-        border: "1px solid color-mix(in srgb, #f59e0b 30%, transparent)",
+        bgcolor: "color-mix(in srgb, #b7791f 6%, var(--card-bg))",
+        border: "1px solid color-mix(in srgb, #b7791f 30%, transparent)",
       }}
     >
       <ButtonBase
         onClick={() => setOpen((v) => !v)}
         sx={{ width: "100%", justifyContent: "flex-start", gap: 1.25, px: 2.25, py: 1.6, textAlign: "left" }}
       >
-        <Icon icon="mdi:tray-full" width={19} style={{ color: "#f59e0b", flexShrink: 0 }} />
+        <Icon icon="mdi:tray-full" width={19} style={{ color: "#b7791f", flexShrink: 0 }} />
         <Typography sx={{ fontWeight: 800, fontSize: "0.9rem" }}>
           Generation requests
         </Typography>
         <Typography sx={{ fontSize: "0.82rem", color: "text.secondary" }}>{summary}</Typography>
         <Box sx={{ flex: 1 }} />
-        <Icon icon={open ? "mdi:chevron-up" : "mdi:chevron-down"} width={18} style={{ color: "#f59e0b" }} />
+        <Icon icon={open ? "mdi:chevron-up" : "mdi:chevron-down"} width={18} style={{ color: "#b7791f" }} />
       </ButtonBase>
 
       {open && (
@@ -907,7 +909,7 @@ function RequestTray({
                 <Icon
                   icon={isRejected ? "mdi:close-circle-outline" : "mdi:clock-outline"}
                   width={17}
-                  style={{ color: isRejected ? "#ef4444" : "#f59e0b", flexShrink: 0 }}
+                  style={{ color: isRejected ? "#b32020" : "#b7791f", flexShrink: 0 }}
                 />
                 <Box sx={{ minWidth: 0, flex: 1 }}>
                   <Typography sx={{ fontWeight: 800, fontSize: "0.86rem" }} noWrap>
@@ -923,7 +925,7 @@ function RequestTray({
                 </Box>
                 <ButtonBase
                   onClick={() => onOpen(job.job_id)}
-                  sx={{ px: 1.4, py: 0.5, borderRadius: 999, fontWeight: 800, fontSize: "0.75rem", color: "#6366f1" }}
+                  sx={{ px: 1.4, py: 0.5, borderRadius: 999, fontWeight: 800, fontSize: "0.75rem", color: "#1b4f8a" }}
                 >
                   Details
                 </ButtonBase>
@@ -939,7 +941,7 @@ function RequestTray({
                   }}
                   sx={{
                     px: 1.4, py: 0.5, borderRadius: 999, fontWeight: 800, fontSize: "0.75rem",
-                    color: "text.secondary", "&:hover": { color: "#ef4444" },
+                    color: "text.secondary", "&:hover": { color: "#b32020" },
                     "&:disabled": { opacity: 0.5 },
                   }}
                 >

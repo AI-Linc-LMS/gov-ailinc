@@ -9,32 +9,45 @@ import { IconWrapper } from "@/components/common/IconWrapper";
  * Adaptive Course Builder so the student detail page shares its visual identity.
  */
 export const ADAPTIVE = {
-  indigo: "#6366f1",
-  purple: "#a855f7",
-  pink: "#ec4899",
-  green: "#10b981",
-  amber: "#f59e0b",
-  red: "#ef4444",
-  blue: "#3b82f6",
-  gradient: "linear-gradient(135deg,#6366f1 0%,#a855f7 60%,#ec4899 100%)",
+  indigo: "#1b4f8a",
+  purple: "#1b4f8a",
+  pink: "#0f6b7a",
+  green: "#0e7a3c",
+  amber: "#b7791f",
+  red: "#b32020",
+  blue: "#4a7fbb",
+  gradient: "linear-gradient(135deg,#1b4f8a 0%,#1b4f8a 60%,#0f6b7a 100%)",
 } as const;
 
 export const ADAPTIVE_MESH = [
-  "radial-gradient(circle at 8% 0%, color-mix(in srgb, #6366f1 18%, transparent) 0%, transparent 55%)",
-  "radial-gradient(circle at 95% 5%, color-mix(in srgb, #ec4899 14%, transparent) 0%, transparent 55%)",
-  "radial-gradient(circle at 50% 110%, color-mix(in srgb, #a855f7 16%, transparent) 0%, transparent 60%)",
+  "radial-gradient(circle at 8% 0%, color-mix(in srgb, #1b4f8a 18%, transparent) 0%, transparent 55%)",
+  "radial-gradient(circle at 95% 5%, color-mix(in srgb, #0f6b7a 14%, transparent) 0%, transparent 55%)",
+  "radial-gradient(circle at 50% 110%, color-mix(in srgb, #1b4f8a 16%, transparent) 0%, transparent 60%)",
 ];
 
-/** Chart series colors aligned with the dashboard chart tokens. */
+/**
+ * Chart series colours: identity, in this fixed order, never cycled or re-sorted.
+ *
+ * The previous list repeated itself - slot 1 and slot 6 were both #1b4f8a and slot 4 and slot 7
+ * were both #0f6b7a - so the "Activity by type" pie painted two different types the same colour
+ * as soon as it had more than five slices, and slot 5 was a ramp step rather than a categorical
+ * hue. Eight distinct hues now, ordered by enumeration against the data-viz gates.
+ *
+ * Measured, all pairs (a pie is an all-pairs form: any two slices can end up adjacent):
+ *   up to 5 slices  worst CVD dE 6.5 gold/green, normal dE 17.4 PASS
+ *   6 or more       teal against institutional blue drops to dE 9.6, under the floor of 15
+ * The pies using this list carry a direct label on every slice plus a legend, so past five
+ * categories the text is what separates them and the fill is only support.
+ */
 export const CHART_COLORS = [
-  "#6366f1",
-  "#10b981",
-  "#f59e0b",
-  "#ec4899",
-  "#3b82f6",
-  "#a855f7",
-  "#14b8a6",
-  "#ef4444",
+  "#1b4f8a", // institutional blue
+  "#0e7a3c", // sanctioned green
+  "#b7791f", // gold
+  "#6b4423", // brown
+  "#85aad6", // light blue
+  "#0f6b7a", // teal
+  "#8f1919", // deep red
+  "#4a5563", // slate
 ];
 
 export function formatDateTime(value?: string | null): string {
@@ -227,7 +240,7 @@ export function StatusChip({ status }: { status?: string }) {
     failed: ADAPTIVE.red,
     cancelled: ADAPTIVE.red,
   };
-  const color = map[s] ?? "#94a3b8";
+  const color = map[s] ?? "#6b7684";
   return (
     <Box
       component="span"

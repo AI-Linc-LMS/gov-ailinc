@@ -143,12 +143,12 @@ export const Submissions = memo(function Submissions({ submissions, loading }: S
                     p: { xs: 1.5, md: 1.5, lg: 2 },
                     mb: { xs: 1.5, md: 1.5, lg: 2 },
                     border: "1px solid #e5e7eb",
-                    borderLeft: `4px solid ${isPassed ? "#10b981" : "#ef4444"}`,
+                    borderLeft: `4px solid ${isPassed ? "#0e7a3c" : "#b32020"}`,
                     backgroundColor: isPassed
                       ? "rgba(16, 185, 129, 0.02)"
                       : "rgba(239, 68, 68, 0.02)",
                     "&:hover": {
-                      boxShadow: 2,
+                      boxShadow: "var(--shadow-sm)",
                       backgroundColor: isPassed
                         ? "rgba(16, 185, 129, 0.05)"
                         : "rgba(239, 68, 68, 0.05)",
@@ -194,7 +194,7 @@ export const Submissions = memo(function Submissions({ submissions, loading }: S
                       sx={{
                         height: 24,
                         fontSize: "0.75rem",
-                        backgroundColor: isPassed ? "#10b981" : "#ef4444",
+                        backgroundColor: isPassed ? "#0e7a3c" : "#b32020",
                         color: "#ffffff",
                         fontWeight: 600,
                         "& .MuiChip-icon": {
@@ -321,7 +321,7 @@ export const Submissions = memo(function Submissions({ submissions, loading }: S
                     fontSize: "0.875rem",
                   },
                   "& .Mui-selected": {
-                    backgroundColor: "#6366f1 !important",
+                    backgroundColor: "#1b4f8a !important",
                     color: "#ffffff",
                   },
                 }}
@@ -409,8 +409,8 @@ export const Submissions = memo(function Submissions({ submissions, loading }: S
                     sx={{
                       backgroundColor:
                         selectedSubmission.result === "passed"
-                          ? "#10b981"
-                          : "#ef4444",
+                          ? "#0e7a3c"
+                          : "#b32020",
                       color: "#ffffff",
                       fontWeight: 600,
                     }}

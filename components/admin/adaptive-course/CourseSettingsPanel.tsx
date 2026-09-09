@@ -40,7 +40,7 @@ function SettingsCard({
         borderRadius: 4,
         border: "1px solid #e4e7f0",
         bgcolor: "#fff",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 12px 28px -20px rgba(30,27,75,0.28)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       <Stack direction="row" spacing={1.25} alignItems="center" sx={{ mb: 2 }}>
@@ -48,7 +48,7 @@ function SettingsCard({
           sx={{
             width: 30, height: 30, borderRadius: 2, flexShrink: 0, display: "grid",
             placeItems: "center", color: "#fff",
-            background: "linear-gradient(135deg, #6366f1, #a855f7)",
+            background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)",
           }}
         >
           <Icon icon={icon} width={17} />
@@ -88,7 +88,7 @@ function SettingRow({
         <Typography sx={{ fontWeight: 700, fontSize: "0.875rem", color: "#0f172a" }}>{label}</Typography>
         <Typography sx={{ fontSize: "0.76rem", color: "#64748b", mt: 0.25, lineHeight: 1.5 }}>{help}</Typography>
         {disabledReason && (
-          <Typography sx={{ fontSize: "0.72rem", color: "#b45309", mt: 0.5, fontWeight: 600 }}>
+          <Typography sx={{ fontSize: "0.72rem", color: "#8a5a12", mt: 0.5, fontWeight: 600 }}>
             {disabledReason}
           </Typography>
         )}
@@ -98,8 +98,8 @@ function SettingRow({
         onChange={onChange}
         disabled={disabled}
         sx={{
-          "& .MuiSwitch-switchBase.Mui-checked": { color: "#7c3aed" },
-          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": { backgroundColor: "#7c3aed" },
+          "& .MuiSwitch-switchBase.Mui-checked": { color: "#14406f" },
+          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": { backgroundColor: "#14406f" },
         }}
       />
     </Stack>
@@ -118,7 +118,7 @@ function ResolvedState({ lines }: { lines: string[] }) {
       <Stack spacing={0.5}>
         {lines.map((line) => (
           <Stack key={line} direction="row" spacing={0.75} alignItems="flex-start">
-            <Box sx={{ color: "#a855f7", mt: "2px" }}><Icon icon="mdi:circle-small" width={16} /></Box>
+            <Box sx={{ color: "#1b4f8a", mt: "2px" }}><Icon icon="mdi:circle-small" width={16} /></Box>
             <Typography sx={{ fontSize: "0.78rem", color: "#475569", lineHeight: 1.5 }}>{line}</Typography>
           </Stack>
         ))}
@@ -226,8 +226,8 @@ export function CourseSettingsPanel({
               onClick={onEditDetails}
               sx={{
                 px: 2, py: 0.85, borderRadius: 999, cursor: "pointer", fontFamily: "inherit",
-                fontWeight: 800, fontSize: "0.78rem", color: "#7c3aed",
-                bgcolor: "#f5f3ff", border: "1px solid #ede9fe",
+                fontWeight: 800, fontSize: "0.78rem", color: "#14406f",
+                bgcolor: "#eef3fa", border: "1px solid #eef3fa",
               }}
             >
               Edit title &amp; description
@@ -240,7 +240,7 @@ export function CourseSettingsPanel({
                 px: 2, py: 0.85, borderRadius: 999, cursor: publishing ? "default" : "pointer",
                 fontFamily: "inherit", fontWeight: 800, fontSize: "0.78rem",
                 color: course.is_published ? "#475569" : "#fff",
-                bgcolor: course.is_published ? "#f8fafc" : "#7c3aed",
+                bgcolor: course.is_published ? "#f8fafc" : "#14406f",
                 border: course.is_published ? "1px solid #e4e7f0" : "1px solid transparent",
                 opacity: publishing ? 0.6 : 1,
               }}
@@ -285,7 +285,7 @@ export function CourseSettingsPanel({
                   key={source}
                   size="small"
                   label={`${n} ${SOURCE_LABEL[source as EnrollmentSource | "unknown"] ?? source}`}
-                  sx={{ fontWeight: 700, fontSize: "0.72rem", bgcolor: "#f5f3ff", color: "#6d28d9", border: "1px solid #ede9fe" }}
+                  sx={{ fontWeight: 700, fontSize: "0.72rem", bgcolor: "#eef3fa", color: "#164274", border: "1px solid #eef3fa" }}
                 />
               ))}
           </Stack>
@@ -342,7 +342,7 @@ export function CourseSettingsPanel({
             onClick={onAssignCohorts}
             sx={{
               border: 0, p: 0, background: "none", cursor: "pointer", fontFamily: "inherit",
-              fontSize: "0.78rem", fontWeight: 800, color: "#7c3aed",
+              fontSize: "0.78rem", fontWeight: 800, color: "#14406f",
             }}
           >
             Assign to a cohort
@@ -397,15 +397,15 @@ export function CourseSettingsPanel({
               onClick={onOpenPricing}
               sx={{
                 px: 2, py: 0.85, borderRadius: 999, cursor: "pointer", fontFamily: "inherit",
-                fontWeight: 800, fontSize: "0.78rem", color: "#7c3aed",
-                bgcolor: "#f5f3ff", border: "1px solid #ede9fe",
+                fontWeight: 800, fontSize: "0.78rem", color: "#14406f",
+                bgcolor: "#eef3fa", border: "1px solid #eef3fa",
               }}
             >
               {course.is_paid ? "Change price" : "Charge for this course"}
             </Box>
           </Stack>
           {course.auto_enroll && (
-            <Typography sx={{ fontSize: "0.72rem", color: "#b45309", mt: 1, fontWeight: 600 }}>
+            <Typography sx={{ fontSize: "0.72rem", color: "#8a5a12", mt: 1, fontWeight: 600 }}>
               Auto-enroll is on, so this course can&apos;t carry a price until you turn that off.
             </Typography>
           )}

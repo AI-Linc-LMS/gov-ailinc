@@ -15,31 +15,31 @@ export const POST_TYPE_CONFIG: Record<PostType, PostTypeConfig> = {
   question: {
     label: "Question",
     icon: "mdi:help-circle-outline",
-    color: "#6366f1",
+    color: "#1b4f8a",
     description: "Ask the community",
   },
   poll: {
     label: "Poll",
     icon: "mdi:chart-bar",
-    color: "#8b5cf6",
+    color: "#4a7fbb",
     description: "Get community opinion",
   },
   resource: {
     label: "Resource",
     icon: "mdi:book-open-outline",
-    color: "#0ea5e9",
+    color: "#1b4f8a",
     description: "Share a useful resource",
   },
   humorous: {
     label: "Humorous",
     icon: "mdi:emoticon-happy-outline",
-    color: "#f59e0b",
+    color: "#b7791f",
     description: "Share something fun",
   },
   discussion: {
     label: "Discussion",
     icon: "mdi:forum-outline",
-    color: "#10b981",
+    color: "#0e7a3c",
     description: "Start a conversation",
   },
 };

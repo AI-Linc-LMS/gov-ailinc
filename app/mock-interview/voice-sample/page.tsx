@@ -46,7 +46,7 @@ export default function VoiceSamplePage() {
           display: "flex", alignItems: "center", justifyContent: "space-between",
           padding: "11px 16px", borderRadius: 8, marginBottom: 8,
           border: "1px solid #e5e7eb",
-          background: playing === v.voiceURI ? "#eff6ff" : "#fff",
+          background: playing === v.voiceURI ? "#eef3fa" : "#fff",
         }}>
           <div>
             <span style={{ fontWeight: 600, fontSize: 14 }}>{v.name}</span>
@@ -56,7 +56,7 @@ export default function VoiceSamplePage() {
             onClick={() => playing === v.voiceURI ? (window.speechSynthesis.cancel(), setPlaying(null)) : play(v)}
             style={{
               padding: "6px 14px", borderRadius: 6, border: "none",
-              background: playing === v.voiceURI ? "#dc2626" : "#2563eb",
+              background: playing === v.voiceURI ? "#991b1b" : "#1b4f8a",
               color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: 13,
             }}
           >

@@ -284,9 +284,9 @@ export default function AdminScorecardSkillsPage() {
           }}
         >
           <StatChip label="Skills" value={summary.total} color="var(--accent-indigo-dark)" />
-          <StatChip label="Categories" value={summary.categories} color="#10b981" />
-          <StatChip label="Total mappings" value={summary.totalMappings} color="var(--accent-cyan, #0891b2)" />
-          <StatChip label="Untagged" value={summary.untagged} color={summary.untagged > 0 ? "#f59e0b" : "var(--font-secondary)"} />
+          <StatChip label="Categories" value={summary.categories} color="#0e7a3c" />
+          <StatChip label="Total mappings" value={summary.totalMappings} color="var(--accent-cyan, #0b5260)" />
+          <StatChip label="Untagged" value={summary.untagged} color={summary.untagged > 0 ? "#b7791f" : "var(--font-secondary)"} />
         </Box>
 
         {/* Filters */}
@@ -458,7 +458,7 @@ export default function AdminScorecardSkillsPage() {
                             onClick={() => void handleDelete(s)}
                             sx={{
                               color: "var(--font-secondary)",
-                              "&:hover": { color: "#ef4444", bgcolor: "color-mix(in srgb, #ef4444 8%, transparent)" },
+                              "&:hover": { color: "#b32020", bgcolor: "color-mix(in srgb, #b32020 8%, transparent)" },
                             }}
                             aria-label={`Deactivate ${s.name}`}
                           >

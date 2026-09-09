@@ -35,7 +35,6 @@ export function SuccessTick({
         placeItems: "center",
         bgcolor: "var(--page-bg, #ffffff)",
         // Keep the underlying page from showing through mid-navigation.
-        backdropFilter: "blur(2px)",
         "@keyframes tickRing": { to: { strokeDashoffset: 0 } },
         "@keyframes tickCheck": { to: { strokeDashoffset: 0 } },
         "@keyframes tickFade": { from: { opacity: 0, transform: "translateY(6px)" }, to: { opacity: 1, transform: "none" } },
@@ -52,7 +51,7 @@ export function SuccessTick({
             mx: "auto",
             "& .ring": {
               fill: "none",
-              stroke: "#10b981",
+              stroke: "#0e7a3c",
               strokeWidth: 4,
               strokeLinecap: "round",
               // 2πr for r=32
@@ -64,7 +63,7 @@ export function SuccessTick({
             },
             "& .check": {
               fill: "none",
-              stroke: "#10b981",
+              stroke: "#0e7a3c",
               strokeWidth: 5,
               strokeLinecap: "round",
               strokeLinejoin: "round",

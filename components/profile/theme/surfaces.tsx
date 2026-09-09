@@ -130,7 +130,7 @@ export function SectionAction({
         bgcolor: PROFILE.violetSoft,
         border: `1px solid ${PROFILE.violetBorder}`,
         transition: "background .15s",
-        "&:hover": { bgcolor: "#ede9fe" },
+        "&:hover": { bgcolor: "#eef3fa" },
         "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px #fff, 0 0 0 4px ${PROFILE.violet}` },
       }}
     >
@@ -163,7 +163,7 @@ export function StatTile({
         borderRadius: 3,
         border: `1px solid ${PROFILE.hairlineSoft}`,
         bgcolor: PROFILE.surface,
-        boxShadow: "0 1px 2px rgba(16,24,40,0.04)",
+        boxShadow: "var(--shadow-xs)",
         position: "relative",
         overflow: "hidden",
       }}
@@ -253,7 +253,7 @@ export function HeroShell({
             sx={{
               position: "absolute",
               inset: 0,
-              background: "linear-gradient(150deg, rgba(39,26,92,0.72) 0%, rgba(16,10,44,0.88) 100%)",
+              background: "linear-gradient(150deg, rgba(16,38,63,0.72) 0%, rgba(7,20,38,0.88) 100%)",
             }}
           />
         </>

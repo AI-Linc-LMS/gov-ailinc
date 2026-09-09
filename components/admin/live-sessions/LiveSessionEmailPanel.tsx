@@ -20,9 +20,9 @@ import {
 } from "@/lib/services/admin/admin-live-activities.service";
 
 const STATUS_TONE: Record<EmailTrigger["status"], string> = {
-  scheduled: "var(--accent-indigo, #6366f1)",
-  sent: "var(--success-500, #5fa564)",
-  failed: "var(--error-500, #ea4335)",
+  scheduled: "var(--accent-indigo, #1b4f8a)",
+  sent: "var(--success-500, #0e7a3c)",
+  failed: "var(--error-500, #b32020)",
   cancelled: "var(--font-tertiary, #6b7280)",
 };
 

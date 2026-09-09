@@ -29,8 +29,8 @@ export function AttemptChainStrip({ chain }: { chain?: Chain }) {
         p: { xs: 1.75, md: 2 },
         borderRadius: 4,
         mb: 2,
-        bgcolor: "color-mix(in srgb, #6366f1 7%, var(--card-bg))",
-        border: "1px solid color-mix(in srgb, #6366f1 22%, transparent)",
+        bgcolor: "color-mix(in srgb, #1b4f8a 7%, var(--card-bg))",
+        border: "1px solid color-mix(in srgb, #1b4f8a 22%, transparent)",
         display: "flex",
         flexDirection: { xs: "column", sm: "row" },
         alignItems: { xs: "flex-start", sm: "center" },
@@ -41,13 +41,13 @@ export function AttemptChainStrip({ chain }: { chain?: Chain }) {
         <Box
           sx={{
             width: 34, height: 34, borderRadius: "50%", display: "grid", placeItems: "center",
-            color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", flexShrink: 0,
+            color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)", flexShrink: 0,
           }}
         >
           <Icon icon="mdi:history" width={19} />
         </Box>
         <Box sx={{ lineHeight: 1.1 }}>
-          <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6366f1" }}>
+          <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "#1b4f8a" }}>
             Your attempts on this topic
           </Typography>
           <Typography sx={{ fontSize: "0.92rem", fontWeight: 800, color: "text.primary" }}>
@@ -65,11 +65,11 @@ export function AttemptChainStrip({ chain }: { chain?: Chain }) {
             sx={{
               px: 1.4, py: 0.6, borderRadius: 999, fontWeight: 800, fontSize: "0.76rem", gap: 0.5,
               border: "1px solid",
-              borderColor: a.is_current ? "#6366f1" : "color-mix(in srgb, #6366f1 28%, transparent)",
-              color: a.is_current ? "white" : "#6366f1",
-              bgcolor: a.is_current ? "#6366f1" : "color-mix(in srgb, #6366f1 8%, white)",
+              borderColor: a.is_current ? "#1b4f8a" : "color-mix(in srgb, #1b4f8a 28%, transparent)",
+              color: a.is_current ? "white" : "#1b4f8a",
+              bgcolor: a.is_current ? "#1b4f8a" : "color-mix(in srgb, #1b4f8a 8%, white)",
               cursor: a.is_current ? "default" : "pointer",
-              "&:hover": { bgcolor: a.is_current ? "#6366f1" : "color-mix(in srgb, #6366f1 16%, white)" },
+              "&:hover": { bgcolor: a.is_current ? "#1b4f8a" : "color-mix(in srgb, #1b4f8a 16%, white)" },
             }}
           >
             <Icon

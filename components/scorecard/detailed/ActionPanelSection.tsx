@@ -28,11 +28,11 @@ interface ActionPanelSectionProps {
 
 const ACCENT = "var(--accent-indigo)";
 const ACCENT_DARK = "var(--accent-indigo-dark)";
-const AMBER = "#f59e0b";
-const EMERALD = "#10b981";
-const PURPLE = "#a855f7";
-const CYAN = "#06b6d4";
-const RED = "#ef4444";
+const AMBER = "#b7791f";
+const EMERALD = "#0e7a3c";
+const PURPLE = "#1b4f8a";
+const CYAN = "#0f6b7a";
+const RED = "#b32020";
 
 const PRIORITY_ICON: Record<string, string> = {
   mcq: "mdi:format-list-checks",
@@ -98,7 +98,7 @@ function HeroAction({ action }: { action: PriorityAction }) {
         borderRadius: 3.5,
         background: `linear-gradient(160deg, color-mix(in srgb, ${accent} 18%, transparent) 0%, color-mix(in srgb, ${accent} 4%, transparent) 100%)`,
         border: `1px solid color-mix(in srgb, ${accent} 32%, transparent)`,
-        boxShadow: `0 30px 60px -32px color-mix(in srgb, ${accent} 55%, transparent)`,
+        boxShadow: "var(--shadow-sm)",
         textDecoration: "none",
         color: "inherit",
         cursor: isLink ? "pointer" : "default",
@@ -106,9 +106,9 @@ function HeroAction({ action }: { action: PriorityAction }) {
         transition: "all 0.25s ease",
         "&:hover": isLink
           ? {
-              transform: "translateY(-3px)",
+              transform: "translateY(-1px)",
               borderColor: `color-mix(in srgb, ${accent} 55%, transparent)`,
-              boxShadow: `0 36px 70px -28px color-mix(in srgb, ${accent} 70%, transparent)`,
+              boxShadow: "var(--shadow-md)",
             }
           : undefined,
       }}
@@ -148,7 +148,7 @@ function HeroAction({ action }: { action: PriorityAction }) {
             borderRadius: 999,
             bgcolor: accent,
             color: "#fff",
-            boxShadow: `0 8px 18px -10px color-mix(in srgb, ${accent} 75%, transparent)`,
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <IconWrapper icon="mdi:flash" size={12} color="#fff" />
@@ -211,7 +211,7 @@ function HeroAction({ action }: { action: PriorityAction }) {
             background: `linear-gradient(135deg, ${accent} 0%, color-mix(in srgb, ${accent} 65%, #000) 100%)`,
             color: "#fff",
             flexShrink: 0,
-            boxShadow: `0 16px 32px -14px color-mix(in srgb, ${accent} 75%, transparent), inset 0 -4px 10px color-mix(in srgb, ${accent} 35%, transparent)`,
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <IconWrapper icon={icon} size={32} color="#fff" />
@@ -259,7 +259,7 @@ function HeroAction({ action }: { action: PriorityAction }) {
               fontSize: "0.82rem",
               letterSpacing: "-0.01em",
               whiteSpace: "nowrap",
-              boxShadow: "0 18px 30px -16px rgba(15, 23, 42, 0.5)",
+              boxShadow: "var(--shadow-sm)",
               transition: "transform 0.2s ease",
               "&:hover": { transform: "translateX(3px)" },
             }}
@@ -305,9 +305,9 @@ function SecondaryActionCard({ action, index }: { action: PriorityAction; index:
           transition: "all 0.2s ease",
           "&:hover": isLink
             ? {
-                transform: "translateY(-2px)",
+                transform: "translateY(-1px)",
                 borderColor: `color-mix(in srgb, ${accent} 45%, transparent)`,
-                boxShadow: `0 20px 36px -22px color-mix(in srgb, ${accent} 50%, transparent)`,
+                boxShadow: "var(--shadow-md)",
               }
             : undefined,
         }}
@@ -407,9 +407,9 @@ function ContentCard({ item, index }: { item: RecommendedContentItem; index: num
           transition: "all 0.2s ease",
           "&:hover": isLink
             ? {
-                transform: "translateY(-2px)",
+                transform: "translateY(-1px)",
                 borderColor: `color-mix(in srgb, ${accent} 45%, transparent)`,
-                boxShadow: `0 16px 26px -18px color-mix(in srgb, ${accent} 45%, transparent)`,
+                boxShadow: "var(--shadow-md)",
               }
             : undefined,
         }}
@@ -820,7 +820,7 @@ export function ActionPanelSection({ data }: ActionPanelSectionProps) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: `0 18px 32px -16px color-mix(in srgb, ${EMERALD} 60%, transparent)`,
+                boxShadow: "var(--shadow-sm)",
               }}
             >
               <IconWrapper icon="mdi:check-circle-outline" size={36} color="#fff" />

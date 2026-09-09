@@ -107,14 +107,14 @@ export function resumeDocumentUrl(person: DemoPerson, facts: ResumeFacts): strin
 <p style="margin:6px 0 0;font-size:14px;color:#475569">${esc(facts.headline)}</p>
 <p style="margin:4px 0 0;font-size:12px;color:#64748b">${esc(facts.email)} &nbsp;&middot;&nbsp; ${esc(facts.phone)} &nbsp;&middot;&nbsp; ${esc(facts.location)}</p>
 <hr style="margin:22px 0;border:0;border-top:1px solid #e2e8f0">
-<h2 style="margin:0 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#4f46e5">Education</h2>
+<h2 style="margin:0 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#12365f">Education</h2>
 <p style="margin:0;font-size:14px;font-weight:600">${esc(facts.degree)}</p>
 <p style="margin:2px 0 0;font-size:13px;color:#475569">${esc(facts.college)}, class of ${esc(String(facts.gradYear))}</p>
-<h2 style="margin:22px 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#4f46e5">Skills</h2>
+<h2 style="margin:22px 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#12365f">Skills</h2>
 <p style="margin:0;font-size:13px;color:#334155;line-height:1.7">${esc(facts.skills)}</p>
-<h2 style="margin:22px 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#4f46e5">Experience</h2>
+<h2 style="margin:22px 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#12365f">Experience</h2>
 <p style="margin:0;font-size:13px;color:#334155;line-height:1.7">${esc(facts.experience)}</p>
-<h2 style="margin:22px 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#4f46e5">Training and practice</h2>
+<h2 style="margin:22px 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#12365f">Training and practice</h2>
 <ul style="margin:0;padding-left:18px;font-size:13px;color:#334155;line-height:1.8">
 <li>Course capstone assignment submitted at the district skill centre and reviewed by mission faculty.</li>
 <li>Sectional practice across quantitative aptitude, reasoning and general awareness, with attempt-wise accuracy tracked.</li>

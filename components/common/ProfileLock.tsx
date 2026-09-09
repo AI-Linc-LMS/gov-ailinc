@@ -52,9 +52,9 @@ function CompleteProfileButton({ fullWidth = true, size = "md" }: { fullWidth?: 
         fontSize: size === "sm" ? "0.78rem" : "0.9rem",
         color: "white",
         textTransform: "none",
-        background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-        boxShadow: "0 14px 30px -12px rgba(192,38,211,0.7)",
-        "&:hover": { filter: "brightness(1.06)", background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)" },
+        background: "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)",
+        boxShadow: "var(--shadow-sm)",
+        "&:hover": { filter: "brightness(1.06)", background: "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)" },
       }}
     >
       {t("lock.completeProfile", { defaultValue: "Complete profile" })}
@@ -122,7 +122,7 @@ export function ProfileLockCard({
             borderRadius: 4,
             bgcolor: "#fff",
             border: "1px solid #e4e7f0",
-            boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 18px 40px -24px rgba(30,27,75,0.35)",
+            boxShadow: "var(--shadow-sm)",
             mx: "auto",
           }}
         >
@@ -136,7 +136,7 @@ export function ProfileLockCard({
               display: "grid",
               placeItems: "center",
               color: "white",
-              background: "linear-gradient(135deg, #7c3aed, #ec4899)",
+              background: "linear-gradient(135deg, #14406f, #0f6b7a)",
             }}
           >
             <Icon icon="mdi:lock-outline" width={22} />
@@ -159,7 +159,7 @@ export function ProfileLockCard({
                 bgcolor: "#eef2f7",
                 "& .MuiLinearProgress-bar": {
                   borderRadius: 999,
-                  background: "linear-gradient(90deg, #a855f7, #ec4899)",
+                  background: "linear-gradient(90deg, #1b4f8a, #0f6b7a)",
                 },
               }}
             />
@@ -253,8 +253,8 @@ export function LockedAction({
             display: "grid",
             placeItems: "center",
             color: "#fff",
-            background: "linear-gradient(135deg, #7c3aed, #ec4899)",
-            boxShadow: "0 2px 6px -1px rgba(15,10,44,0.4)",
+            background: "linear-gradient(135deg, #14406f, #0f6b7a)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Icon icon="mdi:lock" width={11} />
@@ -282,7 +282,7 @@ export function ProfileLockBanner({ moduleLabel }: { moduleLabel: string }) {
         mb: 2.5,
         borderRadius: 3,
         bgcolor: "#fdfcff",
-        border: "1px solid #ede9fe",
+        border: "1px solid #eef3fa",
       }}
     >
       <Box
@@ -294,7 +294,7 @@ export function ProfileLockBanner({ moduleLabel }: { moduleLabel: string }) {
           display: "grid",
           placeItems: "center",
           color: "#fff",
-          background: "linear-gradient(135deg, #7c3aed, #ec4899)",
+          background: "linear-gradient(135deg, #14406f, #0f6b7a)",
         }}
       >
         <Icon icon="mdi:lock-outline" width={17} />

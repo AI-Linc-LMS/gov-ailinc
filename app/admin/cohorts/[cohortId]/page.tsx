@@ -80,7 +80,7 @@ export default function AdminCohortDetailPage() {
     return (
       <MainLayout fullWidthContent>
         <Box sx={{ p: { xs: 2, sm: 3, md: 4 }, bgcolor: "var(--canvas)", minHeight: "100%", textAlign: "center" }}>
-          <Typography sx={{ color: "var(--error-500, #ea4335)", fontWeight: 700, py: 6 }}>{error || "Not found."}</Typography>
+          <Typography sx={{ color: "var(--error-500, #b32020)", fontWeight: 700, py: 6 }}>{error || "Not found."}</Typography>
           <Button onClick={() => push("/admin/cohorts")} sx={{ textTransform: "none" }}>
             ← Back to cohorts
           </Button>

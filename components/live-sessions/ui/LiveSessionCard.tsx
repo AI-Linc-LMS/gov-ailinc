@@ -96,8 +96,8 @@ const STATUS_CHIP: Record<string, { tone: ChipTone; label: string }> = {
 
 // Primary-action button gradient by intent.
 const CTA_GRADIENT = {
-  green: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-  indigo: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+  green: "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)",
+  indigo: "linear-gradient(135deg, #1b4f8a 0%, #12365f 100%)",
 } as const;
 
 function platformChip(session: LiveSessionCardData): { label: string; icon: string; tone: ChipTone } {
@@ -145,7 +145,7 @@ export function LiveSessionCard<T extends LiveSessionCardData>({
     session.notice_type === "cancelled";
   const isRescheduled = session.notice_type === "rescheduled";
   const noticeReason = (session.notice_reason || "").trim();
-  const noticeTone = isCancelled ? "#ef4444" : "#f59e0b";
+  const noticeTone = isCancelled ? "#b32020" : "#b7791f";
   const status = isCancelled ? "cancelled" : session.meeting_status ?? "scheduled";
   const statusChip = STATUS_CHIP[status] ?? STATUS_CHIP.scheduled;
   const isUpcomingOrLive = status === "scheduled" || status === "live";

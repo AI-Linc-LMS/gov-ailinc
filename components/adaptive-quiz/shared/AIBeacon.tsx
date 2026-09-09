@@ -42,7 +42,7 @@ export function AIBeacon({ size = 28, bpm = 24 }: AIBeaconProps) {
           inset: 0,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, color-mix(in srgb, var(--accent-purple, #6366f1) 35%, transparent) 0%, transparent 60%)",
+            "radial-gradient(circle, color-mix(in srgb, var(--accent-purple, #1b4f8a) 35%, transparent) 0%, transparent 60%)",
           filter: "blur(2px)",
         }}
         animate={reduce ? undefined : { scale: [1, 1.4, 1], opacity: [0.85, 0.25, 0.85] }}
@@ -57,7 +57,7 @@ export function AIBeacon({ size = 28, bpm = 24 }: AIBeaconProps) {
           height: size * 0.62,
           borderRadius: "50%",
           background:
-            "linear-gradient(135deg, var(--accent-indigo, #6366f1) 0%, var(--accent-purple, #a855f7) 55%, #ec4899 100%)",
+            "linear-gradient(135deg, var(--accent-indigo, #1b4f8a) 0%, var(--accent-purple, #1b4f8a) 55%, #0f6b7a 100%)",
           boxShadow: "0 0 0 1px color-mix(in srgb, white 25%, transparent) inset",
         }}
         animate={reduce ? undefined : { y: [0, -1.5, 0] }}

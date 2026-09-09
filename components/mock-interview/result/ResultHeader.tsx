@@ -51,7 +51,7 @@ const ResultHeaderComponent = ({
   return (
     <Box
       sx={{
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        background: "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)",
         py: 4,
         mb: 4,
       }}
@@ -130,7 +130,7 @@ const ResultHeaderComponent = ({
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+                boxShadow: "var(--shadow-sm)",
                 border: `6px solid ${scoreColors.main}`,
                 // Defensive: keep contents from spilling out of the circle when the
                 // percentage hits 100 with the inherited h3 font size.
@@ -175,7 +175,7 @@ const ResultHeaderComponent = ({
                 color: scoreColors.main,
                 fontWeight: 700,
                 fontSize: "0.875rem",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                boxShadow: "var(--shadow-sm)",
               }}
             />
           </Box>

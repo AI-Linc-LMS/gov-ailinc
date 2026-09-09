@@ -45,7 +45,7 @@ export function CourseBanner({
         mb: { xs: 3, md: 4 },
         borderRadius: { xs: 2, md: 3 },
         overflow: "hidden",
-        boxShadow: "0 10px 40px rgba(102, 126, 234, 0.3)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       {/* Decorative background overlay */}
@@ -80,7 +80,7 @@ export function CourseBanner({
             <IconWrapper
               icon="mdi:check-circle-outline"
               size={24}
-              color="#fbbf24"
+              color="#c9903a"
             />
           </Box>
         )}
@@ -179,7 +179,7 @@ export function CourseBanner({
               onClick={onToggleLike}
               sx={{
                 color: course.is_liked_by_current_user
-                  ? "#ef4444"
+                  ? "#b32020"
                   : "#ffffff",
                 "&:hover": {
                   backgroundColor: "rgba(255, 255, 255, 0.1)",

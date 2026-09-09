@@ -10,6 +10,17 @@
  * than fetched, so the loader paints before any asset request resolves. It is the
  * same geometry as /public/logos/tsem-mark-*.svg: three ascending arches on a
  * common plinth. Keep the two in step if either is redrawn.
+ *
+ * The gradient stops are inline literals, not the `--tsem-brand-*` tokens this
+ * file used to read. Those tokens were left at the pre-palette indigo into
+ * emerald, so the loader painted a mark in colours the shipped SVGs no longer
+ * use: the token indirection was what let the two drift apart unseen.
+ * The literals below are byte-identical to the stops in tsem-mark-color.svg
+ * (institutional blue #1B4F8A into sanctioned green #0E7A3C) precisely so a grep
+ * for either value finds both places at once. Deliberately not `var(--primary-500)`
+ * either: the SVGs are fixed assets that do not follow tenant branding, so a
+ * tenant-reactive loader would drift from them the moment branding changed.
+ * `--tsem-brand-gradient-start` / `-end` in app/globals.css now have no consumer.
  */
 
 import { Box, Typography } from "@mui/material";
@@ -109,11 +120,11 @@ export function AiLincLoader({
             >
               <stop
                 offset="0"
-                style={{ stopColor: "var(--tsem-brand-gradient-start)" }}
+                style={{ stopColor: "#1B4F8A" }}
               />
               <stop
                 offset="1"
-                style={{ stopColor: "var(--tsem-brand-gradient-end)" }}
+                style={{ stopColor: "#0E7A3C" }}
               />
             </linearGradient>
             <linearGradient
@@ -127,21 +138,21 @@ export function AiLincLoader({
               <stop
                 offset="0"
                 style={{
-                  stopColor: "var(--tsem-brand-highlight)",
+                  stopColor: "#FFFFFF",
                   stopOpacity: 0,
                 }}
               />
               <stop
                 offset="0.5"
                 style={{
-                  stopColor: "var(--tsem-brand-highlight)",
+                  stopColor: "#FFFFFF",
                   stopOpacity: 0.9,
                 }}
               />
               <stop
                 offset="1"
                 style={{
-                  stopColor: "var(--tsem-brand-highlight)",
+                  stopColor: "#FFFFFF",
                   stopOpacity: 0,
                 }}
               />
@@ -222,7 +233,8 @@ export function AiLincLoader({
             sx={{
               display: "inline-block",
               minWidth: 24,
-              color: "var(--tsem-brand-gradient-end)",
+              // Sanctioned green, matching the gradient end of the mark above.
+              color: "#0E7A3C",
               fontVariantNumeric: "tabular-nums",
               fontWeight: 600,
               textAlign: "right",

@@ -184,7 +184,7 @@ const SectionCard = ({
       },
       "&:hover": {
         borderColor: "color-mix(in srgb, var(--accent-indigo) 25%, transparent)",
-        boxShadow: "0 8px 30px color-mix(in srgb, var(--accent-indigo) 10%, transparent)",
+        boxShadow: "var(--shadow-md)",
       },
     }}
   >
@@ -1235,8 +1235,8 @@ export function JobCreateEditPage({
                         py: 1.25,
                         borderRadius: 2,
                         backgroundColor: "var(--accent-indigo)",
-                        boxShadow: "0 2px 8px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
-                        "&:hover": { backgroundColor: "var(--accent-indigo-dark)", boxShadow: "0 4px 12px color-mix(in srgb, var(--accent-indigo) 40%, transparent)" },
+                        boxShadow: "var(--shadow-sm)",
+                        "&:hover": { backgroundColor: "var(--accent-indigo-dark)", boxShadow: "var(--shadow-md)" },
                       }}
                     >
                       Create first question
@@ -1281,11 +1281,11 @@ export function JobCreateEditPage({
                               backgroundColor: selected ? "color-mix(in srgb, var(--accent-indigo) 8%, transparent)" : "var(--font-light)",
                               cursor: "pointer",
                               transition: "all 0.2s ease",
-                              boxShadow: selected ? "0 2px 8px color-mix(in srgb, var(--accent-indigo) 20%, transparent)" : "none",
+                              boxShadow: selected ? "var(--shadow-sm)" : "none",
                               "&:hover": {
                                 borderColor: selected ? "var(--accent-indigo)" : "color-mix(in srgb, var(--accent-indigo) 45%, transparent)",
                                 backgroundColor: selected ? "color-mix(in srgb, var(--accent-indigo) 10%, transparent)" : "color-mix(in srgb, var(--accent-indigo) 4%, transparent)",
-                                boxShadow: selected ? "0 2px 12px color-mix(in srgb, var(--accent-indigo) 25%, transparent)" : "0 1px 4px color-mix(in srgb, var(--font-primary) 6%, transparent)",
+                                boxShadow: selected ? "var(--shadow-md)" : "var(--shadow-xs)",
                               },
                             }}
                           >
@@ -1497,7 +1497,7 @@ export function JobCreateEditPage({
           mb: 3,
           border: "1px solid",
           borderColor: "color-mix(in srgb, var(--accent-indigo) 16%, transparent)",
-          boxShadow: "0 4px 20px color-mix(in srgb, var(--accent-indigo) 8%, transparent)",
+          boxShadow: "var(--shadow-sm)",
           position: "relative",
           overflow: "hidden",
           "&::after": {
@@ -1585,7 +1585,7 @@ export function JobCreateEditPage({
           border: "1px solid",
           borderColor: "color-mix(in srgb, var(--font-primary) 8%, transparent)",
           backgroundColor: "var(--card-bg)",
-          boxShadow: "0 1px 3px color-mix(in srgb, var(--font-primary) 6%, transparent)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <Stepper
@@ -1646,7 +1646,7 @@ export function JobCreateEditPage({
           borderColor: "color-mix(in srgb, var(--font-primary) 8%, transparent)",
           backgroundColor: "var(--card-bg)",
           zIndex: 10,
-          boxShadow: "0 -8px 30px color-mix(in srgb, var(--font-primary) 8%, transparent)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
@@ -1691,8 +1691,8 @@ export function JobCreateEditPage({
                   py: 1.25,
                   borderRadius: 2,
                   backgroundColor: "var(--accent-indigo)",
-                  boxShadow: "0 1px 3px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
-                  "&:hover": { backgroundColor: "var(--accent-indigo-dark)", boxShadow: "0 4px 12px color-mix(in srgb, var(--accent-indigo) 40%, transparent)" },
+                  boxShadow: "var(--shadow-sm)",
+                  "&:hover": { backgroundColor: "var(--accent-indigo-dark)", boxShadow: "var(--shadow-md)" },
                 }}
               >
                 Next
@@ -1716,8 +1716,8 @@ export function JobCreateEditPage({
                   py: 1.25,
                   borderRadius: 2,
                   backgroundColor: "var(--accent-indigo)",
-                  boxShadow: "0 1px 3px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
-                  "&:hover": { backgroundColor: "var(--accent-indigo-dark)", boxShadow: "0 4px 12px color-mix(in srgb, var(--accent-indigo) 40%, transparent)" },
+                  boxShadow: "var(--shadow-sm)",
+                  "&:hover": { backgroundColor: "var(--accent-indigo-dark)", boxShadow: "var(--shadow-md)" },
                 }}
               >
                 Save Job

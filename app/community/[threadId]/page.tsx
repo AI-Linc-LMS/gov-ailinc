@@ -737,16 +737,16 @@ export default function ThreadDetailPage() {
                 <Box
                   sx={{
                     mb: 2, p: 1.5, borderRadius: "8px",
-                    border: "1px solid #bfdbfe", backgroundColor: "#eff6ff",
+                    border: "1px solid #b6cde8", backgroundColor: "#eef3fa",
                     display: "flex", alignItems: "center", gap: 1,
                   }}
                 >
-                  <IconWrapper icon="mdi:link-variant" size={16} color="#3b82f6" />
+                  <IconWrapper icon="mdi:link-variant" size={16} color="#4a7fbb" />
                   <Link
                     href={extras.resource_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    sx={{ fontSize: "0.875rem", color: "#2563eb", wordBreak: "break-all" }}
+                    sx={{ fontSize: "0.875rem", color: "#1b4f8a", wordBreak: "break-all" }}
                   >
                     {extras.resource_url}
                   </Link>
@@ -755,10 +755,10 @@ export default function ThreadDetailPage() {
 
               {/* Tried steps (Question extra) */}
               {extras.tried_steps && (
-                <Box sx={{ mb: 2.5, pl: 2, borderLeft: "3px solid #a5b4fc" }}>
+                <Box sx={{ mb: 2.5, pl: 2, borderLeft: "3px solid #85aad6" }}>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, mb: 0.5 }}>
-                    <IconWrapper icon="mdi:wrench-clock-outline" size={13} color="#6366f1" />
-                    <Typography variant="caption" fontWeight={700} sx={{ color: "#6366f1", letterSpacing: "0.02em", textTransform: "uppercase", fontSize: "0.68rem" }}>
+                    <IconWrapper icon="mdi:wrench-clock-outline" size={13} color="#1b4f8a" />
+                    <Typography variant="caption" fontWeight={700} sx={{ color: "#1b4f8a", letterSpacing: "0.02em", textTransform: "uppercase", fontSize: "0.68rem" }}>
                       What they already tried
                     </Typography>
                   </Box>
@@ -784,7 +784,7 @@ export default function ThreadDetailPage() {
                     borderRadius: "4px", px: "5px", py: "1px",
                   },
                   "& pre": {
-                    backgroundColor: "#1a1b26", color: "#c0caf5",
+                    backgroundColor: "#111a26", color: "#dde3eb",
                     borderRadius: "10px", p: 2, overflowX: "auto",
                     my: 1.5, fontSize: "0.875rem", lineHeight: 1.6,
                     "& code": { backgroundColor: "transparent", border: "none", color: "inherit", p: 0 },
@@ -820,8 +820,8 @@ export default function ThreadDetailPage() {
 
               {/* Humorous extras */}
               {extras.punchline && (
-                <Box sx={{ mb: 2, p: 1.5, borderRadius: "8px", backgroundColor: "#fffbeb", border: "1px solid #fde68a" }}>
-                  <Typography variant="body2" fontWeight={700} sx={{ color: "#b45309" }}>
+                <Box sx={{ mb: 2, p: 1.5, borderRadius: "8px", backgroundColor: "#fdf9f0", border: "1px solid #f0ddb8" }}>
+                  <Typography variant="body2" fontWeight={700} sx={{ color: "#8a5a12" }}>
                     ⚡ {extras.punchline}
                   </Typography>
                 </Box>
@@ -897,7 +897,7 @@ export default function ThreadDetailPage() {
                       textTransform: "none",
                       color: "var(--font-secondary)",
                       "&:hover": {
-                        color: "#ef4444",
+                        color: "#b32020",
                         backgroundColor: "rgba(239,68,68,0.08)",
                       },
                     }}

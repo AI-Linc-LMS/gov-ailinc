@@ -49,9 +49,8 @@ export function SessionFilterChips({
               borderRadius: 999,
               fontWeight: active ? 800 : 600,
               border: `1px solid ${active ? `color-mix(in srgb, ${color} 55%, transparent)` : "color-mix(in srgb, var(--border-default) 85%, transparent)"}`,
-              bgcolor: active ? `color-mix(in srgb, ${color} 14%, var(--card-bg) 86%)` : "color-mix(in srgb, var(--card-bg) 70%, transparent)",
+              bgcolor: active ? `color-mix(in srgb, ${color} 14%, var(--card-bg) 86%)` : "var(--card-bg)",
               color: active ? color : "var(--font-secondary)",
-              backdropFilter: "blur(8px)",
               transition: "all 0.15s ease",
               "&:hover": {
                 bgcolor: `color-mix(in srgb, ${color} 10%, var(--card-bg) 90%)`,
@@ -123,10 +122,9 @@ export function SectionCard({
       sx={{
         p: { xs: 2, sm: 2.5 },
         borderRadius: 3,
-        border: "1px solid color-mix(in srgb, var(--border-default) 60%, transparent)",
-        bgcolor: "color-mix(in srgb, var(--card-bg) 72%, transparent)",
-        backdropFilter: "blur(18px) saturate(140%)",
-        boxShadow: "0 1px 0 0 color-mix(in srgb, white 14%, transparent) inset, 0 18px 40px -34px rgba(15, 23, 42, 0.2)",
+        border: "1px solid var(--border-default)",
+        bgcolor: "var(--card-bg)",
+        boxShadow: "var(--shadow-sm)",
         ...sx,
       }}
     >

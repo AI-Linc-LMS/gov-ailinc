@@ -25,12 +25,12 @@ type Period = "all" | "week" | "month";
 const TIER_RING: Record<string, string> = {
   bronze: "#cd7f32",
   silver: "#94a3b8",
-  gold: "#fbbf24",
-  platinum: "#a78bfa",
+  gold: "#c9903a",
+  platinum: "#85aad6",
 };
 
 const RANK_BADGE: Record<number, { color: string; icon: string }> = {
-  1: { color: "#fbbf24", icon: "mdi:trophy" },
+  1: { color: "#c9903a", icon: "mdi:trophy" },
   2: { color: "#94a3b8", icon: "mdi:medal" },
   3: { color: "#cd7f32", icon: "mdi:medal-outline" },
 };
@@ -72,7 +72,7 @@ export default function LeaderboardPage() {
         </Button>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 0.5 }}>
-          <IconWrapper icon="mdi:trophy-outline" size={28} color="#fbbf24" />
+          <IconWrapper icon="mdi:trophy-outline" size={28} color="#c9903a" />
           <Typography variant="h5" fontWeight={700}>
             Community Leaderboard
           </Typography>

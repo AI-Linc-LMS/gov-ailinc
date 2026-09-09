@@ -52,81 +52,131 @@ export type NormalizedTheme = Record<string, string>;
  * Merge API / preset theme with defaults. Preserves `_preset` for admin display.
  */
 /**
- * Platform-wide fixed colour palette ("Midnight hyper" - ink sidebar, vivid
- * purple accents, white canvas). Colour customization is disabled for every
- * client: these colour tokens are forced regardless of a tenant's stored
- * theme_settings. NON-colour keys (login slogan text, font family, logo
- * dimensions) are intentionally NOT listed here, so they still pass through and
- * remain editable on the admin Settings page. Sourced from the backend
- * `midnight_hyper_white_bg` preset (client_theming/presets.py) so it stays exact.
+ * Platform-wide fixed colour palette ("Government institutional").
+ *
+ * Colour customisation stays disabled for every client: these tokens are forced
+ * regardless of a tenant's stored theme_settings, and this function is the single
+ * chokepoint every colour read funnels through (sidebar shell, MUI theme, all of
+ * globals.css, the login page, and the SSR `themeToCssBlock` inline style), so
+ * forcing them here covers first paint and client runtime with no per-surface
+ * override and no loophole.
+ *
+ * WHAT CHANGED AND WHY. The upstream palette was "Midnight hyper": a vivid violet
+ * ramp with a violet-to-pink gradient reserved for AI moments. It is a good
+ * consumer-SaaS palette and it is the wrong one here. A citizen-facing state
+ * service is read as official or not official within a second of the page
+ * painting, and saturated violet reads as a startup. This palette is built for
+ * the opposite instinct:
+ *
+ *   - Institutional blue carries the primary ramp. It is the colour every Indian
+ *     government portal a candidate has already used is built from, so it costs
+ *     no explanation.
+ *   - Deep green is the action colour (enrol, submit, pass), because green means
+ *     sanctioned and approved in this context rather than merely "success".
+ *   - Gold is the only warm accent, used sparingly for merit and certificates.
+ *   - Violet, pink and indigo are retired. Their token KEYS are kept, because 250
+ *     files reference them by name, but every value now resolves into the blue
+ *     ramp. A key called accentPurple holding institutional blue is odd to read
+ *     and much safer than renaming a token that 1,600 call sites use.
+ *
+ * CONTRAST, measured rather than assumed. Against white: primary500 8.3:1,
+ * primary600 10.2:1, green500 5.4:1, teal 6.2:1, red 6.7:1. Against the sidebar
+ * ink, white text is 17.4:1. Every one of those clears WCAG AA for body text
+ * without a per-component override, which matters more than usual here because a
+ * government service is held to accessibility standards a bootcamp is not.
+ *
+ * THE ONE EXCEPTION, and it is a rule rather than an oversight. Gold at #b7791f
+ * measures 3.6:1 on white, so it is a FILL, ICON AND LARGE-TEXT colour only: it
+ * satisfies the 3:1 that WCAG asks of graphical objects and of text at 18pt or
+ * 14pt bold, and it fails the 4.5:1 that body text needs. Body text on a gold
+ * tint uses warning600 (#8a5a12), which measures 5.9:1 on white and 5.4:1 on the
+ * gold tint. Darkening #b7791f itself was the tempting fix and the wrong one: the
+ * fill would have gone muddy against the tint it sits on, and gold is carrying
+ * merit and certificates, where the point is that it looks like a seal.
+ *
+ * NON-colour keys (login slogan, font family, logo dimensions) are deliberately
+ * absent from this list so they still pass through and stay editable on the admin
+ * Settings page.
  */
-const FIXED_MIDNIGHT_HYPER: Record<string, string> = {
-  primary50: "#faf5ff",
-  primary100: "#f3e8ff",
-  primary200: "#e9d5ff",
-  primary300: "#d8b4fe",
-  primary400: "#c084fc",
-  primary500: "#a855f7",
-  primary600: "#9333ea",
-  primary700: "#7e22ce",
-  primary800: "#6b21a8",
-  primary900: "#581c87",
-  secondary50: "#e6f8f6",
-  secondary100: "#cde5ce",
-  secondary200: "#417845",
-  secondary300: "#ae0606",
-  secondary400: "#7e22ce",
-  secondary500: "#0f0518",
-  secondary600: "#1a1033",
-  secondary700: "#0f0518",
+const FIXED_GOVERNMENT: Record<string, string> = {
+  // Institutional blue: the primary ramp.
+  primary50: "#eef3fa",
+  primary100: "#d9e6f4",
+  primary200: "#b6cde8",
+  primary300: "#85aad6",
+  primary400: "#4a7fbb",
+  primary500: "#1b4f8a",
+  primary600: "#164274",
+  primary700: "#12365f",
+  primary800: "#0e2a4b",
+  primary900: "#0a1e37",
+
+  // Secondary carries the sidebar ink and the darkest surfaces.
+  secondary50: "#eef3fa",
+  secondary100: "#d9e6f4",
+  secondary200: "#0e7a3c",
+  secondary300: "#b32020",
+  secondary400: "#164274",
+  secondary500: "#0b1b2e",
+  secondary600: "#10263f",
+  secondary700: "#071426",
   navBackground: "#ffffff",
-  navSelected: "#1e1b4b",
-  fontDarkNav: "#3b0764",
-  fontLightNav: "#faf5ff",
-  accentYellow: "#facc15",
-  accentBlue: "#3875f9",
-  accentGreen: "#38a169",
-  accentRed: "#e53e3e",
-  accentOrange: "#dd6b20",
-  accentTeal: "#319795",
-  accentPurple: "#c084fc",
-  accentPink: "#d53f8c",
+  navSelected: "#17406b",
+  fontDarkNav: "#0a1e37",
+  fontLightNav: "#eef3fa",
+
+  // Accents. Gold is the only warm one and is reserved for merit and certificates.
+  accentYellow: "#b7791f",
+  accentBlue: "#1b4f8a",
+  accentGreen: "#0e7a3c",
+  accentRed: "#b32020",
+  accentOrange: "#b45309",
+  accentTeal: "#0f6b7a",
+  // Violet and pink are retired into the blue ramp. The keys stay because the
+  // component tree names them; the colours do not come back.
+  accentPurple: "#1b4f8a",
+  accentPink: "#0f6b7a",
+
   neutral50: "#ffffff",
-  neutral100: "#e9ecef",
-  neutral200: "#dde2e6",
-  neutral300: "#6c757d",
-  neutral400: "#495057",
-  neutral500: "#343a40",
-  neutral600: "#2d3748",
-  neutral700: "#1e1e1e",
-  neutral800: "#1a1a1a",
-  success50: "#e6f8f6",
-  success100: "#cde5ce",
-  success500: "#5fa564",
-  warning100: "#fff8e6",
-  warning500: "#ffb800",
-  error100: "#ffe6e6",
-  error500: "#ea4335",
-  error600: "#ae0606",
+  neutral100: "#eef1f5",
+  neutral200: "#dde3eb",
+  neutral300: "#6b7684",
+  neutral400: "#4a5563",
+  neutral500: "#333d4b",
+  neutral600: "#26303d",
+  neutral700: "#1a2330",
+  neutral800: "#111a26",
+
+  success50: "#e8f5ed",
+  success100: "#c8e6d5",
+  success500: "#0e7a3c",
+  warning100: "#fdf3e2",
+  warning500: "#b7791f",
+  error100: "#fbeaea",
+  error500: "#b32020",
+  error600: "#8f1919",
+
   fontLight: "#ffffff",
   fontDark: "#000000",
-  courseCta: "#9333ea",
-  defaultPrimary: "#a855f7",
-  muiPrimaryMain: "#a855f7",
-  muiPrimaryLight: "#d8b4fe",
-  muiPrimaryDark: "#7e22ce",
+
+  // Green is the action colour: enrol, submit, sanctioned.
+  courseCta: "#0e7a3c",
+  defaultPrimary: "#1b4f8a",
+  muiPrimaryMain: "#1b4f8a",
+  muiPrimaryLight: "#4a7fbb",
+  muiPrimaryDark: "#12365f",
   muiPrimaryContrastText: "#ffffff",
-  accentBlueLight: "#c084fc",
-  surfaceBlueLight: "#ffffff",
-  accentIndigo: "#a855f7",
-  accentIndigoDark: "#7e22ce",
-  surfaceIndigoLight: "#f8fafc",
-  chartArticles: "#6b21a8",
+  accentBlueLight: "#4a7fbb",
+  surfaceBlueLight: "#d9e6f4",
+  accentIndigo: "#1b4f8a",
+  accentIndigoDark: "#12365f",
+  surfaceIndigoLight: "#eef3fa",
+  chartArticles: "#12365f",
 };
 
 /**
  * Merge API / preset theme with defaults, then force the platform-wide fixed
- * colour palette so every client renders identically. Preserves `_preset` and
+ * government colour palette so every client renders identically. Preserves `_preset` and
  * non-colour keys (slogan text, fonts, logo sizing).
  *
  * This is the single chokepoint every colour read funnels through (sidebar
@@ -141,7 +191,7 @@ export function normalizeThemeSettings(themeSettings: unknown): NormalizedTheme 
     if (!v) continue;
     merged[k] = v;
   }
-  Object.assign(merged, FIXED_MIDNIGHT_HYPER);
+  Object.assign(merged, FIXED_GOVERNMENT);
   return merged;
 }
 

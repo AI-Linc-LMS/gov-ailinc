@@ -164,10 +164,7 @@ const QuizQuestionListComponent = memo(function QuizQuestionList({
         flex: { md: 1 },
         minHeight: { md: 0 },
         width: "100%",
-        boxShadow:
-          variant === "subjective"
-            ? "0 2px 12px color-mix(in srgb, var(--assessment-subjective-shadow) 35%, transparent)"
-            : "0 2px 12px color-mix(in srgb, var(--font-primary-dark) 6%, transparent)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       <Box
@@ -385,7 +382,7 @@ const QuizQuestionListComponent = memo(function QuizQuestionList({
                     borderLeft: isCurrent ? `4px solid ${c.accent}` : "4px solid transparent",
                     backgroundColor: isCurrent ? c.currentBg : "transparent",
                     boxShadow: isCurrent
-                      ? `0 0 0 1px ${alpha(theme.palette.primary.main, 0.14)}, 0 2px 10px ${alpha(theme.palette.common.black, 0.07)}`
+                      ? "var(--shadow-sm)"
                       : "none",
                     transition:
                       "background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease",

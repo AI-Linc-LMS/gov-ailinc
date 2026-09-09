@@ -53,7 +53,7 @@ export function TargetOutcomeBanner({ outcome }: TargetOutcomeBannerProps) {
         p: { xs: 2.25, md: 2.75 },
         bgcolor: "var(--card-bg)",
         border: `1px solid color-mix(in srgb, ${theme.accent} 35%, transparent)`,
-        boxShadow: `0 1px 0 0 color-mix(in srgb, white 16%, transparent) inset, 0 24px 50px -32px color-mix(in srgb, ${theme.accent} 40%, transparent)`,
+        boxShadow: "var(--shadow-sm)",
         display: "flex",
         alignItems: "center",
         gap: 2,
@@ -103,7 +103,7 @@ export function TargetOutcomeBanner({ outcome }: TargetOutcomeBannerProps) {
           alignItems: "center",
           justifyContent: "center",
           flexShrink: 0,
-          boxShadow: `0 14px 30px -10px color-mix(in srgb, ${theme.accent} 60%, transparent)`,
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <Icon icon={theme.icon} width={28} />
@@ -175,7 +175,7 @@ export function TargetOutcomeBanner({ outcome }: TargetOutcomeBannerProps) {
             sx={{
               fontSize: "0.74rem",
               fontWeight: 800,
-              color: outcome.delta_pct && outcome.delta_pct > 0 ? "#10b981" : "#ef4444",
+              color: outcome.delta_pct && outcome.delta_pct > 0 ? "#0e7a3c" : "#b32020",
               mt: 0.4,
             }}
           >
@@ -199,8 +199,8 @@ const OUTCOME_THEME: Record<
   }
 > = {
   mastered: {
-    accent: "#10b981",
-    accentEnd: "#059669",
+    accent: "#0e7a3c",
+    accentEnd: "#0B6232",
     icon: "mdi:trophy-variant",
     eyebrow: "Skill mastered",
     title: ({ skill }) => `You've mastered ${skill}.`,
@@ -210,8 +210,8 @@ const OUTCOME_THEME: Record<
         : `${mastery}% mastery - solid command of this skill.`,
   },
   improving: {
-    accent: "#f59e0b",
-    accentEnd: "#ec4899",
+    accent: "#b7791f",
+    accentEnd: "#0f6b7a",
     icon: "mdi:trending-up",
     eyebrow: "Improving",
     title: ({ skill, delta }) => `${skill} is moving in the right direction (${delta ?? "↑"}).`,
@@ -228,8 +228,8 @@ const OUTCOME_THEME: Record<
       `Mastery held at ${mastery}%. Re-read the misconceptions below before the next re-quiz - different angle, better result.`,
   },
   first_measure: {
-    accent: "#6366f1",
-    accentEnd: "#4f46e5",
+    accent: "#1b4f8a",
+    accentEnd: "#12365f",
     icon: "mdi:compass-outline",
     eyebrow: "First look",
     title: ({ skill }) => `First read on ${skill}.`,

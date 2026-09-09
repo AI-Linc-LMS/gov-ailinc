@@ -99,10 +99,7 @@ export function AdminCertificateUploadCard({
           theme.palette.mode === "dark"
             ? alpha(theme.palette.background.paper, 0.6)
             : theme.palette.background.paper,
-        boxShadow:
-          theme.palette.mode === "dark"
-            ? `0 24px 48px -12px ${alpha("#000", 0.45)}`
-            : `0 20px 40px -18px ${alpha("#0f172a", 0.12)}, 0 0 0 1px ${alpha("#0f172a", 0.04)}`,
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       <Stack spacing={2.75}>
@@ -269,7 +266,7 @@ export function AdminCertificateUploadCard({
             fontWeight: 700,
             textTransform: "none",
             fontSize: "1rem",
-            boxShadow: `0 10px 24px ${alpha(accent, 0.35)}`,
+            boxShadow: "var(--shadow-sm)",
             "&:disabled": {
               boxShadow: "none",
             },

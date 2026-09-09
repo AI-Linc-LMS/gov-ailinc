@@ -531,7 +531,7 @@ export function CodingProblemLayout({
         insetInlineEnd: 8,
         zIndex: 11,
         backgroundColor: "rgba(255,255,255,0.9)",
-        boxShadow: 1,
+        boxShadow: "var(--shadow-xs)",
         "&:hover": { backgroundColor: "#fff" },
       }}
       title={isFullScreen ? "Exit full screen" : "Full screen"}
@@ -767,11 +767,11 @@ export function CodingProblemLayout({
               alignItems: "center",
               justifyContent: "center",
               "&:hover": {
-                backgroundColor: "#6366f1",
+                backgroundColor: "#1b4f8a",
                 width: "8px",
               },
               "&:active": {
-                backgroundColor: "#4f46e5",
+                backgroundColor: "#12365f",
               },
               "&::before": {
                 content: '""',
@@ -846,11 +846,11 @@ export function CodingProblemLayout({
                 alignItems: "center",
                 justifyContent: "center",
                 "&:hover": {
-                  backgroundColor: "#6366f1",
+                  backgroundColor: "#1b4f8a",
                   height: "8px",
                 },
                 "&:active": {
-                  backgroundColor: "#4f46e5",
+                  backgroundColor: "#12365f",
                 },
                 "&::before": {
                   content: '""',

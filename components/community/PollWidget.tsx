@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 import { IconWrapper } from "@/components/common/IconWrapper";
 import type { Thread } from "@/lib/services/community.service";
 
-const POLL_COLOR = "#8b5cf6";
+const POLL_COLOR = "#4a7fbb";
 
 interface PollWidgetProps {
   thread: Thread;

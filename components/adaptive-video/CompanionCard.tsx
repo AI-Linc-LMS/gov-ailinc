@@ -24,7 +24,7 @@ interface CompanionCardProps {
  * muddy background tint when stacked). One dark variant for the live takeaways.
  */
 export function CompanionCard({
-  accent = "#6366f1",
+  accent = "#1b4f8a",
   title,
   icon,
   right,
@@ -39,13 +39,11 @@ export function CompanionCard({
         overflow: "hidden",
         borderRadius: 3,
         p: { xs: 2, md: 2.25 },
-        background: dark ? "#14122b" : "var(--card-bg, #ffffff)",
+        background: dark ? "#0b1b2e" : "var(--card-bg, #ffffff)",
         border: dark
           ? "1px solid rgba(255,255,255,0.08)"
           : "1px solid var(--border-default, #ececf1)",
-        boxShadow: dark
-          ? "0 12px 32px -20px rgba(0,0,0,0.5)"
-          : "0 1px 2px rgba(16,24,40,0.04), 0 8px 24px -20px rgba(16,24,40,0.18)",
+        boxShadow: "var(--shadow-sm)",
         color: dark ? "#fff" : "inherit",
         ...sx,
       }}
@@ -63,7 +61,7 @@ export function CompanionCard({
                 flexShrink: 0,
                 color: dark ? "#fff" : accent,
                 background: dark
-                  ? "linear-gradient(135deg, #6366f1, #a855f7)"
+                  ? "linear-gradient(135deg, #1b4f8a, #1b4f8a)"
                   : `color-mix(in srgb, ${accent} 12%, transparent)`,
               }}
             >

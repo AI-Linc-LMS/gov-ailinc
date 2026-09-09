@@ -71,18 +71,18 @@ const STATUS_VISUAL: Record<
 > = {
   pending: {
     icon: "mdi:clock-outline",
-    accent: "var(--accent-amber, #d97706)",
-    tint: "color-mix(in srgb, #f59e0b 14%, var(--surface) 86%)",
+    accent: "var(--accent-amber, #8a5a12)",
+    tint: "color-mix(in srgb, #b7791f 14%, var(--surface) 86%)",
   },
   approved: {
     icon: "mdi:check-circle-outline",
-    accent: "var(--accent-emerald, #059669)",
-    tint: "color-mix(in srgb, #10b981 14%, var(--surface) 86%)",
+    accent: "var(--accent-emerald, #0B6232)",
+    tint: "color-mix(in srgb, #0e7a3c 14%, var(--surface) 86%)",
   },
   rejected: {
     icon: "mdi:close-circle-outline",
-    accent: "var(--accent-rose, #dc2626)",
-    tint: "color-mix(in srgb, #ef4444 12%, var(--surface) 88%)",
+    accent: "var(--accent-rose, #991b1b)",
+    tint: "color-mix(in srgb, #b32020 12%, var(--surface) 88%)",
   },
 };
 
@@ -96,14 +96,14 @@ function getInitials(name: string, email: string): string {
 
 function avatarColorFor(seed: string): string {
   const palette = [
-    "#6366f1",
-    "#0ea5e9",
-    "#10b981",
-    "#f59e0b",
-    "#ec4899",
-    "#8b5cf6",
-    "#14b8a6",
-    "#f43f5e",
+    "#1b4f8a",
+    "#1b4f8a",
+    "#0e7a3c",
+    "#b7791f",
+    "#0f6b7a",
+    "#4a7fbb",
+    "#0f6b7a",
+    "#b32020",
   ];
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
@@ -919,7 +919,7 @@ export default function InstructorsPage() {
               if (menuRow) setRemoveRow(menuRow);
               closeMenu();
             }}
-            sx={{ color: "#ef4444" }}
+            sx={{ color: "#b32020" }}
           >
             <IconWrapper icon="mdi:account-remove-outline" size={18} />
             <Box sx={{ ml: 1 }}>Remove as instructor</Box>

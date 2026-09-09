@@ -189,13 +189,13 @@ export const CourseFilters: React.FC<CourseFiltersProps> = ({
               onClick={onFilterButtonClick}
               startIcon={<IconWrapper icon="mdi:filter" size={18} />}
               sx={{
-                borderColor: hasActiveFilters ? "#6366f1" : "#e5e7eb",
-                color: hasActiveFilters ? "#6366f1" : "#6b7280",
+                borderColor: hasActiveFilters ? "#1b4f8a" : "#e5e7eb",
+                color: hasActiveFilters ? "#1b4f8a" : "#6b7280",
                 textTransform: "none",
                 px: 2,
                 "&:hover": {
-                  borderColor: "#6366f1",
-                  backgroundColor: hasActiveFilters ? "#eef2ff" : "#f9fafb",
+                  borderColor: "#1b4f8a",
+                  backgroundColor: hasActiveFilters ? "#eef3fa" : "#f9fafb",
                 },
               }}
             >
@@ -416,13 +416,13 @@ export const CourseFilters: React.FC<CourseFiltersProps> = ({
               variant="contained"
               onClick={onApply}
               sx={{
-                backgroundColor: "#6366f1",
+                backgroundColor: "#1b4f8a",
                 color: "#ffffff",
                 textTransform: "none",
                 px: 3,
                 flexGrow: { xs: 1, lg: 0 },
                 "&:hover": {
-                  backgroundColor: "#4f46e5",
+                  backgroundColor: "#12365f",
                 },
               }}
             >

@@ -66,7 +66,7 @@ export const InterviewHeader = memo(function InterviewHeader({
         py: 2,
         backgroundColor: "var(--card-bg)",
         borderBottom: "1px solid var(--border-default)",
-        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -114,10 +114,10 @@ export const InterviewHeader = memo(function InterviewHeader({
               borderRadius: 1,
               border: `2px solid ${
                 proctoringStatus === "VIOLATION"
-                  ? "#ef4444"
+                  ? "#b32020"
                   : proctoringStatus === "WARNING"
-                  ? "#f59e0b"
-                  : "#10b981"
+                  ? "#b7791f"
+                  : "#0e7a3c"
               }`,
             }}
           >
@@ -169,11 +169,11 @@ export const InterviewHeader = memo(function InterviewHeader({
               variant="contained"
               size="small"
               sx={{
-                backgroundColor: "var(--error-500, #ef4444)",
+                backgroundColor: "var(--error-500, #b32020)",
                 color: "var(--font-light)",
                 textTransform: "none",
                 "&:hover": {
-                  backgroundColor: "var(--error-600, #dc2626)",
+                  backgroundColor: "var(--error-600, #991b1b)",
                 },
               }}
               startIcon={<IconWrapper icon="mdi:record" size={18} />}

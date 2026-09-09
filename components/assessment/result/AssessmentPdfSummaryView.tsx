@@ -64,7 +64,7 @@ function WeakSkillCard({ row }: { row: WeakSkillDisplayRow }) {
         borderRadius: 10,
         padding: "14px 16px 12px",
         border: "1px solid color-mix(in srgb, var(--accent-orange) 22%, transparent)",
-        boxShadow: "0 2px 8px color-mix(in srgb, var(--primary-900) 6%, transparent)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       <div
@@ -309,7 +309,7 @@ const AssessmentPdfSummaryView = forwardRef<
             border: "1px solid var(--border-light)",
             background: "var(--surface)",
             padding: "16px 16px 14px",
-            boxShadow: "0 4px 14px color-mix(in srgb, var(--primary-900) 8%, transparent)",
+            boxShadow: "var(--shadow-sm)",
             alignSelf: "flex-start",
           }}
         >
@@ -599,7 +599,7 @@ const AssessmentPdfSummaryView = forwardRef<
           background: "linear-gradient(135deg, color-mix(in srgb, var(--warning-100) 95%, var(--card-bg)) 0%, color-mix(in srgb, var(--warning-100) 90%, var(--card-bg)) 55%, color-mix(in srgb, var(--accent-orange) 14%, transparent) 100%)",
           borderLeft: "4px solid var(--warning-500)",
           borderRadius: 10,
-          boxShadow: "0 4px 20px color-mix(in srgb, var(--warning-500) 10%, transparent)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <div style={{ marginBottom: 16 }}>
@@ -645,7 +645,7 @@ const AssessmentPdfSummaryView = forwardRef<
             background: "linear-gradient(135deg, var(--surface) 0%, color-mix(in srgb, var(--surface-blue-light) 90%, var(--card-bg)) 100%)",
             borderLeft: `4px solid ${SKY}`,
             borderRadius: 10,
-            boxShadow: "0 4px 20px color-mix(in srgb, var(--primary-400) 10%, transparent)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <h2

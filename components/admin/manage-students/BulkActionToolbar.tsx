@@ -32,7 +32,7 @@ interface BulkActionToolbarProps {
 type CourseDialogMode = "enroll" | "unenroll" | null;
 type ConfirmMode = "deactivate" | "activate" | "reset" | null;
 
-const INDIGO = "#6366f1";
+const INDIGO = "#1b4f8a";
 
 export function BulkActionToolbar({
   selected,
@@ -162,8 +162,8 @@ export function BulkActionToolbar({
           alignItems: "center",
           gap: 1.5,
           flexWrap: "wrap",
-          background: "linear-gradient(135deg,#6366f1 0%,#a855f7 60%,#ec4899 100%)",
-          boxShadow: "0 18px 36px -16px rgba(99,102,241,0.55)",
+          background: "linear-gradient(135deg,#1b4f8a 0%,#1b4f8a 60%,#0f6b7a 100%)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <Typography sx={{ color: "#fff", fontWeight: 800, mr: 0.5 }}>

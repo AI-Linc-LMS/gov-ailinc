@@ -131,9 +131,9 @@ const FILTER_CONFIG: { key: ActiveFilter; label: string; icon: string; color: st
     icon: POST_TYPE_CONFIG[t].icon,
     color: POST_TYPE_CONFIG[t].color,
   })),
-  { key: "following", label: "Following", icon: "mdi:account-heart-outline", color: "#ec4899" },
+  { key: "following", label: "Following", icon: "mdi:account-heart-outline", color: "#0f6b7a" },
   { key: "my_posts", label: "My Posts", icon: "mdi:account-outline", color: "#6b7280" },
-  { key: "bookmarks", label: "Saved", icon: "mdi:bookmark", color: "#0ea5e9" },
+  { key: "bookmarks", label: "Saved", icon: "mdi:bookmark", color: "#1b4f8a" },
 ];
 
 export default function CommunityPage() {
@@ -1018,7 +1018,7 @@ export default function CommunityPage() {
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
-                <IconWrapper icon="mdi:fire" size={20} color="#f59e0b" />
+                <IconWrapper icon="mdi:fire" size={20} color="#b7791f" />
                 <Typography variant="subtitle1" fontWeight={700} sx={{ color: "var(--font-primary)" }}>
                   Offer a Bounty
                 </Typography>
@@ -1053,8 +1053,8 @@ export default function CommunityPage() {
                   disabled={!bountyDialog.points || parseInt(bountyDialog.points) <= 0}
                   sx={{
                     textTransform: "none", fontWeight: 600, borderRadius: "8px",
-                    backgroundColor: "#f59e0b", boxShadow: "none",
-                    "&:hover": { backgroundColor: "#d97706", boxShadow: "none" },
+                    backgroundColor: "#b7791f", boxShadow: "none",
+                    "&:hover": { backgroundColor: "#8a5a12", boxShadow: "none" },
                   }}
                 >
                   Place Bounty
@@ -1101,7 +1101,7 @@ export default function CommunityPage() {
             }}
           >
             {/* Same 3px top strip as MilestoneWidget */}
-            <Box sx={{ height: 3, backgroundColor: "#fbbf24" }} />
+            <Box sx={{ height: 3, backgroundColor: "#c9903a" }} />
 
             <Box sx={{ p: 2 }}>
               {/* Header - matches MilestoneWidget's "YOUR PROGRESS" pattern */}
@@ -1133,7 +1133,7 @@ export default function CommunityPage() {
                     justifyContent: "center",
                   }}
                 >
-                  <IconWrapper icon="mdi:trophy-outline" size={26} color="#fbbf24" />
+                  <IconWrapper icon="mdi:trophy-outline" size={26} color="#c9903a" />
                 </Box>
                 <Box sx={{ flex: 1, minWidth: 0 }}>
                   <Typography
@@ -1161,7 +1161,7 @@ export default function CommunityPage() {
                   className="leaderboard-chevron"
                   sx={{
                     display: "inline-flex",
-                    color: "#fbbf24",
+                    color: "#c9903a",
                     transition: "transform 0.18s",
                   }}
                 >

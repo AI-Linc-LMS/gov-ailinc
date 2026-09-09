@@ -452,8 +452,8 @@ export function ActivityHeatmap({ heatmapData, subtitle = "Your learning activit
                             "&:hover": {
                               transform: "scale(1.2)",
                               boxShadow: isTodayCell
-                                ? "inset 0 0 0 2px var(--font-primary), 0 3px 10px color-mix(in srgb, var(--font-primary) 25%, transparent)"
-                                : "0 3px 10px color-mix(in srgb, var(--font-primary) 22%, transparent)",
+                                ? "inset 0 0 0 2px var(--font-primary), var(--shadow-sm)"
+                                : "var(--shadow-sm)",
                               zIndex: 2,
                             },
                           }}

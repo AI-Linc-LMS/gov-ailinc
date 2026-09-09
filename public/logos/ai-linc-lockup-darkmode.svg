@@ -2,7 +2,7 @@
   <defs>
     <linearGradient id="l-darkmode" x1="40" y1="120" x2="380" y2="120" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#5B86FF"></stop>
-      <stop offset="1" stop-color="#00E0FF"></stop>
+      <stop offset="1" stop-color="#2F7FBF"></stop>
     </linearGradient>
   </defs>
   <g transform="translate(160 180)">
@@ -11,7 +11,7 @@
     </g>
   </g>
   <g transform="translate(620 280)" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="180" letter-spacing="3.6">
-    <text fill="#FFFFFF">AI <tspan fill="#00E0FF">LINC</tspan></text>
+    <text fill="#FFFFFF">AI <tspan fill="#2F7FBF">LINC</tspan></text>
   </g>
   <g transform="translate(622 360)" font-family="Arial, Helvetica, sans-serif" font-weight="500" font-size="34" letter-spacing="0.34">
     <text fill="rgba(255,255,255,0.78)">Empowering the world with infinite possibilities of AI</text>

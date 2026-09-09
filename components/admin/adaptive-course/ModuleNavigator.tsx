@@ -45,7 +45,7 @@ export function ModuleNavigator({
         borderRadius: 4,
         border: "1px solid #e4e7f0",
         bgcolor: "#fff",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.04)",
+        boxShadow: "var(--shadow-xs)",
         // Sticky so the index stays reachable while reading a long module. Offset clears the
         // app header; without it the first chip row hides underneath it.
         position: { md: "sticky" },
@@ -54,7 +54,7 @@ export function ModuleNavigator({
       }}
     >
       <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1.25, flexWrap: "wrap" }}>
-        <Icon icon="mdi:format-list-numbered" width={16} style={{ color: "#7c3aed" }} />
+        <Icon icon="mdi:format-list-numbered" width={16} style={{ color: "#14406f" }} />
         <Typography
           sx={{
             fontSize: "0.62rem", fontWeight: 800, letterSpacing: 0.5,
@@ -89,11 +89,11 @@ export function ModuleNavigator({
                 maxWidth: 240, px: 1.25, py: 0.6, borderRadius: 999,
                 cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: "0.75rem",
                 border: active ? "1px solid transparent" : "1px solid #e4e7f0",
-                bgcolor: active ? "#7c3aed" : "transparent",
+                bgcolor: active ? "#14406f" : "transparent",
                 color: active ? "#fff" : "#475569",
                 transition: "background .12s, color .12s",
-                "&:hover": { bgcolor: active ? "#7c3aed" : "#f8fafc" },
-                "&:focus-visible": { outline: "none", boxShadow: "0 0 0 2px #fff, 0 0 0 4px #7c3aed" },
+                "&:hover": { bgcolor: active ? "#14406f" : "#f8fafc" },
+                "&:focus-visible": { outline: "none", boxShadow: "0 0 0 2px #fff, 0 0 0 4px #14406f" },
               }}
             >
               <Box
@@ -167,7 +167,7 @@ function PagerButton({
         color: disabled ? "#cbd5e1" : "#475569",
         cursor: disabled ? "default" : "pointer",
         "&:hover": { bgcolor: disabled ? "#fff" : "#f8fafc" },
-        "&:focus-visible": { outline: "none", boxShadow: "0 0 0 2px #fff, 0 0 0 4px #7c3aed" },
+        "&:focus-visible": { outline: "none", boxShadow: "0 0 0 2px #fff, 0 0 0 4px #14406f" },
       }}
     >
       {!trailingIcon && <Icon icon={icon} width={15} />}

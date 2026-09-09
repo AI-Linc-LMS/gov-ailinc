@@ -99,7 +99,7 @@ const cardShellSx = {
   bgcolor: "var(--card-bg)",
   borderRadius: "16px",
   border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
-  boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+  boxShadow: "var(--shadow-sm)",
 };
 
 /** Primary action: AI gradient, white text, no uppercase. */
@@ -381,7 +381,7 @@ export function MultipleSectionsSection({
           border:
             "1.5px dashed color-mix(in srgb, var(--accent-indigo) 40%, var(--border-default) 60%)",
           boxShadow:
-            "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+            "var(--shadow-sm)",
           overflow: "hidden",
         }}
       >
@@ -770,7 +770,7 @@ export function MultipleSectionsSection({
             border:
               "1.5px dashed color-mix(in srgb, var(--accent-indigo) 40%, var(--border-default) 60%)",
             boxShadow:
-              "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.08)",
+              "var(--shadow-sm)",
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
@@ -863,14 +863,14 @@ function SectionCard({
           ? {
               border: "1.5px solid var(--accent-indigo)",
               boxShadow:
-                "0 14px 32px -18px color-mix(in srgb, var(--font-primary) 40%, transparent)",
+                "var(--shadow-sm)",
             }
           : {}),
         opacity: isDragging ? 0.95 : 1,
         transition: "box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.2s ease",
         "&:hover": {
           boxShadow:
-            "0 14px 32px -18px color-mix(in srgb, var(--font-primary) 40%, transparent)",
+            "var(--shadow-md)",
         },
       }}
     >

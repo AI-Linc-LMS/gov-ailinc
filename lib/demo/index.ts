@@ -48,7 +48,7 @@ export function installDemoTransport(client: AxiosInstance): void {
     console.info(
       `%c[demo] %cTSEM prototype: ${registeredRoutes().length} endpoints served locally. ` +
         `No network calls leave this browser.`,
-      "color:#a855f7;font-weight:700",
+      "color:#1b4f8a;font-weight:700",
       "color:inherit",
     );
   }

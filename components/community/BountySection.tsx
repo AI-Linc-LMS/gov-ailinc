@@ -11,7 +11,7 @@ interface BountySectionProps {
   bounties: BountyItem[];
 }
 
-const RED = "#ef4444";
+const RED = "#b32020";
 const RED_BG = "rgba(239,68,68,0.08)";
 const RED_BORDER = "rgba(239,68,68,0.28)";
 
@@ -115,7 +115,7 @@ export function BountySection({ bounties }: BountySectionProps) {
                 gap: 1.25,
                 transition: "box-shadow 0.18s",
                 "&:hover": {
-                  boxShadow: `0 4px 16px ${RED_BORDER}`,
+                  boxShadow: "var(--shadow-md)",
                 },
               }}
             >

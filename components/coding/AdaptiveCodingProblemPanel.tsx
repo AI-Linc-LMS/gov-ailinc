@@ -44,7 +44,7 @@ export function AdaptiveCodingProblemPanel({ problem }: { problem: CodingProblem
           px: 2,
           py: 1.5,
           background:
-            "linear-gradient(135deg, color-mix(in srgb,#6366f1 8%,transparent), color-mix(in srgb,#ec4899 6%,transparent))",
+            "linear-gradient(135deg, color-mix(in srgb,#1b4f8a 8%,transparent), color-mix(in srgb,#0f6b7a 6%,transparent))",
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap", mb: 0.75 }}>
@@ -139,7 +139,7 @@ function Section({
           fontWeight: 800,
           letterSpacing: "0.06em",
           textTransform: "uppercase",
-          color: "#6366f1",
+          color: "#1b4f8a",
           mb: 0.75,
         }}
       >
@@ -225,9 +225,9 @@ function Chip({ children, tone }: { children: React.ReactNode; tone: "skill" | "
         borderRadius: 999,
         fontSize: "0.7rem",
         fontWeight: 700,
-        color: skill ? "#6366f1" : "text.secondary",
+        color: skill ? "#1b4f8a" : "text.secondary",
         background: skill
-          ? "color-mix(in srgb, #6366f1 10%, transparent)"
+          ? "color-mix(in srgb, #1b4f8a 10%, transparent)"
           : "color-mix(in srgb, var(--border-default) 35%, transparent)",
       }}
     >
@@ -237,7 +237,7 @@ function Chip({ children, tone }: { children: React.ReactNode; tone: "skill" | "
 }
 
 export function DifficultyChip({ level }: { level: "Easy" | "Medium" | "Hard" }) {
-  const color = level === "Easy" ? "#10b981" : level === "Medium" ? "#f59e0b" : "#ef4444";
+  const color = level === "Easy" ? "#0e7a3c" : level === "Medium" ? "#b7791f" : "#b32020";
   return (
     <Box
       component="span"

@@ -10,9 +10,9 @@ import { adaptiveJourneyService } from "@/lib/services/adaptive-journey.service"
 type CalibStatus = Awaited<ReturnType<typeof adaptiveJourneyService.getCalibration>>;
 
 const STATUS_CHIP: Record<string, { label: string; color: string; bg: string }> = {
-  ready: { label: "Ready", color: "#15803d", bg: "#dcfce7" },
-  generating: { label: "Generating…", color: "#4338ca", bg: "#e0e7ff" },
-  setup_pending: { label: "Setup pending", color: "#b45309", bg: "#fef3c7" },
+  ready: { label: "Ready", color: "#0b6232", bg: "#dff0e6" },
+  generating: { label: "Generating…", color: "#0e2a4b", bg: "#d9e6f4" },
+  setup_pending: { label: "Setup pending", color: "#8a5a12", bg: "#fdf3e2" },
   not_started: { label: "Not set up", color: "#64748b", bg: "#f1f5f9" },
 };
 
@@ -100,7 +100,7 @@ export function CalibrationAdminSection({ courseId }: { courseId: number }) {
   if (loading) {
     return card(
       <Box sx={{ display: "grid", placeItems: "center", py: 2 }}>
-        <CircularProgress size={22} sx={{ color: "#6366f1" }} />
+        <CircularProgress size={22} sx={{ color: "#1b4f8a" }} />
       </Box>,
     );
   }
@@ -114,7 +114,7 @@ export function CalibrationAdminSection({ courseId }: { courseId: number }) {
     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, alignItems: "center", justifyContent: "space-between" }}>
       <Box sx={{ minWidth: 0 }}>
         <Stack direction="row" spacing={1} alignItems="center">
-          <Icon icon="mdi:shield-half-full" width={20} color="#6366f1" />
+          <Icon icon="mdi:shield-half-full" width={20} color="#1b4f8a" />
           <Typography sx={{ fontWeight: 800, fontSize: "1.05rem" }}>Calibration assessment</Typography>
           <Chip label={chip.label} size="small" sx={{ height: 20, fontSize: "0.66rem", fontWeight: 800, color: chip.color, bgcolor: chip.bg }} />
           {configured && <Typography sx={{ fontSize: "0.8rem", color: "#94a3b8" }}>{calib?.question_count ?? 0} questions</Typography>}
@@ -137,7 +137,7 @@ export function CalibrationAdminSection({ courseId }: { courseId: number }) {
         ) : (
           <Button variant="contained" disabled={generating} onClick={generate}
             startIcon={generating ? <CircularProgress size={16} sx={{ color: "white" }} /> : <Icon icon="mdi:auto-fix" width={18} />}
-            sx={{ textTransform: "none", fontWeight: 700, borderRadius: 2, background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}>
+            sx={{ textTransform: "none", fontWeight: 700, borderRadius: 2, background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}>
             {generating ? "Generating…" : "Generate calibration (AI)"}
           </Button>
         )}

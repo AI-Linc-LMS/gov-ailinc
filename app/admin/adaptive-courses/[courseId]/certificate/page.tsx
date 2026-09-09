@@ -8,8 +8,8 @@ import { AdaptiveSectionShell } from "@/components/adaptive-quiz/shared/Adaptive
 import { SectionHero } from "@/components/scorecard/shared";
 import { CertificateAdminSection } from "@/components/admin/adaptive-course/CertificateAdminSection";
 
-const AMBER_TOP = "#f59e0b";
-const AMBER_BOTTOM = "#f97316";
+const AMBER_TOP = "#b7791f";
+const AMBER_BOTTOM = "#b45309";
 
 export default function AdminAdaptiveCertificatePage() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function AdminAdaptiveCertificatePage() {
       <Box sx={{ maxWidth: 1100, mx: "auto", px: { xs: 2, md: 3 }, py: { xs: 3, md: 4 } }}>
         <ButtonBase
           onClick={() => router.push(`/admin/adaptive-courses/${courseId}`)}
-          sx={{ mb: 2, color: "#6366f1", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
+          sx={{ mb: 2, color: "#1b4f8a", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
         >
           <Icon icon="mdi:arrow-left" width={18} /> Back to course
         </ButtonBase>

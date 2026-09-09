@@ -227,7 +227,7 @@ export function ScorecardWidget() {
       key: "assessments",
       label: "Assessments",
       icon: "mdi:clipboard-text-outline",
-      accent: "#8b5cf6",
+      accent: "#4a7fbb",
       completed: lc.practice.assessmentsAttempted,
       total: lc.practice.totalAssessmentsPresent ?? 0,
     },
@@ -253,7 +253,7 @@ export function ScorecardWidget() {
         </>
       ),
       icon: "mdi:fire",
-      accent: "#f59e0b",
+      accent: "#b7791f",
     },
     {
       key: "completion",
@@ -267,7 +267,7 @@ export function ScorecardWidget() {
         </>
       ),
       icon: "mdi:progress-check",
-      accent: "#10b981",
+      accent: "#0e7a3c",
     },
   ];
 
@@ -303,7 +303,7 @@ export function ScorecardWidget() {
                   alignItems: "center",
                   justifyContent: "center",
                   boxShadow:
-                    "0 14px 28px -14px color-mix(in srgb, var(--accent-indigo) 65%, transparent)",
+                    "var(--shadow-sm)",
                 }}
               >
                 <IconWrapper icon="mdi:chart-timeline-variant" size={24} color="#ffffff" />
@@ -392,7 +392,7 @@ export function ScorecardWidget() {
                 background:
                   "linear-gradient(120deg, var(--accent-indigo) 0%, var(--accent-purple) 100%)",
                 boxShadow:
-                  "0 14px 30px -14px color-mix(in srgb, var(--accent-indigo) 70%, transparent)",
+                  "var(--shadow-sm)",
                 flexShrink: 0,
                 "&:hover": {
                   background:
@@ -463,7 +463,7 @@ export function ScorecardWidget() {
                   borderRadius: 999,
                   background: gradeGrad,
                   color: "#ffffff",
-                  boxShadow: `0 8px 20px -8px ${gradeColor}88`,
+                  boxShadow: "var(--shadow-sm)",
                 }}
               >
                 <IconWrapper icon="mdi:star-four-points" size={14} color="#ffffff" />
@@ -507,7 +507,7 @@ export function ScorecardWidget() {
                     alignItems: "center",
                     justifyContent: "center",
                     boxShadow:
-                      "0 10px 20px -10px color-mix(in srgb, var(--accent-indigo) 60%, transparent)",
+                      "var(--shadow-sm)",
                   }}
                 >
                   <IconWrapper icon="mdi:chart-arc" size={20} color="#ffffff" />
@@ -588,7 +588,7 @@ export function ScorecardWidget() {
                       background:
                         "linear-gradient(90deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%)",
                       boxShadow:
-                        "0 0 14px color-mix(in srgb, var(--accent-indigo) 60%, transparent)",
+                        "var(--shadow-sm)",
                       transition: "width 1.2s cubic-bezier(0.16, 1, 0.3, 1)",
                     }}
                   />
@@ -715,7 +715,7 @@ export function ScorecardWidget() {
                 background:
                   "linear-gradient(120deg, var(--accent-indigo) 0%, var(--accent-purple) 100%)",
                 boxShadow:
-                  "0 14px 30px -14px color-mix(in srgb, var(--accent-indigo) 70%, transparent)",
+                  "var(--shadow-sm)",
                 "&:hover": {
                   background:
                     "linear-gradient(120deg, var(--accent-indigo-dark) 0%, var(--accent-purple) 100%)",

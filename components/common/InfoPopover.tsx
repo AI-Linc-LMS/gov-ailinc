@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import { Box, Typography, IconButton, Popover } from "@mui/material";
 import { IconWrapper } from "@/components/common/IconWrapper";
 
-const INDIGO = "#6366f1";
+const INDIGO = "#1b4f8a";
 
 /**
  * A small "i" icon that opens a popover. Use to explain how a derived value
@@ -45,7 +45,7 @@ export function InfoButton({
               p: 2,
               borderRadius: 3,
               border: "1px solid color-mix(in srgb, var(--border-default) 80%, transparent)",
-              boxShadow: "0 20px 48px -20px rgba(15,23,42,0.35)",
+              boxShadow: "var(--shadow-lg)",
             },
           },
         }}
@@ -64,11 +64,11 @@ export function InfoButton({
 export function RiskCriteriaContent() {
   const rows: Array<{ icon: string; color: string; label: string; rule: string }> = [
     { icon: "mdi:login-variant", color: "#94a3b8", label: "Never logged in", rule: "The account has never authenticated (no last-login)." },
-    { icon: "mdi:radar", color: "#f59e0b", label: "Never active", rule: "No course / content activity has ever been recorded." },
-    { icon: "mdi:sleep", color: "#f59e0b", label: "Inactive (30d)", rule: "No activity in the last 30 days (or never active)." },
-    { icon: "mdi:chart-line-variant", color: "#a855f7", label: "Low completion", rule: "Overall course content completion is below 30%." },
-    { icon: "mdi:alert-circle-outline", color: "#ef4444", label: "At risk", rule: "Enrolled AND (inactive 30d OR low completion). Unenrolled students are never flagged." },
-    { icon: "mdi:trophy-outline", color: "#10b981", label: "High performers", rule: "Overall content completion is 75% or higher." },
+    { icon: "mdi:radar", color: "#b7791f", label: "Never active", rule: "No course / content activity has ever been recorded." },
+    { icon: "mdi:sleep", color: "#b7791f", label: "Inactive (30d)", rule: "No activity in the last 30 days (or never active)." },
+    { icon: "mdi:chart-line-variant", color: "#1b4f8a", label: "Low completion", rule: "Overall course content completion is below 30%." },
+    { icon: "mdi:alert-circle-outline", color: "#b32020", label: "At risk", rule: "Enrolled AND (inactive 30d OR low completion). Unenrolled students are never flagged." },
+    { icon: "mdi:trophy-outline", color: "#0e7a3c", label: "High performers", rule: "Overall content completion is 75% or higher." },
   ];
   return (
     <Box>

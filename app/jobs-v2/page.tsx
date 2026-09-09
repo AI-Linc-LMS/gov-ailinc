@@ -134,8 +134,8 @@ function JobRowV2({ job }: { job: JobV2 }) {
         border: "1px solid var(--border-default)",
         transition: "all .15s",
         "&:hover": {
-          borderColor: "#06b6d4",
-          boxShadow: "0 6px 16px -8px rgba(6,182,212,0.35)",
+          borderColor: "#0f6b7a",
+          boxShadow: "0 6px 16px -8px rgba(15, 107, 122,0.35)",
         },
       }}
     >
@@ -148,7 +148,7 @@ function JobRowV2({ job }: { job: JobV2 }) {
           height: 44,
           flexShrink: 0,
           borderRadius: 2,
-          bgcolor: "#06b6d4",
+          bgcolor: "#0f6b7a",
           color: "#fff",
           fontWeight: 700,
         }}

@@ -36,13 +36,13 @@ export function RosterRow({
         border: "1px solid var(--border-default)",
         transition: "border-color .15s, box-shadow .15s",
         "&:hover": onClick
-          ? { borderColor: "color-mix(in srgb, #6366f1 40%, transparent)", boxShadow: "0 6px 16px -10px rgba(99,102,241,0.35)" }
+          ? { borderColor: "color-mix(in srgb, #1b4f8a 40%, transparent)", boxShadow: "var(--shadow-md)" }
           : undefined,
-        "&:focus-visible": { outline: "2px solid #6366f1", outlineOffset: 2 },
+        "&:focus-visible": { outline: "2px solid #1b4f8a", outlineOffset: 2 },
       }}
     >
       <Box sx={{ width: 38, height: 38, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center",
-        color: "#fff", fontWeight: 800, background: "linear-gradient(135deg,#6366f1,#a855f7)" }}>
+        color: "#fff", fontWeight: 800, background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)" }}>
         {(name || email || "?").slice(0, 1).toUpperCase()}
       </Box>
       <Box sx={{ minWidth: 0, flex: 1 }}>

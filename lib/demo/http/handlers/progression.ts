@@ -133,11 +133,11 @@ defineRoutes(MODULE, {
       "Base is set by the activity, difficulty scales it, correctness is what you actually got right, " +
       "and the decay is the only part that rewards speed.",
     activities: [
-      { key: "article", icon: "mdi:book-open-page-variant-outline", accent: "#6366f1", label: "Read a lesson", sub: "Marked complete when you finish it", points: "25", unit: "pts" },
-      { key: "quiz", icon: "mdi:comment-question-outline", accent: "#a855f7", label: "Adaptive quiz", sub: "Per question, by difficulty", points: "40-90", unit: "pts" },
-      { key: "calibration", icon: "mdi:target", accent: "#f59e0b", label: "Placement check", sub: "Taken once, when you start a course", points: "100", unit: "pts" },
-      { key: "assignment", icon: "mdi:clipboard-text-outline", accent: "#10b981", label: "Assignment or field task", sub: "Graded submission", points: "150", unit: "pts" },
-      { key: "interview", icon: "mdi:account-voice", accent: "#ec4899", label: "Mock interview", sub: "Scored on depth and communication", points: "200", unit: "pts" },
+      { key: "article", icon: "mdi:book-open-page-variant-outline", accent: "#1b4f8a", label: "Read a lesson", sub: "Marked complete when you finish it", points: "25", unit: "pts" },
+      { key: "quiz", icon: "mdi:comment-question-outline", accent: "#1b4f8a", label: "Adaptive quiz", sub: "Per question, by difficulty", points: "40-90", unit: "pts" },
+      { key: "calibration", icon: "mdi:target", accent: "#b7791f", label: "Placement check", sub: "Taken once, when you start a course", points: "100", unit: "pts" },
+      { key: "assignment", icon: "mdi:clipboard-text-outline", accent: "#0e7a3c", label: "Assignment or field task", sub: "Graded submission", points: "150", unit: "pts" },
+      { key: "interview", icon: "mdi:account-voice", accent: "#0f6b7a", label: "Mock interview", sub: "Scored on depth and communication", points: "200", unit: "pts" },
     ],
     // The two keys are fixed by `PointsSystem` in lib/types/points-system.ts and
     // by the component that reads `data.decay.quizEasy` / `data.decay.codingHard`

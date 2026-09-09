@@ -125,7 +125,9 @@ export function MockInterviewOverview({
           title={t("adminMockInterview.uniqueStudents")}
           value={overview.total_unique_students}
           icon="mdi:account-group"
-          iconColor="var(--accent-purple)"
+          // --accent-purple resolves to the same institutional blue as --accent-indigo, so this
+          // tile's icon was identical to the one above it. Teal keeps the four tiles apart.
+          iconColor="var(--accent-teal)"
         />
         <DashboardMetricCard
           title={t("adminMockInterview.completionRate")}
@@ -154,7 +156,7 @@ export function MockInterviewOverview({
             p: 3,
             borderRadius: 2,
             boxShadow:
-              "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+              "var(--shadow-sm)",
             border: "1px solid var(--border-default)",
             backgroundColor: "var(--card-bg)",
           }}
@@ -208,7 +210,7 @@ export function MockInterviewOverview({
             p: 3,
             borderRadius: 2,
             boxShadow:
-              "0 1px 3px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+              "var(--shadow-sm)",
             backgroundColor: "var(--card-bg)",
           }}
         >
@@ -249,7 +251,7 @@ export function MockInterviewOverview({
             p: 3,
             borderRadius: 2,
             boxShadow:
-              "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+              "var(--shadow-sm)",
             border: "1px solid var(--border-default)",
             backgroundColor: "var(--card-bg)",
           }}
@@ -278,7 +280,7 @@ export function MockInterviewOverview({
             p: 3,
             borderRadius: 2,
             boxShadow:
-              "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+              "var(--shadow-sm)",
             border: "1px solid var(--border-default)",
             backgroundColor: "var(--card-bg)",
           }}
@@ -325,7 +327,7 @@ export function MockInterviewOverview({
             p: 3,
             borderRadius: 2,
             boxShadow:
-              "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+              "var(--shadow-sm)",
             border: "1px solid var(--border-default)",
             backgroundColor: "var(--card-bg)",
           }}

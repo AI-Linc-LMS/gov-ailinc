@@ -82,8 +82,7 @@ export function StudentOverviewSection({ data, readOnly }: StudentOverviewSectio
           border: "1px solid color-mix(in srgb, var(--border-default) 80%, transparent)",
           backgroundColor: "var(--card-bg)",
           boxShadow:
-            "0 1px 0 color-mix(in srgb, var(--border-default) 60%, transparent), 0 30px 60px -30px rgba(15, 23, 42, 0.18)",
-          backdropFilter: "blur(6px)",
+            "var(--shadow-sm)",
         }}
       >
         {/* Decorative gradient mesh behind everything */}
@@ -142,7 +141,7 @@ export function StudentOverviewSection({ data, readOnly }: StudentOverviewSectio
                       width: { xs: 56, sm: 64 },
                       height: { xs: 56, sm: 64 },
                       border: "3px solid var(--card-bg)",
-                      boxShadow: `0 10px 30px ${gradeColor}55`,
+                      boxShadow: "var(--shadow-sm)",
                     }}
                   />
                 ) : (
@@ -157,7 +156,7 @@ export function StudentOverviewSection({ data, readOnly }: StudentOverviewSectio
                       alignItems: "center",
                       justifyContent: "center",
                       border: "3px solid var(--card-bg)",
-                      boxShadow: `0 10px 30px ${gradeColor}55`,
+                      boxShadow: "var(--shadow-sm)",
                     }}
                   >
                     <IconWrapper icon="mdi:account-circle" size={36} color="#ffffff" />
@@ -465,7 +464,7 @@ export function StudentOverviewSection({ data, readOnly }: StudentOverviewSectio
                       fontSize: "0.875rem",
                       height: 32,
                       px: 0.5,
-                      boxShadow: `0 6px 18px ${gradeColor}55`,
+                      boxShadow: "var(--shadow-sm)",
                       "& .MuiChip-icon": { color: "#ffffff" },
                     }}
                   />
@@ -511,10 +510,10 @@ export function StudentOverviewSection({ data, readOnly }: StudentOverviewSectio
                           cursor: "help",
                         }}
                       >
-                        <IconWrapper icon="mdi:trending-up" size={14} color="#10b981" />
+                        <IconWrapper icon="mdi:trending-up" size={14} color="#0e7a3c" />
                         <Typography
                           sx={{
-                            color: "#059669",
+                            color: "#0B6232",
                             fontWeight: 700,
                             fontSize: "0.75rem",
                             letterSpacing: "0.04em",
@@ -594,7 +593,7 @@ export function StudentOverviewSection({ data, readOnly }: StudentOverviewSectio
                   hint="Active learning time"
                 />
                 <EditorialStat
-                  accent="#f59e0b"
+                  accent="#b7791f"
                   icon="mdi:fire"
                   label="Active Streak"
                   value={
@@ -611,7 +610,7 @@ export function StudentOverviewSection({ data, readOnly }: StudentOverviewSectio
                   hint={`${data.totalDaysActive ?? 0} total active days`}
                 />
                 <EditorialStat
-                  accent="#10b981"
+                  accent="#0e7a3c"
                   icon="mdi:progress-check"
                   label="Completion"
                   value={

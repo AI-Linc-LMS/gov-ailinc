@@ -622,7 +622,19 @@ export function ATSScoreCard({ resumeData, initialLiveScore, dialogOpen, onResum
                     sx={{
                       width: `${Math.min(100, value)}%`,
                       height: "100%",
-                      bgcolor: value >= 70 ? "var(--ats-bar-high)" : value >= 50 ? "var(--ats-bar-mid)" : "var(--ats-bar-low)",
+                      // Read as literals, not via --ats-bar-high/-mid/-low. Those
+                      // three variables are still the pre-palette indigo ramp in
+                      // app/globals.css, which no sweep over this file could see:
+                      // the hue only exists at the definition. The bands are now
+                      // the same sanctioned green / gold / institutional red the
+                      // rest of the product scores with, and the percentage prints
+                      // beside every bar, so the colour is never the only signal.
+                      // The gold is the palette's dark step, not #b7791f: against the
+                      // --border-default track this bar sits in, #b7791f is 2.82:1,
+                      // under the 3:1 floor for a graphical object. #8a5a12 is 4.58:1.
+                      // (For reference, the indigo ramp this replaced ran 3.46 / 2.11
+                      // / 1.43, so all three bands were failing before.)
+                      bgcolor: value >= 70 ? "#0e7a3c" : value >= 50 ? "#8a5a12" : "#b32020",
                       borderRadius: 1,
                     }}
                   />

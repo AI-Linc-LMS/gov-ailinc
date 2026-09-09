@@ -87,14 +87,14 @@ const TEMPLATE_DOTS: Record<string, string> = {
   classic: "#0f172a",
   minimal: "#94a3b8",
   executive: "#1e293b",
-  creative: "#7c3aed",
-  technical: "#0891b2",
-  western: "#b45309",
+  creative: "#14406f",
+  technical: "#0b5260",
+  western: "#8a5a12",
   luxsleek: "#111827",
-  twocolumn: "#0ea5e9",
-  accentbar: "#f97316",
-  rightsidebar: "#a855f7",
-  bubble: "#ec4899",
+  twocolumn: "#1b4f8a",
+  accentbar: "#b45309",
+  rightsidebar: "#1b4f8a",
+  bubble: "#0f6b7a",
 };
 
 /** Coerce null/undefined to empty string. Backend often returns null for blank fields,
@@ -582,10 +582,10 @@ export function ResumeBuilder({ initialData, lockExports = false }: ResumeBuilde
                 border: `1px solid ${PROFILE.hairline}`,
                 color:
                   atsScoreLive >= 80
-                    ? "#15803d"
+                    ? "#0b6232"
                     : atsScoreLive >= 50
-                      ? "#b45309"
-                      : "#b91c1c",
+                      ? "#8a5a12"
+                      : "#8f1919",
                 "&:hover": { backgroundColor: "#f8fafc" },
                 "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px #fff, 0 0 0 4px ${PROFILE.violet}` },
               }}
@@ -759,7 +759,7 @@ export function ResumeBuilder({ initialData, lockExports = false }: ResumeBuilde
                     transition: "background .15s, color .15s",
                     bgcolor: active ? "#fff" : "transparent",
                     color: active ? PROFILE.violet : PROFILE.inkFaint,
-                    boxShadow: active ? "0 1px 3px rgba(16,24,40,0.10)" : "none",
+                    boxShadow: active ? "var(--shadow-sm)" : "none",
                     "&:hover": { color: active ? PROFILE.violet : PROFILE.inkMuted },
                     "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px #f1f5f9, 0 0 0 4px ${PROFILE.violet}` },
                   }}
@@ -783,7 +783,7 @@ export function ResumeBuilder({ initialData, lockExports = false }: ResumeBuilde
               px: 1.5,
               py: 0.6,
               color: PROFILE.inkFaint,
-              "&:hover": { color: "#b91c1c", backgroundColor: "#fef2f2" },
+              "&:hover": { color: "#8f1919", backgroundColor: "#fdf5f5" },
             }}
           >
             {t("profile.clear", { defaultValue: "Clear" })}

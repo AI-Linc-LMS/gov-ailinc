@@ -304,9 +304,9 @@ export function ProctoringMonitor({
                   borderRadius: 1,
                   backgroundColor:
                     violation.severity === "high"
-                      ? "#fee2e2"
+                      ? "#fbeaea"
                       : violation.severity === "medium"
-                      ? "#fef3c7"
+                      ? "#fdf3e2"
                       : "#f3f4f6",
                 }}
               >
@@ -315,9 +315,9 @@ export function ProctoringMonitor({
                   size={20}
                   color={
                     violation.severity === "high"
-                      ? "#dc2626"
+                      ? "#991b1b"
                       : violation.severity === "medium"
-                      ? "#f59e0b"
+                      ? "#b7791f"
                       : "#6b7280"
                   }
                 />

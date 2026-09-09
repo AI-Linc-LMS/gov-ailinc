@@ -111,11 +111,11 @@ export function NextActions({ actions, onJump }: { actions: NextAction[]; onJump
                 fontSize: "0.8rem", fontWeight: 600, color: "var(--font-primary)",
                 transition: "background-color 140ms ease, border-color 140ms ease",
                 cursor: clickable ? "pointer" : "default",
-                "&:hover": clickable ? { bgcolor: "color-mix(in srgb, #6366f1 6%, var(--card-bg))", borderColor: "color-mix(in srgb, #6366f1 40%, transparent)" } : undefined,
-                "&:focus-visible": { outline: "2px solid color-mix(in srgb, #6366f1 60%, transparent)", outlineOffset: 2 },
+                "&:hover": clickable ? { bgcolor: "color-mix(in srgb, #1b4f8a 6%, var(--card-bg))", borderColor: "color-mix(in srgb, #1b4f8a 40%, transparent)" } : undefined,
+                "&:focus-visible": { outline: "2px solid color-mix(in srgb, #1b4f8a 60%, transparent)", outlineOffset: 2 },
               }}
             >
-              <Icon icon={a.icon} width={16} style={{ color: "#6366f1" }} />
+              <Icon icon={a.icon} width={16} style={{ color: "#1b4f8a" }} />
               {a.label}
               {clickable && <Icon icon="mdi:arrow-down" width={14} style={{ color: "var(--font-tertiary,#8b8b98)" }} />}
             </ButtonBase>
@@ -197,8 +197,7 @@ export function StickySummaryBar({
         transform: visible ? "translateY(0)" : "translateY(-8px)",
         pointerEvents: visible ? "auto" : "none",
         transition: "opacity 200ms ease, transform 200ms ease",
-        bgcolor: "color-mix(in srgb, var(--card-bg) 85%, transparent)",
-        backdropFilter: "blur(8px)",
+        bgcolor: "var(--card-bg)",
         borderBottom: "1px solid color-mix(in srgb, var(--border-default) 80%, transparent)",
       }}
     >

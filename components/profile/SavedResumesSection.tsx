@@ -113,11 +113,11 @@ function ResumePreviewCard({
           backgroundColor: "var(--card-bg)",
           cursor: "pointer",
           transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-          boxShadow: "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+          boxShadow: "var(--shadow-sm)",
           "&:hover": {
             borderColor: "color-mix(in srgb, var(--accent-indigo) 35%, var(--border-default))",
-            boxShadow: "0 12px 32px color-mix(in srgb, var(--accent-indigo) 18%, transparent)",
-            transform: "translateY(-4px)",
+            boxShadow: "var(--shadow-md)",
+            transform: "translateY(-1px)",
             "& .resume-card-actions": { opacity: 1, pointerEvents: "auto" },
           },
         }}
@@ -222,7 +222,7 @@ function ResumePreviewCard({
                   height: "100%",
                   borderRadius: 2,
                   overflow: "hidden",
-                  boxShadow: "0 2px 8px color-mix(in srgb, var(--font-primary) 18%, transparent)",
+                  boxShadow: "var(--shadow-sm)",
                 }}
               >
                 <iframe

@@ -75,8 +75,8 @@ const InterviewStatsComponent = ({
               transition: "all 0.3s ease",
               "&:hover": {
                 boxShadow:
-                  "0 4px 12px color-mix(in srgb, var(--font-primary) 12%, transparent)",
-                transform: "translateY(-2px)",
+                  "var(--shadow-md)",
+                transform: "translateY(-1px)",
               },
             }}
           >

@@ -9,7 +9,7 @@ export const brandWordHighlightSx = {
     left: 0,
     right: 0,
     height: "40%",
-    background: "linear-gradient(135deg, #f97316 0%, #ec4899 100%)",
+    background: "linear-gradient(135deg, #b45309 0%, #0f6b7a 100%)",
     borderRadius: "20px",
     opacity: 0.3,
     zIndex: -1,

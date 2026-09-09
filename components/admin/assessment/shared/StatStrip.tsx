@@ -47,7 +47,7 @@ export function StatStrip({ items }: StatStripProps) {
               border: "1px solid var(--border-default)",
               transition: "box-shadow 0.15s ease",
               "&:hover": {
-                boxShadow: "0 8px 24px -14px color-mix(in srgb, var(--font-primary) 30%, transparent)",
+                boxShadow: "var(--shadow-md)",
               },
             }}
           >

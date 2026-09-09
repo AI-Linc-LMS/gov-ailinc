@@ -366,7 +366,7 @@ export function ProfileSectionsContainer({
                   <IconWrapper icon={meta.icon} size={17} />
                 </Box>
                 <Box sx={{ minWidth: 0, flex: 1 }}>
-                  <Typography sx={{ fontWeight: 800, fontSize: "0.95rem", color: "#6d28d9", lineHeight: 1.2 }}>
+                  <Typography sx={{ fontWeight: 800, fontSize: "0.95rem", color: "#164274", lineHeight: 1.2 }}>
                     {t(meta.titleKey, { defaultValue: meta.titleFallback })}
                   </Typography>
                   <Typography sx={{ fontSize: "0.72rem", color: PROFILE.inkFaint, mt: 0.25 }}>

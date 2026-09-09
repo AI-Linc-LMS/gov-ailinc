@@ -250,7 +250,7 @@ export function VideoCompanion({ configId }: { configId: number }) {
 
   if (loadError)
     return (
-      <CompanionCard accent="#ec4899" sx={{ textAlign: "center", py: 5 }}>
+      <CompanionCard accent="#0f6b7a" sx={{ textAlign: "center", py: 5 }}>
         <Icon icon="mdi:video-off-outline" width={32} style={{ color: "#94a3b8" }} />
         <Typography sx={{ mt: 1, color: "text.secondary" }}>{loadError}</Typography>
       </CompanionCard>
@@ -270,7 +270,7 @@ export function VideoCompanion({ configId }: { configId: number }) {
   const isExternal = companion.source === "external" || (!companion.video && !!companion.play_url);
   if (!playUrl)
     return (
-      <CompanionCard accent="#6366f1" sx={{ textAlign: "center", py: 5 }}>
+      <CompanionCard accent="#1b4f8a" sx={{ textAlign: "center", py: 5 }}>
         <Typography sx={{ color: "text.secondary" }}>No video is attached to this companion yet.</Typography>
       </CompanionCard>
     );
@@ -292,8 +292,8 @@ export function VideoCompanion({ configId }: { configId: number }) {
         accent="indigo"
         rightSlot={
           <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.6, px: 1.5, py: 0.7, borderRadius: 999,
-            background: "linear-gradient(135deg, #6366f1, #ec4899)", color: "#fff", fontWeight: 800, fontSize: "0.74rem",
-            boxShadow: "0 12px 26px -14px rgba(168,85,247,0.7)" }}>
+            background: "linear-gradient(135deg, #1b4f8a, #0f6b7a)", color: "#fff", fontWeight: 800, fontSize: "0.74rem",
+            boxShadow: "var(--shadow-sm)" }}>
             <Box sx={{ width: 7, height: 7, borderRadius: 999, bgcolor: "#fff", animation: "acb-pulse 1.4s ease-in-out infinite" }} />
             Companion ON
           </Box>
@@ -307,9 +307,9 @@ export function VideoCompanion({ configId }: { configId: number }) {
           <Box
             sx={{
               position: "relative", borderRadius: 3, overflow: "hidden", aspectRatio: "16 / 9",
-              background: "#0f0c29",
+              background: "#071426",
               border: "1px solid var(--border-default, #ececf1)",
-              boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 18px 40px -28px rgba(16,24,40,0.35)",
+              boxShadow: "var(--shadow-sm)",
             }}
           >
             <iframe
@@ -359,11 +359,11 @@ export function VideoCompanion({ configId }: { configId: number }) {
               sx={{
                 mt: 2, mb: 1, p: 1.5, borderRadius: 2.5, display: "flex", alignItems: "center",
                 gap: 1.5, flexWrap: "wrap",
-                border: "1px solid color-mix(in srgb, #6366f1 28%, transparent)",
-                bgcolor: "color-mix(in srgb, #6366f1 5%, transparent)",
+                border: "1px solid color-mix(in srgb, #1b4f8a 28%, transparent)",
+                bgcolor: "color-mix(in srgb, #1b4f8a 5%, transparent)",
               }}
             >
-              <Icon icon="mdi:information-outline" width={18} style={{ color: "#6366f1" }} />
+              <Icon icon="mdi:information-outline" width={18} style={{ color: "#1b4f8a" }} />
               <Typography sx={{ fontSize: "0.82rem", color: "text.secondary", flex: 1, minWidth: 220 }}>
                 This video is hosted elsewhere, so there are no comprehension check-ins and it
                 can&apos;t track your progress automatically.
@@ -379,8 +379,8 @@ export function VideoCompanion({ configId }: { configId: number }) {
                 sx={{
                   px: 2, py: 0.9, borderRadius: 999, fontWeight: 800, fontSize: "0.8rem", gap: 0.6,
                   color: "#fff", background: markedWatched
-                    ? "linear-gradient(135deg, #10b981, #059669)"
-                    : "linear-gradient(135deg, #6366f1, #a855f7)",
+                    ? "linear-gradient(135deg, #0e7a3c, #0B6232)"
+                    : "linear-gradient(135deg, #1b4f8a, #1b4f8a)",
                 }}
               >
                 <Icon icon={markedWatched ? "mdi:check-circle" : "mdi:check"} width={16} />
@@ -393,7 +393,7 @@ export function VideoCompanion({ configId }: { configId: number }) {
           <Box sx={{ position: "relative", height: 8, mt: 2, mb: 1, borderRadius: 999,
             background: "color-mix(in srgb, var(--border-default, #e5e7eb) 70%, transparent)" }}>
             <Box sx={{ position: "absolute", left: 0, top: 0, bottom: 0, width: `${completeness}%`, borderRadius: 999,
-              background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)", transition: "width 400ms ease" }} />
+              background: "linear-gradient(90deg, #1b4f8a, #1b4f8a, #0f6b7a)", transition: "width 400ms ease" }} />
             {duration > 0 &&
               companion.check_ins.map((c) => {
                 const isAnswered = answered.has(c.id);
@@ -404,9 +404,11 @@ export function VideoCompanion({ configId }: { configId: number }) {
                       sx={{
                         position: "absolute", top: "50%", left: `${(c.timestamp_seconds / duration) * 100}%`,
                         transform: "translate(-50%, -50%)", width: 13, height: 13, borderRadius: 999, cursor: "pointer",
-                        background: isAnswered ? "#16a34a" : "linear-gradient(135deg, #6366f1, #ec4899)",
+                        background: isAnswered ? "#0b6232" : "linear-gradient(135deg, #1b4f8a, #0f6b7a)",
                         border: "2.5px solid var(--card-bg, #fff)",
-                        boxShadow: isAnswered ? "0 0 0 3px color-mix(in srgb,#16a34a 25%,transparent)" : "0 0 10px color-mix(in srgb,#a855f7 70%,transparent)",
+                        boxShadow: isAnswered
+                          ? "0 0 0 3px color-mix(in srgb,#0b6232 25%,transparent)"
+                          : "0 0 0 3px color-mix(in srgb,#1b4f8a 25%,transparent)",
                         transition: "transform 120ms ease", "&:hover": { transform: "translate(-50%, -50%) scale(1.25)" },
                       }}
                     />
@@ -445,8 +447,8 @@ export function VideoCompanion({ configId }: { configId: number }) {
                   color: "text.secondary", border: "1px solid transparent", minWidth: 0,
                   "&.Mui-selected": {
                     color: "#fff",
-                    background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
-                    boxShadow: "0 12px 24px -14px rgba(168,85,247,0.7)",
+                    background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
+                    boxShadow: "var(--shadow-sm)",
                   },
                 }}
               />
@@ -454,13 +456,13 @@ export function VideoCompanion({ configId }: { configId: number }) {
           </Tabs>
 
           {tab === 0 && (
-            <CompanionCard accent="#6366f1" title="Concepts so far" icon="mdi:sitemap-outline">
+            <CompanionCard accent="#1b4f8a" title="Concepts so far" icon="mdi:sitemap-outline">
               <ConceptMap data={companion.concept_map} currentTime={currentTime} />
               <TimestampQA currentTime={currentTime} onAsk={onAsk} />
             </CompanionCard>
           )}
           {tab === 1 && (
-            <CompanionCard accent="#a855f7" title="Transcript" icon="mdi:text-box-outline">
+            <CompanionCard accent="#1b4f8a" title="Transcript" icon="mdi:text-box-outline">
               <Box sx={{ maxHeight: 360, overflow: "auto", pr: 1 }}>
                 {companion.transcript_segments.map((s, i) => {
                   const active = currentTime >= s.start_seconds && currentTime < s.end_seconds;
@@ -470,11 +472,11 @@ export function VideoCompanion({ configId }: { configId: number }) {
                       onClick={() => seekTo(s.start_seconds)}
                       sx={{
                         display: "flex", gap: 1.5, mb: 0.5, px: 1, py: 0.6, borderRadius: 1.5, cursor: "pointer",
-                        background: active ? "color-mix(in srgb, #6366f1 10%, transparent)" : "transparent",
-                        "&:hover": { background: "color-mix(in srgb, #6366f1 6%, transparent)" },
+                        background: active ? "color-mix(in srgb, #1b4f8a 10%, transparent)" : "transparent",
+                        "&:hover": { background: "color-mix(in srgb, #1b4f8a 6%, transparent)" },
                       }}
                     >
-                      <Typography sx={{ fontSize: "0.74rem", color: active ? "#6366f1" : "text.secondary", minWidth: 44, fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>
+                      <Typography sx={{ fontSize: "0.74rem", color: active ? "#1b4f8a" : "text.secondary", minWidth: 44, fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>
                         {fmt(s.start_seconds)}
                       </Typography>
                       <Typography sx={{ fontSize: "0.86rem", fontWeight: active ? 700 : 400 }}>{s.text}</Typography>
@@ -485,13 +487,13 @@ export function VideoCompanion({ configId }: { configId: number }) {
             </CompanionCard>
           )}
           {tab === 2 && (
-            <CompanionCard accent="#10b981" title="Description" icon="mdi:information-outline">
+            <CompanionCard accent="#0e7a3c" title="Description" icon="mdi:information-outline">
               {(() => {
                 const description = companion.description || genDesc;
                 if (descLoading && !description) {
                   return (
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, color: "text.secondary" }}>
-                      <CircularProgress size={15} thickness={5} sx={{ color: "#a855f7" }} />
+                      <CircularProgress size={15} thickness={5} sx={{ color: "#1b4f8a" }} />
                       <Typography sx={{ fontSize: "0.85rem" }}>Generating a summary from the transcript…</Typography>
                     </Box>
                   );
@@ -531,7 +533,7 @@ export function VideoCompanion({ configId }: { configId: number }) {
 function Chip({ icon, label }: { icon: string; label: string }) {
   return (
     <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.4, px: 1, py: 0.35, borderRadius: 999,
-      background: "color-mix(in srgb, #6366f1 9%, transparent)", color: "#6366f1", fontSize: "0.72rem", fontWeight: 800 }}>
+      background: "color-mix(in srgb, #1b4f8a 9%, transparent)", color: "#1b4f8a", fontSize: "0.72rem", fontWeight: 800 }}>
       <Icon icon={icon} width={13} />
       {label}
     </Box>

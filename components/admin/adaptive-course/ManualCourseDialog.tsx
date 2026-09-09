@@ -17,8 +17,8 @@ import { useToast } from "@/components/common/Toast";
 import { adminAdaptiveCourseService } from "@/lib/services/admin/admin-adaptive-course.service";
 import { getAxiosErrorDetail } from "@/lib/utils/api-error";
 
-const INDIGO = "#6366f1";
-const PURPLE = "#a855f7";
+const INDIGO = "#1b4f8a";
+const PURPLE = "#1b4f8a";
 
 const MIN_TITLE = 2;
 const MIN_WEEKS = 1;
@@ -267,11 +267,11 @@ export function ManualCourseDialog({
             px: 2.5,
             color: "#fff",
             background: `linear-gradient(135deg, ${INDIGO}, ${PURPLE})`,
-            boxShadow: `0 6px 16px ${INDIGO}40`,
+            boxShadow: "var(--shadow-lg)",
             "&:hover": {
               background: `linear-gradient(135deg, ${INDIGO}, ${PURPLE})`,
               filter: "brightness(1.06)",
-              boxShadow: `0 8px 20px ${INDIGO}55`,
+              boxShadow: "var(--shadow-md)",
             },
             // The gradient is painted by `background`, which MUI's disabled rule does not clear,
             // so a disabled button would otherwise still look fully enabled.

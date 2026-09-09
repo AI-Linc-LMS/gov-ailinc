@@ -190,11 +190,11 @@ export function CertificateList() {
                 startIcon={<IconWrapper icon="mdi:eye" size={18} />}
                 sx={{
                   mt: 2,
-                  borderColor: "#6366f1",
-                  color: "#6366f1",
+                  borderColor: "#1b4f8a",
+                  color: "#1b4f8a",
                   "&:hover": {
-                    borderColor: "#4f46e5",
-                    backgroundColor: "#eef2ff",
+                    borderColor: "#12365f",
+                    backgroundColor: "#eef3fa",
                   },
                 }}
                 onClick={(e) => {

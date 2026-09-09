@@ -118,10 +118,9 @@ export function RemediationPathCard({ steps, sessionId, onStartPath }: Remediati
         position: "relative",
         overflow: "hidden",
         background:
-          "linear-gradient(135deg, color-mix(in srgb, #6366f1 14%, transparent) 0%, color-mix(in srgb, #a855f7 14%, transparent) 100%)",
-        border: "1px solid color-mix(in srgb, #a855f7 32%, transparent)",
-        backdropFilter: "blur(18px) saturate(140%)",
-        boxShadow: "0 24px 60px -32px rgba(168, 85, 247, 0.4)",
+          "linear-gradient(135deg, color-mix(in srgb, #1b4f8a 14%, transparent) 0%, color-mix(in srgb, #1b4f8a 14%, transparent) 100%)",
+        border: "1px solid color-mix(in srgb, #1b4f8a 32%, transparent)",
+        boxShadow: "var(--shadow-sm)",
         display: "flex",
         flexDirection: "column",
         gap: 2,
@@ -131,7 +130,7 @@ export function RemediationPathCard({ steps, sessionId, onStartPath }: Remediati
         aria-hidden
         sx={{
           position: "absolute", top: -80, right: -80, width: 220, height: 220, borderRadius: "50%",
-          background: "radial-gradient(circle, #ec4899 0%, transparent 70%)",
+          background: "radial-gradient(circle, #0f6b7a 0%, transparent 70%)",
           opacity: 0.35, filter: "blur(20px)", pointerEvents: "none",
         }}
       />
@@ -146,7 +145,7 @@ export function RemediationPathCard({ steps, sessionId, onStartPath }: Remediati
         </Box>
         {progress && (
           <Box sx={{ textAlign: "right", flexShrink: 0 }}>
-            <Typography sx={{ fontSize: "1.4rem", fontWeight: 900, lineHeight: 1, color: "#7c3aed" }}>
+            <Typography sx={{ fontSize: "1.4rem", fontWeight: 900, lineHeight: 1, color: "#14406f" }}>
               {steps.filter((s) => doneByStep[s.step]).length}/{steps.length}
             </Typography>
             <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "text.secondary" }}>
@@ -177,11 +176,11 @@ export function RemediationPathCard({ steps, sessionId, onStartPath }: Remediati
               sx={{
                 display: "flex", alignItems: "flex-start", gap: 1.5, p: 1.5, borderRadius: 3,
                 bgcolor: noteStep
-                  ? "color-mix(in srgb, #6366f1 6%, white)"
-                  : done ? "color-mix(in srgb, #10b981 9%, white)" : "color-mix(in srgb, white 60%, transparent)",
+                  ? "color-mix(in srgb, #1b4f8a 6%, white)"
+                  : done ? "color-mix(in srgb, #0e7a3c 9%, white)" : "color-mix(in srgb, white 60%, transparent)",
                 border: `1px solid ${noteStep
-                  ? "color-mix(in srgb, #6366f1 22%, transparent)"
-                  : done ? "color-mix(in srgb, #10b981 32%, transparent)" : "color-mix(in srgb, #a855f7 18%, transparent)"}`,
+                  ? "color-mix(in srgb, #1b4f8a 22%, transparent)"
+                  : done ? "color-mix(in srgb, #0e7a3c 32%, transparent)" : "color-mix(in srgb, #1b4f8a 18%, transparent)"}`,
                 opacity: locked ? 0.65 : 1,
                 transition: "background-color .25s, border-color .25s, opacity .25s",
               }}
@@ -191,12 +190,12 @@ export function RemediationPathCard({ steps, sessionId, onStartPath }: Remediati
                   width: 36, height: 36, borderRadius: 999, display: "flex", alignItems: "center",
                   justifyContent: "center", color: "white", flexShrink: 0,
                   background: noteStep
-                    ? "linear-gradient(135deg, #6366f1 0%, #818cf8 100%)"
+                    ? "linear-gradient(135deg, #1b4f8a 0%, #4a7fbb 100%)"
                     : done
-                      ? "linear-gradient(135deg, #10b981 0%, #22c55e 100%)"
+                      ? "linear-gradient(135deg, #0e7a3c 0%, #0e7a3c 100%)"
                       : locked
                         ? "color-mix(in srgb, #64748b 55%, white)"
-                        : "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+                        : "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
                 }}
               >
                 <Icon icon={noteStep ? "mdi:information-outline" : done ? "mdi:check" : locked ? "mdi:lock-outline" : (ACTION_ICON[step.action_kind] ?? "mdi:book-open-page-variant-outline")} width={18} />
@@ -214,7 +213,7 @@ export function RemediationPathCard({ steps, sessionId, onStartPath }: Remediati
                   <Chip label={reqStep ? "RE-QUIZ" : noteStep ? "NOTE" : step.action_kind.toUpperCase()} accent />
                 </Box>
                 {locked && (
-                  <Typography sx={{ fontSize: "0.72rem", color: "#b45309", fontWeight: 700, mt: 0.75 }}>
+                  <Typography sx={{ fontSize: "0.72rem", color: "#8a5a12", fontWeight: 700, mt: 0.75 }}>
                     Finish the steps above to unlock your follow-up quiz.
                   </Typography>
                 )}
@@ -247,7 +246,7 @@ export function RemediationPathCard({ steps, sessionId, onStartPath }: Remediati
       </Box>
 
       {allDone ? (
-        <Box sx={{ alignSelf: "flex-end", mt: 0.5, display: "inline-flex", alignItems: "center", gap: 0.75, px: 3, py: 1.4, borderRadius: 999, fontWeight: 800, color: "white", fontSize: "0.92rem", background: "linear-gradient(135deg, #10b981 0%, #22c55e 100%)", boxShadow: "0 14px 30px -14px rgba(16,185,129,0.5)" }}>
+        <Box sx={{ alignSelf: "flex-end", mt: 0.5, display: "inline-flex", alignItems: "center", gap: 0.75, px: 3, py: 1.4, borderRadius: 999, fontWeight: 800, color: "white", fontSize: "0.92rem", background: "linear-gradient(135deg, #0e7a3c 0%, #0e7a3c 100%)", boxShadow: "var(--shadow-sm)" }}>
           <Icon icon="mdi:check-circle" width={18} /> Remediation complete
         </Box>
       ) : (
@@ -256,8 +255,8 @@ export function RemediationPathCard({ steps, sessionId, onStartPath }: Remediati
           disabled={!firstActionable}
           sx={{
             alignSelf: "flex-end", mt: 0.5, px: 3, py: 1.4, borderRadius: 999, fontWeight: 800,
-            color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
-            boxShadow: "0 14px 30px -14px rgba(168, 85, 247, 0.55)", fontSize: "0.92rem",
+            color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)",
+            boxShadow: "var(--shadow-sm)", fontSize: "0.92rem",
             "&:hover": { transform: "translateY(-1px)" }, transition: "transform 120ms ease",
             "&:disabled": { opacity: 0.5 },
           }}
@@ -290,10 +289,10 @@ function StepButton({
       sx={{
         alignSelf: "center", flexShrink: 0, px: 1.75, py: 0.8, borderRadius: 999, fontWeight: 800,
         fontSize: "0.8rem", gap: 0.5,
-        color: success ? "#15803d" : "#7c3aed",
-        bgcolor: success ? "color-mix(in srgb, #10b981 14%, white)" : "color-mix(in srgb, #a855f7 14%, white)",
-        border: `1px solid ${success ? "color-mix(in srgb, #10b981 35%, transparent)" : "color-mix(in srgb, #a855f7 35%, transparent)"}`,
-        "&:hover": { bgcolor: success ? "color-mix(in srgb, #10b981 22%, white)" : "color-mix(in srgb, #a855f7 22%, white)" },
+        color: success ? "#0b6232" : "#14406f",
+        bgcolor: success ? "color-mix(in srgb, #0e7a3c 14%, white)" : "color-mix(in srgb, #1b4f8a 14%, white)",
+        border: `1px solid ${success ? "color-mix(in srgb, #0e7a3c 35%, transparent)" : "color-mix(in srgb, #1b4f8a 35%, transparent)"}`,
+        "&:hover": { bgcolor: success ? "color-mix(in srgb, #0e7a3c 22%, white)" : "color-mix(in srgb, #1b4f8a 22%, white)" },
         "&:disabled": { opacity: 0.55, color: "text.secondary", bgcolor: "color-mix(in srgb, #64748b 10%, transparent)" },
       }}
     >
@@ -309,8 +308,8 @@ function Chip({ label, accent }: { label: string; accent?: boolean }) {
       sx={{
         px: 1, py: 0.3, borderRadius: 999, fontSize: "0.66rem", fontWeight: 800, letterSpacing: "0.1em",
         textTransform: "uppercase",
-        bgcolor: accent ? "color-mix(in srgb, #a855f7 18%, transparent)" : "color-mix(in srgb, currentColor 10%, transparent)",
-        color: accent ? "#a855f7" : "text.secondary",
+        bgcolor: accent ? "color-mix(in srgb, #1b4f8a 18%, transparent)" : "color-mix(in srgb, currentColor 10%, transparent)",
+        color: accent ? "#1b4f8a" : "text.secondary",
         border: "1px solid color-mix(in srgb, currentColor 18%, transparent)",
       }}
     >

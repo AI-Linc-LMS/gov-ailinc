@@ -77,8 +77,10 @@ function LevelUpTotalCard({
             py: { xs: 3.5, sm: 4.5 },
             textAlign: "center",
             minWidth: { xs: 244, sm: 312 },
-            background: "radial-gradient(130% 120% at 50% 0%, #2a1150 0%, #14061f 55%, #0f0518 100%)",
-            boxShadow: "inset 0 0 34px rgba(124,58,237,0.24)",
+            background: "radial-gradient(130% 120% at 50% 0%, #10263f 0%, #0b1b2e 55%, #071426 100%)",
+            // Was a 34px inner glow. The card is a filled dark slab floating over a
+            // scrim, so it takes the shared modal elevation instead of a halo.
+            boxShadow: "var(--shadow-xl)",
           }}
         >
           {/* CREST: gold medallion with a crown peeking above + a lightning bolt */}
@@ -96,15 +98,15 @@ function LevelUpTotalCard({
                 borderRadius: "24%",
                 display: "grid",
                 placeItems: "center",
-                background: "linear-gradient(135deg,#fde047,#f59e0b)",
-                boxShadow: "0 14px 38px -10px rgba(245,158,11,0.9), inset 0 2px 6px rgba(255,255,255,0.55)",
+                background: "linear-gradient(135deg,#fde047,#b7791f)",
+                boxShadow: "var(--shadow-sm)",
               }}
             >
               <Icon
                 icon="mdi:crown"
                 width={22}
                 color="#fff"
-                style={{ position: "absolute", top: -14, filter: "drop-shadow(0 2px 4px rgba(245,158,11,0.85))" }}
+                style={{ position: "absolute", top: -14, filter: "drop-shadow(0 2px 4px rgba(10,30,55,0.45))" }}
               />
               <Icon icon="mdi:lightning-bolt" width={38} color="#fff" />
             </Box>
@@ -115,7 +117,7 @@ function LevelUpTotalCard({
               fontWeight: 800,
               fontSize: "0.72rem",
               letterSpacing: "0.26em",
-              color: "rgba(168,85,247,0.9)",
+              color: "rgba(27, 79, 138,0.9)",
               mb: 0.75,
             }}
           >
@@ -138,11 +140,10 @@ function LevelUpTotalCard({
                   fontVariantNumeric: "tabular-nums",
                   letterSpacing: "-0.02em",
                   minWidth: "5ch",
-                  background: "linear-gradient(180deg,#fffdf5 0%,#fde047 55%,#f59e0b 100%)",
+                  background: "linear-gradient(180deg,#fffdf5 0%,#fde047 55%,#b7791f 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  filter: "drop-shadow(0 3px 22px rgba(250,204,21,0.55))",
                 }}
               >
                 {formatted}
@@ -162,8 +163,8 @@ function LevelUpTotalCard({
                   bottom: -6,
                   height: 3,
                   borderRadius: 2,
-                  background: "linear-gradient(90deg, transparent, #fde047, #fff, #f59e0b, transparent)",
-                  boxShadow: "0 0 18px rgba(250,204,21,0.9)",
+                  background: "linear-gradient(90deg, transparent, #fde047, #fff, #b7791f, transparent)",
+                  boxShadow: "var(--shadow-sm)",
                 }}
               />
             )}
@@ -184,8 +185,8 @@ function LevelUpTotalCard({
                     px: 1.3,
                     py: 0.5,
                     borderRadius: 999,
-                    background: "linear-gradient(135deg,#fde047,#f59e0b)",
-                    boxShadow: "0 8px 24px -6px rgba(245,158,11,0.9)",
+                    background: "linear-gradient(135deg,#fde047,#b7791f)",
+                    boxShadow: "var(--shadow-sm)",
                     color: "#3b1d00",
                     fontWeight: 900,
                     fontSize: "0.95rem",
@@ -212,7 +213,7 @@ function LevelUpTotalCard({
                     width: 3,
                     height: 40,
                     borderRadius: 2,
-                    background: "linear-gradient(#fef9c3,#f59e0b)",
+                    background: "linear-gradient(#fef9c3,#b7791f)",
                     transform: `translate(-50%,-50%) rotate(${deg}deg) translateY(-92px)`,
                     transformOrigin: "center",
                   }}
@@ -230,7 +231,7 @@ function LevelUpTotalCard({
               height: 6,
               borderRadius: 999,
               overflow: "hidden",
-              background: "rgba(168,85,247,0.22)",
+              background: "rgba(27, 79, 138,0.22)",
             }}
           >
             <motion.div
@@ -243,7 +244,7 @@ function LevelUpTotalCard({
                 top: 0,
                 bottom: 0,
                 borderRadius: 999,
-                background: "linear-gradient(90deg,#a855f7,#fde047)",
+                background: "linear-gradient(90deg,#1b4f8a,#fde047)",
               }}
             />
             {!reduce && (
@@ -310,7 +311,7 @@ export function XpCelebrationOverlay() {
               position: "absolute",
               inset: 0,
               background:
-                "radial-gradient(circle at 50% 45%, rgba(20,6,31,0.5), rgba(10,4,20,0.16) 55%, transparent 72%)",
+                "radial-gradient(circle at 50% 45%, rgba(7,20,38,0.5), rgba(7,20,38,0.16) 55%, transparent 72%)",
             }}
           />
 
@@ -328,7 +329,7 @@ export function XpCelebrationOverlay() {
               width: 380,
               height: 380,
               borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(250,204,21,0.5) 0%, rgba(168,85,247,0.28) 45%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(250,204,21,0.5) 0%, rgba(27, 79, 138,0.28) 45%, transparent 70%)",
             }}
           />
 

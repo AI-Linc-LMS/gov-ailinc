@@ -30,7 +30,7 @@ const CARD_MD_SX = {
     backgroundColor: "rgba(0,0,0,0.06)", borderRadius: "3px", px: "3px", py: "1px",
   },
   "& pre": {
-    backgroundColor: "#1a1b26", color: "#c0caf5", borderRadius: "6px",
+    backgroundColor: "#111a26", color: "#dde3eb", borderRadius: "6px",
     p: 0.75, my: 0.5, overflowX: "auto", fontSize: "0.78rem",
     "& code": { backgroundColor: "transparent", px: 0 },
   },
@@ -110,7 +110,7 @@ export function ThreadCard({
         ...(isSaving ? {} : {
           "&:hover": {
             borderColor: "color-mix(in srgb, var(--border-default) 70%, var(--font-secondary) 30%)",
-            boxShadow: "0 2px 8px color-mix(in srgb, var(--font-primary) 18%, transparent)",
+            boxShadow: "var(--shadow-md)",
           },
         }),
       }}
@@ -148,12 +148,12 @@ export function ThreadCard({
               {thread.is_pinned && (
                 <Tooltip title="Pinned by a moderator">
                   <Chip
-                    icon={<IconWrapper icon="mdi:pin" size={11} color="#f59e0b" />}
+                    icon={<IconWrapper icon="mdi:pin" size={11} color="#b7791f" />}
                     label="Pinned"
                     size="small"
                     sx={{
                       height: 20, fontSize: "0.67rem", fontWeight: 600,
-                      backgroundColor: "rgba(245,158,11,0.12)", color: "#b45309",
+                      backgroundColor: "rgba(245,158,11,0.12)", color: "#8a5a12",
                       border: "1px solid rgba(245,158,11,0.3)",
                       "& .MuiChip-icon": { ml: 0.5 },
                     }}
@@ -207,8 +207,8 @@ export function ThreadCard({
                     borderRadius: "20px", px: 0.9, py: 0.2,
                   }}
                 >
-                  <IconWrapper icon="mdi:fire" size={12} color="#f59e0b" />
-                  <Typography variant="caption" fontWeight={700} sx={{ color: "#f59e0b", fontSize: "0.7rem" }}>
+                  <IconWrapper icon="mdi:fire" size={12} color="#b7791f" />
+                  <Typography variant="caption" fontWeight={700} sx={{ color: "#b7791f", fontSize: "0.7rem" }}>
                     +{thread.bounty!.points} IP
                   </Typography>
                 </Box>
@@ -366,7 +366,7 @@ export function ThreadCard({
                       onClick={() => onReport(thread.id)}
                       sx={{
                         color: "var(--font-secondary)",
-                        "&:hover": { color: "#ef4444", backgroundColor: "rgba(239,68,68,0.08)" },
+                        "&:hover": { color: "#b32020", backgroundColor: "rgba(239,68,68,0.08)" },
                       }}
                     >
                       <IconWrapper icon="mdi:flag-outline" size={18} />

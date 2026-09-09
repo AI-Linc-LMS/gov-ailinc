@@ -56,7 +56,7 @@ export function AdminProfileSectionsReadOnly({ profile }: AdminProfileSectionsRe
             p: 3,
             border: "1px solid rgba(0,0,0,0.08)",
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
@@ -86,7 +86,7 @@ export function AdminProfileSectionsReadOnly({ profile }: AdminProfileSectionsRe
             p: 3,
             border: "1px solid rgba(0,0,0,0.08)",
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
@@ -126,7 +126,7 @@ export function AdminProfileSectionsReadOnly({ profile }: AdminProfileSectionsRe
             p: 3,
             border: "1px solid rgba(0,0,0,0.08)",
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
@@ -167,7 +167,7 @@ export function AdminProfileSectionsReadOnly({ profile }: AdminProfileSectionsRe
             p: 3,
             border: "1px solid rgba(0,0,0,0.08)",
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
@@ -227,7 +227,7 @@ export function AdminProfileSectionsReadOnly({ profile }: AdminProfileSectionsRe
             p: 3,
             border: "1px solid rgba(0,0,0,0.08)",
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
@@ -275,7 +275,7 @@ export function AdminProfileSectionsReadOnly({ profile }: AdminProfileSectionsRe
             p: 3,
             border: "1px solid rgba(0,0,0,0.08)",
             borderRadius: 2,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>

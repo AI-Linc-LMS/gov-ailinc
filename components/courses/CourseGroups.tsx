@@ -98,7 +98,7 @@ export function CourseCategoryFilterRow({
     >
       {chips.map((chip) => {
         const active = chip.key === value;
-        const accent = chip.key === ALL_CATEGORIES ? "#6366f1" : chip.accent;
+        const accent = chip.key === ALL_CATEGORIES ? "#1b4f8a" : chip.accent;
         return (
           <ButtonBase
             key={chip.key}
@@ -121,8 +121,8 @@ export function CourseCategoryFilterRow({
                 ? `1px solid ${accent}`
                 : "1px solid color-mix(in srgb, var(--border-default) 90%, transparent)",
               boxShadow: active
-                ? `0 10px 22px -14px color-mix(in srgb, ${accent} 85%, transparent)`
-                : "0 1px 2px rgba(16,24,40,0.04)",
+                ? "var(--shadow-sm)"
+                : "var(--shadow-xs)",
               transition: "background-color 140ms ease, color 140ms ease, border-color 140ms ease",
               "&:hover": active
                 ? {}
@@ -196,7 +196,7 @@ function SectionHeading({ section }: { section: CourseGroupSection }) {
             placeItems: "center",
             color: "#fff",
             background: `linear-gradient(135deg, ${section.accent}, color-mix(in srgb, ${section.accent} 55%, #0f172a))`,
-            boxShadow: `0 14px 26px -14px color-mix(in srgb, ${section.accent} 85%, transparent)`,
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <Icon icon={section.icon} width={23} />

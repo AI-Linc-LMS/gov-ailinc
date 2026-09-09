@@ -245,7 +245,7 @@ export default function ScorecardPage() {
                 width: 56,
                 height: 56,
                 borderRadius: "50%",
-                bgcolor: "color-mix(in srgb, #ef4444 12%, transparent)",
+                bgcolor: "color-mix(in srgb, #b32020 12%, transparent)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -253,7 +253,7 @@ export default function ScorecardPage() {
                 mb: 2,
               }}
             >
-              <IconWrapper icon="mdi:chart-line-variant" size={28} color="#ef4444" />
+              <IconWrapper icon="mdi:chart-line-variant" size={28} color="#b32020" />
             </Box>
             <Typography variant="h6" fontWeight={700} color="text.primary" gutterBottom>
               Couldn&apos;t load your scorecard
@@ -436,22 +436,22 @@ export default function ScorecardPage() {
                     py: 1,
                     letterSpacing: "-0.01em",
                     background:
-                      "linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-purple, #8b5cf6) 50%, var(--accent-cyan) 100%)",
+                      "linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-purple, #4a7fbb) 50%, var(--accent-cyan) 100%)",
                     backgroundSize: "180% 180%",
                     backgroundPosition: "0% 50%",
                     boxShadow:
-                      "0 18px 36px -14px color-mix(in srgb, var(--accent-indigo) 60%, transparent), 0 6px 14px -8px color-mix(in srgb, var(--accent-purple, #8b5cf6) 55%, transparent)",
+                      "0 18px 36px -14px color-mix(in srgb, var(--accent-indigo) 60%, transparent), 0 6px 14px -8px color-mix(in srgb, var(--accent-purple, #4a7fbb) 55%, transparent)",
                     transition: "all 0.3s ease",
                     "&:hover": {
                       backgroundPosition: "100% 50%",
                       transform: "translateY(-1px)",
                       boxShadow:
-                        "0 24px 44px -14px color-mix(in srgb, var(--accent-indigo) 75%, transparent), 0 8px 18px -8px color-mix(in srgb, var(--accent-purple, #8b5cf6) 70%, transparent)",
+                        "0 24px 44px -14px color-mix(in srgb, var(--accent-indigo) 75%, transparent), 0 8px 18px -8px color-mix(in srgb, var(--accent-purple, #4a7fbb) 70%, transparent)",
                     },
                     "&.Mui-disabled": {
                       color: "color-mix(in srgb, #fff 75%, transparent)",
                       background:
-                        "linear-gradient(135deg, color-mix(in srgb, var(--accent-indigo) 65%, transparent) 0%, color-mix(in srgb, var(--accent-purple, #8b5cf6) 55%, transparent) 100%)",
+                        "linear-gradient(135deg, color-mix(in srgb, var(--accent-indigo) 65%, transparent) 0%, color-mix(in srgb, var(--accent-purple, #4a7fbb) 55%, transparent) 100%)",
                       opacity: 0.85,
                     },
                     flexShrink: 0,

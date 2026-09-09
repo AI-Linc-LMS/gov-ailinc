@@ -26,16 +26,16 @@ export function initialsOf(name: string): string {
  * Each entry is a [from, to] gradient pair.
  */
 const AVATAR_GRADIENTS: ReadonlyArray<readonly [string, string]> = [
-  ["#a855f7", "#6366f1"],
-  ["#f472b6", "#a855f7"],
-  ["#38bdf8", "#6366f1"],
-  ["#34d399", "#0ea5e9"],
-  ["#fbbf24", "#f97316"],
-  ["#fb7185", "#e11d48"],
-  ["#22d3ee", "#0891b2"],
-  ["#c084fc", "#7c3aed"],
-  ["#4ade80", "#16a34a"],
-  ["#60a5fa", "#2563eb"],
+  ["#1b4f8a", "#1b4f8a"],
+  ["#3f8f9e", "#1b4f8a"],
+  ["#4a7fbb", "#1b4f8a"],
+  ["#2f9159", "#1b4f8a"],
+  ["#c9903a", "#b45309"],
+  ["#c94b4b", "#991b1b"],
+  ["#3f8f9e", "#0b5260"],
+  ["#85aad6", "#14406f"],
+  ["#2f9159", "#0b6232"],
+  ["#85aad6", "#1b4f8a"],
 ];
 
 function encodeSvg(svg: string): string {

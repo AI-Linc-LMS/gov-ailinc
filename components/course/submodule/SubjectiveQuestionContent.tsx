@@ -33,7 +33,7 @@ import {
 import { useToast } from "@/components/common/Toast";
 import { IconWrapper } from "@/components/common/IconWrapper";
 
-const ACCENT = "#0d9488";
+const ACCENT = "#0b5260";
 const ACCENT_DARK = "#0f766e";
 
 interface SubjectiveQuestionContentProps {
@@ -316,7 +316,7 @@ export function SubjectiveQuestionContent({
           border: "1px solid var(--border-default)",
           backgroundColor: "var(--card-bg)",
           boxShadow:
-            "0 1px 2px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+            "var(--shadow-xs)",
         }}
       >
         <Collapse in={submitting && !submissionLocked}>
@@ -325,7 +325,7 @@ export function SubjectiveQuestionContent({
               height: 3,
               borderRadius: "3px 3px 0 0",
               "& .MuiLinearProgress-bar": {
-                background: `linear-gradient(90deg, ${ACCENT}, #6366f1)`,
+                background: `linear-gradient(90deg, ${ACCENT}, #1b4f8a)`,
               },
             }}
           />
@@ -392,7 +392,7 @@ export function SubjectiveQuestionContent({
                 },
                 "&.Mui-focused": {
                   backgroundColor: "var(--card-bg)",
-                  boxShadow: `0 0 0 3px ${alpha(ACCENT, 0.2)}`,
+                  boxShadow: "var(--ring-focus)",
                 },
               },
             }}
@@ -437,10 +437,10 @@ export function SubjectiveQuestionContent({
                 textTransform: "none",
                 borderRadius: 2,
                 background: `linear-gradient(135deg, ${ACCENT} 0%, ${ACCENT_DARK} 100%)`,
-                boxShadow: `0 4px 14px ${alpha(ACCENT, 0.35)}`,
+                boxShadow: "var(--shadow-sm)",
                 "&:hover": {
                   background: `linear-gradient(135deg, ${ACCENT_DARK} 0%, #115e59 100%)`,
-                  boxShadow: `0 6px 20px ${alpha(ACCENT, 0.45)}`,
+                  boxShadow: "var(--shadow-md)",
                 },
                 "&:disabled": {
                   background:
@@ -467,8 +467,8 @@ export function SubjectiveQuestionContent({
               elevation={0}
               sx={{
                 borderRadius: 3,
-                border: `1px solid ${alpha("#6366f1", 0.35)}`,
-                background: `linear-gradient(145deg, ${alpha("#6366f1", 0.06)} 0%, var(--card-bg) 55%)`,
+                border: `1px solid ${alpha("#1b4f8a", 0.35)}`,
+                background: `linear-gradient(145deg, ${alpha("#1b4f8a", 0.06)} 0%, var(--card-bg) 55%)`,
                 overflow: "hidden",
               }}
             >
@@ -489,9 +489,9 @@ export function SubjectiveQuestionContent({
                     alignItems: "center",
                     justifyContent: "center",
                     minWidth: { sm: 160 },
-                    background: `linear-gradient(180deg, ${alpha("#6366f1", 0.12)} 0%, ${alpha("#6366f1", 0.04)} 100%)`,
-                    borderRight: { sm: `1px solid ${alpha("#6366f1", 0.15)}` },
-                    borderBottom: { xs: `1px solid ${alpha("#6366f1", 0.15)}`, sm: "none" },
+                    background: `linear-gradient(180deg, ${alpha("#1b4f8a", 0.12)} 0%, ${alpha("#1b4f8a", 0.04)} 100%)`,
+                    borderRight: { sm: `1px solid ${alpha("#1b4f8a", 0.15)}` },
+                    borderBottom: { xs: `1px solid ${alpha("#1b4f8a", 0.15)}`, sm: "none" },
                   }}
                 >
                   <Typography
@@ -528,10 +528,10 @@ export function SubjectiveQuestionContent({
                       mt: 1.5,
                       height: 6,
                       borderRadius: 3,
-                      backgroundColor: alpha("#6366f1", 0.12),
+                      backgroundColor: alpha("#1b4f8a", 0.12),
                       "& .MuiLinearProgress-bar": {
                         borderRadius: 3,
-                        background: `linear-gradient(90deg, #6366f1, ${ACCENT})`,
+                        background: `linear-gradient(90deg, #1b4f8a, ${ACCENT})`,
                       },
                     }}
                   />
@@ -628,7 +628,7 @@ export function SubjectiveQuestionContent({
             border: "1px solid var(--border-default)",
             overflow: "hidden",
             boxShadow:
-              "0 1px 2px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+              "var(--shadow-xs)",
           }}
         >
           <Box
@@ -677,7 +677,7 @@ export function SubjectiveQuestionContent({
                   "&:last-of-type": { borderBottom: "none" },
                   "&.Mui-expanded": {
                     margin: 0,
-                    backgroundColor: alpha("#6366f1", 0.02),
+                    backgroundColor: alpha("#1b4f8a", 0.02),
                   },
                 }}
               >

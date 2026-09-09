@@ -29,16 +29,15 @@ export function PerQuestionBreakdown({ responses, narration, mcqDirectory }: Per
       sx={{
         p: { xs: 2.5, md: 3 },
         borderRadius: 4,
-        bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 65%, transparent)",
-        border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 60%, transparent)",
-        backdropFilter: "blur(18px) saturate(140%)",
+        bgcolor: "var(--card-bg, #ffffff)",
+        border: "1px solid var(--border-default, #e5e7eb)",
         display: "flex",
         flexDirection: "column",
         gap: 2,
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
-        <Icon icon="mdi:format-list-numbered" width={20} style={{ color: "#6366f1" }} />
+        <Icon icon="mdi:format-list-numbered" width={20} style={{ color: "#1b4f8a" }} />
         <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", letterSpacing: "-0.01em" }}>
           Question by question
         </Typography>
@@ -50,7 +49,7 @@ export function PerQuestionBreakdown({ responses, narration, mcqDirectory }: Per
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.75 }}>
         {responses.map((r) => {
           const isSelected = selectedIndex === r.order_index;
-          const color = r.is_correct ? "#10b981" : "#ef4444";
+          const color = r.is_correct ? "#0e7a3c" : "#b32020";
           return (
             <ButtonBase
               key={r.order_index}

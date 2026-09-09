@@ -933,7 +933,7 @@ export default function MockInterviewDeviceCheckPage() {
                         borderRadius: 1,
                         backgroundColor: "#e5e7eb",
                         "& .MuiLinearProgress-bar": {
-                          backgroundColor: "#10b981",
+                          backgroundColor: "#0e7a3c",
                           borderRadius: 1,
                         },
                       }}
@@ -1010,14 +1010,14 @@ export default function MockInterviewDeviceCheckPage() {
                   alignItems: "center",
                   gap: 1.5,
                   p: 2,
-                  backgroundColor: "#eff6ff",
-                  border: "1px solid #bfdbfe",
+                  backgroundColor: "#eef3fa",
+                  border: "1px solid #b6cde8",
                   borderRadius: 2,
                   mb: 2,
                 }}
               >
-                <CircularProgress size={20} sx={{ color: "#3b82f6" }} />
-                <Typography variant="body2" sx={{ color: "#1e40af" }}>
+                <CircularProgress size={20} sx={{ color: "#4a7fbb" }} />
+                <Typography variant="body2" sx={{ color: "#12365f" }}>
                   {t("mockInterview.deviceCheck.listening")}
                 </Typography>
               </Box>
@@ -1026,8 +1026,8 @@ export default function MockInterviewDeviceCheckPage() {
               <Box
                 sx={{
                   p: 2,
-                  backgroundColor: ttsMatch ? "#ecfdf5" : "#fef2f2",
-                  border: `1px solid ${ttsMatch ? "#a7f3d0" : "#fecaca"}`,
+                  backgroundColor: ttsMatch ? "#f0f7f3" : "#fdf5f5",
+                  border: `1px solid ${ttsMatch ? "#a7f3d0" : "#f2d3d3"}`,
                   borderRadius: 2,
                   mb: 2,
                 }}
@@ -1055,7 +1055,7 @@ export default function MockInterviewDeviceCheckPage() {
                 {!ttsMatch && (
                   <Typography
                     variant="caption"
-                    sx={{ color: "#dc2626", display: "block", mt: 1 }}
+                    sx={{ color: "#991b1b", display: "block", mt: 1 }}
                   >
                     {t("mockInterview.deviceCheck.textNoMatch")}
                   </Typography>
@@ -1090,11 +1090,11 @@ export default function MockInterviewDeviceCheckPage() {
                   fontWeight: 600,
                   px: 3,
                   py: 1.25,
-                  borderColor: "#6366f1",
-                  color: "#6366f1",
+                  borderColor: "#1b4f8a",
+                  color: "#1b4f8a",
                   "&:hover": {
-                    borderColor: "#4f46e5",
-                    backgroundColor: "#eef2ff",
+                    borderColor: "#12365f",
+                    backgroundColor: "#eef3fa",
                   },
                   "&:disabled": {
                     borderColor: "#e5e7eb",
@@ -1139,8 +1139,8 @@ export default function MockInterviewDeviceCheckPage() {
                   fontWeight: 600,
                   px: 4,
                   py: 1.5,
-                  backgroundColor: "#6366f1",
-                  "&:hover": { backgroundColor: "#4f46e5" },
+                  backgroundColor: "#1b4f8a",
+                  "&:hover": { backgroundColor: "#12365f" },
                 }}
               >
                 {checking
@@ -1160,8 +1160,8 @@ export default function MockInterviewDeviceCheckPage() {
                 fontWeight: 600,
                 px: 4,
                 py: 1.5,
-                backgroundColor: "#10b981",
-                "&:hover": { backgroundColor: "#059669" },
+                backgroundColor: "#0e7a3c",
+                "&:hover": { backgroundColor: "#0B6232" },
                 "&:disabled": {
                   backgroundColor: "#9ca3af",
                   color: "#ffffff",
@@ -1206,24 +1206,24 @@ export default function MockInterviewDeviceCheckPage() {
           sx={{
             mt: 4,
             p: 3,
-            backgroundColor: "#eff6ff",
-            border: "1px solid #bfdbfe",
+            backgroundColor: "#eef3fa",
+            border: "1px solid #b6cde8",
             borderRadius: 2,
           }}
         >
           <Box sx={{ display: "flex", gap: 2, alignItems: "flex-start" }}>
-            <IconWrapper icon="mdi:information" size={24} color="#3b82f6" />
+            <IconWrapper icon="mdi:information" size={24} color="#4a7fbb" />
             <Box>
               <Typography
                 variant="subtitle2"
-                sx={{ fontWeight: 600, color: "#1e40af", mb: 0.5 }}
+                sx={{ fontWeight: 600, color: "#12365f", mb: 0.5 }}
               >
                 {t("mockInterview.deviceCheck.whyWeNeedThis")}
               </Typography>
               <Typography
                 variant="body2"
                 sx={{
-                  color: "#1e40af",
+                  color: "#12365f",
                   fontSize: "0.875rem",
                   lineHeight: 1.7,
                 }}

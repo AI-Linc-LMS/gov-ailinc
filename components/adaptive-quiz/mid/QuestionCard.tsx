@@ -33,11 +33,11 @@ interface QuestionCardProps {
 function difficultyColor(label: string): string {
   switch (label) {
     case "Easy":
-      return "#10b981";
+      return "#0e7a3c";
     case "Hard":
-      return "#ef4444";
+      return "#b32020";
     default:
-      return "#6366f1";
+      return "#1b4f8a";
   }
 }
 
@@ -67,11 +67,10 @@ export function QuestionCard({
       sx={{
         p: { xs: 2.5, md: 3.5 },
         borderRadius: 4,
-        bgcolor: "color-mix(in srgb, var(--card-bg, #ffffff) 65%, transparent)",
-        border: "1px solid color-mix(in srgb, var(--border-default, #e5e7eb) 60%, transparent)",
-        backdropFilter: "blur(18px) saturate(140%)",
+        bgcolor: "var(--card-bg, #ffffff)",
+        border: "1px solid var(--border-default, #e5e7eb)",
         boxShadow:
-          "0 1px 0 0 color-mix(in srgb, white 14%, transparent) inset, 0 24px 60px -32px rgba(99, 102, 241, 0.35)",
+          "var(--shadow-sm)",
         display: "flex",
         flexDirection: "column",
         gap: 2.5,
@@ -83,7 +82,7 @@ export function QuestionCard({
           <Chip
             size="small"
             label={`Q${questionNumber} / ${approxTotal ? "~" : ""}${estimatedTotal}`}
-            sx={{ fontWeight: 700, bgcolor: "color-mix(in srgb, #6366f1 12%, transparent)", color: "#6366f1" }}
+            sx={{ fontWeight: 700, bgcolor: "color-mix(in srgb, #1b4f8a 12%, transparent)", color: "#1b4f8a" }}
           />
           <Chip
             size="small"
@@ -110,8 +109,8 @@ export function QuestionCard({
             px: 1.25,
             py: 0.6,
             borderRadius: 999,
-            border: "1px dashed color-mix(in srgb, #a855f7 50%, transparent)",
-            color: hintTokensRemaining > 0 ? "#a855f7" : "text.disabled",
+            border: "1px dashed color-mix(in srgb, #1b4f8a 50%, transparent)",
+            color: hintTokensRemaining > 0 ? "#1b4f8a" : "text.disabled",
             "&:disabled": { opacity: 0.6, cursor: "not-allowed" },
           }}
           aria-label="Ask for a hint"
@@ -156,11 +155,11 @@ export function QuestionCard({
                 width: "100%",
                 minHeight: 64,
                 border: selected
-                  ? "1.5px solid #6366f1"
+                  ? "1.5px solid #1b4f8a"
                   : "1.5px solid color-mix(in srgb, var(--border-default, #e5e7eb) 80%, transparent)",
                 bgcolor: selected
-                  ? "color-mix(in srgb, #6366f1 6%, transparent)"
-                  : "color-mix(in srgb, var(--card-bg, #ffffff) 50%, transparent)",
+                  ? "color-mix(in srgb, #1b4f8a 6%, transparent)"
+                  : "var(--card-bg, #ffffff)",
                 transition: "border-color 120ms ease, background-color 120ms ease",
               }}
             >
@@ -177,9 +176,9 @@ export function QuestionCard({
                   fontSize: "0.85rem",
                   flexShrink: 0,
                   border: "1.5px solid",
-                  borderColor: selected ? "#6366f1" : "color-mix(in srgb, currentColor 30%, transparent)",
-                  color: selected ? "#6366f1" : "text.secondary",
-                  bgcolor: selected ? "color-mix(in srgb, #6366f1 12%, transparent)" : "transparent",
+                  borderColor: selected ? "#1b4f8a" : "color-mix(in srgb, currentColor 30%, transparent)",
+                  color: selected ? "#1b4f8a" : "text.secondary",
+                  bgcolor: selected ? "color-mix(in srgb, #1b4f8a 12%, transparent)" : "transparent",
                 }}
               >
                 {opt.id}
@@ -215,11 +214,11 @@ export function QuestionCard({
             fontWeight: 800,
             color: "white",
             background: submitDisabled
-              ? "color-mix(in srgb, #6366f1 35%, transparent)"
-              : "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+              ? "color-mix(in srgb, #1b4f8a 35%, transparent)"
+              : "linear-gradient(135deg, #1b4f8a 0%, #12365f 100%)",
             boxShadow: submitDisabled
               ? "none"
-              : "0 12px 30px -16px rgba(99, 102, 241, 0.7)",
+              : "var(--shadow-sm)",
             transition: "transform 120ms ease, box-shadow 120ms ease",
             "&:hover": { transform: submitDisabled ? "none" : "translateY(-1px)" },
             "&:disabled": { cursor: "not-allowed" },

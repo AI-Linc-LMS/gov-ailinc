@@ -301,7 +301,6 @@ export const AIAvatar = memo(function AIAvatar({
               py: 0.5,
               backgroundColor: "var(--interview-badge-listening-bg)",
               borderRadius: 2,
-              backdropFilter: "blur(8px)",
               animation: "listenPulse 1.5s ease-in-out infinite",
               "@keyframes listenPulse": {
                 "0%, 100%": { opacity: 1 },
@@ -350,9 +349,11 @@ export const AIAvatar = memo(function AIAvatar({
               gap: 0.5,
               px: 2,
               py: 0.5,
-              backgroundColor: "var(--interview-badge-speaking-bg)",
+              // Literal, not --interview-badge-speaking-bg: that variable is still
+              // indigo-500 at 90% in app/globals.css. Institutional blue keeps the
+              // badge distinct from the green "listening" badge it alternates with.
+              backgroundColor: "rgba(27, 79, 138, 0.9)",
               borderRadius: 2,
-              backdropFilter: "blur(8px)",
             }}
           >
             <Box

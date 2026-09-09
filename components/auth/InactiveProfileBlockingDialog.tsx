@@ -42,7 +42,6 @@ export function InactiveProfileBlockingDialog({
         backdrop: {
           sx: {
             zIndex: 19999,
-            backdropFilter: "blur(14px)",
             backgroundColor:
               "color-mix(in srgb, var(--font-primary) 70%, transparent)",
           },

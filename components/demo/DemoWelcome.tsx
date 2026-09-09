@@ -116,8 +116,7 @@ export function DemoWelcome() {
           display: "grid",
           placeItems: "center",
           p: 2,
-          background: "rgba(15, 5, 24, 0.55)",
-          backdropFilter: "blur(3px)",
+          background: "rgba(7, 20, 38, 0.55)",
         }}
         onClick={dismiss}
       >
@@ -137,7 +136,7 @@ export function DemoWelcome() {
             borderRadius: "16px",
             p: { xs: 3, sm: 4 },
             background: "#ffffff",
-            boxShadow: "0 24px 64px rgba(15,5,24,0.35)",
+            boxShadow: "var(--shadow-lg)",
             textAlign: "center",
           }}
         >
@@ -155,7 +154,7 @@ export function DemoWelcome() {
               display: "grid",
               placeItems: "center",
               borderRadius: "14px",
-              background: "linear-gradient(135deg,#7c3aed,#a855f7)",
+              background: "linear-gradient(135deg,#14406f,#1b4f8a)",
               color: "#fff",
             }}
           >
@@ -163,7 +162,7 @@ export function DemoWelcome() {
           </Box>
 
           <Typography
-            sx={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.6px", color: "#7c3aed", textTransform: "uppercase" }}
+            sx={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.6px", color: "#14406f", textTransform: "uppercase" }}
           >
             {DEMO_TENANT.shortName} product tour
           </Typography>
@@ -207,9 +206,9 @@ export function DemoWelcome() {
                 textTransform: "none",
                 fontSize: "0.95rem",
                 fontWeight: 600,
-                background: "linear-gradient(135deg,#7c3aed,#a855f7)",
+                background: "linear-gradient(135deg,#14406f,#1b4f8a)",
                 boxShadow: "none",
-                "&:hover": { background: "linear-gradient(135deg,#6d28d9,#9333ea)", boxShadow: "none" },
+                "&:hover": { background: "linear-gradient(135deg,#164274,#164274)", boxShadow: "none" },
               }}
             >
               Take the tour

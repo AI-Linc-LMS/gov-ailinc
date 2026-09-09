@@ -27,8 +27,8 @@ export function ResumeHero() {
         position: "relative",
         overflow: "hidden",
         background:
-          "radial-gradient(120% 130% at 10% 115%, rgba(192,38,211,0.45) 0%, rgba(124,58,237,0.30) 30%, rgba(15,10,40,0) 62%), linear-gradient(150deg, #271a5c 0%, #181040 55%, #100a2c 100%)",
-        boxShadow: "0 24px 60px -30px rgba(76,29,149,0.7)",
+          "radial-gradient(120% 130% at 10% 115%, rgba(15,107,122,0.45) 0%, rgba(20, 64, 111,0.30) 30%, rgba(7,20,38,0) 62%), linear-gradient(150deg, #10263f 0%, #0b1b2e 55%, #071426 100%)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       {/* faint dotted texture */}
@@ -56,8 +56,8 @@ export function ResumeHero() {
               display: "grid",
               placeItems: "center",
               color: "white",
-              background: "linear-gradient(135deg, #a855f7, #ec4899)",
-              boxShadow: "0 10px 24px -8px rgba(192,38,211,0.85)",
+              background: "linear-gradient(135deg, #1b4f8a, #0f6b7a)",
+              boxShadow: "var(--shadow-sm)",
             }}
           >
             <IconWrapper icon="mdi:file-account-outline" size={27} />

@@ -38,7 +38,7 @@ const STUDENT_TOUR: TourStep[] = [
     narration:
       "This is what an aspirant sees. In the next two minutes I will walk you through every module: how a course adapts to the candidate, how practice is scored, and how it ends in a job notification they are actually eligible for.",
     icon: "mdi:hand-wave-outline",
-    color: "#a78bfa",
+    color: "#85aad6",
   },
   {
     targetId: "dash-briefing",
@@ -47,7 +47,7 @@ const STUDENT_TOUR: TourStep[] = [
       "Every morning this reads the candidate's actual progress and names the single most useful thing to do next. Not a motivational message, a specific lesson, chosen because that is where they are weakest.",
     placement: "bottom",
     icon: "mdi:robot-happy-outline",
-    color: "#7c3aed",
+    color: "#14406f",
   },
   {
     targetId: "dash-stats",
@@ -56,7 +56,7 @@ const STUDENT_TOUR: TourStep[] = [
       "Points come from finishing work, and they decay the longer it is left, so steady daily study is rewarded. The streak and the standing within the batch sit alongside them, which is what keeps a free programme from going quiet in week three.",
     placement: "bottom",
     icon: "mdi:lightning-bolt",
-    color: "#f59e0b",
+    color: "#b7791f",
   },
   {
     route: "/adaptive-courses",
@@ -66,7 +66,7 @@ const STUDENT_TOUR: TourStep[] = [
       "The catalogue is organised the way the Mission is: government job preparation on one side, skill development and entrepreneurship on the other, each split into its categories. A candidate preparing for Group-II and a trainee learning rooftop solar both find their track in one place.",
     placement: "right",
     icon: "mdi:book-education-outline",
-    color: "#6366f1",
+    color: "#1b4f8a",
   },
   {
     route: "/adaptive-courses/catalog",
@@ -76,7 +76,7 @@ const STUDENT_TOUR: TourStep[] = [
       "State, central and PSU recruitment. Banking. Rural employment trades. Rural entrepreneurship. Every course sits under exactly one of them, so a district officer can see at a glance what the centre is actually offering.",
     placement: "bottom",
     icon: "mdi:shape-outline",
-    color: "#8b5cf6",
+    color: "#4a7fbb",
   },
   {
     route: "/adaptive-courses/302/journey",
@@ -86,7 +86,7 @@ const STUDENT_TOUR: TourStep[] = [
       "Inside a course, the syllabus becomes a week-by-week board. The candidate can see what is done, what is next, and how much of the paper is still ahead of them, which a printed syllabus never tells anyone.",
     placement: "right",
     icon: "mdi:map-marker-path",
-    color: "#a855f7",
+    color: "#1b4f8a",
   },
   {
     route: "/adaptive-courses/302/submodule/30201",
@@ -96,7 +96,7 @@ const STUDENT_TOUR: TourStep[] = [
       "One lesson, re-rendered for four different readers: plain language for a first-time candidate, the full method for the main run, strategy and traps for a repeat attempter, and a last-month recall version. A graduate and a school-leaver can sit in the same batch without one of them being lost.",
     placement: "right",
     icon: "mdi:text-box-multiple-outline",
-    color: "#0ea5e9",
+    color: "#1b4f8a",
   },
   {
     route: "/adaptive-courses/302/submodule/30201",
@@ -106,7 +106,7 @@ const STUDENT_TOUR: TourStep[] = [
       "Each topic ends in a quiz that adapts. Answer well and the next question gets harder, miss one and it steps back. It holds a confidence estimate per skill and stops as soon as it is sure of the level, rather than after a fixed twenty questions.",
     placement: "right",
     icon: "mdi:comment-question-outline",
-    color: "#7c3aed",
+    color: "#14406f",
   },
   {
     route: "/assessments",
@@ -116,7 +116,7 @@ const STUDENT_TOUR: TourStep[] = [
       "Timed papers built like the real thing, with sectional timing and negative marking where the exam has it, and proctoring when the Mission needs a result it can stand behind. Results break down by section, so a candidate learns which part of the syllabus cost them the marks.",
     placement: "right",
     icon: "mdi:clipboard-text-clock-outline",
-    color: "#0ea5e9",
+    color: "#1b4f8a",
   },
   {
     route: "/mock-interview",
@@ -126,7 +126,7 @@ const STUDENT_TOUR: TourStep[] = [
       "A practice interview board that follows up on the answer given rather than reading from a list, and scores clarity and structure as well as content. For a candidate who has never sat in front of a selection board, this is the part of the process nobody can prepare them for at home.",
     placement: "right",
     icon: "mdi:account-voice",
-    color: "#ec4899",
+    color: "#0f6b7a",
   },
   {
     route: "/jobs-v2",
@@ -136,7 +136,7 @@ const STUDENT_TOUR: TourStep[] = [
       "State and central recruitment notifications alongside the local employer openings the skill centres feed, with eligibility checked against the candidate's own profile so they are not applying into a wall.",
     placement: "right",
     icon: "mdi:briefcase-outline",
-    color: "#10b981",
+    color: "#0e7a3c",
   },
   {
     route: "/resume",
@@ -146,7 +146,7 @@ const STUDENT_TOUR: TourStep[] = [
       "Built from the profile and the work actually completed, then scored against a specific opening. For a first-generation graduate applying to a private employer after a trade course, this is often the missing document.",
     placement: "right",
     icon: "mdi:file-document-edit-outline",
-    color: "#14b8a6",
+    color: "#0f6b7a",
   },
   {
     route: "/live-sessions",
@@ -156,7 +156,7 @@ const STUDENT_TOUR: TourStep[] = [
       "Scheduled classes with the batch, in the centre's own timezone. Attendance is taken automatically, and recordings, transcripts and summaries attach themselves afterwards, so a trainee who was at work that evening is not written off.",
     placement: "right",
     icon: "mdi:video-outline",
-    color: "#3b82f6",
+    color: "#4a7fbb",
   },
   {
     route: "/community",
@@ -166,7 +166,7 @@ const STUDENT_TOUR: TourStep[] = [
       "Questions can carry a points bounty, which is the mechanism that gets them answered instead of sitting unread. Faculty answers are marked as such, so a wrong peer answer does not travel further than it should.",
     placement: "right",
     icon: "mdi:forum-outline",
-    color: "#8b5cf6",
+    color: "#4a7fbb",
   },
   {
     route: "/tickets",
@@ -185,7 +185,7 @@ const STUDENT_TOUR: TourStep[] = [
     narration:
       "Everything a candidate does feeds one scorecard: subject strength, consistency, mock performance and interview readiness, benchmarked against the batch. That is the artefact a selection board or an employer can actually read.",
     icon: "mdi:chart-box-outline",
-    color: "#22c55e",
+    color: "#0e7a3c",
   },
   {
     route: "/dashboard",
@@ -193,7 +193,7 @@ const STUDENT_TOUR: TourStep[] = [
     narration:
       "Every module is switched on and filled with data. Click anything. The question mark in any page header explains that page in detail, and the Guide button at the top restarts this tour.",
     icon: "mdi:compass-outline",
-    color: "#a78bfa",
+    color: "#85aad6",
   },
 ];
 
@@ -204,7 +204,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "This view is built around triage: who is falling behind, what is waiting to be marked, and what is on today. I will walk you through every part of it.",
     icon: "mdi:human-male-board",
-    color: "#a78bfa",
+    color: "#85aad6",
   },
   {
     route: "/instructor/dashboard",
@@ -213,7 +213,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "The top of the dashboard reads your batches and names the single highest-leverage thing to do today, usually the batch with the most candidates slipping rather than the newest notification.",
     icon: "mdi:clipboard-text-clock-outline",
-    color: "#7c3aed",
+    color: "#14406f",
   },
   {
     route: "/instructor/dashboard",
@@ -222,7 +222,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "Candidates taught, active batches, average progress and how many need a nudge. Every one is a link into the list behind it, so a number you distrust is one click from the people it counted.",
     icon: "mdi:counter",
-    color: "#f59e0b",
+    color: "#b7791f",
   },
   {
     route: "/instructor/students",
@@ -231,7 +231,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "Candidates are flagged with the rule that flagged them: under twenty-five percent progress, a week with no activity, two missed classes. A red badge with no reason is not something a faculty member can act on, so the reason travels with the flag.",
     icon: "mdi:account-alert-outline",
-    color: "#ef4444",
+    color: "#b32020",
   },
   {
     route: "/instructor/students",
@@ -240,7 +240,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "From any candidate you can send a nudge that reaches their dashboard and their inbox. Following up on a batch of sixty stops being a spreadsheet of phone numbers.",
     icon: "mdi:bell-ring-outline",
-    color: "#10b981",
+    color: "#0e7a3c",
   },
   {
     route: "/instructor/cohorts",
@@ -249,7 +249,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "Each batch carries its own progress, average score and at-risk count, so you can see which GROUP is struggling rather than only which individual is. You can message a whole batch from here.",
     icon: "mdi:account-group-outline",
-    color: "#6366f1",
+    color: "#1b4f8a",
   },
   {
     route: "/instructor/courses",
@@ -258,7 +258,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "The courses you own or are assigned to, with their published state and enrolment. Opening one takes you into the builder, where you add weeks, topics and content.",
     icon: "mdi:book-education-outline",
-    color: "#8b5cf6",
+    color: "#4a7fbb",
   },
   {
     route: "/instructor/assessments",
@@ -267,7 +267,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "Everything awaiting review surfaces here, including the descriptive answers that cannot be marked automatically. The pending count is a queue to work through, not a badge.",
     icon: "mdi:clipboard-check-outline",
-    color: "#f97316",
+    color: "#b45309",
   },
   {
     route: "/instructor/live-sessions",
@@ -276,7 +276,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "Host from here. Attendance is taken automatically, and the recording, transcript and summary attach themselves afterwards, so a trainee who missed the class is not dependent on you remembering.",
     icon: "mdi:video-outline",
-    color: "#0ea5e9",
+    color: "#1b4f8a",
   },
   {
     route: "/instructor/analytics",
@@ -285,7 +285,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "Where the batch is spending time and where it is stalling, broken down by activity type and by week. This is the view that tells you which lesson to rewrite before the next intake.",
     icon: "mdi:chart-box-outline",
-    color: "#22c55e",
+    color: "#0e7a3c",
   },
   {
     route: "/instructor/tickets",
@@ -302,7 +302,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     narration:
       "Spot who is slipping, act on it, teach, mark, and see whether it worked. Every panel here exists to shorten one of those steps. Restart this tour any time from Guide in the top bar.",
     icon: "mdi:check-circle-outline",
-    color: "#a78bfa",
+    color: "#85aad6",
   },
 ];
 
@@ -313,7 +313,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "This is the programme officer's view. It answers the question a centre visit cannot answer: is this working, and for whom. I will show you every part.",
     icon: "mdi:shield-crown-outline",
-    color: "#a78bfa",
+    color: "#85aad6",
   },
   {
     route: "/admin/dashboard",
@@ -322,7 +322,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Each tile carries its own definition. These figures end up in review meetings and utilisation reports, and a metric that cannot say what it measured gets read with whichever meaning is most flattering.",
     icon: "mdi:information-outline",
-    color: "#6366f1",
+    color: "#1b4f8a",
   },
   {
     route: "/admin/dashboard",
@@ -331,7 +331,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "At-risk candidates are listed with the rules that flagged them, ranked by how many fired. It is a worklist for the centre, not a warning light on a wall.",
     icon: "mdi:account-alert-outline",
-    color: "#ef4444",
+    color: "#b32020",
   },
   {
     route: "/admin/dashboard",
@@ -340,7 +340,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "When candidates actually study, which activity types they favour, and how consistent they are. The heatmap usually shows early mornings and late evenings, which is what a cohort holding down daily work really looks like.",
     icon: "mdi:chart-timeline-variant",
-    color: "#0ea5e9",
+    color: "#1b4f8a",
   },
   {
     route: "/admin/dashboard",
@@ -349,7 +349,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Activation and completion per course, with a week-by-week drop-off curve. That curve names which week of which course is losing people, which is the thing a programme officer can actually fix.",
     icon: "mdi:chart-areaspline",
-    color: "#f59e0b",
+    color: "#b7791f",
   },
   {
     route: "/admin/manage-students",
@@ -358,7 +358,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Search, filter and open any candidate. A candidate page shows the whole journey: courses, activity, mock tests, interviews and time on the platform, which is what a district review actually asks for.",
     icon: "mdi:account-multiple-outline",
-    color: "#8b5cf6",
+    color: "#4a7fbb",
   },
   {
     route: "/admin/cohorts",
@@ -367,7 +367,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Group candidates by centre, district or intake for scheduling and reporting. Assigning a course to a batch enrols everyone in it, and keeps enrolling people who join later.",
     icon: "mdi:account-group-outline",
-    color: "#6366f1",
+    color: "#1b4f8a",
   },
   {
     route: "/admin/instructors",
@@ -376,7 +376,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Add faculty and trainers and scope them to the courses, batches and classes they own. A trainer at one skill centre only ever sees the candidates they are responsible for.",
     icon: "mdi:human-male-board",
-    color: "#ec4899",
+    color: "#0f6b7a",
   },
   {
     route: "/admin/adaptive-courses",
@@ -385,7 +385,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Describe a course and the engine assembles the weeks, lessons, quizzes and practical assignments. You review it, edit anything, and publish when it is ready. Nothing reaches candidates unapproved.",
     icon: "mdi:book-cog-outline",
-    color: "#a855f7",
+    color: "#1b4f8a",
   },
   {
     route: "/admin/assessment",
@@ -394,7 +394,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Build formal papers, set duration and proctoring, and review submissions. Drafts stay invisible to candidates until you publish them.",
     icon: "mdi:clipboard-text-clock-outline",
-    color: "#0ea5e9",
+    color: "#1b4f8a",
   },
   {
     route: "/admin/live-sessions",
@@ -403,7 +403,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Schedule classes for a batch, one-off or recurring, in the Mission's own timezone. Attendance and recordings are captured without anyone at the centre remembering to press a button.",
     icon: "mdi:video-outline",
-    color: "#3b82f6",
+    color: "#4a7fbb",
   },
   {
     route: "/admin/jobs-v2",
@@ -412,7 +412,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Publish recruitment notifications and employer openings, set eligibility, and track applications through to selection. This is the module that turns a completed course into an outcome the Mission can report.",
     icon: "mdi:briefcase-outline",
-    color: "#10b981",
+    color: "#0e7a3c",
   },
   {
     route: "/admin/emails",
@@ -421,7 +421,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Send to a batch, a district or a filtered segment, and see delivery and open rates per campaign rather than guessing whether the notification reached anyone.",
     icon: "mdi:email-outline",
-    color: "#f97316",
+    color: "#b45309",
   },
   {
     route: "/admin/tickets",
@@ -442,7 +442,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "Logo, wordmark, sign-in copy, timezone and integrations. Everything a candidate sees carries the Mission's name and not a vendor's, which is what a citizen-facing service has to do.",
     icon: "mdi:palette-outline",
-    color: "#22c55e",
+    color: "#0e7a3c",
   },
   {
     route: "/admin/dashboard",
@@ -450,7 +450,7 @@ const ADMIN_TOUR: TourStep[] = [
     narration:
       "People, content, delivery and outcomes, with the evidence behind each one. Restart this tour any time from Guide in the top bar.",
     icon: "mdi:check-circle-outline",
-    color: "#a78bfa",
+    color: "#85aad6",
   },
 ];
 

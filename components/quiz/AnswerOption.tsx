@@ -43,18 +43,18 @@ export const AnswerOption = memo(function AnswerOption({
   // The "selected" state still gets a subtle resting box-shadow for visual feedback.
   const interactive = !isSubmitting && !isReadOnly;
   const borderColor = isCorrect
-    ? "#10b981"
+    ? "#0e7a3c"
     : isWrongSelection
-    ? "#ef4444"
+    ? "#b32020"
     : isSelected
-    ? "#6366f1"
+    ? "#1b4f8a"
     : "#e5e7eb";
   const backgroundColor = isCorrect
     ? "#f0fdf4"
     : isWrongSelection
-    ? "#fef2f2"
+    ? "#fdf5f5"
     : isSelected
-    ? "#eff6ff"
+    ? "#eef3fa"
     : "#ffffff";
   return (
     <Paper
@@ -71,12 +71,12 @@ export const AnswerOption = memo(function AnswerOption({
         transition: "border-color 0.15s ease-out, background-color 0.15s ease-out",
         position: "relative",
         boxShadow: isSelected
-          ? "0 2px 8px 0 rgba(99, 102, 241, 0.15)"
+          ? "var(--shadow-sm)"
           : "none",
         ...(interactive && {
           "&:hover": {
-            borderColor: isSelected ? "#4f46e5" : "#6366f1",
-            backgroundColor: isSelected ? "#dbeafe" : "#f9fafb",
+            borderColor: isSelected ? "#12365f" : "#1b4f8a",
+            backgroundColor: isSelected ? "#d9e6f4" : "#f9fafb",
           },
         }),
       }}
@@ -94,7 +94,7 @@ export const AnswerOption = memo(function AnswerOption({
             sx={{
               fontWeight: isSelected || isCorrect ? 600 : 500,
               color: isSelected
-                ? "#1e40af"
+                ? "#12365f"
                 : isCorrect
                 ? "#065f46"
                 : isWrongSelection
@@ -112,7 +112,7 @@ export const AnswerOption = memo(function AnswerOption({
             sx={{
               fontWeight: isSelected || isCorrect ? 600 : 500,
               color: isSelected
-                ? "#1e40af"
+                ? "#12365f"
                 : isCorrect
                 ? "#065f46"
                 : isWrongSelection
@@ -133,7 +133,7 @@ export const AnswerOption = memo(function AnswerOption({
                 width: 24,
                 height: 24,
                 borderRadius: "50%",
-                backgroundColor: "#10b981",
+                backgroundColor: "#0e7a3c",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -151,7 +151,7 @@ export const AnswerOption = memo(function AnswerOption({
                 width: 24,
                 height: 24,
                 borderRadius: "50%",
-                backgroundColor: "#ef4444",
+                backgroundColor: "#b32020",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -169,7 +169,7 @@ export const AnswerOption = memo(function AnswerOption({
                 width: 24,
                 height: 24,
                 borderRadius: "50%",
-                backgroundColor: "#6366f1",
+                backgroundColor: "#1b4f8a",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

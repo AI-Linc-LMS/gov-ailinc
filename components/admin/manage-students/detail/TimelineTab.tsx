@@ -11,12 +11,19 @@ import type {
 import { ADAPTIVE, EmptyState, formatDateTime } from "./shared";
 
 const TYPE_META: Record<string, { icon: string; color: string; label: string }> = {
-  content: { icon: "mdi:book-check", color: ADAPTIVE.indigo, label: "Course content" },
-  assessment: { icon: "mdi:clipboard-text", color: ADAPTIVE.green, label: "Assessment" },
-  mock_interview: { icon: "mdi:account-voice", color: ADAPTIVE.amber, label: "Mock interview" },
-  adaptive_quiz: { icon: "mdi:lightbulb-on", color: ADAPTIVE.indigo, label: "Adaptive quiz" },
-  adaptive_coding: { icon: "mdi:code-braces", color: ADAPTIVE.pink, label: "Adaptive coding" },
-  adaptive_video: { icon: "mdi:play-circle", color: ADAPTIVE.purple, label: "Video companion" },
+  // Three of these six were the same colour: ADAPTIVE.indigo and ADAPTIVE.purple are both
+  // #1b4f8a, so content, adaptive_quiz and adaptive_video were indistinguishable. The
+  // categorical slots in order instead. The four kinds this catalogue actually produces -
+  // content, assessment, mock interview, adaptive quiz - are the all-pairs-safe first four
+  // (worst normal-vision dE 17.4). The last two are kept distinct but sit closer together;
+  // no course here contains coding or video, and every row carries its icon and its label,
+  // so none of this rests on hue.
+  content: { icon: "mdi:book-check", color: "#1b4f8a", label: "Course content" },
+  assessment: { icon: "mdi:clipboard-text", color: "#0e7a3c", label: "Assessment" },
+  mock_interview: { icon: "mdi:account-voice", color: "#b7791f", label: "Mock interview" },
+  adaptive_quiz: { icon: "mdi:lightbulb-on", color: "#6b4423", label: "Adaptive quiz" },
+  adaptive_coding: { icon: "mdi:code-braces", color: "#0f6b7a", label: "Adaptive coding" },
+  adaptive_video: { icon: "mdi:play-circle", color: "#85aad6", label: "Video companion" },
 };
 
 // Course-content category → icon/color/labels for the weekly view.
@@ -24,11 +31,15 @@ const CATEGORY_META: Record<
   string,
   { icon: string; color: string; one: string; many: string }
 > = {
-  article: { icon: "mdi:file-document-outline", color: ADAPTIVE.indigo, one: "article", many: "articles" },
-  video: { icon: "mdi:play-circle-outline", color: ADAPTIVE.purple, one: "video", many: "videos" },
-  quiz: { icon: "mdi:help-circle-outline", color: ADAPTIVE.green, one: "quiz", many: "quizzes" },
-  coding: { icon: "mdi:code-braces", color: ADAPTIVE.pink, one: "coding problem", many: "coding problems" },
-  other: { icon: "mdi:dots-horizontal-circle-outline", color: "#94a3b8", one: "other", many: "others" },
+  // On the government palette ADAPTIVE.purple and ADAPTIVE.indigo are both #1b4f8a, so article
+  // and video were being drawn in exactly the same colour. These are the categorical slots in
+  // order instead; "other" stays a neutral because it is the leftover bucket, not a fifth
+  // category. Every entry ships an icon and a written label, so hue is never the only signal.
+  article: { icon: "mdi:file-document-outline", color: "#1b4f8a", one: "article", many: "articles" },
+  video: { icon: "mdi:play-circle-outline", color: "#b7791f", one: "video", many: "videos" },
+  quiz: { icon: "mdi:help-circle-outline", color: "#0e7a3c", one: "quiz", many: "quizzes" },
+  coding: { icon: "mdi:code-braces", color: "#6b4423", one: "coding problem", many: "coding problems" },
+  other: { icon: "mdi:dots-horizontal-circle-outline", color: "#6b7684", one: "other", many: "others" },
 };
 const CATEGORY_ORDER = ["article", "video", "quiz", "coding", "other"];
 
@@ -269,7 +280,7 @@ function ActivityFeed({ timeline }: { timeline: JourneyTimelineEntry[] }) {
       {timeline.map((e, i) => {
         const meta = TYPE_META[e.type] || {
           icon: "mdi:circle",
-          color: "#94a3b8",
+          color: "#6b7684",
           label: e.type,
         };
         const isLast = i === timeline.length - 1;

@@ -89,7 +89,7 @@ export const CourseCard = memo(
           transition: "all 0.3s ease",
           position: "relative",
           "&:hover": {
-            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
+            boxShadow: "var(--shadow-md)",
             borderColor: isEnrolled
               ? "color-mix(in srgb, var(--primary-500) 48%, transparent)"
               : "var(--primary-500)",
@@ -334,12 +334,12 @@ export const CourseCard = memo(
                 textTransform: "none",
                 fontSize: "0.875rem",
                 boxShadow:
-                  "0 4px 14px 0 color-mix(in srgb, var(--primary-500) 40%, transparent)",
+                  "var(--shadow-sm)",
                 "&:hover": {
                   backgroundColor: "var(--primary-700)",
                   boxShadow:
-                    "0 6px 20px 0 color-mix(in srgb, var(--primary-500) 52%, transparent)",
-                  transform: "translateY(-2px)",
+                    "var(--shadow-md)",
+                  transform: "translateY(-1px)",
                 },
               }}
             >

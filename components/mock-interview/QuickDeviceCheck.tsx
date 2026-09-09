@@ -409,7 +409,7 @@ export function QuickDeviceCheck({ onStatus }: Props) {
         <Icon
           icon={ok ? "mdi:check-circle" : "mdi:close-circle"}
           width={15}
-          color={ok ? "#4ade80" : "#f87171"}
+          color={ok ? "#2f9159" : "#c94b4b"}
         />
       )}
       <Typography sx={{ fontSize: "0.74rem", color: "rgba(255,255,255,0.75)" }}>{label}</Typography>
@@ -466,22 +466,22 @@ export function QuickDeviceCheck({ onStatus }: Props) {
           <Box sx={{ height: 6, borderRadius: 999, bgcolor: "rgba(255,255,255,0.08)", overflow: "hidden" }}>
             <Box
               ref={levelRef}
-              sx={{ height: "100%", width: 0, borderRadius: 999, bgcolor: "#22c55e", transition: "width 80ms linear" }}
+              sx={{ height: "100%", width: 0, borderRadius: 999, bgcolor: "#0e7a3c", transition: "width 80ms linear" }}
             />
           </Box>
 
           {serviceOk === false && !status.speechOk && (
-            <Typography sx={{ fontSize: "0.7rem", color: "#fcd34d" }}>
+            <Typography sx={{ fontSize: "0.7rem", color: "#d9b169" }}>
               Server speech service is unavailable - the mic test will rely on your browser&apos;s
               own recognition.
             </Typography>
           )}
           {status.speechOk ? (
-            <Typography sx={{ fontSize: "0.76rem", color: "#86efac" }}>
+            <Typography sx={{ fontSize: "0.76rem", color: "#a8d6bb" }}>
               Heard you loud and clear{heard ? `: “${heard}”` : ""} - you&apos;re all set.
             </Typography>
           ) : status.mic === false ? (
-            <Typography sx={{ fontSize: "0.76rem", color: "#fca5a5" }}>
+            <Typography sx={{ fontSize: "0.76rem", color: "#d99b9b" }}>
               Microphone unavailable. Allow mic access in your browser (padlock icon in the address bar), then reload -
               or start the interview and type your answers.
             </Typography>
@@ -503,15 +503,15 @@ export function QuickDeviceCheck({ onStatus }: Props) {
                   textTransform: "none",
                   fontWeight: 700,
                   fontSize: "0.74rem",
-                  color: "#c4b5fd",
-                  borderColor: "rgba(196,181,253,0.5)",
-                  "&:hover": { borderColor: "#c4b5fd" },
+                  color: "#b6cde8",
+                  borderColor: "rgba(133,170,214,0.5)",
+                  "&:hover": { borderColor: "#b6cde8" },
                 }}
               >
                 {testing ? "Listening - say anything…" : transcribing ? "Checking…" : testFailed ? "Try the mic test again" : "Test my mic - say anything"}
               </Button>
               {testFailed && (
-                <Typography sx={{ fontSize: "0.72rem", color: "#fca5a5" }}>
+                <Typography sx={{ fontSize: "0.72rem", color: "#d99b9b" }}>
                   {failMessage || "Didn't catch anything - check your input device and try again."}
                 </Typography>
               )}

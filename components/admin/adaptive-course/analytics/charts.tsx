@@ -45,16 +45,23 @@ const dateKey = (d: Date) =>
 
 export function KpiRail({ k }: { k: StudentAnalytics["kpis"] }) {
   const p = useVizPalette();
-  // The coloured icon ties each tile to its series; no accent rail - a bar on a card encodes
-  // nothing the icon doesn't. Never a STATUS hue here: that would imply good/bad, and status
-  // tokens are reserved for the verdict and the risk signals.
+  // The coloured icon ties each tile to its metric; no accent rail - a bar on a card encodes
+  // nothing the icon doesn't. Every accent here clears 3:1 against the card, which a 14px
+  // icon needs, so light blue (2.41:1) is deliberately not among them.
+  //
+  // This used to read "never a STATUS hue here". On the government palette that rule cannot
+  // be kept literally: sanctioned green is BOTH the good/complete status token and the
+  // second categorical slot, so mastery's green is unavoidably the status green. The rule
+  // it is replaced by: a KPI accent never encodes a verdict on its own - the tile always
+  // states the number and its sub-label, and no tile changes colour with its value.
+  // Gold appears once, on Points, which is the merit reading the palette reserves it for.
   const tiles: { label: string; value: number; suffix?: string; sub: string; icon: string; accent: string }[] = [
     { label: "Completion", value: Math.round(k.completion_pct), suffix: "%", sub: `${k.completed}/${k.total} items`, icon: "mdi:progress-check", accent: p.series.quiz },
-    { label: "Mastery", value: Math.round(k.mastery_pct), suffix: "%", sub: "can actually do it", icon: "mdi:brain", accent: p.series.video },
-    { label: "Points", value: k.points, sub: k.points_tier || "no tier yet", icon: "mdi:trophy-outline", accent: "#a855f7" },
-    { label: "Streak", value: k.streak_current, suffix: "d", sub: `best ${k.streak_longest}d`, icon: "mdi:fire", accent: p.series.coding },
-    { label: "Time on task", value: Math.round(k.time_on_task_minutes), suffix: "m", sub: `${k.activities_logged} activities`, icon: "mdi:clock-outline", accent: "#0ea5e9" },
-    { label: "Active days", value: k.active_days, sub: "days with activity", icon: "mdi:calendar-check-outline", accent: "#6366f1" },
+    { label: "Mastery", value: Math.round(k.mastery_pct), suffix: "%", sub: "can actually do it", icon: "mdi:brain", accent: p.series.coding },
+    { label: "Points", value: k.points, sub: k.points_tier || "no tier yet", icon: "mdi:trophy-outline", accent: "#b7791f" },
+    { label: "Streak", value: k.streak_current, suffix: "d", sub: `best ${k.streak_longest}d`, icon: "mdi:fire", accent: "#6b4423" },
+    { label: "Time on task", value: Math.round(k.time_on_task_minutes), suffix: "m", sub: `${k.activities_logged} activities`, icon: "mdi:clock-outline", accent: "#0f6b7a" },
+    { label: "Active days", value: k.active_days, sub: "days with activity", icon: "mdi:calendar-check-outline", accent: "#4a5563" },
   ];
 
   return (
@@ -89,10 +96,10 @@ export function KpiRail({ k }: { k: StudentAnalytics["kpis"] }) {
           {/* Hero figures: proportional digits, never tabular-nums at display size. */}
           <Typography sx={{ fontSize: { xs: "1.6rem", md: "1.85rem" }, fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1.05, color: "var(--font-primary)" }}>
             {t.value.toLocaleString()}
-            {t.suffix && <Box component="span" sx={{ fontSize: "0.9rem", fontWeight: 700, ml: 0.25, color: "var(--font-tertiary,#8b8b98)" }}>{t.suffix}</Box>}
+            {t.suffix && <Box component="span" sx={{ fontSize: "0.9rem", fontWeight: 700, ml: 0.25, color: "var(--font-tertiary,#6b7684)" }}>{t.suffix}</Box>}
           </Typography>
           {/* The relief rule applied to KPIs: the detail is on the tile, not in a tooltip. */}
-          <Typography sx={{ fontSize: "0.72rem", color: "var(--font-tertiary,#8b8b98)", mt: 0.25 }}>{t.sub}</Typography>
+          <Typography sx={{ fontSize: "0.72rem", color: "var(--font-tertiary,#6b7684)", mt: 0.25 }}>{t.sub}</Typography>
         </Box>
       ))}
     </Box>
@@ -148,7 +155,7 @@ function Ring({ value, color, label, sub, surface }: { value: number; color: str
     <Box sx={{ textAlign: "center" }}>
       <Box sx={{ position: "relative", width: 116, height: 116, mx: "auto" }}>
         <svg width={116} height={116} role="img" aria-label={`${label} ${Math.round(value)}%`}>
-          <circle cx={58} cy={58} r={r} fill="none" stroke={surface === "#ffffff" ? "#eceaf3" : "#2c2c2a"} strokeWidth={9} />
+          <circle cx={58} cy={58} r={r} fill="none" stroke={surface === "#ffffff" ? "#eef1f5" : "#12365f"} strokeWidth={9} />
           <circle
             cx={58} cy={58} r={r} fill="none" stroke={color} strokeWidth={9} strokeLinecap="round"
             strokeDasharray={`${dash} ${c - dash}`} transform="rotate(-90 58 58)"
@@ -159,7 +166,7 @@ function Ring({ value, color, label, sub, surface }: { value: number; color: str
         </Box>
       </Box>
       <Typography sx={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--font-primary)", mt: 0.5 }}>{label}</Typography>
-      <Typography sx={{ fontSize: "0.72rem", color: "var(--font-tertiary,#8b8b98)" }}>{sub}</Typography>
+      <Typography sx={{ fontSize: "0.72rem", color: "var(--font-tertiary,#6b7684)" }}>{sub}</Typography>
     </Box>
   );
 }
@@ -191,7 +198,7 @@ export function MasteryVsCompletion({ d, featured }: { d: StudentAnalytics["mast
             </Typography>
           )}
           {total === 0 ? (
-            <Typography sx={{ fontSize: "0.78rem", color: "var(--font-tertiary,#8b8b98)" }}>No skills assessed yet.</Typography>
+            <Typography sx={{ fontSize: "0.78rem", color: "var(--font-tertiary,#6b7684)" }}>No skills assessed yet.</Typography>
           ) : (
             MASTERY_LADDER.slice().reverse().map((l, i) => {
               const n = d.levels[l.key as keyof typeof d.levels] || 0;
@@ -356,12 +363,12 @@ export function ActivityHeatmap({ cells, featured }: { cells: StudentAnalytics["
             </svg>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mt: 1.25 }}>
-            <Typography sx={{ fontSize: "0.68rem", color: "var(--font-tertiary,#8b8b98)", mr: 0.5 }}>Less</Typography>
+            <Typography sx={{ fontSize: "0.68rem", color: "var(--font-tertiary,#6b7684)", mr: 0.5 }}>Less</Typography>
             <Box sx={{ width: 11, height: 11, borderRadius: 0.5, bgcolor: emptyCell(p) }} />
             {p.sequential.map((c) => (
               <Box key={c} sx={{ width: 11, height: 11, borderRadius: 0.5, bgcolor: c }} />
             ))}
-            <Typography sx={{ fontSize: "0.68rem", color: "var(--font-tertiary,#8b8b98)", ml: 0.5 }}>More</Typography>
+            <Typography sx={{ fontSize: "0.68rem", color: "var(--font-tertiary,#6b7684)", ml: 0.5 }}>More</Typography>
           </Box>
         </Box>
       )}
@@ -640,7 +647,7 @@ export function CodingInsights({ c }: { c: StudentAnalytics["coding"] }) {
         ].map((s) => (
           <Box key={s.l} sx={{ textAlign: "center", p: 1, borderRadius: 2, bgcolor: "color-mix(in srgb, var(--border-default) 25%, transparent)" }}>
             <Typography sx={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--font-primary)" }}>{s.v}</Typography>
-            <Typography sx={{ fontSize: "0.68rem", color: "var(--font-tertiary,#8b8b98)" }}>{s.l}</Typography>
+            <Typography sx={{ fontSize: "0.68rem", color: "var(--font-tertiary,#6b7684)" }}>{s.l}</Typography>
           </Box>
         ))}
       </Box>
@@ -719,14 +726,14 @@ export function ActivityTimeline({ rows }: { rows: StudentAnalytics["timeline"] 
       ) : (
         <Box sx={{ maxHeight: 300, overflowY: "auto", pr: 0.5 }}>
           {rows.map((r, i) => (
-            <Box key={`${r.at}-${i}`} sx={{ display: "flex", gap: 1.25, alignItems: "center", py: 0.9, borderBottom: i < rows.length - 1 ? "1px solid var(--border-default,#ececf1)" : "none" }}>
+            <Box key={`${r.at}-${i}`} sx={{ display: "flex", gap: 1.25, alignItems: "center", py: 0.9, borderBottom: i < rows.length - 1 ? "1px solid var(--border-default,#dde3eb)" : "none" }}>
               <Box sx={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, bgcolor: p.series[r.activity_type as keyof typeof p.series] ?? p.inkMuted }} />
               <Box sx={{ minWidth: 0, flex: 1 }}>
                 <Typography sx={{ fontSize: "0.78rem", color: "var(--font-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {ACTIVITY_LABEL[r.activity_type] ?? r.activity_type}
                   {r.content_key ? ` · ${r.content_key}` : ""}
                 </Typography>
-                <Typography sx={{ fontSize: "0.7rem", color: "var(--font-tertiary,#8b8b98)" }}>
+                <Typography sx={{ fontSize: "0.7rem", color: "var(--font-tertiary,#6b7684)" }}>
                   {new Date(r.at).toLocaleString()} {r.difficulty ? `· ${r.difficulty}` : ""} {r.attempt_no > 1 ? `· attempt ${r.attempt_no}` : ""}
                 </Typography>
               </Box>
@@ -788,7 +795,7 @@ export function CohortComparison({
               <Box sx={{ position: "absolute", inset: 0, width: `${r.pct}%`, borderRadius: 999, bgcolor: p.series.quiz }} />
             </Box>
             {/* Direct labels, not a tooltip-only value - the relief rule. */}
-            <Typography sx={{ fontSize: "0.7rem", color: "var(--font-tertiary,#8b8b98)", mt: 0.4 }}>
+            <Typography sx={{ fontSize: "0.7rem", color: "var(--font-tertiary,#6b7684)", mt: 0.4 }}>
               This student <strong>{r.me}{r.unit}</strong> · cohort average {r.avg}{r.unit}
             </Typography>
           </Box>

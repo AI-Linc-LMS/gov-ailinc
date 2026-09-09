@@ -46,7 +46,7 @@ export function ChartCard({
         bgcolor: "var(--card-bg, #fff)",
         border: "1px solid color-mix(in srgb, var(--border-default) 80%, transparent)",
         boxShadow: featured
-          ? "0 1px 2px rgba(16,24,40,0.04), 0 10px 26px -22px rgba(16,24,40,0.18)"
+          ? "var(--shadow-sm)"
           : "none",
         display: "flex",
         flexDirection: "column",
@@ -54,14 +54,14 @@ export function ChartCard({
         transition: "box-shadow 160ms ease, border-color 160ms ease, transform 160ms ease",
         "&:hover": {
           transform: "translateY(-1px)",
-          boxShadow: "0 6px 24px rgba(15,15,35,0.06)",
+          boxShadow: "var(--shadow-md)",
           borderColor: "color-mix(in srgb, var(--border-default) 55%, transparent)",
         },
       }}
     >
       <Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 1, mb: subtitle ? 0.25 : 1.25 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, minWidth: 0 }}>
-          {icon && <IconWrapper icon={icon} size={18} color="var(--font-tertiary, #8b8b98)" />}
+          {icon && <IconWrapper icon={icon} size={18} color="var(--font-tertiary, #6b7684)" />}
           <Typography sx={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--font-primary)" }}>{title}</Typography>
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flexShrink: 0 }}>
@@ -76,7 +76,7 @@ export function ChartCard({
         </Box>
       </Box>
       {subtitle && (
-        <Typography sx={{ fontSize: "0.78rem", color: "var(--font-tertiary, #8b8b98)", mb: 1.25, lineHeight: 1.45 }}>
+        <Typography sx={{ fontSize: "0.78rem", color: "var(--font-tertiary, #6b7684)", mb: 1.25, lineHeight: 1.45 }}>
           {subtitle}
         </Typography>
       )}
@@ -132,10 +132,10 @@ export function EmptyState({ message = "No activity recorded yet." }: { message?
         alignItems: "center",
         justifyContent: "center",
         gap: 0.75,
-        color: "var(--font-tertiary, #8b8b98)",
+        color: "var(--font-tertiary, #6b7684)",
       }}
     >
-      <IconWrapper icon="mdi:chart-line-variant" size={26} color="var(--font-tertiary, #8b8b98)" />
+      <IconWrapper icon="mdi:chart-line-variant" size={26} color="var(--font-tertiary, #6b7684)" />
       <Typography sx={{ fontSize: "0.8rem" }}>{message}</Typography>
     </Box>
   );
@@ -145,10 +145,10 @@ export function EmptyState({ message = "No activity recorded yet." }: { message?
 export const tooltipStyles = {
   contentStyle: {
     background: "var(--card-bg, #fff)",
-    border: "1px solid var(--border-default, #ececf1)",
+    border: "1px solid var(--border-default, #dde3eb)",
     borderRadius: 10,
     fontSize: "0.75rem",
-    boxShadow: "0 6px 24px rgba(0,0,0,0.10)",
+    boxShadow: "var(--shadow-sm)",
   },
-  labelStyle: { color: "var(--font-secondary, #52514e)", fontWeight: 600, marginBottom: 2 },
+  labelStyle: { color: "var(--font-secondary, #4a5563)", fontWeight: 600, marginBottom: 2 },
 } as const;

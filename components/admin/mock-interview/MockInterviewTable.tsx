@@ -82,7 +82,7 @@ export function MockInterviewTable({
         sx={{
           borderRadius: 2,
           boxShadow:
-            "0 1px 3px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+            "var(--shadow-sm)",
           overflow: "hidden",
         }}
       >
@@ -98,7 +98,7 @@ export function MockInterviewTable({
       sx={{
         borderRadius: 2,
         boxShadow:
-          "0 1px 3px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+          "var(--shadow-sm)",
         overflow: "hidden",
         backgroundColor: "var(--card-bg)",
       }}

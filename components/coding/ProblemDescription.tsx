@@ -62,10 +62,10 @@ export function ProblemDescription({
             sx={{
               backgroundColor:
                 problemData.details.difficulty_level === "Easy"
-                  ? "#10b981"
+                  ? "#0e7a3c"
                   : problemData.details.difficulty_level === "Medium"
-                  ? "#f59e0b"
-                  : "#ef4444",
+                  ? "#b7791f"
+                  : "#b32020",
               color: "#ffffff",
               fontWeight: 600,
               fontSize: "0.875rem",
@@ -85,7 +85,7 @@ export function ProblemDescription({
             label={`Obtained: ${obtainedMarks}`}
             size="medium"
             sx={{
-              backgroundColor: "#6366f1",
+              backgroundColor: "#1b4f8a",
               color: "#ffffff",
               fontWeight: 600,
               fontSize: "0.875rem",
@@ -111,8 +111,8 @@ export function ProblemDescription({
                   label={tag.trim()}
                   size="small"
                   sx={{
-                    backgroundColor: "#e0e7ff",
-                    color: "#4338ca",
+                    backgroundColor: "#d9e6f4",
+                    color: "#0e2a4b",
                     fontWeight: 500,
                     fontSize: "0.75rem",
                   }}

@@ -71,7 +71,7 @@ const NaukriJobSearchBarComponent = ({
 
   return (
     <Paper
-      elevation={2}
+      elevation={0}
       sx={{
         display: "flex",
         alignItems: "stretch",
@@ -80,7 +80,7 @@ const NaukriJobSearchBarComponent = ({
         backgroundColor: "var(--card-bg)",
         border: "1px solid",
         borderColor: "var(--card-bg)",
-        boxShadow: "0 4px 14px color-mix(in srgb, var(--font-primary) 8%, transparent)",
+        boxShadow: "var(--shadow-sm)",
         flexDirection: { xs: "column", sm: "row" },
       }}
     >

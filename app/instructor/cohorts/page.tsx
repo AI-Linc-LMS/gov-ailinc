@@ -11,10 +11,10 @@ import { instructorService, type InstructorCohortDetail } from "@/lib/services/i
 import { getAxiosErrorDetail } from "@/lib/utils/api-error";
 
 const GRADS = [
-  "linear-gradient(120deg,#6366f1,#f59e0b)",
-  "linear-gradient(120deg,#a855f7,#ec4899)",
-  "linear-gradient(120deg,#6366f1,#8b5cf6)",
-  "linear-gradient(120deg,#0ea5e9,#6366f1)",
+  "linear-gradient(120deg,#1b4f8a,#b7791f)",
+  "linear-gradient(120deg,#1b4f8a,#0f6b7a)",
+  "linear-gradient(120deg,#1b4f8a,#4a7fbb)",
+  "linear-gradient(120deg,#1b4f8a,#1b4f8a)",
 ];
 
 function fmtEnd(d: string | null): string {
@@ -130,9 +130,9 @@ export default function InstructorCohortsPage() {
 
       {/* Assignment banner */}
       <Box sx={{ mb: 3, p: 2, borderRadius: 3, display: "flex", flexWrap: "wrap", gap: 1.5, alignItems: "center",
-        justifyContent: "space-between", bgcolor: "color-mix(in srgb,#6366f1 8%,transparent)",
-        border: "1px solid color-mix(in srgb,#6366f1 22%,transparent)" }}>
-        <Stack direction="row" spacing={1} alignItems="center" sx={{ color: "#4f46e5" }}>
+        justifyContent: "space-between", bgcolor: "color-mix(in srgb,#1b4f8a 8%,transparent)",
+        border: "1px solid color-mix(in srgb,#1b4f8a 22%,transparent)" }}>
+        <Stack direction="row" spacing={1} alignItems="center" sx={{ color: "#12365f" }}>
           <Icon icon="mdi:information-outline" width={18} />
           <Typography sx={{ fontWeight: 600, fontSize: "0.9rem" }}>
             Cohort rosters are assigned by your admin. Students join using your instructor code
@@ -140,10 +140,10 @@ export default function InstructorCohortsPage() {
           </Typography>
         </Stack>
         <Button href="/tickets" startIcon={<Icon icon="mdi:headset" width={16} />}
-          sx={{ textTransform: "none", fontWeight: 700, color: "#6366f1" }}>Request a change</Button>
+          sx={{ textTransform: "none", fontWeight: 700, color: "#1b4f8a" }}>Request a change</Button>
       </Box>
 
-      {error && <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
+      {error && <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
       {!error && !loading && cohorts.length === 0 && (
         <Box sx={{ p: 4, textAlign: "center", borderRadius: 3, border: "1px dashed var(--border-default)" }}>
           <Typography sx={{ color: "text.secondary" }}>No cohorts assigned yet. An admin can assign you to a cohort.</Typography>
@@ -190,7 +190,7 @@ export default function InstructorCohortsPage() {
                         size="small"
                         label={co.title}
                         sx={{ fontWeight: 700, fontSize: "0.7rem", height: 22,
-                              bgcolor: "color-mix(in srgb,#6366f1 12%,transparent)", color: "#4f46e5" }}
+                              bgcolor: "color-mix(in srgb,#1b4f8a 12%,transparent)", color: "#12365f" }}
                       />
                     ))
                   )}
@@ -217,7 +217,7 @@ export default function InstructorCohortsPage() {
                     { n: c.at_risk, l: "at risk", d: c.at_risk > 0 },
                   ].map((s, j) => (
                     <Box key={s.l} sx={{ p: 1.5, textAlign: "center", borderLeft: j ? "1px solid var(--border-default)" : "none" }}>
-                      <Typography sx={{ fontWeight: 900, fontSize: "1.2rem", color: s.d ? "#ef4444" : "var(--font-primary)" }}>{s.n}</Typography>
+                      <Typography sx={{ fontWeight: 900, fontSize: "1.2rem", color: s.d ? "#b32020" : "var(--font-primary)" }}>{s.n}</Typography>
                       <Typography sx={{ fontSize: "0.62rem", color: "text.secondary", textTransform: "uppercase", letterSpacing: 0.4 }}>{s.l}</Typography>
                     </Box>
                   ))}
@@ -228,11 +228,11 @@ export default function InstructorCohortsPage() {
                     onMouseEnter={() => prefetch(`/instructor/cohorts/${c.id}`)}
                     endIcon={<Icon icon="mdi:arrow-right" width={18} />}
                     sx={{ py: 1.1, borderRadius: 2.5, fontWeight: 800, textTransform: "none", color: "#fff",
-                      background: "linear-gradient(135deg,#7c3aed,#ec4899)", "&:hover": { filter: "brightness(1.06)" } }}>
+                      background: "linear-gradient(135deg,#14406f,#0f6b7a)", "&:hover": { filter: "brightness(1.06)" } }}>
                     Student report
                   </Button>
                   <Button onClick={() => push("/instructor/live-sessions")}
-                    sx={{ minWidth: 48, borderRadius: 2.5, border: "1px solid var(--border-default)", color: "#6366f1" }}>
+                    sx={{ minWidth: 48, borderRadius: 2.5, border: "1px solid var(--border-default)", color: "#1b4f8a" }}>
                     <Icon icon="mdi:access-point" width={18} />
                   </Button>
                 </Stack>

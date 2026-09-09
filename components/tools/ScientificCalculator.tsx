@@ -226,7 +226,7 @@ export function ScientificCalculator({ errorLabel, radiansHint }: ScientificCalc
                 fontWeight: 600,
                 borderRadius: 1.75,
                 textTransform: "none",
-                boxShadow: `0 1px 2px ${alpha(theme.palette.common.black, theme.palette.mode === "dark" ? 0.2 : 0.06)}`,
+                boxShadow: "var(--shadow-xs)",
                 transition: theme.transitions.create(
                   ["background-color", "border-color", "box-shadow", "transform", "color"],
                   { duration: theme.transitions.duration.shorter }
@@ -286,9 +286,9 @@ export function ScientificCalculator({ errorLabel, radiansHint }: ScientificCalc
                   py: 1.35,
                   minHeight: 44,
                   fontSize: "0.95rem",
-                  boxShadow: `0 4px 12px ${alpha(primary, 0.35)}`,
+                  boxShadow: "var(--shadow-sm)",
                   "&:hover": {
-                    boxShadow: `0 6px 16px ${alpha(primary, 0.45)}`,
+                    boxShadow: "var(--shadow-md)",
                   },
                   "&:active": {
                     transform: "scale(0.98)",

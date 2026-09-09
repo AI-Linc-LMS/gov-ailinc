@@ -27,8 +27,8 @@ export function GradientRing({
   caption,
   valueFontSize,
   glow = true,
-  from = "#7c3aed",
-  to = "#ec4899",
+  from = "#14406f",
+  to = "#0f6b7a",
 }: GradientRingProps) {
   return (
     <AnimatedRing

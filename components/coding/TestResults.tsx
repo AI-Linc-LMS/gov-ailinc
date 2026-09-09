@@ -163,7 +163,7 @@ export function TestResults({
             backgroundColor: "#ffffff",
             "& .MuiTab-root": { minHeight: 40, fontSize: "0.875rem", fontWeight: 500, textTransform: "none" },
             "& .Mui-selected": { color: "#111827" },
-            "& .MuiTabs-indicator": { backgroundColor: "#6366f1" },
+            "& .MuiTabs-indicator": { backgroundColor: "#1b4f8a" },
           }}
         >
           <Tab label="Test Cases" />
@@ -222,7 +222,7 @@ export function TestResults({
                   variant="h4"
                   sx={{
                     fontWeight: 700,
-                    color: passedCount === totalCount ? "#10b981" : "#ef4444",
+                    color: passedCount === totalCount ? "#0e7a3c" : "#b32020",
                   }}
                 >
                   {passedCount} / {totalCount}
@@ -245,9 +245,9 @@ export function TestResults({
                 sx={{
                   width: "100%",
                   p: 2,
-                  backgroundColor: "#fef2f2",
+                  backgroundColor: "#fdf5f5",
                   borderRadius: 1,
-                  border: "1px solid #fecaca",
+                  border: "1px solid #f2d3d3",
                 }}
               >
                 <Typography
@@ -258,7 +258,7 @@ export function TestResults({
                 </Typography>
                 <Typography
                   variant="caption"
-                  sx={{ color: "#b91c1c", fontWeight: 600, display: "block", mb: 0.5 }}
+                  sx={{ color: "#8f1919", fontWeight: 600, display: "block", mb: 0.5 }}
                 >
                   {errorType || "Error"}
                 </Typography>
@@ -270,7 +270,7 @@ export function TestResults({
                     fontSize: "0.8rem",
                     whiteSpace: "pre-wrap",
                     wordBreak: "break-word",
-                    color: "#b91c1c",
+                    color: "#8f1919",
                   }}
                 >
                   {errorMessage || errorType}
@@ -290,7 +290,7 @@ export function TestResults({
                     p: 2,
                     backgroundColor: "#f0fdf4",
                     borderRadius: 1,
-                    border: "1px solid #bbf7d0",
+                    border: "1px solid #c8e6d5",
                   }}
                 >
                   <Typography
@@ -311,7 +311,7 @@ export function TestResults({
                           size="small"
                           label={`Case ${num}`}
                           sx={{
-                            backgroundColor: "#d1fae5",
+                            backgroundColor: "#dff0e6",
                             color: "#065f46",
                             fontWeight: 600,
                             fontSize: "0.75rem",
@@ -334,9 +334,9 @@ export function TestResults({
                   sx={{
                     width: "100%",
                     p: 2,
-                    backgroundColor: "#fef2f2",
+                    backgroundColor: "#fdf5f5",
                     borderRadius: 1,
-                    border: "1px solid #fecaca",
+                    border: "1px solid #f2d3d3",
                   }}
                 >
                   <Typography
@@ -358,7 +358,7 @@ export function TestResults({
                           size="small"
                           label={`Case ${num}: ${status}`}
                           sx={{
-                            backgroundColor: "#fee2e2",
+                            backgroundColor: "#fbeaea",
                             color: "#991b1b",
                             fontWeight: 600,
                             fontSize: "0.75rem",
@@ -418,7 +418,7 @@ export function TestResults({
                     mb: 2,
                     "& .MuiTab-root": { minHeight: 36, fontSize: "0.8rem", fontWeight: 500, textTransform: "none" },
                     "& .Mui-selected": { color: "#111827" },
-                    "& .MuiTabs-indicator": { backgroundColor: "#6366f1" },
+                    "& .MuiTabs-indicator": { backgroundColor: "#1b4f8a" },
                   }}
                 >
                   {testCasesArray.map((tc: any, index: number) => {
@@ -430,9 +430,9 @@ export function TestResults({
                           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                             <span>Case {tc.test_case_number ?? index + 1}</span>
                             {isPassed ? (
-                              <IconWrapper icon="mdi:check-circle" size={14} color="#10b981" />
+                              <IconWrapper icon="mdi:check-circle" size={14} color="#0e7a3c" />
                             ) : (
-                              <IconWrapper icon="mdi:close-circle" size={14} color="#ef4444" />
+                              <IconWrapper icon="mdi:close-circle" size={14} color="#b32020" />
                             )}
                           </Box>
                         }
@@ -495,7 +495,7 @@ export function TestResults({
                         </Paper>
                       </Box>
                       <Box sx={{ mb: 2 }}>
-                        <Typography variant="caption" sx={{ color: isPassed ? "#10b981" : "#ef4444", fontWeight: 600, mb: 0.5, display: "block" }}>
+                        <Typography variant="caption" sx={{ color: isPassed ? "#0e7a3c" : "#b32020", fontWeight: 600, mb: 0.5, display: "block" }}>
                           Your output:
                         </Typography>
                         <Paper
@@ -507,7 +507,7 @@ export function TestResults({
                             fontSize: "0.8rem",
                             whiteSpace: "pre-wrap",
                             wordBreak: "break-word",
-                            border: `1px solid ${isPassed ? "#10b981" : "#ef4444"}`,
+                            border: `1px solid ${isPassed ? "#0e7a3c" : "#b32020"}`,
                           }}
                         >
                           {testCase.actual_output ?? ""}
@@ -516,8 +516,8 @@ export function TestResults({
                       <Box
                         sx={{
                           p: 1.5,
-                          backgroundColor: isPassed ? "#d1fae5" : "#fee2e2",
-                          border: `1px solid ${isPassed ? "#10b981" : "#ef4444"}`,
+                          backgroundColor: isPassed ? "#dff0e6" : "#fbeaea",
+                          border: `1px solid ${isPassed ? "#0e7a3c" : "#b32020"}`,
                           borderRadius: 1,
                         }}
                       >
@@ -567,7 +567,7 @@ export function TestResults({
                     <IconWrapper icon="mdi:play" size={16} />
                   )
                 }
-                sx={{ backgroundColor: "#6366f1", "&:hover": { backgroundColor: "#4f46e5" } }}
+                sx={{ backgroundColor: "#1b4f8a", "&:hover": { backgroundColor: "#12365f" } }}
               >
                 {runningCustomInput ? "Running..." : "Run"}
               </Button>
@@ -592,8 +592,8 @@ export function TestResults({
                       sx={{
                         p: 1.5,
                         mt: 1,
-                        backgroundColor: "#fee2e2",
-                        border: "1px solid #ef4444",
+                        backgroundColor: "#fbeaea",
+                        border: "1px solid #b32020",
                         fontFamily: "monospace",
                         fontSize: "0.8rem",
                         color: "#991b1b",
@@ -641,7 +641,7 @@ export function TestResults({
             },
           },
           "& .MuiTabs-indicator": {
-            backgroundColor: "#6366f1",
+            backgroundColor: "#1b4f8a",
           },
         }}
       >
@@ -691,13 +691,13 @@ export function TestResults({
                   sx={{
                     mb: 2,
                     py: 1.5,
-                    backgroundColor: "#fee2e2",
-                    border: "1px solid #ef4444",
+                    backgroundColor: "#fbeaea",
+                    border: "1px solid #b32020",
                     "& .MuiAlert-message": {
                       width: "100%",
                     },
                     "& .MuiAlert-icon": {
-                      color: "#dc2626",
+                      color: "#991b1b",
                     },
                   }}
                 >
@@ -720,7 +720,7 @@ export function TestResults({
                       fontSize: "0.8rem",
                       whiteSpace: "pre-wrap",
                       wordBreak: "break-word",
-                      color: "#dc2626",
+                      color: "#991b1b",
                     }}
                   >
                     {errorMessage || errorType}
@@ -761,13 +761,13 @@ export function TestResults({
                         severity="success"
                         sx={{
                           py: 1.5,
-                          backgroundColor: "#d1fae5",
-                          border: "1px solid #10b981",
+                          backgroundColor: "#dff0e6",
+                          border: "1px solid #0e7a3c",
                           "& .MuiAlert-message": {
                             width: "100%",
                           },
                           "& .MuiAlert-icon": {
-                            color: "#059669",
+                            color: "#0B6232",
                           },
                         }}
                       >
@@ -818,13 +818,13 @@ export function TestResults({
                         severity="error"
                         sx={{
                           py: 1.5,
-                          backgroundColor: "#fee2e2",
-                          border: "1px solid #ef4444",
+                          backgroundColor: "#fbeaea",
+                          border: "1px solid #b32020",
                           "& .MuiAlert-message": {
                             width: "100%",
                           },
                           "& .MuiAlert-icon": {
-                            color: "#dc2626",
+                            color: "#991b1b",
                           },
                         }}
                       >
@@ -889,8 +889,8 @@ export function TestResults({
                         sx={{
                           backgroundColor: isSelected
                             ? isPassed
-                              ? "#d1fae5"
-                              : "#fee2e2"
+                              ? "#dff0e6"
+                              : "#fbeaea"
                             : "#f9fafb",
                           color: isSelected
                             ? isPassed
@@ -902,19 +902,19 @@ export function TestResults({
                           border: `1px solid ${
                             isSelected
                               ? isPassed
-                                ? "#10b981"
-                                : "#ef4444"
+                                ? "#0e7a3c"
+                                : "#b32020"
                               : "#d1d5db"
                           }`,
                           borderLeft: `4px solid ${
-                            isPassed ? "#10b981" : "#ef4444"
+                            isPassed ? "#0e7a3c" : "#b32020"
                           }`,
                           cursor: "pointer",
                           "&:hover": {
                             backgroundColor: isSelected
                               ? isPassed
                                 ? "#a7f3d0"
-                                : "#fecaca"
+                                : "#f2d3d3"
                               : "#e5e7eb",
                           },
                         }}
@@ -1009,7 +1009,7 @@ export function TestResults({
                       <Typography
                         variant="body2"
                         sx={{
-                          color: isPassed ? "#10b981" : "#ef4444",
+                          color: isPassed ? "#0e7a3c" : "#b32020",
                           fontSize: "0.75rem",
                           fontWeight: 600,
                           mb: 1,
@@ -1023,7 +1023,7 @@ export function TestResults({
                           p: 1.5,
                           backgroundColor: "#f3f4f6",
                           border: `1px solid ${
-                            isPassed ? "#10b981" : "#ef4444"
+                            isPassed ? "#0e7a3c" : "#b32020"
                           }`,
                           fontFamily: "monospace",
                           fontSize: "0.875rem",
@@ -1041,8 +1041,8 @@ export function TestResults({
                       sx={{
                         p: 1.5,
                         mb: 2,
-                        backgroundColor: isPassed ? "#d1fae5" : "#fee2e2",
-                        border: `1px solid ${isPassed ? "#10b981" : "#ef4444"}`,
+                        backgroundColor: isPassed ? "#dff0e6" : "#fbeaea",
+                        border: `1px solid ${isPassed ? "#0e7a3c" : "#b32020"}`,
                         borderRadius: 1,
                       }}
                     >
@@ -1112,8 +1112,8 @@ export function TestResults({
                       <Box
                         sx={{
                           p: 1.5,
-                          backgroundColor: "#d1fae5",
-                          border: "1px solid #10b981",
+                          backgroundColor: "#dff0e6",
+                          border: "1px solid #0e7a3c",
                           borderRadius: 1,
                           display: "flex",
                           alignItems: "center",
@@ -1286,7 +1286,7 @@ export function TestResults({
                     borderColor: "#9ca3af",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#6366f1",
+                    borderColor: "#1b4f8a",
                   },
                 },
                 "& .MuiInputBase-input::placeholder": {
@@ -1307,9 +1307,9 @@ export function TestResults({
                 )
               }
               sx={{
-                backgroundColor: "#6366f1",
+                backgroundColor: "#1b4f8a",
                 "&:hover": {
-                  backgroundColor: "#4f46e5",
+                  backgroundColor: "#12365f",
                 },
                 "&:disabled": {
                   backgroundColor: "#4a5568",
@@ -1374,7 +1374,7 @@ export function TestResults({
                     <Typography
                       variant="body2"
                       sx={{
-                        color: "#ef4444",
+                        color: "#b32020",
                         fontSize: "0.75rem",
                         fontWeight: 600,
                         mb: 1,
@@ -1386,8 +1386,8 @@ export function TestResults({
                       elevation={0}
                       sx={{
                         p: 1.5,
-                        backgroundColor: "#fee2e2",
-                        border: "1px solid #ef4444",
+                        backgroundColor: "#fbeaea",
+                        border: "1px solid #b32020",
                         fontFamily: "monospace",
                         fontSize: "0.875rem",
                         color: "#991b1b",
@@ -1407,12 +1407,12 @@ export function TestResults({
                     mb: 2,
                     backgroundColor:
                       testResults.stderr || testResults.compile_output || testResults.error
-                        ? "#fee2e2"
-                        : "#d1fae5",
+                        ? "#fbeaea"
+                        : "#dff0e6",
                     border: `1px solid ${
                       testResults.stderr || testResults.compile_output || testResults.error
-                        ? "#ef4444"
-                        : "#10b981"
+                        ? "#b32020"
+                        : "#0e7a3c"
                     }`,
                     borderRadius: 1,
                   }}

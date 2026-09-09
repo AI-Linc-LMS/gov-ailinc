@@ -101,7 +101,7 @@ export function FloatingToolPanels({
           whileDrag={{
             scale: 1.01,
             zIndex: zIndex + 50,
-            boxShadow: `0 28px 56px -12px ${alpha(theme.palette.primary.main, 0.35)}`,
+            boxShadow: "var(--shadow-lg)",
           }}
           sx={{
             pointerEvents: "auto",
@@ -120,7 +120,7 @@ export function FloatingToolPanels({
               overflow: "hidden",
               border: "1px solid",
               borderColor: "divider",
-              boxShadow: `0 25px 50px -12px ${alpha(theme.palette.primary.main, 0.25)}`,
+              boxShadow: "var(--shadow-lg)",
             }}
           >
             <Box
@@ -220,7 +220,7 @@ export function FloatingToolPanels({
           whileDrag={{
             scale: 1.01,
             zIndex: zIndex + 50,
-            boxShadow: `0 28px 56px -12px ${alpha(theme.palette.success.main, 0.32)}`,
+            boxShadow: "var(--shadow-sm)",
           }}
           sx={{
             pointerEvents: "auto",
@@ -242,7 +242,7 @@ export function FloatingToolPanels({
               overflow: "visible",
               border: "1px solid",
               borderColor: "divider",
-              boxShadow: `0 25px 50px -12px ${alpha(theme.palette.success.main, 0.22)}`,
+              boxShadow: "var(--shadow-lg)",
               maxHeight: "100%",
               display: "flex",
               flexDirection: "column",

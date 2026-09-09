@@ -11,8 +11,8 @@ interface RecentAttemptsRowProps {
 }
 
 const STATUS_THEME: Record<AdaptiveAttemptSummary["status"], { label: string; accent: string; icon: string }> = {
-  active: { label: "In progress", accent: "#f59e0b", icon: "mdi:progress-clock" },
-  completed: { label: "Completed", accent: "#10b981", icon: "mdi:check-circle-outline" },
+  active: { label: "In progress", accent: "#b7791f", icon: "mdi:progress-clock" },
+  completed: { label: "Completed", accent: "#0e7a3c", icon: "mdi:check-circle-outline" },
   abandoned: { label: "Abandoned", accent: "#94a3b8", icon: "mdi:close-circle-outline" },
 };
 
@@ -32,10 +32,10 @@ function relativeTime(iso: string): string {
 }
 
 function accentForAccuracy(acc: number): string {
-  if (acc >= 0.8) return "#10b981";
-  if (acc >= 0.6) return "#6366f1";
-  if (acc >= 0.4) return "#f59e0b";
-  return "#ef4444";
+  if (acc >= 0.8) return "#0e7a3c";
+  if (acc >= 0.6) return "#1b4f8a";
+  if (acc >= 0.4) return "#b7791f";
+  return "#b32020";
 }
 
 /**
@@ -142,11 +142,10 @@ function AttemptCard({
         p: 1.75,
         pt: 2.25,
         borderRadius: 3,
-        bgcolor: "color-mix(in srgb, var(--card-bg) 65%, transparent)",
-        border: "1px solid color-mix(in srgb, var(--border-default) 55%, transparent)",
-        backdropFilter: "blur(20px) saturate(140%)",
+        bgcolor: "var(--card-bg)",
+        border: "1px solid var(--border-default)",
         boxShadow:
-          "0 1px 0 0 color-mix(in srgb, white 14%, transparent) inset, 0 18px 36px -24px rgba(15, 23, 42, 0.18)",
+          "var(--shadow-sm)",
       }}
     >
       {/* Top accent strip - colored by accuracy */}
@@ -158,7 +157,7 @@ function AttemptCard({
           left: 0,
           right: 0,
           height: 3,
-          background: `linear-gradient(90deg, ${accuracyAccent} 0%, color-mix(in srgb, ${accuracyAccent} 50%, #a855f7) 100%)`,
+          background: `linear-gradient(90deg, ${accuracyAccent} 0%, color-mix(in srgb, ${accuracyAccent} 50%, #1b4f8a) 100%)`,
         }}
       />
 
@@ -232,7 +231,7 @@ function AttemptCard({
           </Box>
         )}
         {attempt.has_narration && attempt.status === "completed" && (
-          <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.35, color: "#a855f7" }}>
+          <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.35, color: "#1b4f8a" }}>
             <Icon icon="mdi:robot-happy-outline" width={13} />
             <Typography sx={{ fontSize: "0.72rem", fontWeight: 700 }}>AI read ready</Typography>
           </Box>

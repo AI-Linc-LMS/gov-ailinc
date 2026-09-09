@@ -48,11 +48,11 @@ export function CheckpointOverlay({ timestamp, onAsk, onResume }: Props) {
     <Box
       sx={{
         position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
-        background: "rgba(15, 12, 41, 0.82)", backdropFilter: "blur(6px)", zIndex: 20, p: 2,
+        background: "rgba(7, 20, 38, 0.82)", zIndex: 20, p: 2,
       }}
     >
       <Box sx={{ width: "100%", maxWidth: 480, bgcolor: "var(--card-bg, #fff)", borderRadius: 3, p: 2.5,
-        boxShadow: "0 24px 60px -24px rgba(0,0,0,0.5)" }}>
+        boxShadow: "var(--shadow-sm)" }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
           <AIPill icon={<Icon icon="mdi:timer-sand" />}>Checkpoint</AIPill>
           <Typography sx={{ fontSize: "0.78rem", color: "text.secondary" }}>Paused at {fmt(timestamp)}</Typography>
@@ -70,18 +70,18 @@ export function CheckpointOverlay({ timestamp, onAsk, onResume }: Props) {
           />
           <Button
             onClick={() => void ask()} disabled={loading || !q.trim()} variant="contained"
-            sx={{ borderRadius: 2, background: "linear-gradient(135deg,#6366f1,#a855f7)", minWidth: 64, fontWeight: 800 }}
+            sx={{ borderRadius: 2, background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)", minWidth: 64, fontWeight: 800 }}
           >
             {loading ? <CircularProgress size={16} sx={{ color: "#fff" }} /> : "Ask"}
           </Button>
         </Box>
         {answer && (
-          <Box sx={{ mt: 1.5, p: 1.5, borderRadius: 2, bgcolor: "color-mix(in srgb,#a855f7 8%,transparent)",
-            border: "1px solid color-mix(in srgb,#a855f7 18%,transparent)" }}>
+          <Box sx={{ mt: 1.5, p: 1.5, borderRadius: 2, bgcolor: "color-mix(in srgb,#1b4f8a 8%,transparent)",
+            border: "1px solid color-mix(in srgb,#1b4f8a 18%,transparent)" }}>
             <Typography sx={{ fontSize: "0.85rem", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{answer}</Typography>
           </Box>
         )}
-        <Button fullWidth onClick={onResume} variant="text" sx={{ mt: 1.5, fontWeight: 800, color: "#6366f1", gap: 0.5 }}>
+        <Button fullWidth onClick={onResume} variant="text" sx={{ mt: 1.5, fontWeight: 800, color: "#1b4f8a", gap: 0.5 }}>
           <Icon icon="mdi:play" width={18} /> Resume
         </Button>
       </Box>

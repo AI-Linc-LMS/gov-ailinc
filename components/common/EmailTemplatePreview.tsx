@@ -144,7 +144,7 @@ function EmailTemplatePreviewInner({
           maxWidth,
           bgcolor: "#ffffff",
           borderRadius: 2,
-          boxShadow: "0 10px 24px -12px rgba(15, 23, 42, 0.18)",
+          boxShadow: "var(--shadow-sm)",
           overflow: "hidden",
           color: "#1f2937",
           fontFamily: SANS_STACK,

@@ -80,9 +80,11 @@ const glass = {
 };
 
 function strengthMeta(strength: Skill["strength"]) {
-  if (strength === "Strong") return { color: "#10b981", label: "Strong" };
-  if (strength === "Intermediate") return { color: "#f59e0b", label: "Intermediate" };
-  return { color: "#ef4444", label: "Needs attention" };
+  // Status scale, so status tokens, never categorical hues. Every use of this colour
+  // ships the label beside it, so the hue is never the only signal.
+  if (strength === "Strong") return { color: "#0e7a3c", label: "Strong" };
+  if (strength === "Intermediate") return { color: "#b7791f", label: "Intermediate" };
+  return { color: "#b32020", label: "Needs attention" };
 }
 
 // ─── Custom recharts tooltip ─────────────────────────────────────────────────
@@ -569,11 +571,17 @@ export function SkillScorecardSection({ data }: SkillScorecardSectionProps) {
     const topSkills = [...data].sort((a, b) => b.proficiencyScore - a.proficiencyScore).slice(0, 8);
 
     const buckets = [
-      { label: "Emerging", range: "0–20", min: 0, max: 20, color: "#ef4444" },
-      { label: "Building", range: "20–40", min: 20, max: 40, color: "#f97316" },
-      { label: "Developing", range: "40–60", min: 40, max: 60, color: "#f59e0b" },
-      { label: "Proficient", range: "60–80", min: 60, max: 80, color: "#10b981" },
-      { label: "Mastery", range: "80–100", min: 80, max: 100, color: "#0a66c2" },
+      // These five bands are ORDERED, so they take the one-hue sequential ramp (light = low,
+      // dark = high), not five categorical hues. The rainbow that used to be here spent the
+      // identity channel re-encoding what the band order already says, and made "Developing"
+      // amber read as a warning. Validated as an ordinal ramp: monotone L, adjacent dL >= 0.06,
+      // light end 2.41:1 on the card - all pass. The donut's legend carries every label, count
+      // and percentage, which is the relief the palest step needs.
+      { label: "Emerging", range: "0–20", min: 0, max: 20, color: "#85aad6" },
+      { label: "Building", range: "20–40", min: 20, max: 40, color: "#4a7fbb" },
+      { label: "Developing", range: "40–60", min: 40, max: 60, color: "#1b4f8a" },
+      { label: "Proficient", range: "60–80", min: 60, max: 80, color: "#12365f" },
+      { label: "Mastery", range: "80–100", min: 80, max: 100, color: "#0a1e37" },
     ];
     const distribution = buckets.map((b) => ({
       label: b.label,
@@ -583,9 +591,10 @@ export function SkillScorecardSection({ data }: SkillScorecardSectionProps) {
     }));
 
     const strengthSplit = [
-      { name: "Strong", value: data.filter((s) => s.strength === "Strong").length, color: "#10b981" },
-      { name: "Intermediate", value: data.filter((s) => s.strength === "Intermediate").length, color: "#f59e0b" },
-      { name: "Needs Attention", value: data.filter((s) => s.strength === "Needs Attention").length, color: "#ef4444" },
+      // A status split, so status tokens; each row is named in the legend beside its bar.
+      { name: "Strong", value: data.filter((s) => s.strength === "Strong").length, color: "#0e7a3c" },
+      { name: "Intermediate", value: data.filter((s) => s.strength === "Intermediate").length, color: "#b7791f" },
+      { name: "Needs Attention", value: data.filter((s) => s.strength === "Needs Attention").length, color: "#b32020" },
     ];
 
     return { total, avg, avgConfidence, strong, interviewReady, topSkills, distribution, strengthSplit };
@@ -649,7 +658,7 @@ export function SkillScorecardSection({ data }: SkillScorecardSectionProps) {
         radialMesh={[
           "radial-gradient(55% 70% at 0% 0%, color-mix(in srgb, var(--accent-indigo) 18%, transparent), transparent 60%)",
           "radial-gradient(45% 60% at 100% 100%, color-mix(in srgb, var(--accent-purple) 14%, transparent), transparent 60%)",
-          "radial-gradient(35% 45% at 70% 0%, color-mix(in srgb, #10b981 8%, transparent), transparent 60%)",
+          "radial-gradient(35% 45% at 70% 0%, color-mix(in srgb, #0e7a3c 8%, transparent), transparent 60%)",
         ]}
       >
         <SectionHero
@@ -715,7 +724,10 @@ export function SkillScorecardSection({ data }: SkillScorecardSectionProps) {
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                  <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: "var(--accent-purple)", opacity: 0.6 }} />
+                  {/* Gold, not a second blue: --accent-purple now resolves to the same
+                      institutional blue as --accent-indigo, so this legend dot and the
+                      Confidence radar below were painted identically to Proficiency. */}
+                  <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: "#b7791f" }} />
                   <Typography variant="caption" sx={{ fontSize: "0.66rem", color: "var(--font-secondary)", fontWeight: 700 }}>
                     Confidence
                   </Typography>
@@ -733,8 +745,8 @@ export function SkillScorecardSection({ data }: SkillScorecardSectionProps) {
                         <stop offset="100%" stopColor="var(--accent-purple)" stopOpacity={0.35} />
                       </linearGradient>
                       <linearGradient id="radarFillConf" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="var(--accent-purple)" stopOpacity={0.25} />
-                        <stop offset="100%" stopColor="var(--accent-purple)" stopOpacity={0.1} />
+                        <stop offset="0%" stopColor="#b7791f" stopOpacity={0.22} />
+                        <stop offset="100%" stopColor="#b7791f" stopOpacity={0.08} />
                       </linearGradient>
                     </defs>
                     <PolarGrid stroke="color-mix(in srgb, var(--border-default) 65%, transparent)" />
@@ -746,7 +758,11 @@ export function SkillScorecardSection({ data }: SkillScorecardSectionProps) {
                     <Radar
                       name="Confidence"
                       dataKey="confidence"
-                      stroke="var(--accent-purple)"
+                      // Two series, so they differ by hue AND by dash: blue solid is measured
+                      // proficiency, gold dashed is self-reported confidence. Gold against
+                      // institutional blue is the strongest pair the palette offers
+                      // (CVD dE 25.9, normal 31.0).
+                      stroke="#b7791f"
                       strokeWidth={1.5}
                       strokeDasharray="4 3"
                       fill="url(#radarFillConf)"
@@ -833,12 +849,12 @@ export function SkillScorecardSection({ data }: SkillScorecardSectionProps) {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 0.75,
-                  bgcolor: "color-mix(in srgb, #fbbf24 14%, transparent)",
-                  border: "1px solid color-mix(in srgb, #fbbf24 28%, transparent)",
+                  bgcolor: "color-mix(in srgb, #b7791f 12%, transparent)",
+                  border: "1px solid color-mix(in srgb, #b7791f 30%, transparent)",
                 }}
               >
-                <IconWrapper icon="mdi:trophy" size={14} color="#d97706" />
-                <Typography sx={{ fontWeight: 800, fontSize: "0.72rem", color: "#92400e", letterSpacing: 0.2 }}>
+                <IconWrapper icon="mdi:trophy" size={14} color="#b7791f" />
+                <Typography sx={{ fontWeight: 800, fontSize: "0.72rem", color: "#8a5a12", letterSpacing: 0.2 }}>
                   Leading: {summary.topSkills[0].name}
                 </Typography>
               </Box>
@@ -876,13 +892,13 @@ export function SkillScorecardSection({ data }: SkillScorecardSectionProps) {
               value: summary.strong,
               label: "Strong skills",
               icon: "mdi:check-decagram",
-              accent: "#10b981",
+              accent: "#0e7a3c",
             },
             {
               value: summary.interviewReady,
               label: "Interview-ready",
               icon: "mdi:account-tie",
-              accent: "#0a66c2",
+              accent: "#0f6b7a",
             },
           ].map((kpi) => (
             <Box

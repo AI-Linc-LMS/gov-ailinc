@@ -88,9 +88,9 @@ export function CodingProblemContent({
           <Button
             variant="contained"
             sx={{
-              backgroundColor: "#6366f1",
+              backgroundColor: "#1b4f8a",
               "&:hover": {
-                backgroundColor: "#4f46e5",
+                backgroundColor: "#12365f",
               },
             }}
             onClick={onSubmit}

@@ -18,12 +18,12 @@ const MODES: { key: WatchMode; label: string; icon: string; hint: string }[] = [
 export function WatchModeSelector({ value, onChange }: { value: WatchMode; onChange: (m: WatchMode) => void }) {
   return (
     <CompanionCard
-      accent="#6366f1"
+      accent="#1b4f8a"
       title="Watch mode"
       icon="mdi:tune-vertical"
       right={
         <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, px: 1, py: 0.3, borderRadius: 999,
-          background: "linear-gradient(135deg, #6366f1, #ec4899)", color: "#fff", fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.08em" }}>
+          background: "linear-gradient(135deg, #1b4f8a, #0f6b7a)", color: "#fff", fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.08em" }}>
           <Icon icon="mdi:sparkles" width={11} /> ADAPTIVE
         </Box>
       }
@@ -44,18 +44,18 @@ export function WatchModeSelector({ value, onChange }: { value: WatchMode; onCha
                 alignItems: "center",
                 gap: 1.25,
                 border: "1px solid",
-                borderColor: active ? "color-mix(in srgb, #6366f1 55%, transparent)" : "transparent",
-                background: active ? "color-mix(in srgb, #6366f1 10%, transparent)" : "transparent",
+                borderColor: active ? "color-mix(in srgb, #1b4f8a 55%, transparent)" : "transparent",
+                background: active ? "color-mix(in srgb, #1b4f8a 10%, transparent)" : "transparent",
                 transition: "all 140ms ease",
-                "&:hover": { background: "color-mix(in srgb, #6366f1 7%, transparent)" },
+                "&:hover": { background: "color-mix(in srgb, #1b4f8a 7%, transparent)" },
               }}
             >
-              <Icon icon={m.icon} width={17} style={{ color: active ? "#6366f1" : "#94a3b8", flexShrink: 0 }} />
+              <Icon icon={m.icon} width={17} style={{ color: active ? "#1b4f8a" : "#94a3b8", flexShrink: 0 }} />
               <Box sx={{ minWidth: 0 }}>
                 <Typography sx={{ fontSize: "0.84rem", fontWeight: active ? 800 : 600, lineHeight: 1.2 }}>{m.label}</Typography>
                 <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{m.hint}</Typography>
               </Box>
-              {active && <Icon icon="mdi:check-circle" width={16} style={{ color: "#6366f1", marginLeft: "auto" }} />}
+              {active && <Icon icon="mdi:check-circle" width={16} style={{ color: "#1b4f8a", marginLeft: "auto" }} />}
             </Box>
           );
         })}
@@ -79,7 +79,7 @@ export function AutoChapters({
   if (!chapters.length) return null;
   return (
     <CompanionCard
-      accent="#a855f7"
+      accent="#1b4f8a"
       title="Auto chapters"
       icon="mdi:format-list-bulleted"
       right={<Typography sx={{ fontSize: "0.66rem", color: "text.secondary", fontWeight: 700 }}>{chapters.length} detected</Typography>}
@@ -94,14 +94,14 @@ export function AutoChapters({
               onClick={() => onJump(c.start_seconds)}
               sx={{
                 cursor: "pointer", display: "flex", gap: 1, alignItems: "center", px: 1, py: 0.85, borderRadius: 1.5,
-                background: active ? "color-mix(in srgb, #a855f7 10%, transparent)" : "transparent",
+                background: active ? "color-mix(in srgb, #1b4f8a 10%, transparent)" : "transparent",
                 transition: "background 140ms ease",
-                "&:hover": { background: "color-mix(in srgb, #a855f7 6%, transparent)" },
+                "&:hover": { background: "color-mix(in srgb, #1b4f8a 6%, transparent)" },
               }}
             >
               <Icon
                 icon={done ? "mdi:check-circle" : active ? "mdi:play-circle" : "mdi:circle-outline"}
-                style={{ color: done ? "#16a34a" : active ? "#a855f7" : "#cbd5e1", flexShrink: 0 }}
+                style={{ color: done ? "#0b6232" : active ? "#1b4f8a" : "#cbd5e1", flexShrink: 0 }}
                 width={17}
               />
               <Typography sx={{ fontSize: "0.83rem", fontWeight: active ? 800 : 500 }}>
@@ -128,18 +128,18 @@ export function LiveTakeaways({ takeaways, currentTime, chapters }: { takeaways:
       dark
       title="Key takeaways · live"
       icon="mdi:sparkles"
-      accent="#a855f7"
+      accent="#1b4f8a"
       right={
         <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}>
-          <Box sx={{ width: 6, height: 6, borderRadius: 999, bgcolor: "#34d399", boxShadow: "0 0 8px #34d399" }} />
-          <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, color: "#34d399" }}>{visible}/{takeaways.length}</Typography>
+          <Box sx={{ width: 6, height: 6, borderRadius: 999, bgcolor: "#2f9159", boxShadow: "var(--shadow-sm)" }} />
+          <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, color: "#2f9159" }}>{visible}/{takeaways.length}</Typography>
         </Box>
       }
     >
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1.25 }}>
         {takeaways.slice(0, visible).map((t, i) => (
           <Box key={i} sx={{ display: "flex", gap: 1 }}>
-            <Box sx={{ mt: "7px", width: 6, height: 6, borderRadius: 999, flexShrink: 0, background: "linear-gradient(135deg,#a855f7,#ec4899)" }} />
+            <Box sx={{ mt: "7px", width: 6, height: 6, borderRadius: 999, flexShrink: 0, background: "linear-gradient(135deg,#1b4f8a,#0f6b7a)" }} />
             <Typography sx={{ fontSize: "0.86rem", lineHeight: 1.5, color: "rgba(255,255,255,0.92)" }}>{t}</Typography>
           </Box>
         ))}

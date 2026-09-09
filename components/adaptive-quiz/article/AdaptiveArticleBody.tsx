@@ -198,11 +198,11 @@ export function AdaptiveArticleBody({ html, explainTerms, onExplain, reveal = fa
         "& p": { mb: 1.6 },
         "& ul, & ol": { pl: 3, mb: 1.6 },
         "& li": { mb: 0.5 },
-        "& a": { color: "var(--accent-indigo, #6366f1)" },
+        "& a": { color: "var(--accent-indigo, #1b4f8a)" },
         "& code": {
           fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
           fontSize: "0.88em",
-          bgcolor: "color-mix(in srgb, #6366f1 12%, transparent)",
+          bgcolor: "color-mix(in srgb, #1b4f8a 12%, transparent)",
           px: 0.5,
           py: "1px",
           borderRadius: 0.75,
@@ -217,11 +217,11 @@ export function AdaptiveArticleBody({ html, explainTerms, onExplain, reveal = fa
           cursor: "pointer",
           textDecoration: "underline dotted",
           textUnderlineOffset: "3px",
-          textDecorationColor: "color-mix(in srgb, #a855f7 70%, transparent)",
-          bgcolor: "color-mix(in srgb, #a855f7 8%, transparent)",
+          textDecorationColor: "color-mix(in srgb, #1b4f8a 70%, transparent)",
+          bgcolor: "color-mix(in srgb, #1b4f8a 8%, transparent)",
           borderRadius: 0.5,
           px: 0.25,
-          "&:hover": { bgcolor: "color-mix(in srgb, #a855f7 18%, transparent)" },
+          "&:hover": { bgcolor: "color-mix(in srgb, #1b4f8a 18%, transparent)" },
         },
       }}
     />

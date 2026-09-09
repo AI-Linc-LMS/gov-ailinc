@@ -153,7 +153,7 @@ export function AssessmentReadinessPanel({
         color: "#fff",
         overflow: "hidden",
         boxShadow:
-          "0 18px 40px -22px color-mix(in srgb, var(--ai-pink) 70%, transparent)",
+          "var(--shadow-sm)",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>

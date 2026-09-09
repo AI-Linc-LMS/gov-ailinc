@@ -87,7 +87,7 @@ export function ProfileHeader({
               width: { xs: 88, sm: 108, md: 128 },
               height: { xs: 88, sm: 108, md: 128 },
               border: "4px solid #fff",
-              boxShadow: "0 12px 30px -12px rgba(16,10,44,0.55)",
+              boxShadow: "var(--shadow-sm)",
               cursor: onEditProfilePicUrl ? "pointer" : "default",
               backgroundColor: "var(--accent-indigo)",
               color: "#fff",
@@ -112,7 +112,7 @@ export function ProfileHeader({
                 justifyContent: "center",
                 border: "3px solid color-mix(in srgb, var(--background) 95%, transparent)",
                 cursor: "pointer",
-                boxShadow: "0 2px 4px color-mix(in srgb, var(--font-primary) 20%, transparent)",
+                boxShadow: "var(--shadow-sm)",
                 transition: "all 0.2s ease",
                 "&:hover": {
                   backgroundColor: "var(--accent-indigo-dark)",
@@ -281,7 +281,7 @@ export function ProfileHeader({
         PaperProps={{
           sx: {
             borderRadius: { xs: 0, sm: 2 },
-            boxShadow: "0 8px 24px color-mix(in srgb, var(--font-primary) 16%, transparent)",
+            boxShadow: "var(--shadow-lg)",
             m: { xs: 0, sm: 2 },
             maxHeight: { xs: "100vh", sm: "90vh" },
             display: "flex",
@@ -593,10 +593,10 @@ export function ProfileHeader({
               py: { xs: 1.125, sm: 0.875 },
               width: { xs: "100%", sm: "auto" },
               minWidth: { xs: "auto", sm: 120 },
-              boxShadow: "0 2px 4px color-mix(in srgb, var(--accent-indigo) 30%, transparent)",
+              boxShadow: "var(--shadow-sm)",
               "&:hover": {
                 backgroundColor: "var(--accent-indigo-dark)",
-                boxShadow: "0 4px 8px color-mix(in srgb, var(--accent-indigo) 36%, transparent)",
+                boxShadow: "var(--shadow-md)",
               },
               "&:disabled": {
                 backgroundColor: "color-mix(in srgb, var(--surface) 85%, var(--border-default))",

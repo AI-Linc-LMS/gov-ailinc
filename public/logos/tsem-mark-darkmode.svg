@@ -1,10 +1,14 @@
 <!-- TSEM mark, darkmode. Three ascending arches on a common plinth: districts
-     that step up together. Original device, deliberately unlike any real seal. -->
+     that step up together. Original device, deliberately unlike any real seal.
+     Gradient: primary-400 #4A7FBB into a lightened sanctioned green #2F9159.
+     Not the literal #0E7A3C: on the sidebar ink #0B1B2E that lands at 3.2:1,
+     under the 3:1 graphic floor once antialiasing thins the strokes. #2F9159
+     clears 4.39:1. components/common/AiLincLoader.tsx mirrors this file. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240">
   <defs>
     <linearGradient id="m-darkmode" x1="66" y1="120" x2="334" y2="120" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#818CF8"></stop>
-      <stop offset="1" stop-color="#34D399"></stop>
+      <stop offset="0" stop-color="#4A7FBB"></stop>
+      <stop offset="1" stop-color="#2F9159"></stop>
     </linearGradient>
   </defs>
   <g>

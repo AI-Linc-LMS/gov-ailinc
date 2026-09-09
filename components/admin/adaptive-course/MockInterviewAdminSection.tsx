@@ -13,11 +13,11 @@ import type {
 } from "@/lib/types/adaptive-journey";
 
 const STATUS_CHIP: Record<string, { color: string; bg: string }> = {
-  completed: { color: "#15803d", bg: "#dcfce7" },
-  in_progress: { color: "#4338ca", bg: "#e0e7ff" },
-  scheduled: { color: "#b45309", bg: "#fef3c7" },
+  completed: { color: "#0b6232", bg: "#dff0e6" },
+  in_progress: { color: "#0e2a4b", bg: "#d9e6f4" },
+  scheduled: { color: "#8a5a12", bg: "#fdf3e2" },
   cancelled: { color: "#64748b", bg: "#f1f5f9" },
-  failed: { color: "#b91c1c", bg: "#fee2e2" },
+  failed: { color: "#8f1919", bg: "#fbeaea" },
 };
 
 /**
@@ -68,7 +68,7 @@ export function MockInterviewAdminSection({ courseId }: { courseId: number }) {
   if (loading) {
     return (
       <Box sx={{ display: "grid", placeItems: "center", py: 6 }}>
-        <CircularProgress sx={{ color: "#6366f1" }} />
+        <CircularProgress sx={{ color: "#1b4f8a" }} />
       </Box>
     );
   }
@@ -83,7 +83,7 @@ export function MockInterviewAdminSection({ courseId }: { courseId: number }) {
               <Chip
                 label={calib?.exists ? "Ready" : "Not set up"}
                 size="small"
-                sx={{ height: 20, fontWeight: 800, fontSize: "0.66rem", color: calib?.exists ? "#15803d" : "#64748b", bgcolor: calib?.exists ? "#dcfce7" : "#f1f5f9" }}
+                sx={{ height: 20, fontWeight: 800, fontSize: "0.66rem", color: calib?.exists ? "#0b6232" : "#64748b", bgcolor: calib?.exists ? "#dff0e6" : "#f1f5f9" }}
               />
             </Stack>
             <Typography sx={{ fontSize: "0.8rem", color: "text.secondary", mt: 0.25 }}>
@@ -98,7 +98,7 @@ export function MockInterviewAdminSection({ courseId }: { courseId: number }) {
               disabled={generating}
               onClick={generate}
               startIcon={generating ? <CircularProgress size={16} sx={{ color: "white" }} /> : <Icon icon="mdi:auto-fix" width={18} />}
-              sx={{ textTransform: "none", fontWeight: 700, borderRadius: 2, background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}
+              sx={{ textTransform: "none", fontWeight: 700, borderRadius: 2, background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}
             >
               {generating ? "Creating…" : "Generate calibration interview (AI)"}
             </Button>
@@ -146,7 +146,7 @@ function TemplateCard({ t }: { t: CourseInterviewTemplate }) {
     <Box sx={{ p: 2, borderRadius: 3, bgcolor: "var(--card-bg, #fff)", border: "1px solid var(--border-default, #ececf1)" }}>
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
         <Typography sx={{ fontWeight: 800, fontSize: "0.95rem" }}>{t.title}</Typography>
-        {t.is_level_gauge && <Chip label="Level gauge" size="small" sx={{ height: 20, fontSize: "0.62rem", fontWeight: 800, color: "#6d28d9", bgcolor: "#ede9fe" }} />}
+        {t.is_level_gauge && <Chip label="Level gauge" size="small" sx={{ height: 20, fontSize: "0.62rem", fontWeight: 800, color: "#164274", bgcolor: "#eef3fa" }} />}
       </Stack>
       <Typography sx={{ fontSize: "0.8rem", color: "text.secondary", mt: 0.25 }}>{t.topic}{t.subtopic ? ` · ${t.subtopic}` : ""}</Typography>
       <Stack direction="row" spacing={0.75} sx={{ mt: 1, gap: 0.75 }} flexWrap="wrap">

@@ -58,7 +58,7 @@ export function StudentsFilters({
         borderRadius: 3,
         border: "1px solid var(--border-default)",
         boxShadow:
-          "0 2px 12px color-mix(in srgb, var(--font-primary) 6%, transparent)",
+          "var(--shadow-sm)",
         backgroundColor: "var(--card-bg)",
       }}
     >

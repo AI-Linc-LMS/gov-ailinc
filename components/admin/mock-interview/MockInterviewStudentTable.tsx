@@ -62,7 +62,7 @@ export function MockInterviewStudentTable({
         sx={{
           borderRadius: 2,
           boxShadow:
-            "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+            "var(--shadow-sm)",
           overflow: "hidden",
           border: "1px solid var(--border-default)",
         }}
@@ -85,14 +85,14 @@ export function MockInterviewStudentTable({
       sx={{
         borderRadius: 2,
         boxShadow:
-          "0 1px 3px color-mix(in srgb, var(--font-primary) 10%, transparent)",
+          "var(--shadow-sm)",
         overflow: "hidden",
         backgroundColor: "var(--card-bg)",
         border: "1px solid var(--border-default)",
         transition: "box-shadow 0.2s ease",
         "&:hover": {
           boxShadow:
-            "0 2px 8px color-mix(in srgb, var(--font-primary) 14%, transparent)",
+            "var(--shadow-md)",
         },
       }}
     >

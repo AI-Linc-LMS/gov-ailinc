@@ -51,9 +51,9 @@ const gradientBtnSx = {
   borderRadius: 999,
   px: 2.25,
   color: "white",
-  background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
-  boxShadow: "0 12px 24px -14px rgba(99,102,241,0.7)",
-  "&:hover": { background: "linear-gradient(135deg, #5457e5 0%, #9b46f0 100%)" },
+  background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
+  boxShadow: "var(--shadow-sm)",
+  "&:hover": { background: "linear-gradient(135deg, #164274 0%, #164274 100%)" },
 };
 
 const outlineBtnSx = {
@@ -61,9 +61,9 @@ const outlineBtnSx = {
   textTransform: "none" as const,
   borderRadius: 999,
   px: 2,
-  color: "#6366f1",
-  borderColor: "color-mix(in srgb, #6366f1 40%, transparent)",
-  "&:hover": { borderColor: "#6366f1", bgcolor: "color-mix(in srgb, #6366f1 6%, transparent)" },
+  color: "#1b4f8a",
+  borderColor: "color-mix(in srgb, #1b4f8a 40%, transparent)",
+  "&:hover": { borderColor: "#1b4f8a", bgcolor: "color-mix(in srgb, #1b4f8a 6%, transparent)" },
 };
 
 export function CourseStudentsPanel({ courseId, courseTitle }: Props) {
@@ -176,7 +176,7 @@ export function CourseStudentsPanel({ courseId, courseTitle }: Props) {
               component="span"
               sx={{
                 px: 1.1, py: 0.15, borderRadius: 999, fontSize: "0.8rem", fontWeight: 800, color: "white",
-                background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+                background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
               }}
             >
               {count}
@@ -201,9 +201,9 @@ export function CourseStudentsPanel({ courseId, courseTitle }: Props) {
       {/* Summary rail */}
       {count > 0 && (
         <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap", mb: 2 }}>
-          <StatChip icon="mdi:account-group-outline" accent="#6366f1" value={count} label="Enrolled" />
-          <StatChip icon="mdi:rocket-launch-outline" accent="#10b981" value={pageStats.started} label="Started (this page)" />
-          <StatChip icon="mdi:chart-line" accent="#a855f7" value={`${pageStats.avg}%`} label="Avg progress (this page)" />
+          <StatChip icon="mdi:account-group-outline" accent="#1b4f8a" value={count} label="Enrolled" />
+          <StatChip icon="mdi:rocket-launch-outline" accent="#0e7a3c" value={pageStats.started} label="Started (this page)" />
+          <StatChip icon="mdi:chart-line" accent="#1b4f8a" value={`${pageStats.avg}%`} label="Avg progress (this page)" />
         </Box>
       )}
 
@@ -238,7 +238,7 @@ export function CourseStudentsPanel({ courseId, courseTitle }: Props) {
             border: "1px dashed color-mix(in srgb, var(--border-default) 90%, transparent)",
           }}
         >
-          <Icon icon="mdi:account-school-outline" width={44} style={{ color: "#a855f7" }} />
+          <Icon icon="mdi:account-school-outline" width={44} style={{ color: "#1b4f8a" }} />
           <Typography sx={{ fontWeight: 800, mt: 1.5 }}>
             {search ? "No students match your search" : "No students enrolled yet"}
           </Typography>
@@ -264,8 +264,8 @@ export function CourseStudentsPanel({ courseId, courseTitle }: Props) {
                 transition: "transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease",
                 "&:hover": {
                   transform: "translateY(-1px)",
-                  borderColor: "color-mix(in srgb, #6366f1 35%, transparent)",
-                  boxShadow: "0 16px 30px -24px rgba(99,102,241,0.5)",
+                  borderColor: "color-mix(in srgb, #1b4f8a 35%, transparent)",
+                  boxShadow: "var(--shadow-md)",
                 },
               }}
             >
@@ -302,7 +302,7 @@ export function CourseStudentsPanel({ courseId, courseTitle }: Props) {
                 <IconButton
                   size="small"
                   onClick={() => setDetailId(s.student_id)}
-                  sx={{ color: "#6366f1", bgcolor: "color-mix(in srgb, #6366f1 8%, transparent)", "&:hover": { bgcolor: "color-mix(in srgb, #6366f1 16%, transparent)" } }}
+                  sx={{ color: "#1b4f8a", bgcolor: "color-mix(in srgb, #1b4f8a 8%, transparent)", "&:hover": { bgcolor: "color-mix(in srgb, #1b4f8a 16%, transparent)" } }}
                 >
                   <Icon icon="mdi:chart-box-outline" width={19} />
                 </IconButton>
@@ -313,7 +313,7 @@ export function CourseStudentsPanel({ courseId, courseTitle }: Props) {
                     size="small"
                     disabled={busyId === s.student_id}
                     onClick={() => void handleUnenroll(s)}
-                    sx={{ color: "#ef4444", bgcolor: "color-mix(in srgb, #ef4444 8%, transparent)", "&:hover": { bgcolor: "color-mix(in srgb, #ef4444 16%, transparent)" } }}
+                    sx={{ color: "#b32020", bgcolor: "color-mix(in srgb, #b32020 8%, transparent)", "&:hover": { bgcolor: "color-mix(in srgb, #b32020 16%, transparent)" } }}
                   >
                     {busyId === s.student_id ? <CircularProgress size={16} /> : <Icon icon="mdi:account-remove-outline" width={19} />}
                   </IconButton>
@@ -528,7 +528,7 @@ function StudentProgressDialog({
               sx={{
                 mt: 2.5, width: "100%", py: 1.25, borderRadius: 2.5, gap: 0.75,
                 fontWeight: 700, fontSize: "0.85rem", color: "white",
-                background: "linear-gradient(135deg,#6366f1,#a855f7)",
+                background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)",
               }}
             >
               View full activity &amp; performance report
@@ -553,7 +553,7 @@ function ProgressRing({ value, size = 84 }: { value: number; size?: number }) {
         flexShrink: 0,
         display: "grid",
         placeItems: "center",
-        background: `conic-gradient(#a855f7 ${v * 3.6}deg, color-mix(in srgb, #6366f1 14%, transparent) 0deg)`,
+        background: `conic-gradient(#1b4f8a ${v * 3.6}deg, color-mix(in srgb, #1b4f8a 14%, transparent) 0deg)`,
       }}
     >
       <Box
@@ -587,14 +587,14 @@ function AccessSourceChip({ paid, source }: { paid?: boolean; source?: string })
   if (paid === undefined && !source) return null;
 
   const { label, hue } = paid
-    ? { label: "Paid", hue: "#f59e0b" }
+    ? { label: "Paid", hue: "#b7791f" }
     : source === "self"
-      ? { label: "Self", hue: "#6366f1" }
+      ? { label: "Self", hue: "#1b4f8a" }
       : source === "bulk"
         ? { label: "Import", hue: "#94a3b8" }
         : source === "migration"
           ? { label: "Legacy", hue: "#94a3b8" }
-          : { label: "Comped", hue: "#10b981" };
+          : { label: "Comped", hue: "#0e7a3c" };
 
   return (
     <Box

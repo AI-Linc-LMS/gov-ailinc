@@ -290,7 +290,7 @@ export default function StudentDetailsPage() {
                   fontWeight: 700,
                   color: pi.is_active ? ADAPTIVE.green : "#94a3b8",
                   bgcolor: pi.is_active
-                    ? "color-mix(in srgb, #10b981 14%, transparent)"
+                    ? "color-mix(in srgb, #0e7a3c 14%, transparent)"
                     : "color-mix(in srgb, #94a3b8 16%, transparent)",
                 }}
               />

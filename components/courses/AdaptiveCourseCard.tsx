@@ -36,17 +36,17 @@ export function AdaptiveCourseCard({
         p: 2.5,
         bgcolor: "var(--card-bg, #fff)",
         border: "1px solid var(--border-default, #ececf1)",
-        boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 10px 26px -22px rgba(16,24,40,0.18)",
+        boxShadow: "var(--shadow-sm)",
         transition: "transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease",
         "&:hover": {
-          transform: "translateY(-3px)",
-          borderColor: "color-mix(in srgb, #6366f1 40%, transparent)",
-          boxShadow: "0 20px 40px -26px rgba(99, 102, 241, 0.45)",
+          transform: "translateY(-1px)",
+          borderColor: "color-mix(in srgb, #1b4f8a 40%, transparent)",
+          boxShadow: "var(--shadow-md)",
         },
       }}
     >
       {/* Always render the image band (fallback gradient) so the header lines up. */}
-      <Box sx={{ width: "100%", aspectRatio: "16 / 9", borderRadius: 2.5, overflow: "hidden", mb: 1.5, flexShrink: 0, background: "linear-gradient(135deg, color-mix(in srgb, #6366f1 14%, transparent), color-mix(in srgb, #a855f7 12%, transparent))" }}>
+      <Box sx={{ width: "100%", aspectRatio: "16 / 9", borderRadius: 2.5, overflow: "hidden", mb: 1.5, flexShrink: 0, background: "linear-gradient(135deg, color-mix(in srgb, #1b4f8a 14%, transparent), color-mix(in srgb, #1b4f8a 12%, transparent))" }}>
         {course.card_image_url && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -68,7 +68,7 @@ export function AdaptiveCourseCard({
       </Box>
 
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 1.5, flexWrap: "wrap", minWidth: 0 }}>
-        <Box sx={{ width: 44, height: 44, borderRadius: 3, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)", boxShadow: "0 14px 26px -14px rgba(168, 85, 247, 0.6)" }}>
+        <Box sx={{ width: 44, height: 44, borderRadius: 3, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)", boxShadow: "var(--shadow-sm)" }}>
           <Icon icon="mdi:book-education-outline" width={22} />
         </Box>
         {/* The "Adaptive" chip that used to sit here is gone. It existed to tell
@@ -103,7 +103,7 @@ export function AdaptiveCourseCard({
 function Metric({ icon, label, value }: { icon: string; label: string; value: number }) {
   return (
     <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.6 }}>
-      <Icon icon={icon} width={16} style={{ color: "#6366f1" }} />
+      <Icon icon={icon} width={16} style={{ color: "#1b4f8a" }} />
       <Typography component="span" sx={{ fontWeight: 800, fontSize: "0.85rem" }}>{value}</Typography>
       <Typography component="span" sx={{ color: "text.secondary", fontSize: "0.78rem" }}>{label}</Typography>
     </Box>

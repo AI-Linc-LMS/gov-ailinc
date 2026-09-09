@@ -170,12 +170,12 @@ export function QuizStartScreen({
           borderRadius: 2,
           textTransform: "none",
           boxShadow:
-            "0 4px 12px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+            "var(--shadow-sm)",
           "&:hover": {
             background:
               "linear-gradient(135deg, var(--accent-indigo-dark) 0%, color-mix(in srgb, var(--accent-indigo-dark) 80%, black 20%) 100%)",
             boxShadow:
-              "0 6px 16px color-mix(in srgb, var(--accent-indigo) 45%, transparent)",
+              "var(--shadow-md)",
             transform: "translateY(-1px)",
           },
           "&:active": {

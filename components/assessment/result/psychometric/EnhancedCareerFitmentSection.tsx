@@ -106,7 +106,7 @@ export function EnhancedCareerFitmentSection({ data }: EnhancedCareerFitmentSect
           onClick={() => setViewMode("timeline")}
           className={`px-6 py-3 font-semibold transition-all duration-200 border-b-2 ${
             viewMode === "timeline"
-              ? "border-purple-500 text-purple-600"
+              ? "border-[#1b4f8a] text-[#164274]"
               : "border-transparent text-slate-500 hover:text-slate-700"
           }`}
         >
@@ -204,8 +204,8 @@ export function EnhancedCareerFitmentSection({ data }: EnhancedCareerFitmentSect
                           <p className="text-xs font-semibold text-blue-600 mb-1">Emotional Alignment</p>
                           <p className="text-sm text-slate-700">{career.emotional_alignment}</p>
                         </div>
-                        <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-                          <p className="text-xs font-semibold text-purple-600 mb-1">Social Alignment</p>
+                        <div className="bg-[#eef3fa] rounded-lg p-3 border border-[#b6cde8]">
+                          <p className="text-xs font-semibold text-[#164274] mb-1">Social Alignment</p>
                           <p className="text-sm text-slate-700">{career.social_alignment}</p>
                         </div>
                       </div>
@@ -290,39 +290,44 @@ export function EnhancedCareerFitmentSection({ data }: EnhancedCareerFitmentSect
                 </span>
               </div>
               <div className="relative">
-                {/* Timeline Line */}
-                <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-green-500"></div>
+                {/* Timeline Line. The three stages read institutional blue into
+                    teal into sanctioned green: the mid stage used to be purple,
+                    and once that became blue it was indistinguishable from the
+                    short stage above it. Each stage is also named in words and
+                    carries its own month range, so the colour is never the only
+                    thing telling the stages apart. */}
+                <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#1b4f8a] via-[#0f6b7a] to-[#0e7a3c]"></div>
                 
                 <div className="space-y-6 relative">
                   {/* Short Term */}
                   <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold shadow-lg z-10">
+                    <div className="w-16 h-16 rounded-full bg-[#1b4f8a] flex items-center justify-center text-white font-bold shadow-lg z-10">
                       <span className="text-xs">0-6M</span>
                     </div>
-                    <div className="flex-1 bg-blue-50 rounded-xl p-4 border border-blue-200">
-                      <p className="text-sm font-semibold text-blue-600 uppercase tracking-wide mb-2">Short-Term (0-6 months)</p>
+                    <div className="flex-1 bg-[#eef3fa] rounded-xl p-4 border border-[#b6cde8]">
+                      <p className="text-sm font-semibold text-[#164274] uppercase tracking-wide mb-2">Short-Term (0-6 months)</p>
                       <p className="text-base text-slate-700">{career.timeline.short_term}</p>
                     </div>
                   </div>
 
                   {/* Mid Term */}
                   <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold shadow-lg z-10">
+                    <div className="w-16 h-16 rounded-full bg-[#0f6b7a] flex items-center justify-center text-white font-bold shadow-lg z-10">
                       <span className="text-xs">6-18M</span>
                     </div>
-                    <div className="flex-1 bg-purple-50 rounded-xl p-4 border border-purple-200">
-                      <p className="text-sm font-semibold text-purple-600 uppercase tracking-wide mb-2">Mid-Term (6-18 months)</p>
+                    <div className="flex-1 bg-[#e6f1f2] rounded-xl p-4 border border-[#bcd9dd]">
+                      <p className="text-sm font-semibold text-[#0b5260] uppercase tracking-wide mb-2">Mid-Term (6-18 months)</p>
                       <p className="text-base text-slate-700">{career.timeline.mid_term}</p>
                     </div>
                   </div>
 
                   {/* Long Term */}
                   <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-white font-bold shadow-lg z-10">
+                    <div className="w-16 h-16 rounded-full bg-[#0e7a3c] flex items-center justify-center text-white font-bold shadow-lg z-10">
                       <span className="text-xs">18M+</span>
                     </div>
-                    <div className="flex-1 bg-green-50 rounded-xl p-4 border border-green-200">
-                      <p className="text-sm font-semibold text-green-600 uppercase tracking-wide mb-2">Long-Term (18+ months)</p>
+                    <div className="flex-1 bg-[#dff0e6] rounded-xl p-4 border border-[#b9dcc7]">
+                      <p className="text-sm font-semibold text-[#0b6232] uppercase tracking-wide mb-2">Long-Term (18+ months)</p>
                       <p className="text-base text-slate-700">{career.timeline.long_term}</p>
                     </div>
                   </div>

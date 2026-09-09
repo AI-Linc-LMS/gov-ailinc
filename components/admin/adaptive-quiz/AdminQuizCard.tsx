@@ -60,8 +60,8 @@ export function AdminQuizCard({ quiz, onAfterToggle, onRequestDelete }: AdminQui
     }
   }
 
-  const accentStart = isActive ? "#6366f1" : "#94a3b8";
-  const accentEnd = isActive ? "#7c3aed" : "#475569";
+  const accentStart = isActive ? "#1b4f8a" : "#94a3b8";
+  const accentEnd = isActive ? "#14406f" : "#475569";
 
   return (
     <Box
@@ -77,16 +77,14 @@ export function AdminQuizCard({ quiz, onAfterToggle, onRequestDelete }: AdminQui
         // Accent-tinted border matches the BentoCard chapter-2 look.
         border: `1px solid color-mix(in srgb, ${accentStart} 22%, transparent)`,
         boxShadow:
-          "0 1px 0 0 color-mix(in srgb, white 16%, transparent) inset, 0 24px 50px -32px rgba(15, 23, 42, 0.18)",
+          "var(--shadow-sm)",
         display: "flex",
         flexDirection: "column",
         opacity: isActive ? 1 : 0.7,
         transition: "opacity 220ms ease, box-shadow 220ms ease, border-color 220ms ease",
         "&:hover": {
           borderColor: `color-mix(in srgb, ${accentStart} 38%, transparent)`,
-          boxShadow: isActive
-            ? `0 1px 0 0 color-mix(in srgb, white 16%, transparent) inset, 0 36px 70px -32px color-mix(in srgb, ${accentStart} 30%, transparent)`
-            : "0 1px 0 0 color-mix(in srgb, white 16%, transparent) inset, 0 24px 50px -32px rgba(15, 23, 42, 0.3)",
+          boxShadow: isActive ? "var(--shadow-md)" : "var(--shadow-sm)",
         },
       }}
     >
@@ -136,7 +134,7 @@ export function AdminQuizCard({ quiz, onAfterToggle, onRequestDelete }: AdminQui
               justifyContent: "center",
               background: `linear-gradient(135deg, ${accentStart} 0%, ${accentEnd} 100%)`,
               color: "white",
-              boxShadow: `0 12px 28px -10px color-mix(in srgb, ${accentEnd} 60%, transparent)`,
+              boxShadow: "var(--shadow-sm)",
               flexShrink: 0,
             }}
           >
@@ -301,7 +299,7 @@ export function AdminQuizCard({ quiz, onAfterToggle, onRequestDelete }: AdminQui
               fontWeight: 800,
               color: "white",
               background: `linear-gradient(135deg, ${accentStart} 0%, ${accentEnd} 100%)`,
-              boxShadow: `0 14px 30px -14px color-mix(in srgb, ${accentEnd} 70%, transparent)`,
+              boxShadow: "var(--shadow-sm)",
               fontSize: "0.9rem",
               letterSpacing: "0.01em",
               display: "inline-flex",
@@ -321,10 +319,10 @@ export function AdminQuizCard({ quiz, onAfterToggle, onRequestDelete }: AdminQui
               onClick={() => onRequestDelete(quiz)}
               aria-label="Delete adaptive quiz"
               sx={{
-                color: "#ef4444",
-                border: "1px solid color-mix(in srgb, #ef4444 30%, transparent)",
+                color: "#b32020",
+                border: "1px solid color-mix(in srgb, #b32020 30%, transparent)",
                 borderRadius: 2.5,
-                "&:hover": { background: "color-mix(in srgb, #ef4444 8%, transparent)" },
+                "&:hover": { background: "color-mix(in srgb, #b32020 8%, transparent)" },
               }}
             >
               <Icon icon="mdi:trash-can-outline" width={18} />

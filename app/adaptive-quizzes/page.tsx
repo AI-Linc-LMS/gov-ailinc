@@ -121,10 +121,10 @@ export default function AdaptiveQuizListPage() {
           {stats.active + stats.archived > 0 && (
             <KpiRail
               items={[
-                { value: stats.active, label: "Quizzes available", accent: "#6366f1" },
-                { value: attempts.length, label: "Your attempts", accent: "#10b981" },
-                { value: stats.skills, label: "Skills tracked", accent: "#a855f7" },
-                { value: stats.archived, label: "Archived re-quizzes", accent: "#ec4899" },
+                { value: stats.active, label: "Quizzes available", accent: "#1b4f8a" },
+                { value: attempts.length, label: "Your attempts", accent: "#0e7a3c" },
+                { value: stats.skills, label: "Skills tracked", accent: "#1b4f8a" },
+                { value: stats.archived, label: "Archived re-quizzes", accent: "#0f6b7a" },
               ]}
             />
           )}
@@ -139,10 +139,10 @@ export default function AdaptiveQuizListPage() {
             <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 3 }}>
               {(
                 [
-                  { key: "all", label: "All", count: stats.active, accent: "#6366f1" },
-                  ...(stats.public > 0 ? [{ key: "public" as Filter, label: "Public", count: stats.public, accent: "#a855f7" }] : []),
-                  ...(stats.personal > 0 ? [{ key: "personal" as Filter, label: "Active re-quizzes", count: stats.personal, accent: "#f59e0b" }] : []),
-                  ...(stats.archived > 0 ? [{ key: "archived" as Filter, label: "Archived", count: stats.archived, accent: "#ec4899" }] : []),
+                  { key: "all", label: "All", count: stats.active, accent: "#1b4f8a" },
+                  ...(stats.public > 0 ? [{ key: "public" as Filter, label: "Public", count: stats.public, accent: "#1b4f8a" }] : []),
+                  ...(stats.personal > 0 ? [{ key: "personal" as Filter, label: "Active re-quizzes", count: stats.personal, accent: "#b7791f" }] : []),
+                  ...(stats.archived > 0 ? [{ key: "archived" as Filter, label: "Archived", count: stats.archived, accent: "#0f6b7a" }] : []),
                 ] as Array<{ key: Filter; label: string; count: number; accent: string }>
               ).map((b) => {
                 const active = filter === b.key;
@@ -158,7 +158,7 @@ export default function AdaptiveQuizListPage() {
                       fontSize: "0.8rem",
                       color: active ? "white" : "text.primary",
                       background: active
-                        ? `linear-gradient(135deg, ${b.accent} 0%, color-mix(in srgb, ${b.accent} 50%, #ec4899) 100%)`
+                        ? `linear-gradient(135deg, ${b.accent} 0%, color-mix(in srgb, ${b.accent} 50%, #0f6b7a) 100%)`
                         : "color-mix(in srgb, var(--card-bg) 60%, transparent)",
                       border: active ? "1px solid transparent" : "1px solid color-mix(in srgb, var(--border-default) 75%, transparent)",
                       display: "inline-flex",
@@ -196,7 +196,7 @@ export default function AdaptiveQuizListPage() {
           )}
 
           {error && (
-            <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>
+            <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>
               {error}
             </Typography>
           )}
@@ -257,7 +257,7 @@ function EmptyState() {
         border: "1px dashed color-mix(in srgb, var(--border-default) 90%, transparent)",
       }}
     >
-      <Icon icon="mdi:robot-confused-outline" width={48} style={{ color: "#a855f7" }} />
+      <Icon icon="mdi:robot-confused-outline" width={48} style={{ color: "#1b4f8a" }} />
       <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.1rem" }}>
         No adaptive quizzes yet.
       </Typography>

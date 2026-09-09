@@ -147,7 +147,7 @@ export function CodingProblemResponsesSection({ codingResponses }: CodingProblem
                 borderRadius: 2,
                 textTransform: "none",
                 boxShadow:
-                  "0 4px 12px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+                  "var(--shadow-sm)",
                 "&:hover": {
                   background:
                     "linear-gradient(135deg, var(--accent-indigo-dark) 0%, var(--accent-indigo) 100%)",
@@ -362,7 +362,7 @@ export function CodingProblemResponsesSection({ codingResponses }: CodingProblem
                 whiteSpace: "pre-wrap",
                 wordBreak: "break-word",
                 boxShadow:
-                  "0 1px 3px color-mix(in srgb, var(--success-500) 20%, transparent)",
+                  "var(--shadow-sm)",
               }}
             >
               {item.sample_input}
@@ -402,7 +402,7 @@ export function CodingProblemResponsesSection({ codingResponses }: CodingProblem
                 whiteSpace: "pre-wrap",
                 wordBreak: "break-word",
                 boxShadow:
-                  "0 1px 3px color-mix(in srgb, var(--accent-indigo) 20%, transparent)",
+                  "var(--shadow-sm)",
               }}
             >
               {item.sample_output}
@@ -432,7 +432,7 @@ export function CodingProblemResponsesSection({ codingResponses }: CodingProblem
                 border: "1px solid var(--border-default)",
                 borderLeft: "4px solid var(--accent-indigo)",
                 boxShadow:
-                  "0 4px 12px color-mix(in srgb, var(--accent-indigo) 25%, transparent)",
+                  "var(--shadow-sm)",
                 "& pre": { margin: 0, borderRadius: 0 },
                 "& code": { fontSize: "0.8125rem !important" },
               }}

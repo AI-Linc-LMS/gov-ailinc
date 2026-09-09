@@ -40,12 +40,12 @@ export function CsvAnalyzingProgress({
       sx={{
         borderRadius: 4,
         p: 2.5,
-        bgcolor: "color-mix(in srgb, #6366f1 7%, var(--card-bg))",
-        border: "1px solid color-mix(in srgb, #6366f1 30%, transparent)",
+        bgcolor: "color-mix(in srgb, #1b4f8a 7%, var(--card-bg))",
+        border: "1px solid color-mix(in srgb, #1b4f8a 30%, transparent)",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
-        <Icon icon="mdi:sparkles" width={20} style={{ color: "#a855f7" }} />
+        <Icon icon="mdi:sparkles" width={20} style={{ color: "#1b4f8a" }} />
         <Typography sx={{ fontWeight: 800 }}>Analyzing with AI…</Typography>
       </Box>
       <Typography sx={{ fontSize: "0.8rem", color: "text.secondary", mb: 1.5 }}>
@@ -58,9 +58,9 @@ export function CsvAnalyzingProgress({
           height: 6,
           borderRadius: 999,
           mb: 2,
-          bgcolor: "color-mix(in srgb, #6366f1 18%, transparent)",
+          bgcolor: "color-mix(in srgb, #1b4f8a 18%, transparent)",
           "& .MuiLinearProgress-bar": {
-            background: "linear-gradient(90deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
+            background: "linear-gradient(90deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)",
           },
         }}
       />
@@ -73,7 +73,7 @@ export function CsvAnalyzingProgress({
             <Box key={stage.label} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Box sx={{ width: 20, height: 20, display: "grid", placeItems: "center", flexShrink: 0 }}>
                 {done ? (
-                  <Icon icon="mdi:check-circle" width={18} style={{ color: "#10b981" }} />
+                  <Icon icon="mdi:check-circle" width={18} style={{ color: "#0e7a3c" }} />
                 ) : current ? (
                   <Box
                     sx={{
@@ -82,7 +82,7 @@ export function CsvAnalyzingProgress({
                       "@keyframes csv-analyze-spin": { to: { transform: "rotate(360deg)" } },
                     }}
                   >
-                    <Icon icon="mdi:loading" width={18} style={{ color: "#6366f1" }} />
+                    <Icon icon="mdi:loading" width={18} style={{ color: "#1b4f8a" }} />
                   </Box>
                 ) : (
                   <Icon icon={stage.icon} width={16} style={{ color: "var(--border-default)" }} />

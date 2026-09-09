@@ -26,9 +26,9 @@ export function StreakCongratulationsModal({
       PaperProps={{
         sx: {
           borderRadius: 4,
-          background: "linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fecaca 100%)",
+          background: "linear-gradient(135deg, #fdf3e2 0%, #fed7aa 50%, #f2d3d3 100%)",
           border: "2px solid #fdba74",
-          boxShadow: "0 20px 60px rgba(251, 146, 60, 0.3)",
+          boxShadow: "var(--shadow-xl)",
           overflow: "hidden",
         },
       }}
@@ -54,7 +54,7 @@ export function StreakCongratulationsModal({
                 width: 8,
                 height: 8,
                 borderRadius: "50%",
-                backgroundColor: "#fbbf24",
+                backgroundColor: "#c9903a",
                 top: `${20 + i * 15}%`,
                 left: `${10 + i * 12}%`,
               }}
@@ -104,9 +104,9 @@ export function StreakCongratulationsModal({
                 width: 120,
                 height: 120,
                 borderRadius: "50%",
-                background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
+                background: "linear-gradient(135deg, #c9903a 0%, #b7791f 100%)",
                 border: "4px solid #ffffff",
-                boxShadow: "0 10px 30px rgba(251, 191, 36, 0.4)",
+                boxShadow: "var(--shadow-sm)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -179,11 +179,11 @@ export function StreakCongratulationsModal({
                 textTransform: "none",
                 fontSize: "1rem",
                 fontWeight: 600,
-                boxShadow: "0 4px 12px rgba(146, 64, 14, 0.3)",
+                boxShadow: "var(--shadow-sm)",
                 "&:hover": {
                   backgroundColor: "#78350f",
-                  boxShadow: "0 6px 16px rgba(146, 64, 14, 0.4)",
-                  transform: "translateY(-2px)",
+                  boxShadow: "var(--shadow-md)",
+                  transform: "translateY(-1px)",
                 },
                 transition: "all 0.2s ease",
               }}

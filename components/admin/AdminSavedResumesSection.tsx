@@ -105,11 +105,11 @@ function AdminResumePreviewCard({
           backgroundColor: "#ffffff",
           cursor: "pointer",
           transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-          boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+          boxShadow: "var(--shadow-sm)",
           "&:hover": {
             borderColor: "rgba(10, 102, 194, 0.25)",
-            boxShadow: "0 12px 32px rgba(10, 102, 194, 0.12)",
-            transform: "translateY(-4px)",
+            boxShadow: "var(--shadow-md)",
+            transform: "translateY(-1px)",
           },
         }}
       >
@@ -147,7 +147,7 @@ function AdminResumePreviewCard({
                   justifyContent: "center",
                 }}
               >
-                <Icon icon="mdi:file-pdf-box" size={40} color="#dc2626" />
+                <Icon icon="mdi:file-pdf-box" size={40} color="#991b1b" />
               </Box>
               <Typography
                 variant="caption"
@@ -189,14 +189,14 @@ function AdminResumePreviewCard({
                 alignItems: "center",
                 justifyContent: "center",
                 gap: 1.5,
-                backgroundColor: "#fef2f2",
+                backgroundColor: "#fdf5f5",
                 p: 2,
               }}
             >
               <Icon
                 icon="mdi:file-document-alert-outline"
                 size={44}
-                color="#dc2626"
+                color="#991b1b"
               />
               <Typography
                 variant="caption"
@@ -226,7 +226,7 @@ function AdminResumePreviewCard({
                   height: "100%",
                   borderRadius: 2,
                   overflow: "hidden",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                  boxShadow: "var(--shadow-sm)",
                 }}
               >
                 <iframe
@@ -318,7 +318,7 @@ export function AdminSavedResumesSection({
           p: { xs: 2, sm: 3 },
           border: "1px solid rgba(0,0,0,0.06)",
           borderRadius: 3,
-          boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+          boxShadow: "var(--shadow-sm)",
           backgroundColor: "#ffffff",
           overflow: "hidden",
         }}

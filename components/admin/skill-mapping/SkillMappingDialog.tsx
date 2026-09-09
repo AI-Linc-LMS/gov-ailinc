@@ -62,11 +62,11 @@ function SkillChip({
         fontWeight: 600,
         borderColor:
           variant === "ai" && !selected
-            ? "var(--accent-amber, #f59e0b)"
+            ? "var(--accent-amber, #b7791f)"
             : undefined,
         bgcolor:
           variant === "ai" && !selected
-            ? "color-mix(in srgb, var(--accent-amber, #f59e0b) 12%, transparent)"
+            ? "color-mix(in srgb, var(--accent-amber, #b7791f) 12%, transparent)"
             : undefined,
       }}
     />
@@ -379,7 +379,7 @@ export function SkillMappingDialog({
                 gap: 1,
                 alignItems: "center",
                 bgcolor:
-                  "color-mix(in srgb, var(--accent-indigo, #6366f1) 6%, transparent)",
+                  "color-mix(in srgb, var(--accent-indigo, #1b4f8a) 6%, transparent)",
                 borderRadius: 1.5,
                 p: 1.5,
               }}

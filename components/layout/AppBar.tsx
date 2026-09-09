@@ -13,7 +13,6 @@ import {
   Popover,
   Tooltip,
 } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth/auth-context";
 import {
@@ -339,7 +338,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
         zIndex: (theme) => theme.zIndex.drawer + 1,
         backgroundColor: "var(--surface)",
         color: "var(--font-primary)",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+        boxShadow: "var(--shadow-sm)",
         borderBottom: "1px solid var(--border-default)",
         width: {
           xs: "100%",
@@ -436,8 +435,8 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                   px: 1.5,
                   py: 0.5,
                   borderRadius: 2,
-                  backgroundColor: "#fef3c7",
-                  border: "1px solid #fde68a",
+                  backgroundColor: "#fdf3e2",
+                  border: "1px solid #f0ddb8",
                 }}
               >
                 <IconWrapper
@@ -465,8 +464,8 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                   width: 36,
                   height: 36,
                   borderRadius: 2,
-                  backgroundColor: "#fef3c7",
-                  border: "1px solid #fde68a",
+                  backgroundColor: "#fdf3e2",
+                  border: "1px solid #f0ddb8",
                 }}
               >
                 <IconWrapper
@@ -512,10 +511,10 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                 border: "1px solid",
                 borderColor: "var(--primary-200)",
                 transition: "all 0.2s ease",
-                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                boxShadow: "var(--shadow-sm)",
                 "&:hover": {
                   backgroundColor: "var(--primary-100)",
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                  boxShadow: "var(--shadow-md)",
                   transform: "translateY(-1px)",
                 },
               }}
@@ -566,10 +565,10 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                 border: "1px solid",
                 borderColor: "var(--primary-200)",
                 transition: "all 0.2s ease",
-                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                boxShadow: "var(--shadow-sm)",
                 "&:hover": {
                   backgroundColor: "var(--primary-100)",
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                  boxShadow: "var(--shadow-md)",
                   transform: "translateY(-1px)",
                 },
               }}
@@ -607,8 +606,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                 borderColor: "var(--primary-200)",
                 bgcolor: "var(--card-bg)",
                 color: "var(--font-primary)",
-                boxShadow: (theme) =>
-                  `0 8px 24px ${alpha(theme.palette.common.black, 0.15)}`,
+                boxShadow: "var(--shadow-lg)",
                 pointerEvents: "auto",
               },
             }}
@@ -738,7 +736,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                             borderRadius: 1,
                             transition: "all 0.2s ease",
                             "&:hover": {
-                              backgroundColor: linkedinUrl ? "rgba(99, 102, 241, 0.08)" : undefined,
+                              backgroundColor: linkedinUrl ? "rgba(27, 79, 138, 0.08)" : undefined,
                               transform: linkedinUrl ? "translateX(2px)" : undefined,
                             },
                             "&:focus": linkedinUrl
@@ -762,7 +760,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                               borderRadius: "50%",
                               backgroundColor:
                                 index === 0
-                                  ? "#fef3c7"
+                                  ? "#fdf3e2"
                                   : index === 1
                                   ? "#f3f4f6"
                                   : "#fed7aa",
@@ -869,31 +867,21 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                 padding: "6px 12px",
                 fontSize: "12px",
                 background:
-                  "linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fecaca 100%)",
+                  "linear-gradient(135deg, #fdf3e2 0%, #fed7aa 50%, #f2d3d3 100%)",
                 borderRadius: "9999px",
                 border: "1px solid #fdba74",
                 cursor: "pointer",
                 position: "relative",
                 overflow: "hidden",
+                // Was a two-second amber glow pulse (8px to 12px at 25 to 40 percent).
+                // A streak chip in a government header should sit still; the chip
+                // keeps a resting elevation and its hover scale.
+                boxShadow: "var(--shadow-sm)",
               }}
               initial={{ scale: 1 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              animate={{
-                boxShadow: [
-                  "0 2px 8px rgba(251, 146, 60, 0.25)",
-                  "0 4px 12px rgba(251, 146, 60, 0.4)",
-                  "0 2px 8px rgba(251, 146, 60, 0.25)",
-                ],
-              }}
-              transition={{
-                boxShadow: {
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                },
-                scale: { duration: 0.2 },
-              }}
+              transition={{ scale: { duration: 0.2 } }}
             >
               {/* Animated gradient overlay */}
               <motion.div
@@ -920,7 +908,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                   position: "absolute",
                   inset: 0,
                   background:
-                    "linear-gradient(90deg, #fdba74 0%, #f87171 100%)",
+                    "linear-gradient(90deg, #fdba74 0%, #c94b4b 100%)",
                   borderRadius: "9999px",
                   opacity: 0.2,
                 }}
@@ -1006,7 +994,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                   left: -200,
                   borderRadius: 2,
                   border: "1px solid var(--border-default)",
-                  boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+                  boxShadow: "var(--shadow-lg)",
                   pointerEvents: "auto",
                 },
               }}
@@ -1127,7 +1115,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                 minWidth: 220,
                 borderRadius: 2,
                 border: "1px solid #e5e7eb",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+                boxShadow: "var(--shadow-lg)",
               },
             }}
           >
@@ -1157,7 +1145,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick, DrawerWidth }) => {
                 }}
                 sx={{
                   backgroundColor: isAdminMode
-                    ? "rgba(99, 102, 241, 0.1)"
+                    ? "rgba(27, 79, 138, 0.1)"
                     : "transparent",
                 }}
               >

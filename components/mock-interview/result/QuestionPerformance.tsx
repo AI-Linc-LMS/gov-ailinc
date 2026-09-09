@@ -160,8 +160,8 @@ const QuestionPerformanceComponent = ({
                         size="small"
                         sx={{
                           backgroundColor:
-                            question.type === "practical" ? "#dbeafe" : "#f3f4f6",
-                          color: question.type === "practical" ? "#1e40af" : "#374151",
+                            question.type === "practical" ? "#d9e6f4" : "#f3f4f6",
+                          color: question.type === "practical" ? "#12365f" : "#374151",
                           fontSize: "0.7rem",
                           height: 20,
                         }}
@@ -313,7 +313,7 @@ const QuestionPerformanceComponent = ({
                         gap: 1,
                       }}
                     >
-                      <IconWrapper icon="mdi:check-circle" size={18} color="#10b981" />
+                      <IconWrapper icon="mdi:check-circle" size={18} color="#0e7a3c" />
                       Strengths
                     </Typography>
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -327,15 +327,15 @@ const QuestionPerformanceComponent = ({
                             p: 1.5,
                             backgroundColor: "#f0fdf4",
                             borderRadius: 2,
-                            border: "1px solid #bbf7d0",
+                            border: "1px solid #c8e6d5",
                           }}
                         >
                           <IconWrapper
                             icon="mdi:arrow-right-circle"
                             size={18}
-                            color="#16a34a"
+                            color="#0b6232"
                           />
-                          <Typography variant="body2" sx={{ color: "#15803d" }}>
+                          <Typography variant="body2" sx={{ color: "#0b6232" }}>
                             {strength}
                           </Typography>
                         </Box>
@@ -358,7 +358,7 @@ const QuestionPerformanceComponent = ({
                         gap: 1,
                       }}
                     >
-                      <IconWrapper icon="mdi:lightbulb-on" size={18} color="#f59e0b" />
+                      <IconWrapper icon="mdi:lightbulb-on" size={18} color="#b7791f" />
                       Areas for Improvement
                     </Typography>
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -370,17 +370,17 @@ const QuestionPerformanceComponent = ({
                             alignItems: "flex-start",
                             gap: 1,
                             p: 1.5,
-                            backgroundColor: "#fef3c7",
+                            backgroundColor: "#fdf3e2",
                             borderRadius: 2,
-                            border: "1px solid #fde68a",
+                            border: "1px solid #f0ddb8",
                           }}
                         >
                           <IconWrapper
                             icon="mdi:arrow-right-circle"
                             size={18}
-                            color="#d97706"
+                            color="#8a5a12"
                           />
-                          <Typography variant="body2" sx={{ color: "#b45309" }}>
+                          <Typography variant="body2" sx={{ color: "#8a5a12" }}>
                             {improvement}
                           </Typography>
                         </Box>

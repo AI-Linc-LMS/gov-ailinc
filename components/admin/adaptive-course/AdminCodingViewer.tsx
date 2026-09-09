@@ -170,7 +170,7 @@ export function AdminCodingViewer({ problemId, onChanged, onDeleted }: AdminCodi
           size="small"
           onClick={handleToggleActive}
           startIcon={<Icon icon={problem.is_active ? "mdi:eye-off-outline" : "mdi:eye-outline"} width={15} />}
-          sx={{ textTransform: "none", fontWeight: 800, color: problem.is_active ? "#f59e0b" : "#10b981" }}
+          sx={{ textTransform: "none", fontWeight: 800, color: problem.is_active ? "#b7791f" : "#0e7a3c" }}
         >
           {problem.is_active ? "Deactivate" : "Activate"}
         </Button>
@@ -178,7 +178,7 @@ export function AdminCodingViewer({ problemId, onChanged, onDeleted }: AdminCodi
           size="small"
           onClick={handleDelete}
           startIcon={<Icon icon="mdi:trash-can-outline" width={15} />}
-          sx={{ textTransform: "none", fontWeight: 800, color: "#ef4444" }}
+          sx={{ textTransform: "none", fontWeight: 800, color: "#b32020" }}
         >
           Remove
         </Button>
@@ -206,7 +206,7 @@ export function AdminCodingViewer({ problemId, onChanged, onDeleted }: AdminCodi
               <TextField size="small" label="Expected" value={tc.expected_output}
                 onChange={(e) => setCases((cs) => cs.map((c, j) => (j === i ? { ...c, expected_output: e.target.value } : c)))}
                 multiline />
-              <Button size="small" onClick={() => setCases((cs) => cs.filter((_, j) => j !== i))} sx={{ minWidth: 0, color: "#ef4444" }}>
+              <Button size="small" onClick={() => setCases((cs) => cs.filter((_, j) => j !== i))} sx={{ minWidth: 0, color: "#b32020" }}>
                 <Icon icon="mdi:close" width={16} />
               </Button>
             </Box>
@@ -243,7 +243,7 @@ export function AdminCodingViewer({ problemId, onChanged, onDeleted }: AdminCodi
             size="small"
             onClick={() => setShowSolution((s) => !s)}
             startIcon={<Icon icon={showSolution ? "mdi:eye-off-outline" : "mdi:eye-outline"} width={15} />}
-            sx={{ textTransform: "none", fontWeight: 800, alignSelf: "flex-start", color: "#ec4899" }}
+            sx={{ textTransform: "none", fontWeight: 800, alignSelf: "flex-start", color: "#0f6b7a" }}
           >
             {showSolution ? "Hide reference solution" : "Show reference solution (admin only)"}
           </Button>

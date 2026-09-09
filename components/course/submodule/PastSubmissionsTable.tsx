@@ -153,10 +153,10 @@ export function PastSubmissionsTable({
                         sx={{
                           backgroundColor:
                             percentage >= 80
-                              ? "#d1fae5"
+                              ? "#dff0e6"
                               : percentage >= 60
-                              ? "#fef3c7"
-                              : "#fee2e2",
+                              ? "#fdf3e2"
+                              : "#fbeaea",
                           color:
                             percentage >= 80
                               ? "#065f46"
@@ -181,9 +181,9 @@ export function PastSubmissionsTable({
                         sx={{
                           backgroundColor:
                             result === "passed"
-                              ? "#d1fae5"
+                              ? "#dff0e6"
                               : result === "failed"
-                              ? "#fee2e2"
+                              ? "#fbeaea"
                               : "#f3f4f6",
                           color:
                             result === "passed"
@@ -206,11 +206,11 @@ export function PastSubmissionsTable({
                           fontSize: "0.8125rem",
                           px: 2,
                           py: 0.5,
-                          borderColor: "#6366f1",
-                          color: "#6366f1",
+                          borderColor: "#1b4f8a",
+                          color: "#1b4f8a",
                           "&:hover": {
-                            borderColor: "#4f46e5",
-                            backgroundColor: "#6366f115",
+                            borderColor: "#12365f",
+                            backgroundColor: "#1b4f8a15",
                           },
                         }}
                       >

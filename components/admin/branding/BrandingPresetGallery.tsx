@@ -61,7 +61,7 @@ function MiniChromePreview({
         border: "1px solid",
         borderColor: "divider",
         boxShadow:
-          "0 1px 4px color-mix(in srgb, var(--font-primary) 8%, transparent)",
+          "var(--shadow-sm)",
       }}
     >
       <Stack
@@ -143,7 +143,7 @@ function MiniChromePreview({
             fontWeight: 700,
             lineHeight: 1,
             letterSpacing: "0.02em",
-            boxShadow: `0 2px 8px ${alpha(primary, 0.42)}`,
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           CTA
@@ -333,14 +333,10 @@ export function BrandingPresetGallery({
                                 theme.palette.primary.main,
                                 0.25
                               )}`
-                          : "0 1px 2px color-mix(in srgb, var(--font-primary) 6%, transparent)",
+                          : "var(--shadow-xs)",
                         "&:hover": {
                           borderColor: "primary.light",
-                          boxShadow: (theme) =>
-                            `0 4px 14px ${alpha(
-                              theme.palette.primary.main,
-                              0.12
-                            )}`,
+                          boxShadow: "var(--shadow-md)",
                         },
                       }}
                     >

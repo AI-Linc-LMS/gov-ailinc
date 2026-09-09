@@ -94,8 +94,7 @@ export function XPGainProvider({ children }: { children: React.ReactNode }) {
                     "linear-gradient(135deg, rgba(34,197,94,0.96), rgba(16,185,129,0.96))",
                   color: "#fff",
                   boxShadow:
-                    "0 10px 30px rgba(34,197,94,0.32), 0 2px 6px rgba(0,0,0,0.10)",
-                  backdropFilter: "blur(10px)",
+                    "var(--shadow-sm)",
                   minWidth: 110,
                 }}
               >

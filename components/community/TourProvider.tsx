@@ -467,7 +467,7 @@ function TourOverlay({
   onPrev,
   onStop,
 }: TourOverlayProps) {
-  const accent = step.color ?? "#a78bfa";
+  const accent = step.color ?? "#85aad6";
   const isLast = stepIdx === totalSteps - 1;
 
   // Measure the tooltip card's REAL height so positioning never assumes a fixed size (long
@@ -597,7 +597,10 @@ function TourOverlay({
             width: rect.width + PADDING * 2,
             height: rect.height + PADDING * 2,
             borderRadius: `${RADIUS}px`,
-            boxShadow: `0 0 0 3px ${accent}, 0 0 0 6px ${accent}44, 0 0 24px ${accent}66`,
+            // The spotlight is a ring, and only a ring: it was a 3px ring, a 6px
+            // halo and a 24px bloom stacked on top of each other. The inner ring
+            // is what actually marks the element the tour is talking about.
+            boxShadow: `0 0 0 3px ${accent}, 0 0 0 6px ${accent}44`,
             pointerEvents: "none",
           }}
         />
@@ -629,7 +632,7 @@ function TourOverlay({
             color: "#e2e8f0",
             borderRadius: "14px",
             border: `1px solid ${accent}66`,
-            boxShadow: `0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px ${accent}33`,
+            boxShadow: "var(--shadow-sm)",
             pointerEvents: "auto",
             overflowY: "auto",
             overflowX: "hidden",

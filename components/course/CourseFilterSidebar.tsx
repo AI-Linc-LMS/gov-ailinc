@@ -80,7 +80,7 @@ export const CourseFilterSidebar: React.FC<CourseFilterSidebarProps> = ({
             component="button"
             onClick={onClearAll}
             sx={{
-              color: "#14b8a6",
+              color: "#0f6b7a",
               fontSize: "0.875rem",
               fontWeight: 500,
               textDecoration: "none",
@@ -117,9 +117,9 @@ export const CourseFilterSidebar: React.FC<CourseFilterSidebarProps> = ({
                   checked={filters.categories.includes(category)}
                   onChange={handleCheckboxChange("categories", category)}
                   sx={{
-                    color: "#6366f1",
+                    color: "#1b4f8a",
                     "&.Mui-checked": {
-                      color: "#6366f1",
+                      color: "#1b4f8a",
                     },
                     padding: "4px",
                   }}
@@ -164,9 +164,9 @@ export const CourseFilterSidebar: React.FC<CourseFilterSidebarProps> = ({
                   checked={filters.levels.includes(level)}
                   onChange={handleCheckboxChange("levels", level)}
                   sx={{
-                    color: "#6366f1",
+                    color: "#1b4f8a",
                     "&.Mui-checked": {
-                      color: "#6366f1",
+                      color: "#1b4f8a",
                     },
                     padding: "4px",
                   }}
@@ -211,9 +211,9 @@ export const CourseFilterSidebar: React.FC<CourseFilterSidebarProps> = ({
                   checked={filters.price.includes(price)}
                   onChange={handleCheckboxChange("price", price)}
                   sx={{
-                    color: "#6366f1",
+                    color: "#1b4f8a",
                     "&.Mui-checked": {
-                      color: "#6366f1",
+                      color: "#1b4f8a",
                     },
                     padding: "4px",
                   }}

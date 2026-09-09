@@ -169,8 +169,8 @@ export default function CreateAdaptiveQuizPage() {
                   fontWeight: 800,
                   color: "white",
                   background: stepValid
-                    ? "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)"
-                    : "color-mix(in srgb, #6366f1 35%, transparent)",
+                    ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)"
+                    : "color-mix(in srgb, #1b4f8a 35%, transparent)",
                   fontSize: "0.92rem",
                   "&:hover": { transform: stepValid ? "translateY(-1px)" : "none" },
                   transition: "transform 120ms ease",
@@ -190,8 +190,8 @@ export default function CreateAdaptiveQuizPage() {
                   fontWeight: 800,
                   color: "white",
                   background: stepValid && !publishing
-                    ? "linear-gradient(135deg, #10b981 0%, #6366f1 100%)"
-                    : "color-mix(in srgb, #10b981 40%, transparent)",
+                    ? "linear-gradient(135deg, #0e7a3c 0%, #1b4f8a 100%)"
+                    : "color-mix(in srgb, #0e7a3c 40%, transparent)",
                   fontSize: "0.92rem",
                   "&:hover": { transform: stepValid && !publishing ? "translateY(-1px)" : "none" },
                   transition: "transform 120ms ease",

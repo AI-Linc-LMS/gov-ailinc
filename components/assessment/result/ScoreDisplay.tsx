@@ -165,7 +165,6 @@ export function ScoreDisplay({
                 py: 1,
                 borderRadius: 2,
                 backgroundColor: "color-mix(in srgb, var(--font-light) 22%, transparent)",
-                backdropFilter: "blur(10px)",
               }}
             >
               <IconWrapper icon={performance.icon} size={24} color="var(--font-light)" />
@@ -201,7 +200,7 @@ export function ScoreDisplay({
                 backgroundColor: "var(--font-light)",
                 borderRadius: 6,
                 transition: "width 0.6s ease-in-out",
-                boxShadow: "0 0 10px color-mix(in srgb, var(--font-light) 52%, transparent)",
+                boxShadow: "var(--shadow-sm)",
               }}
             />
           </Box>

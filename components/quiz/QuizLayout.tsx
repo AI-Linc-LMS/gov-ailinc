@@ -170,7 +170,7 @@ export function QuizLayout({
                   key={index}
                   href={crumb.href}
                   sx={{
-                    color: "#6366f1",
+                    color: "#1b4f8a",
                     textDecoration: "none",
                     "&:hover": {
                       textDecoration: "underline",
@@ -267,8 +267,8 @@ export function QuizLayout({
                 onClick={onPreviousQuestion}
                 disabled={isFirstQuestion || isSubmitting}
                 sx={{
-                  borderColor: "#6366f1",
-                  color: "#6366f1",
+                  borderColor: "#1b4f8a",
+                  color: "#1b4f8a",
                   px: { xs: 2, sm: 3 },
                   py: 1.5,
                   fontSize: "0.9375rem",
@@ -281,8 +281,8 @@ export function QuizLayout({
                     sm: "120px",
                   },
                   "&:hover": {
-                    borderColor: "#4f46e5",
-                    backgroundColor: "#6366f115",
+                    borderColor: "#12365f",
+                    backgroundColor: "#1b4f8a15",
                   },
                   "&:disabled": {
                     borderColor: "#d1d5db",
@@ -325,7 +325,7 @@ export function QuizLayout({
                   onClick={onNextQuestion}
                   disabled={isSubmitting}
                   sx={{
-                    backgroundColor: "#6366f1",
+                    backgroundColor: "#1b4f8a",
                     color: "#ffffff",
                     px: { xs: 2, sm: 4 },
                     py: 1.5,
@@ -339,7 +339,7 @@ export function QuizLayout({
                       sm: "140px",
                     },
                     "&:hover": {
-                      backgroundColor: "#4f46e5",
+                      backgroundColor: "#12365f",
                     },
                     "&:disabled": {
                       backgroundColor: "#d1d5db",
@@ -361,8 +361,8 @@ export function QuizLayout({
                   isLastQuestion
                     ? {
                         background: isReadOnly
-                          ? "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)"
-                          : "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                          ? "linear-gradient(135deg, #1b4f8a 0%, #12365f 100%)"
+                          : "linear-gradient(135deg, #0e7a3c 0%, #0B6232 100%)",
                         color: "#ffffff",
                         px: { xs: 3, sm: 5 },
                         py: 1.5,
@@ -372,16 +372,12 @@ export function QuizLayout({
                         textTransform: "none",
                         flex: 1,
                         minWidth: { xs: "auto", sm: "200px" },
-                        boxShadow: isReadOnly
-                          ? "0 4px 12px rgba(99, 102, 241, 0.3)"
-                          : "0 4px 12px rgba(16, 185, 129, 0.3)",
+                        boxShadow: "var(--shadow-sm)",
                         "&:hover": {
                           background: isReadOnly
-                            ? "linear-gradient(135deg, #4f46e5 0%, #4338ca 100%)"
-                            : "linear-gradient(135deg, #059669 0%, #047857 100%)",
-                          boxShadow: isReadOnly
-                            ? "0 6px 16px rgba(99, 102, 241, 0.4)"
-                            : "0 6px 16px rgba(16, 185, 129, 0.4)",
+                            ? "linear-gradient(135deg, #12365f 0%, #0e2a4b 100%)"
+                            : "linear-gradient(135deg, #0B6232 0%, #0B6232 100%)",
+                          boxShadow: "var(--shadow-md)",
                           transform: "translateY(-1px)",
                         },
                         "&:active": {
@@ -397,8 +393,8 @@ export function QuizLayout({
                         transition: "all 0.2s ease-in-out",
                       }
                     : {
-                        borderColor: "#10b981",
-                        color: "#059669",
+                        borderColor: "#0e7a3c",
+                        color: "#0B6232",
                         px: { xs: 2, sm: 3 },
                         py: 1.5,
                         fontSize: "0.9375rem",
@@ -408,8 +404,8 @@ export function QuizLayout({
                         flex: { xs: 1, sm: "none" },
                         minWidth: { xs: "auto", sm: "140px" },
                         "&:hover": {
-                          borderColor: "#059669",
-                          backgroundColor: "#05966915",
+                          borderColor: "#0B6232",
+                          backgroundColor: "#0B623215",
                         },
                         "&:disabled": {
                           borderColor: "#d1d5db",

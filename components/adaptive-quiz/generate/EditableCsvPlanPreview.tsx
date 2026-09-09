@@ -81,10 +81,10 @@ export function EditableCsvPlanPreview({
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
         <Typography sx={{ fontWeight: 800, fontSize: "0.95rem" }}>Review &amp; edit the course plan</Typography>
-        <Box component="span" sx={chipSx("#6366f1")}>
+        <Box component="span" sx={chipSx("#1b4f8a")}>
           {plan.modules.length} {plan.modules.length === 1 ? "week" : "weeks"}
         </Box>
-        <Box component="span" sx={chipSx("#a855f7")}>
+        <Box component="span" sx={chipSx("#1b4f8a")}>
           {totalTopics} {totalTopics === 1 ? "topic" : "topics"}
         </Box>
       </Box>
@@ -96,7 +96,7 @@ export function EditableCsvPlanPreview({
             AI column mapping:
           </Typography>
           {mapping.map(([role, col]) => (
-            <Box key={role} component="span" sx={chipSx("#10b981")}>
+            <Box key={role} component="span" sx={chipSx("#0e7a3c")}>
               {ROLE_LABEL[role] ?? role} ← {col}
             </Box>
           ))}
@@ -109,14 +109,14 @@ export function EditableCsvPlanPreview({
           sx={{
             borderRadius: 3,
             p: 1.5,
-            bgcolor: "color-mix(in srgb, #f59e0b 10%, transparent)",
-            border: "1px solid color-mix(in srgb, #f59e0b 35%, transparent)",
+            bgcolor: "color-mix(in srgb, #b7791f 10%, transparent)",
+            border: "1px solid color-mix(in srgb, #b7791f 35%, transparent)",
           }}
         >
           {plan.warnings.map((w, i) => (
             <Typography
               key={i}
-              sx={{ fontSize: "0.78rem", color: "#b45309", display: "flex", gap: 0.5, alignItems: "flex-start" }}
+              sx={{ fontSize: "0.78rem", color: "#8a5a12", display: "flex", gap: 0.5, alignItems: "flex-start" }}
             >
               <Icon icon="mdi:alert-outline" width={15} style={{ marginTop: 2, flexShrink: 0 }} />
               {w}
@@ -142,7 +142,7 @@ export function EditableCsvPlanPreview({
                 component="span"
                 sx={{
                   flexShrink: 0, px: 1, py: 0.4, borderRadius: 2, fontSize: "0.7rem", fontWeight: 900,
-                  color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+                  color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
                 }}
               >
                 W{mod.week}
@@ -158,7 +158,7 @@ export function EditableCsvPlanPreview({
                 size="small"
                 aria-label="Delete week"
                 onClick={() => deleteModule(mi)}
-                sx={{ color: "#ef4444" }}
+                sx={{ color: "#b32020" }}
               >
                 <Icon icon="mdi:trash-can-outline" width={18} />
               </IconButton>
@@ -176,7 +176,7 @@ export function EditableCsvPlanPreview({
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                    <Icon icon="mdi:circle-small" width={20} style={{ color: "#a855f7", flexShrink: 0 }} />
+                    <Icon icon="mdi:circle-small" width={20} style={{ color: "#1b4f8a", flexShrink: 0 }} />
                     <TextField
                       variant="standard"
                       value={sub.title}
@@ -189,7 +189,7 @@ export function EditableCsvPlanPreview({
                       size="small"
                       aria-label="Delete topic"
                       onClick={() => deleteSub(mi, si)}
-                      sx={{ color: "#ef4444", flexShrink: 0 }}
+                      sx={{ color: "#b32020", flexShrink: 0 }}
                     >
                       <Icon icon="mdi:close" width={16} />
                     </IconButton>
@@ -209,7 +209,7 @@ export function EditableCsvPlanPreview({
                   {(sub.key_concepts || []).length > 0 && (
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, mt: 0.5, pl: 2.5 }}>
                       {sub.key_concepts.map((c, ci) => (
-                        <Box key={ci} component="span" sx={chipSx("#6366f1", true)}>
+                        <Box key={ci} component="span" sx={chipSx("#1b4f8a", true)}>
                           {c}
                         </Box>
                       ))}
@@ -235,7 +235,7 @@ export function EditableCsvPlanPreview({
               <ButtonBase
                 onClick={() => addSub(mi)}
                 sx={{
-                  alignSelf: "flex-start", gap: 0.4, fontSize: "0.78rem", fontWeight: 700, color: "#6366f1",
+                  alignSelf: "flex-start", gap: 0.4, fontSize: "0.78rem", fontWeight: 700, color: "#1b4f8a",
                   px: 1, py: 0.5, borderRadius: 2,
                 }}
               >
@@ -249,9 +249,9 @@ export function EditableCsvPlanPreview({
       <ButtonBase
         onClick={addModule}
         sx={{
-          alignSelf: "flex-start", gap: 0.5, fontSize: "0.82rem", fontWeight: 800, color: "#6366f1",
+          alignSelf: "flex-start", gap: 0.5, fontSize: "0.82rem", fontWeight: 800, color: "#1b4f8a",
           px: 1.5, py: 0.75, borderRadius: 999,
-          border: "1px dashed color-mix(in srgb, #6366f1 45%, transparent)",
+          border: "1px dashed color-mix(in srgb, #1b4f8a 45%, transparent)",
         }}
       >
         <Icon icon="mdi:plus" width={17} /> Add week

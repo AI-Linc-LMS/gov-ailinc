@@ -55,13 +55,13 @@ const KIND_TAB: Record<ContentKind, number> = {
 };
 
 const KIND_META: Record<ContentKind, { label: string; icon: string; accent: string }> = {
-  article: { label: "Article", icon: "mdi:text-box-outline", accent: "#6366f1" },
-  quiz: { label: "Quiz", icon: "mdi:help-circle-outline", accent: "#a855f7" },
-  coding: { label: "Coding", icon: "mdi:code-braces", accent: "#f59e0b" },
-  video: { label: "Video", icon: "mdi:play-circle-outline", accent: "#ec4899" },
-  // Teal, not sky blue: the module summary already spends #0ea5e9 on videos, and two content
+  article: { label: "Article", icon: "mdi:text-box-outline", accent: "#1b4f8a" },
+  quiz: { label: "Quiz", icon: "mdi:help-circle-outline", accent: "#1b4f8a" },
+  coding: { label: "Coding", icon: "mdi:code-braces", accent: "#b7791f" },
+  video: { label: "Video", icon: "mdi:play-circle-outline", accent: "#0f6b7a" },
+  // Teal, not sky blue: the module summary already spends #1b4f8a on videos, and two content
   // types wearing one colour in the same tree is a miscue.
-  attachment: { label: "Handout", icon: "mdi:paperclip", accent: "#14b8a6" },
+  attachment: { label: "Handout", icon: "mdi:paperclip", accent: "#0f6b7a" },
 };
 
 /** The suggestions rail only reports the four content types the server scores. Handouts are
@@ -71,11 +71,11 @@ const SUGGESTED_KINDS: Array<Exclude<ContentKind, "attachment">> = [
   "article", "quiz", "coding", "video",
 ];
 
-const GREEN = "#10b981";
+const GREEN = "#0e7a3c";
 /** Theme token, not a literal grey: this text/icon tone has to follow light and dark. */
 const MUTED = "var(--font-secondary)";
 
-const DIFF_TONE: Record<string, string> = { easy: GREEN, medium: "#f59e0b", hard: "#ec4899" };
+const DIFF_TONE: Record<string, string> = { easy: GREEN, medium: "#b7791f", hard: "#0f6b7a" };
 
 const DEBOUNCE_MS = 350;
 
@@ -780,7 +780,7 @@ export function AddContentDialog({
               p: 1,
               borderRadius: 2,
               border: "1px solid var(--border-default)",
-              bgcolor: "color-mix(in srgb, #6366f1 4%, transparent)",
+              bgcolor: "color-mix(in srgb, #1b4f8a 4%, transparent)",
             }}
           >
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
@@ -831,7 +831,7 @@ export function AddContentDialog({
                       py: 0.25,
                       borderRadius: 1.5,
                       cursor: "pointer",
-                      "&:hover": { bgcolor: "color-mix(in srgb, #6366f1 8%, transparent)" },
+                      "&:hover": { bgcolor: "color-mix(in srgb, #1b4f8a 8%, transparent)" },
                     }}
                   >
                     <Icon
@@ -952,7 +952,7 @@ export function AddContentDialog({
                         bgcolor:
                           quizMode === mode
                             ? KIND_META.quiz.accent
-                            : "color-mix(in srgb, #a855f7 8%, transparent)",
+                            : "color-mix(in srgb, #1b4f8a 8%, transparent)",
                       },
                     }}
                   >
@@ -1181,7 +1181,7 @@ export function AddContentDialog({
                         bgcolor:
                           codingMode === mode
                             ? KIND_META.coding.accent
-                            : "color-mix(in srgb, #f59e0b 8%, transparent)",
+                            : "color-mix(in srgb, #b7791f 8%, transparent)",
                       },
                     }}
                   >
@@ -1475,7 +1475,7 @@ export function AddContentDialog({
                         bgcolor:
                           videoMode === mode
                             ? KIND_META.video.accent
-                            : "color-mix(in srgb, #ec4899 8%, transparent)",
+                            : "color-mix(in srgb, #0f6b7a 8%, transparent)",
                       },
                     }}
                   >
@@ -1533,9 +1533,9 @@ export function AddContentDialog({
                             border: "1px solid",
                             borderColor: picked ? KIND_META.video.accent : "transparent",
                             bgcolor: picked
-                              ? "color-mix(in srgb, #ec4899 7%, transparent)"
+                              ? "color-mix(in srgb, #0f6b7a 7%, transparent)"
                               : "transparent",
-                            "&:hover": { bgcolor: "color-mix(in srgb, #ec4899 5%, transparent)" },
+                            "&:hover": { bgcolor: "color-mix(in srgb, #0f6b7a 5%, transparent)" },
                           }}
                         >
                           {/* Vimeo thumbnails are arbitrary remote URLs, so a plain img
@@ -1550,7 +1550,7 @@ export function AddContentDialog({
                               borderRadius: 6,
                               objectFit: "cover",
                               flexShrink: 0,
-                              background: "color-mix(in srgb, #ec4899 10%, transparent)",
+                              background: "color-mix(in srgb, #0f6b7a 10%, transparent)",
                             }}
                           />
                           <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -1789,7 +1789,7 @@ export function AddContentDialog({
             px: 2.5,
             borderRadius: 2,
             boxShadow: "none",
-            background: `linear-gradient(135deg, ${accent}, color-mix(in srgb, ${accent} 55%, #6366f1))`,
+            background: `linear-gradient(135deg, ${accent}, color-mix(in srgb, ${accent} 55%, #1b4f8a))`,
             "&.Mui-disabled": { color: "rgba(255,255,255,0.7)", opacity: 0.55 },
           }}
         >

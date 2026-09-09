@@ -19,9 +19,9 @@ interface Step1ConfigureProps {
 
 const DIFFICULTIES: Array<keyof DifficultyCell> = ["Easy", "Medium", "Hard"];
 const DIFFICULTY_COLORS: Record<keyof DifficultyCell, string> = {
-  Easy: "#10b981",
-  Medium: "#6366f1",
-  Hard: "#ef4444",
+  Easy: "#0e7a3c",
+  Medium: "#1b4f8a",
+  Hard: "#b32020",
 };
 
 function prettySkill(s: string): string {
@@ -84,7 +84,7 @@ export function Step1Configure({ draft, setDraft }: Step1ConfigureProps) {
       {/* Sub-skills */}
       <Box>
         <Typography sx={{ fontSize: "0.85rem", fontWeight: 800, mb: 0.5 }}>
-          Sub-skills <span style={{ color: "#ef4444" }}>*</span>
+          Sub-skills <span style={{ color: "#b32020" }}>*</span>
         </Typography>
         <Typography sx={{ fontSize: "0.75rem", color: "text.secondary", mb: 1 }}>
           The engine targets one sub-skill at a time and the heatmap measures each independently. Add 2–5 for best results.
@@ -121,7 +121,7 @@ export function Step1Configure({ draft, setDraft }: Step1ConfigureProps) {
               Question mix
             </Typography>
             <Typography sx={{ fontSize: "0.78rem", color: "text.secondary", fontWeight: 700 }}>
-              Total: <span style={{ color: "#6366f1" }}>{total}</span> question{total === 1 ? "" : "s"}
+              Total: <span style={{ color: "#1b4f8a" }}>{total}</span> question{total === 1 ? "" : "s"}
             </Typography>
           </Box>
           <Box

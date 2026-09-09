@@ -29,9 +29,9 @@ const RECO_ICON: Record<string, string> = {
 };
 const RECO_ACCENT: Record<string, string> = {
   mcq: "var(--accent-indigo)",
-  revise: "#f59e0b",
-  video: "#10b981",
-  interview: "#a855f7",
+  revise: "#b7791f",
+  video: "#0e7a3c",
+  interview: "#1b4f8a",
 };
 
 function Breadcrumb({
@@ -149,7 +149,7 @@ function SkippedQuestionsCard({ questions }: { questions: string[] }) {
             justifyContent: "center",
             background: "linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-indigo-dark) 100%)",
             color: "#fff",
-            boxShadow: "0 8px 16px -8px color-mix(in srgb, var(--accent-indigo) 60%, transparent)",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <IconWrapper icon="mdi:skip-next-outline" size={16} color="#fff" />
@@ -320,7 +320,7 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
     <Reveal as="section">
       <SectionShell
         radialMesh={[
-          "radial-gradient(55% 70% at 0% 0%, color-mix(in srgb, #f59e0b 16%, transparent), transparent 60%)",
+          "radial-gradient(55% 70% at 0% 0%, color-mix(in srgb, #b7791f 16%, transparent), transparent 60%)",
           "radial-gradient(45% 60% at 100% 0%, color-mix(in srgb, var(--accent-indigo) 10%, transparent), transparent 60%)",
         ]}
       >
@@ -328,11 +328,11 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
           chapter="Chapter 05"
           title="Weak Areas & Attention Alerts"
           subtitle={`Skills below ${Math.round(weakThreshold)}%, topics you keep missing, and questions you skipped.`}
-          accentTop="#f59e0b"
-          accentBottom="#d97706"
+          accentTop="#b7791f"
+          accentBottom="#8a5a12"
           iconBadge={{
             icon: "mdi:alert-decagram-outline",
-            gradient: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+            gradient: "linear-gradient(135deg, #b7791f 0%, #8a5a12 100%)",
           }}
           rightSlot={
             <Tooltip
@@ -345,8 +345,8 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
                 label={`Threshold: ${Math.round(weakThreshold)}%`}
                 sx={{
                   fontWeight: 800,
-                  bgcolor: "color-mix(in srgb, #f59e0b 14%, transparent)",
-                  color: "#b45309",
+                  bgcolor: "color-mix(in srgb, #b7791f 14%, transparent)",
+                  color: "#8a5a12",
                 }}
               />
             </Tooltip>
@@ -362,12 +362,12 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
               py: { xs: 6, sm: 8 },
               textAlign: "center",
               borderRadius: 3,
-              border: "1px dashed color-mix(in srgb, #10b981 50%, transparent)",
-              bgcolor: "color-mix(in srgb, #10b981 6%, transparent)",
+              border: "1px dashed color-mix(in srgb, #0e7a3c 50%, transparent)",
+              bgcolor: "color-mix(in srgb, #0e7a3c 6%, transparent)",
               color: "var(--font-primary)",
             }}
           >
-            <IconWrapper icon="mdi:check-decagram" size={56} color="#10b981" />
+            <IconWrapper icon="mdi:check-decagram" size={56} color="#0e7a3c" />
             <Typography variant="h6" sx={{ mt: 1.5, fontWeight: 800, color: "var(--font-primary)", letterSpacing: "-0.01em" }}>
               All clear - no flagged weak areas right now.
             </Typography>
@@ -389,8 +389,8 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
                   borderRadius: 3,
                   mb: { xs: 3.5, md: 4.5 },
                   background:
-                    "linear-gradient(135deg, color-mix(in srgb, #ef4444 12%, transparent) 0%, color-mix(in srgb, #f59e0b 10%, transparent) 100%)",
-                  border: "1px solid color-mix(in srgb, #ef4444 22%, transparent)",
+                    "linear-gradient(135deg, color-mix(in srgb, #b32020 12%, transparent) 0%, color-mix(in srgb, #b7791f 10%, transparent) 100%)",
+                  border: "1px solid color-mix(in srgb, #b32020 22%, transparent)",
                   display: "grid",
                   gridTemplateColumns: { xs: "1fr", md: "auto minmax(0, 1fr)" },
                   gap: { xs: 2.5, md: 3 },
@@ -401,7 +401,7 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
                   value={spotlight.currentScore}
                   size={130}
                   strokeWidth={11}
-                  color="#ef4444"
+                  color="#b32020"
                   caption=""
                   valueFontSize={28}
                 />
@@ -409,7 +409,7 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
                   <Typography
                     variant="caption"
                     sx={{
-                      color: "#b45309",
+                      color: "#8a5a12",
                       fontSize: "0.7rem",
                       fontWeight: 800,
                       letterSpacing: "0.16em",
@@ -434,7 +434,7 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
                     <Typography sx={{ fontWeight: 700, color: "var(--font-secondary)", fontSize: "0.9rem" }}>
                       Currently
                     </Typography>
-                    <Typography sx={{ fontWeight: 800, color: "#ef4444", fontSize: "1.4rem", fontVariantNumeric: "tabular-nums" }}>
+                    <Typography sx={{ fontWeight: 800, color: "#b32020", fontSize: "1.4rem", fontVariantNumeric: "tabular-nums" }}>
                       {spotlight.currentScore.toFixed(0)}%
                     </Typography>
                     <Typography sx={{ fontWeight: 700, color: "var(--font-secondary)", fontSize: "0.9rem" }}>
@@ -512,8 +512,8 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
                             ...(isLink && {
                               "&:hover": {
                                 borderColor: `color-mix(in srgb, ${accent} 50%, transparent)`,
-                                transform: "translateY(-2px)",
-                                boxShadow: `0 18px 40px -24px color-mix(in srgb, ${accent} 40%, transparent)`,
+                                transform: "translateY(-1px)",
+                                boxShadow: "var(--shadow-md)",
                               },
                             }),
                           }}
@@ -567,7 +567,7 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
-                    <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: "#ef4444", boxShadow: "0 0 0 4px color-mix(in srgb, #ef4444 18%, transparent)" }} />
+                    <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: "#b32020", boxShadow: "0 0 0 4px color-mix(in srgb, #b32020 18%, transparent)" }} />
                     <Typography variant="subtitle2" sx={{ fontWeight: 800, color: "var(--font-primary)", letterSpacing: "-0.01em" }}>
                       Other skills below threshold (<CountUp value={skillsBelowThreshold.length - 1} />)
                     </Typography>
@@ -614,7 +614,7 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
-                    <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: "#f59e0b", boxShadow: "0 0 0 4px color-mix(in srgb, #f59e0b 18%, transparent)" }} />
+                    <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: "#b7791f", boxShadow: "0 0 0 4px color-mix(in srgb, #b7791f 18%, transparent)" }} />
                     <Typography variant="subtitle2" sx={{ fontWeight: 800, color: "var(--font-primary)", letterSpacing: "-0.01em" }}>
                       Topics you keep missing
                     </Typography>
@@ -636,7 +636,7 @@ export function WeakAreasSection({ data }: WeakAreasSectionProps) {
                           <Typography variant="body2" sx={{ fontWeight: 700, color: "var(--font-primary)" }}>
                             {t.topicName}
                           </Typography>
-                          <Typography variant="caption" sx={{ color: "#b45309", fontWeight: 800, letterSpacing: "0.02em" }}>
+                          <Typography variant="caption" sx={{ color: "#8a5a12", fontWeight: 800, letterSpacing: "0.02em" }}>
                             {t.incorrectCount}/{t.totalAttempts} wrong · {pct}%
                           </Typography>
                           {t.sourceContext && (

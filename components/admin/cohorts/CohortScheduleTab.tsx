@@ -56,7 +56,7 @@ export function CohortScheduleTab({ cohort, onSaved }: { cohort: CohortDetail; o
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-        <Icon icon="mdi:calendar-clock" width={20} style={{ color: "#a855f7" }} />
+        <Icon icon="mdi:calendar-clock" width={20} style={{ color: "#1b4f8a" }} />
         <Box>
           <Typography sx={{ fontWeight: 800, fontSize: "1.05rem" }}>Schedule</Typography>
           <Typography sx={{ fontSize: "0.82rem", color: "var(--font-tertiary)" }}>
@@ -114,7 +114,7 @@ export function CohortScheduleTab({ cohort, onSaved }: { cohort: CohortDetail; o
         <ButtonBase
           onClick={() => setShowAdvanced((v) => !v)}
           sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, fontWeight: 700,
-                fontSize: "0.85rem", color: "#6366f1", borderRadius: 1 }}
+                fontSize: "0.85rem", color: "#1b4f8a", borderRadius: 1 }}
         >
           <Icon icon={showAdvanced ? "mdi:chevron-down" : "mdi:chevron-right"} width={18} />
           Weekly unlock settings

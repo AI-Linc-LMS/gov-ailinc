@@ -27,8 +27,8 @@ export function AdminLiveSessionsEmptyState({ onCreate }: { onCreate?: () => voi
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #6366f1 0%, #4338ca 100%)",
-          boxShadow: "0 16px 32px -16px color-mix(in srgb, #4338ca 60%, transparent)",
+          background: "linear-gradient(135deg, #1b4f8a 0%, #0e2a4b 100%)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         <IconWrapper icon="mdi:video-plus-outline" size={36} color="#fff" />
@@ -51,8 +51,8 @@ export function AdminLiveSessionsEmptyState({ onCreate }: { onCreate?: () => voi
             display: "inline-flex",
             alignItems: "center",
             gap: 0.75,
-            background: "linear-gradient(135deg, #6366f1 0%, #4338ca 100%)",
-            boxShadow: "0 16px 32px -16px color-mix(in srgb, #4338ca 60%, transparent)",
+            background: "linear-gradient(135deg, #1b4f8a 0%, #0e2a4b 100%)",
+            boxShadow: "var(--shadow-sm)",
             "&:hover": { transform: "translateY(-1px)" },
             transition: "transform 120ms ease",
           }}

@@ -31,7 +31,7 @@ export function confidenceTier(seThreshold: number): ConfidenceTier {
       name: "Tight read",
       blurb: "Keep asking until very confident.",
       typicalLength: "Usually 15–20 questions",
-      accent: "#6366f1",
+      accent: "#1b4f8a",
       icon: "mdi:bullseye-arrow",
     };
   }
@@ -40,7 +40,7 @@ export function confidenceTier(seThreshold: number): ConfidenceTier {
       name: "Balanced",
       blurb: "Good for most practice and homework.",
       typicalLength: "Usually 10–14 questions",
-      accent: "#10b981",
+      accent: "#0e7a3c",
       icon: "mdi:scale-balance",
     };
   }
@@ -48,7 +48,7 @@ export function confidenceTier(seThreshold: number): ConfidenceTier {
     name: "Quick check",
     blurb: "Stop sooner with a rougher estimate.",
     typicalLength: "Usually 6–9 questions",
-    accent: "#f59e0b",
+    accent: "#b7791f",
     icon: "mdi:flash-outline",
   };
 }
@@ -66,9 +66,9 @@ export interface CertaintyBand {
  * student sees "how sure the AI is right now" rather than a number.
  */
 export function certaintyBand(avgSe: number | null): CertaintyBand {
-  if (avgSe == null || avgSe >= 0.8) return { label: "Just getting to know you", accent: "#a855f7" };
-  if (avgSe >= 0.5) return { label: "Building a picture", accent: "#6366f1" };
-  if (avgSe >= 0.35) return { label: "Getting clearer", accent: "#10b981" };
-  return { label: "Confident read", accent: "#059669" };
+  if (avgSe == null || avgSe >= 0.8) return { label: "Just getting to know you", accent: "#1b4f8a" };
+  if (avgSe >= 0.5) return { label: "Building a picture", accent: "#1b4f8a" };
+  if (avgSe >= 0.35) return { label: "Getting clearer", accent: "#0e7a3c" };
+  return { label: "Confident read", accent: "#0B6232" };
 }
 

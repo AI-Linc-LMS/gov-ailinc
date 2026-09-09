@@ -198,7 +198,7 @@ export function SharedGenerationConfig({
               <Icon
                 icon={codingClipboard ? "mdi:checkbox-marked" : "mdi:checkbox-blank-outline"}
                 width={18}
-                style={{ color: codingClipboard ? "#6366f1" : undefined }}
+                style={{ color: codingClipboard ? "#1b4f8a" : undefined }}
               />
               Allow copy-paste in the coding editor
               <Typography component="span" sx={{ fontSize: "0.74rem", color: "text.disabled" }}>
@@ -240,7 +240,7 @@ function Pill({
         px: 2, py: 0.85, borderRadius: 999, fontWeight: 800, fontSize: "0.82rem", gap: 0.5,
         color: active ? "white" : "text.primary",
         background: active
-          ? "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)"
+          ? "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)"
           : "color-mix(in srgb, var(--card-bg) 60%, transparent)",
         border: active
           ? "1px solid transparent"

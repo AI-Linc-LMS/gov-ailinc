@@ -194,7 +194,7 @@ export function SubmoduleComments({
                       borderRadius: "0 7.5px 7.5px 7.5px",
                       padding: "6px 7px 4px 9px",
                       boxShadow:
-                        "0 1px 0.5px color-mix(in srgb, var(--font-primary) 16%, transparent)",
+                        "var(--shadow-xs)",
                       position: "relative",
                       wordBreak: "break-word",
                       minWidth: "60px",

@@ -113,7 +113,7 @@ function FaviconTabPreview({ url, appName }: { url: string; appName: string }) {
       }}
     >
       {errored ? (
-        <IconWrapper icon="mdi:image-broken-variant" size={18} color="var(--accent-red, #ef4444)" />
+        <IconWrapper icon="mdi:image-broken-variant" size={18} color="var(--accent-red, #b32020)" />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -128,7 +128,7 @@ function FaviconTabPreview({ url, appName }: { url: string; appName: string }) {
       <Typography
         sx={{
           fontSize: "0.8rem",
-          color: errored ? "var(--accent-red, #ef4444)" : "var(--font-secondary)",
+          color: errored ? "var(--accent-red, #b32020)" : "var(--font-secondary)",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
@@ -199,7 +199,7 @@ function LivePreview({
               // eslint-disable-next-line @next/next/no-img-element
               <img src={favicon} alt="" width={16} height={16} style={{ objectFit: "contain", flexShrink: 0 }} />
             ) : (
-              <Box sx={{ width: 16, height: 16, borderRadius: "50%", bgcolor: "#c4b5fd", flexShrink: 0 }} />
+              <Box sx={{ width: 16, height: 16, borderRadius: "50%", bgcolor: "#b6cde8", flexShrink: 0 }} />
             )}
             <Typography noWrap sx={{ fontSize: "0.72rem", fontWeight: 600, color: "#334155" }}>
               {appName}
@@ -236,8 +236,8 @@ function LivePreview({
             p: 3,
             textAlign: "center",
             color: "#fff",
-            background: "radial-gradient(120% 90% at 50% 0%, #2a1150 0%, #14061f 55%, #0f0518 100%)",
-            border: "1px solid rgba(168,85,247,0.25)",
+            background: "radial-gradient(120% 90% at 50% 0%, #10263f 0%, #0b1b2e 55%, #071426 100%)",
+            border: "1px solid rgba(27, 79, 138,0.25)",
           }}
         >
           <Box sx={{ minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center", mb: 1.5 }}>
@@ -278,7 +278,7 @@ function LivePreview({
               justifyContent: "center",
               fontWeight: 800,
               fontSize: "0.82rem",
-              background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+              background: "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)",
             }}
           >
             Sign in

@@ -269,7 +269,7 @@ export function ImageGallery({ urls, variant = "card" }: ImageGalleryProps) {
                 maxHeight: "88vh",
                 objectFit: "contain",
                 borderRadius: 1,
-                boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
+                boxShadow: "var(--shadow-sm)",
               }}
             />
 

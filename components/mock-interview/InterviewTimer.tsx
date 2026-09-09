@@ -92,9 +92,9 @@ export function InterviewTimer({
   };
 
   const getTimeColor = () => {
-    if (timeRemaining < 300) return "#ef4444"; // Red for last 5 minutes
-    if (timeRemaining < 600) return "#f59e0b"; // Orange for last 10 minutes
-    return "#10b981"; // Green
+    if (timeRemaining < 300) return "#b32020"; // Red for last 5 minutes
+    if (timeRemaining < 600) return "#b7791f"; // Orange for last 10 minutes
+    return "#0e7a3c"; // Green
   };
 
   return (
@@ -107,7 +107,6 @@ export function InterviewTimer({
         py: 1,
         backgroundColor: "rgba(255, 255, 255, 0.1)",
         borderRadius: 2,
-        backdropFilter: "blur(10px)",
         border: `1px solid ${getTimeColor()}40`,
       }}
     >

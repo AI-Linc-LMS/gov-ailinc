@@ -116,7 +116,7 @@ export function AddSectionModal({
       PaperProps={{
         sx: {
           borderRadius: { xs: 0, sm: 3 },
-          boxShadow: "0 24px 64px color-mix(in srgb, var(--font-primary) 20%, transparent)",
+          boxShadow: "var(--shadow-xl)",
           overflow: "hidden",
         },
       }}

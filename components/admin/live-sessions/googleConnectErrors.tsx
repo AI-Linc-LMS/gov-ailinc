@@ -107,12 +107,12 @@ export function GoogleConnectErrorPanel({
       sx={{
         p: 2,
         borderRadius: 2,
-        border: "1px solid color-mix(in srgb, var(--error-500, #ef4444) 35%, var(--border-default) 65%)",
-        bgcolor: "color-mix(in srgb, var(--error-500, #ef4444) 7%, var(--surface) 93%)",
+        border: "1px solid color-mix(in srgb, var(--error-500, #b32020) 35%, var(--border-default) 65%)",
+        bgcolor: "color-mix(in srgb, var(--error-500, #b32020) 7%, var(--surface) 93%)",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1.25 }}>
-        <IconWrapper icon="mdi:shield-alert-outline" size={20} color="var(--error-500, #ef4444)" />
+        <IconWrapper icon="mdi:shield-alert-outline" size={20} color="var(--error-500, #b32020)" />
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "var(--font-primary)" }}>
             {info.title}

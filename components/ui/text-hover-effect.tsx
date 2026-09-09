@@ -103,10 +103,14 @@ export function TextHoverEffect({
           <stop offset="0%" stopColor="white" />
           <stop offset="100%" stopColor="black" />
         </radialGradient>
+        {/* The three institutional-teal steps, in order. Only the middle stop was
+            on the palette before: the outer two were Tailwind's teal-200 and
+            teal-700, invisible to a sweep because a gradient stop is markup, not
+            a style rule naming a colour. */}
         <linearGradient id={`${gid}-line`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#99f6e4" />
-          <stop offset="45%" stopColor="#2dd4bf" />
-          <stop offset="100%" stopColor="#0f766e" />
+          <stop offset="0%" stopColor="#e6f1f2" />
+          <stop offset="45%" stopColor="#3f8f9e" />
+          <stop offset="100%" stopColor="#0f6b7a" />
         </linearGradient>
         <mask id={`${gid}-mask`}>
           <rect

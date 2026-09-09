@@ -135,7 +135,7 @@ export function EnrollAdaptiveStudentsDialog({
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 4 } }}>
       <DialogTitle sx={{ fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "space-between", pb: 1 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
-          <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}>
+          <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)" }}>
             <Icon icon="mdi:account-plus" width={20} />
           </Box>
           Enroll students
@@ -189,10 +189,10 @@ export function EnrollAdaptiveStudentsDialog({
                     borderRadius: 2.5,
                     cursor: already ? "not-allowed" : "pointer",
                     border: "1px solid",
-                    borderColor: picked ? "color-mix(in srgb, #6366f1 45%, transparent)" : "transparent",
-                    bgcolor: picked ? "color-mix(in srgb, #6366f1 8%, transparent)" : "transparent",
+                    borderColor: picked ? "color-mix(in srgb, #1b4f8a 45%, transparent)" : "transparent",
+                    bgcolor: picked ? "color-mix(in srgb, #1b4f8a 8%, transparent)" : "transparent",
                     transition: "background-color 120ms ease, border-color 120ms ease",
-                    "&:hover": { bgcolor: already ? "transparent" : picked ? "color-mix(in srgb, #6366f1 10%, transparent)" : "action.hover" },
+                    "&:hover": { bgcolor: already ? "transparent" : picked ? "color-mix(in srgb, #1b4f8a 10%, transparent)" : "action.hover" },
                   }}
                 >
                   <Checkbox
@@ -200,7 +200,7 @@ export function EnrollAdaptiveStudentsDialog({
                     checked={already || picked}
                     disabled={already}
                     onChange={() => toggle(s.id)}
-                    sx={{ color: "#6366f1", "&.Mui-checked": { color: "#6366f1" } }}
+                    sx={{ color: "#1b4f8a", "&.Mui-checked": { color: "#1b4f8a" } }}
                   />
                   <StudentAvatar name={s.name} email={s.email} size={34} dim={already} />
                   <Box sx={{ minWidth: 0, flex: 1, opacity: already ? 0.6 : 1 }}>
@@ -217,7 +217,7 @@ export function EnrollAdaptiveStudentsDialog({
                       sx={{
                         display: "inline-flex", alignItems: "center", gap: 0.3,
                         px: 1, py: 0.25, borderRadius: 999, fontSize: "0.7rem", fontWeight: 800,
-                        color: "#10b981", bgcolor: "color-mix(in srgb, #10b981 14%, transparent)",
+                        color: "#0e7a3c", bgcolor: "color-mix(in srgb, #0e7a3c 14%, transparent)",
                       }}
                     >
                       <Icon icon="mdi:check-circle" width={13} />
@@ -275,9 +275,9 @@ export function EnrollAdaptiveStudentsDialog({
           startIcon={submitting ? <CircularProgress size={16} color="inherit" /> : <Icon icon="mdi:check" width={18} />}
           sx={{
             textTransform: "none", fontWeight: 800, borderRadius: 999, px: 2.5,
-            background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
-            "&:hover": { background: "linear-gradient(135deg, #5457e5 0%, #9b46f0 100%)" },
-            "&.Mui-disabled": { background: "color-mix(in srgb, #6366f1 30%, transparent)", color: "white" },
+            background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 100%)",
+            "&:hover": { background: "linear-gradient(135deg, #164274 0%, #164274 100%)" },
+            "&.Mui-disabled": { background: "color-mix(in srgb, #1b4f8a 30%, transparent)", color: "white" },
           }}
         >
           {submitting ? "Enrolling…" : "Enroll selected"}

@@ -1,10 +1,13 @@
 <!-- TSEM lockup, color. Same canvas, mark position and text slots as the
-     ai-linc-lockup-*.svg files it replaces, so sidebar and hero sizing is unchanged. -->
+     ai-linc-lockup-*.svg files it replaces, so sidebar and hero sizing is unchanged.
+     Gradient: institutional blue (primary-500 #1B4F8A) into sanctioned green
+     (#0E7A3C). components/common/AiLincLoader.tsx redraws this same geometry
+     inline and reads the same two colours, so change both or they drift. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="600" viewBox="0 0 1600 600">
   <defs>
     <linearGradient id="l-color" x1="66" y1="120" x2="334" y2="120" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#4F46E5"></stop>
-      <stop offset="1" stop-color="#10B981"></stop>
+      <stop offset="0" stop-color="#1B4F8A"></stop>
+      <stop offset="1" stop-color="#0E7A3C"></stop>
     </linearGradient>
   </defs>
   <g transform="translate(194 180)">
@@ -12,9 +15,9 @@
     <path d="M 66 206 L 334 206 L 334 228 L 66 228 Z" fill="url(#l-color)"></path>
   </g>
   <g transform="translate(620 280)" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="180" letter-spacing="3.6">
-    <text fill="#0F172A">TSEM</text>
+    <text fill="#111A26">TSEM</text>
   </g>
   <g transform="translate(622 364)" font-family="Arial, Helvetica, sans-serif" font-weight="600" font-size="42" letter-spacing="0.42">
-    <text fill="#334155">Telangana Skills &amp; Employment Mission</text>
+    <text fill="#333D4B">Telangana Skills &amp; Employment Mission</text>
   </g>
 </svg>

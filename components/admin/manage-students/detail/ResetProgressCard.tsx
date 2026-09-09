@@ -175,7 +175,7 @@ export function ResetProgressCard({
     <Box
       sx={{
         borderRadius: 3,
-        border: "1px solid color-mix(in srgb, #ef4444 35%, transparent)",
+        border: "1px solid color-mix(in srgb, #b32020 35%, transparent)",
         backgroundColor: "var(--card-bg)",
         overflow: "hidden",
       }}
@@ -187,8 +187,8 @@ export function ResetProgressCard({
           gap: 1.5,
           px: { xs: 2, md: 2.5 },
           py: 1.75,
-          borderBottom: "1px solid color-mix(in srgb, #ef4444 25%, transparent)",
-          backgroundColor: "color-mix(in srgb, #ef4444 6%, transparent)",
+          borderBottom: "1px solid color-mix(in srgb, #b32020 25%, transparent)",
+          backgroundColor: "color-mix(in srgb, #b32020 6%, transparent)",
         }}
       >
         <Box
@@ -198,7 +198,7 @@ export function ResetProgressCard({
             borderRadius: 1.5,
             display: "grid",
             placeItems: "center",
-            backgroundColor: "color-mix(in srgb, #ef4444 14%, transparent)",
+            backgroundColor: "color-mix(in srgb, #b32020 14%, transparent)",
             color: ADAPTIVE.red,
             flexShrink: 0,
           }}

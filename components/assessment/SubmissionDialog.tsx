@@ -447,7 +447,7 @@ export function SubmissionDialog({
             py: 1.5,
             borderTop: `1px solid ${theme.palette.divider}`,
             bgcolor: theme.palette.background.paper,
-            boxShadow: `0 -6px 16px ${alpha(theme.palette.common.black, 0.06)}`,
+            boxShadow: "var(--shadow-sm)",
           }}
         >
           <FormControlLabel

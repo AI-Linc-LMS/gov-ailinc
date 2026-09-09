@@ -61,7 +61,7 @@ const SectionCard = ({
       transition: "box-shadow 0.2s, border-color 0.2s",
       "&:hover": {
         borderColor: "color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
-        boxShadow: "0 4px 12px color-mix(in srgb, var(--accent-indigo) 10%, transparent)",
+        boxShadow: "var(--shadow-md)",
       },
     }}
   >
@@ -156,7 +156,7 @@ export function JobDetailModal({
         sx: {
           borderRadius: fullScreen ? 0 : 3,
           overflow: "hidden",
-          boxShadow: fullScreen ? "none" : "0 25px 50px -12px color-mix(in srgb, var(--font-primary) 30%, transparent)",
+          boxShadow: fullScreen ? "none" : "var(--shadow-xl)",
           maxHeight: fullScreen ? "100%" : "90vh",
         },
       }}
@@ -198,7 +198,7 @@ export function JobDetailModal({
                 borderRadius: 2,
                 backgroundColor: "var(--accent-indigo)",
                 border: "2px solid var(--font-light)",
-                boxShadow: "0 4px 12px color-mix(in srgb, var(--accent-indigo) 35%, transparent)",
+                boxShadow: "var(--shadow-sm)",
                 fontSize: "1.25rem",
               }}
             >

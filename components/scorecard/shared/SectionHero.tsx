@@ -5,7 +5,6 @@ import { Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { IconWrapper } from "@/components/common/IconWrapper";
 import { fadeRise } from "./motion";
-import { useStaticRender } from "./StaticRenderContext";
 import { useViewportEntrance } from "./useViewportEntrance";
 
 interface SectionHeroProps {
@@ -69,8 +68,7 @@ export function SectionHero({
               alignItems: "center",
               justifyContent: "center",
               background: iconBadge.gradient,
-              boxShadow: iconBadge.shadow ??
-                `0 14px 28px -14px color-mix(in srgb, ${accentTop} 60%, transparent)`,
+              boxShadow: iconBadge.shadow ?? "var(--shadow-sm)",
               flexShrink: 0,
             }}
           >
@@ -281,12 +279,14 @@ export function SectionShell({
   meshOpacity?: number;
   children: ReactNode;
 }) {
-  // In static-render mode (PDF capture) we omit `backdropFilter` - Chromium's
-  // print pipeline skips painting elements that have a CSS filter or
-  // backdrop-filter once they're past the initial viewport, which truncates
-  // the scorecard PDF after the first 2 chapters. The decorative blur isn't
-  // meaningful in a printed page anyway.
-  const staticRender = useStaticRender();
+  // The decorative `backdropFilter: blur(6px)` that used to sit on this hero is
+  // gone. It sat over an already opaque `--card-bg`, so it blurred nothing and
+  // only cost a compositor layer on the low-end phones most aspirants use. It
+  // also broke PDF capture: Chromium's print pipeline skips painting elements
+  // carrying a filter or backdrop-filter once they are past the first viewport,
+  // which truncated the scorecard PDF after 2 chapters, so this surface needed a
+  // static-render branch purely to switch the blur off. With no blur there is
+  // nothing to switch, and the branch is gone with it.
   return (
     <Box
       sx={{
@@ -296,8 +296,7 @@ export function SectionShell({
         border: "1px solid color-mix(in srgb, var(--border-default) 80%, transparent)",
         backgroundColor: "var(--card-bg)",
         boxShadow:
-          "0 1px 0 color-mix(in srgb, var(--border-default) 60%, transparent), 0 30px 60px -30px rgba(15, 23, 42, 0.18)",
-        ...(staticRender ? {} : { backdropFilter: "blur(6px)" }),
+          "var(--shadow-sm)",
       }}
     >
       <Box

@@ -24,8 +24,8 @@ interface ComparativeInsightsSectionProps {
 
 const ACCENT = "var(--accent-indigo)";
 const ACCENT_DARK = "var(--accent-indigo-dark)";
-const POSITIVE = "#10b981";
-const NEGATIVE = "#ef4444";
+const POSITIVE = "#0e7a3c";
+const NEGATIVE = "#b32020";
 const NEUTRAL = "#94a3b8";
 
 function formatValue(value: number | null, unit: string): string {
@@ -136,8 +136,8 @@ function ComparisonCard({ row, index }: { row: BenchmarkComparison; index: numbe
           transition: "all 0.25s ease",
           "&:hover": {
             borderColor: `color-mix(in srgb, ${studentAccent} 35%, transparent)`,
-            transform: "translateY(-2px)",
-            boxShadow: `0 22px 40px -28px color-mix(in srgb, ${studentAccent} 55%, transparent)`,
+            transform: "translateY(-1px)",
+            boxShadow: "var(--shadow-md)",
           },
         }}
       >
@@ -336,7 +336,7 @@ function ComparisonCard({ row, index }: { row: BenchmarkComparison; index: numbe
                         : r.color,
                     boxShadow:
                       r.key === "you"
-                        ? `0 0 12px color-mix(in srgb, ${r.color} 45%, transparent)`
+                        ? "var(--shadow-sm)"
                         : "none",
                   }}
                 />
@@ -756,7 +756,7 @@ export function ComparativeInsightsSection({ data }: ComparativeInsightsSectionP
                 {
                   label: "Metrics tracked",
                   value: data.comparisons.length,
-                  accent: "var(--accent-purple, #8b5cf6)",
+                  accent: "var(--accent-purple, #4a7fbb)",
                   numeric: true as const,
                 },
                 (() => {

@@ -82,7 +82,7 @@ export function PublicPreviewCard({
             backgroundImage: coverPhotoUrl ? `url(${coverPhotoUrl})` : undefined,
             background: coverPhotoUrl
               ? undefined
-              : "linear-gradient(135deg, #271a5c 0%, #4c1d95 55%, #7c3aed 100%)",
+              : "linear-gradient(135deg, #10263f 0%, #0e2a4b 55%, #14406f 100%)",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -92,7 +92,7 @@ export function PublicPreviewCard({
             sx={{
               position: "absolute",
               inset: 0,
-              background: "linear-gradient(to top, rgba(16,10,44,0.45) 0%, transparent 62%)",
+              background: "linear-gradient(to top, rgba(7,20,38,0.45) 0%, transparent 62%)",
             }}
           />
           {onEditCoverUrl && (
@@ -117,7 +117,7 @@ export function PublicPreviewCard({
                 color: PROFILE.ink,
                 bgcolor: "rgba(255,255,255,0.9)",
                 "&:hover": { bgcolor: "#fff" },
-                "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px rgba(15,10,44,.6), 0 0 0 4px #fff` },
+                "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px rgba(7,20,38,.6), 0 0 0 4px #fff` },
               }}
             >
               <IconWrapper icon="mdi:image-edit-outline" size={15} />
@@ -139,7 +139,7 @@ export function PublicPreviewCard({
                   width: 64,
                   height: 64,
                   border: "3px solid #fff",
-                  boxShadow: "0 6px 18px -8px rgba(16,10,44,0.55)",
+                  boxShadow: "var(--shadow-sm)",
                   bgcolor: PROFILE.violet,
                   color: "#fff",
                   fontWeight: 800,
@@ -167,7 +167,7 @@ export function PublicPreviewCard({
                     placeItems: "center",
                     cursor: "pointer",
                     p: 0,
-                    "&:hover": { bgcolor: "#6d28d9" },
+                    "&:hover": { bgcolor: "#164274" },
                     "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px #fff, 0 0 0 4px ${PROFILE.violet}` },
                   }}
                 >
@@ -260,7 +260,7 @@ export function PublicPreviewCard({
               fontSize: "0.8125rem",
               cursor: "pointer",
               transition: "background .15s",
-              "&:hover": { bgcolor: "#ede9fe" },
+              "&:hover": { bgcolor: "#eef3fa" },
               "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px #fff, 0 0 0 4px ${PROFILE.violet}` },
             }}
           >
@@ -351,7 +351,7 @@ export function PublicPreviewCard({
               borderRadius: 999,
               px: 3,
               bgcolor: PROFILE.violet,
-              "&:hover": { bgcolor: "#6d28d9" },
+              "&:hover": { bgcolor: "#164274" },
             }}
           >
             {t("profile.save")}

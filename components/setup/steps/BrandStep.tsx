@@ -63,9 +63,9 @@ function AssetField({
           <span
             className="aw-mono inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] uppercase tracking-[0.22em]"
             style={{
-              color: "#00e0ff",
-              border: "1px solid rgba(0, 224, 255, 0.25)",
-              background: "rgba(0, 224, 255, 0.05)",
+              color: "#2f7fbf",
+              border: "1px solid rgba(133, 170, 214, 0.25)",
+              background: "rgba(133, 170, 214, 0.05)",
             }}
           >
             <svg
@@ -90,10 +90,10 @@ function AssetField({
           className="grid h-16 w-16 place-items-center overflow-hidden rounded-[14px]"
           style={{
             border: prefilled
-              ? "1px solid rgba(0, 224, 255, 0.3)"
+              ? "1px solid rgba(133, 170, 214, 0.3)"
               : "1px solid rgba(255,255,255,0.08)",
             background: prefilled
-              ? "rgba(0, 224, 255, 0.04)"
+              ? "rgba(133, 170, 214, 0.04)"
               : "rgba(255,255,255,0.02)",
           }}
         >
@@ -143,7 +143,7 @@ function AssetField({
         <p
           role="alert"
           className="mt-2 text-[13px] font-semibold"
-          style={{ color: "#b91c1c" }}
+          style={{ color: "#8f1919" }}
         >
           {error}
         </p>
@@ -233,7 +233,7 @@ export function BrandStep({ state, data, onChange }: Props) {
           <div
             className="h-[3px] w-full"
             style={{
-              background: `linear-gradient(90deg, ${brand.primary_color || "#2356d6"}, ${brand.accent_color || "#00e0ff"})`,
+              background: `linear-gradient(90deg, ${brand.primary_color || "#2356d6"}, ${brand.accent_color || "#2f7fbf"})`,
             }}
           />
           <div
@@ -268,8 +268,8 @@ export function BrandStep({ state, data, onChange }: Props) {
             <span
               className="mt-3 inline-block rounded px-2 py-1 text-[11px] font-semibold"
               style={{
-                background: (brand.accent_color || "#00e0ff") + "26",
-                color: brand.accent_color || "#00e0ff",
+                background: (brand.accent_color || "#2f7fbf") + "26",
+                color: brand.accent_color || "#2f7fbf",
               }}
             >
               Accent badge

@@ -78,7 +78,7 @@ export function CreateRoomDialog({ open, onClose, onCreated }: CreateRoomDialogP
     >
       <DialogContent sx={{ p: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
-          <IconWrapper icon="mdi:video-plus-outline" size={22} color="#ec4899" />
+          <IconWrapper icon="mdi:video-plus-outline" size={22} color="#0f6b7a" />
           <Typography variant="subtitle1" fontWeight={700}>
             Start a Room
           </Typography>
@@ -159,7 +159,7 @@ export function CreateRoomDialog({ open, onClose, onCreated }: CreateRoomDialogP
         </Box>
 
         {error && (
-          <Typography variant="caption" sx={{ color: "#ef4444", display: "block", mb: 1 }}>
+          <Typography variant="caption" sx={{ color: "#b32020", display: "block", mb: 1 }}>
             {error}
           </Typography>
         )}
@@ -184,9 +184,9 @@ export function CreateRoomDialog({ open, onClose, onCreated }: CreateRoomDialogP
             textTransform: "none",
             fontWeight: 600,
             borderRadius: "8px",
-            backgroundColor: "#ec4899",
+            backgroundColor: "#0f6b7a",
             boxShadow: "none",
-            "&:hover": { backgroundColor: "#db2777", boxShadow: "none" },
+            "&:hover": { backgroundColor: "#0b5260", boxShadow: "none" },
           }}
         >
           {submitting ? "Creating…" : startNow ? "Go live now" : "Create room"}

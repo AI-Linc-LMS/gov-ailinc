@@ -35,7 +35,7 @@ export function CodeBlock({ code, language }: { code: string; language?: string 
         borderRadius: 3,
         overflow: "hidden",
         border: "1px solid #232a36",
-        boxShadow: "0 14px 36px -20px rgba(0,0,0,0.65)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       <Box

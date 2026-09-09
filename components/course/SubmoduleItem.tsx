@@ -334,7 +334,7 @@ export function SubmoduleItem({
                   border: "1px solid var(--border-default)",
                   borderRadius: 2,
                   boxShadow:
-                    "0 4px 6px color-mix(in srgb, var(--font-primary) 12%, transparent)",
+                    "var(--shadow-sm)",
                   maxWidth: { xs: 280, sm: 300 },
                   p: 0,
                 },

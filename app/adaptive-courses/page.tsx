@@ -166,7 +166,7 @@ export default function AdaptiveCourseListPage() {
           {loading && <AdaptiveCourseListSkeleton />}
 
           {error && (
-            <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>
+            <Typography sx={{ color: "#b32020", fontWeight: 700, textAlign: "center", py: 4 }}>
               {error}
             </Typography>
           )}
@@ -219,7 +219,7 @@ export default function AdaptiveCourseListPage() {
 
           {!loading && !error && items.length > 0 && shownCount === 0 && (
             <Box sx={{ p: { xs: 3, md: 5 }, borderRadius: 4, textAlign: "center", bgcolor: "color-mix(in srgb, var(--card-bg) 60%, transparent)", border: "1px dashed color-mix(in srgb, var(--border-default) 90%, transparent)" }}>
-              <Icon icon="mdi:magnify-close" width={44} style={{ color: "#a855f7" }} />
+              <Icon icon="mdi:magnify-close" width={44} style={{ color: "#1b4f8a" }} />
               <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.05rem" }}>No courses match your search.</Typography>
               <Chip
                 label="Clear search & filters"
@@ -295,7 +295,7 @@ function AdaptiveCourseRow({
         bgcolor: "var(--card-bg)",
         border: "1px solid var(--border-default)",
         transition: "all .15s",
-        "&:hover": { borderColor: "#a855f7", boxShadow: "0 6px 16px -8px rgba(124,58,237,0.35)" },
+        "&:hover": { borderColor: "#1b4f8a", boxShadow: "0 6px 16px -8px rgba(20, 64, 111,0.35)" },
       }}
     >
       <Box
@@ -306,7 +306,7 @@ function AdaptiveCourseRow({
           display: "grid",
           placeItems: "center",
           flexShrink: 0,
-          background: "linear-gradient(135deg,#6366f1,#a855f7)",
+          background: "linear-gradient(135deg,#1b4f8a,#1b4f8a)",
           color: "#fff",
         }}
       >
@@ -358,7 +358,7 @@ function EmptyState({ onBrowse }: { onBrowse: () => void }) {
         border: "1px dashed color-mix(in srgb, var(--border-default) 90%, transparent)",
       }}
     >
-      <Icon icon="mdi:book-off-outline" width={48} style={{ color: "#a855f7" }} />
+      <Icon icon="mdi:book-off-outline" width={48} style={{ color: "#1b4f8a" }} />
       <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.1rem" }}>
         {"You're not enrolled in any course yet."}
       </Typography>

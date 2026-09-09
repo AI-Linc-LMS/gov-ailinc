@@ -263,7 +263,7 @@ function GenerateAdaptiveCourseInner() {
       <Container maxWidth="xl" sx={{ py: { xs: 3, md: 5 } }}>
         <ButtonBase
           onClick={() => push("/admin/adaptive-courses")}
-          sx={{ mb: 2, color: "#6366f1", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
+          sx={{ mb: 2, color: "#1b4f8a", fontWeight: 700, gap: 0.5, fontSize: "0.9rem" }}
         >
           <Icon icon="mdi:arrow-left" width={18} />
           Back to Course Builder
@@ -298,11 +298,11 @@ function GenerateAdaptiveCourseInner() {
                   sx={{
                     mt: 2, mb: 1, p: 1.75, borderRadius: 3,
                     display: "flex", alignItems: "flex-start", gap: 1.25,
-                    bgcolor: "color-mix(in srgb, #6366f1 7%, var(--card-bg))",
-                    border: "1px solid color-mix(in srgb, #6366f1 28%, transparent)",
+                    bgcolor: "color-mix(in srgb, #1b4f8a 7%, var(--card-bg))",
+                    border: "1px solid color-mix(in srgb, #1b4f8a 28%, transparent)",
                   }}
                 >
-                  <Icon icon="mdi:auto-fix" width={18} style={{ color: "#6366f1", flexShrink: 0, marginTop: 2 }} />
+                  <Icon icon="mdi:auto-fix" width={18} style={{ color: "#1b4f8a", flexShrink: 0, marginTop: 2 }} />
                   <Box sx={{ minWidth: 0 }}>
                     <Typography sx={{ fontWeight: 800, fontSize: "0.88rem" }}>
                       Filled in from your brief — {parsedBrief.understood.join(" · ")}
@@ -383,8 +383,8 @@ function GenerateAdaptiveCourseInner() {
                     color: "white",
                     gap: 0.75,
                     opacity: !canSubmit || submitting ? 0.5 : 1,
-                    background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
-                    boxShadow: "0 18px 36px -16px rgba(168, 85, 247, 0.55)",
+                    background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 60%, #0f6b7a 100%)",
+                    boxShadow: "0 18px 36px -16px rgba(27, 79, 138, 0.55)",
                   }}
                 >
                   <Icon icon={submitting ? "mdi:loading" : "mdi:auto-fix"} width={18} className={submitting ? "spin" : ""} />
@@ -392,7 +392,7 @@ function GenerateAdaptiveCourseInner() {
                 </ButtonBase>
               )}
               {mode === "csv" && plan && !planReady && (
-                <Typography sx={{ fontSize: "0.78rem", color: "#b45309", display: "flex", gap: 0.5, alignItems: "center", mt: -1 }}>
+                <Typography sx={{ fontSize: "0.78rem", color: "#8a5a12", display: "flex", gap: 0.5, alignItems: "center", mt: -1 }}>
                   <Icon icon="mdi:alert-outline" width={15} />
                   Every week and topic needs a title before you can generate.
                 </Typography>
@@ -405,8 +405,8 @@ function GenerateAdaptiveCourseInner() {
                 borderRadius: 4,
                 p: 3,
                 color: "white",
-                background: "linear-gradient(135deg, #6366f1 0%, #a855f7 55%, #ec4899 100%)",
-                boxShadow: "0 24px 48px -24px rgba(168, 85, 247, 0.6)",
+                background: "linear-gradient(135deg, #1b4f8a 0%, #1b4f8a 55%, #0f6b7a 100%)",
+                boxShadow: "0 24px 48px -24px rgba(27, 79, 138, 0.6)",
                 position: "sticky",
                 top: 16,
               }}

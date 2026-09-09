@@ -35,10 +35,10 @@ export default function MockInterviewError({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "var(--error-surface, #fef2f2)",
+          backgroundColor: "var(--error-surface, #fdf5f5)",
         }}
       >
-        <IconWrapper icon="mdi:alert-circle-outline" size={36} color="var(--ats-error, #ef4444)" />
+        <IconWrapper icon="mdi:alert-circle-outline" size={36} color="var(--ats-error, #b32020)" />
       </Box>
       <Typography variant="h5" sx={{ fontWeight: 700, mb: 1.5, color: "var(--font-primary-dark)" }}>
         Something went wrong
