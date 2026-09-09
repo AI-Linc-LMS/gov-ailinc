@@ -25,6 +25,9 @@ import { ContinueCoursesRow } from "./ContinueCoursesRow";
 import { DashboardSkeleton } from "./DashboardSkeleton";
 import { DashboardModulesRow, DashboardModulesRail } from "./modules/DashboardModulesRow";
 import { TodayGoalPanel } from "./TodayGoalPanel";
+import { RecruitmentCalendarPanel } from "./RecruitmentCalendarPanel";
+import { MissionNoticesPanel } from "./MissionNoticesPanel";
+import { AtAGlancePanel } from "./AtAGlancePanel";
 
 /** Shared key so other surfaces can invalidate the learner dashboard after a scoring event. */
 export const DASHBOARD_QUERY_KEY = ["learner-dashboard"] as const;
@@ -47,7 +50,7 @@ function EmptyAdaptiveDashboard({ data, hideLeaderboard }: { data: LearnerDashbo
     <Stack spacing={2.5}>
       {data && <StatCards aggregate={data.aggregate} hideLeaderboard={hideLeaderboard} />}
       <Box sx={{ p: { xs: 3, md: 5 }, borderRadius: 4, textAlign: "center", border: "1px solid #eef2f7", bgcolor: "#faf9ff" }}>
-        <Box sx={{ width: 56, height: 56, mx: "auto", mb: 2, borderRadius: "50%", display: "grid", placeItems: "center", background: "linear-gradient(135deg,#7c3aed,#a855f7)" }}>
+        <Box sx={{ width: 56, height: 56, mx: "auto", mb: 2, borderRadius: "50%", display: "grid", placeItems: "center", background: "linear-gradient(135deg,#14406f,#1b4f8a)" }}>
           <Icon icon="mdi:rocket-launch-outline" width={28} color="#fff" />
         </Box>
         <Typography sx={{ fontWeight: 800, fontSize: "1.15rem", color: "#0f172a" }}>Start your adaptive journey</Typography>
@@ -55,7 +58,7 @@ function EmptyAdaptiveDashboard({ data, hideLeaderboard }: { data: LearnerDashbo
           You&apos;re not in a course yet. Courses adjust to your skill level as you learn - pick one to begin.
         </Typography>
         <Button onClick={() => push("/adaptive-courses")} variant="contained" endIcon={<Icon icon="mdi:arrow-right" width={18} />}
-          sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, px: 3, py: 1.1, background: "linear-gradient(135deg,#7c3aed,#db2777)" }}>
+          sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, px: 3, py: 1.1, background: "linear-gradient(135deg,#14406f,#0b5260)" }}>
           Browse courses
         </Button>
       </Box>
@@ -97,7 +100,7 @@ export function DashboardV2() {
 
   // Only blocks when there is genuinely nothing cached to show.
   if (isPending) return <DashboardSkeleton hideLeaderboard={hideLeaderboard} />;
-  if (error) return <Typography sx={{ color: "#b91c1c", py: 6, textAlign: "center", fontWeight: 600 }}>{error}</Typography>;
+  if (error) return <Typography sx={{ color: "#8f1919", py: 6, textAlign: "center", fontWeight: 600 }}>{error}</Typography>;
   // Only tenants without the adaptive feature (403/404) or a hard failure see the old dashboard.
   if (degraded) return <LegacyFallback />;
   // Everyone else gets v2 - even with zero adaptive courses (legacy-only / brand-new students).
@@ -106,56 +109,83 @@ export function DashboardV2() {
   const activeCourse = data.courses.find((c) => c.id === activeCourseId) ?? data.courses[0];
 
   return (
-    // Two columns like the mockup: AI briefing + stats + readiness + continue on the left;
+    // Two columns like the mockup: AI briefing + stats + readiness on the left;
     // skill profile + certificate + up-next + leaderboard on the right. Course Readiness and Skill
     // Profile are core to the adaptive dashboard, so they render whenever there's an active course
     // (no separate feature flag - that mismatch was what made them intermittently disappear).
     // The tenant-gated module widgets live in the right rail (they fill it out
     // and each sizes to its content) rather than a sparse full-width grid.
-    <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "minmax(0,1fr) 390px" }, gap: 2.5, alignItems: "start" }}>
-      <Box sx={{ minWidth: 0 }}>
-        {data.briefing && (
-          <Box data-tour-id="dash-briefing">
-            <AiBriefingHero briefing={data.briefing} profile={data.profile} />
+    //
+    // Under the readiness card the left column carries the GOVERNMENT panels, the
+    // recruitment calendar and the mission's circulars, with the at-a-glance strip
+    // full width beneath both columns. They are there because of what sits directly
+    // above them. ContinueCoursesRow is gated on the legacy `course` feature flag,
+    // which this tenant deliberately leaves off (see lib/demo/db/tenant.ts), so the
+    // left column used to stop at the readiness card while the right rail carried on
+    // for another thirteen hundred pixels beside dead space. Switching the flag on
+    // would have put two things called Courses in one sidebar; filling the column
+    // with what an aspirant actually opens first costs nothing elsewhere. Each panel
+    // fetches its own data and renders NOTHING when it has none, so a quiet month
+    // shortens the column instead of printing headings over empty lists.
+    <Stack spacing={2.5}>
+      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "minmax(0,1fr) 390px" }, gap: 2.5, alignItems: "start" }}>
+        <Box sx={{ minWidth: 0 }}>
+          {data.briefing && (
+            <Box data-tour-id="dash-briefing">
+              <AiBriefingHero briefing={data.briefing} profile={data.profile} />
+            </Box>
+          )}
+          <Box data-tour-id="dash-stats">
+            <StatCards aggregate={data.aggregate} hideLeaderboard={hideLeaderboard} />
           </Box>
-        )}
-        <Box data-tour-id="dash-stats">
-          <StatCards aggregate={data.aggregate} hideLeaderboard={hideLeaderboard} />
+          <Box data-tour-id="dash-courses">
+            <CourseReadinessCard courses={data.courses} activeCourseId={activeCourse?.id ?? null} onSelect={setActiveCourseId} />
+          </Box>
+          {courseEnabled && <ContinueCoursesRow courses={data.courses} />}
+          <RecruitmentCalendarPanel />
+          <MissionNoticesPanel />
         </Box>
-        <Box data-tour-id="dash-courses">
-          <CourseReadinessCard courses={data.courses} activeCourseId={activeCourse?.id ?? null} onSelect={setActiveCourseId} />
-        </Box>
-        {courseEnabled && <ContinueCoursesRow courses={data.courses} />}
+
+        {/* minWidth 0 on the rail as well as the left column: a grid child defaults to
+            min-width:auto, so one long unbroken string in any panel would widen the
+            track and scroll the whole page sideways at 375px. */}
+        <Stack spacing={2} sx={{ minWidth: 0 }}>
+          {/* First in the rail, and it renders NOTHING for a learner with nothing to fix.
+              Deliberately not wrapped in a <Box> here: an empty wrapper still occupies a
+              Stack spacing slot, which pushed the whole rail 16px out of alignment with the
+              briefing card next to it. The tour anchor lives on the panel's own card instead. */}
+          <ProfileCompletionPanel />
+          {data.todayGoal && (
+            <Box data-tour-id="dash-goal">
+              <TodayGoalPanel goal={data.todayGoal} />
+            </Box>
+          )}
+          <Box data-tour-id="dash-skills">
+            <SkillProfilePanel
+              courses={data.courses}
+              activeCourseId={activeCourse?.id ?? null}
+              onSelect={setActiveCourseId}
+              crossCourseMastery={data.aggregate.overallMasteryAvg}
+            />
+          </Box>
+          {activeCourse?.certificate.enabled && <CertificatePanel course={activeCourse} />}
+          {courseEnabled && <UpNextPanel items={data.crossCourseUpNext} />}
+          <DashboardModulesRail />
+          {!hideLeaderboard && (
+            <Box data-tour-id="dash-leaderboard">
+              <LeaderboardPanel leaderboard={data.leaderboard} />
+            </Box>
+          )}
+        </Stack>
       </Box>
 
-      <Stack spacing={2}>
-        {/* First in the rail, and it renders NOTHING for a learner with nothing to fix.
-            Deliberately not wrapped in a <Box> here: an empty wrapper still occupies a
-            Stack spacing slot, which pushed the whole rail 16px out of alignment with the
-            briefing card next to it. The tour anchor lives on the panel's own card instead. */}
-        <ProfileCompletionPanel />
-        {data.todayGoal && (
-          <Box data-tour-id="dash-goal">
-            <TodayGoalPanel goal={data.todayGoal} />
-          </Box>
-        )}
-        <Box data-tour-id="dash-skills">
-          <SkillProfilePanel
-            courses={data.courses}
-            activeCourseId={activeCourse?.id ?? null}
-            onSelect={setActiveCourseId}
-            crossCourseMastery={data.aggregate.overallMasteryAvg}
-          />
-        </Box>
-        {activeCourse?.certificate.enabled && <CertificatePanel course={activeCourse} />}
-        {courseEnabled && <UpNextPanel items={data.crossCourseUpNext} />}
-        <DashboardModulesRail />
-        {!hideLeaderboard && (
-          <Box data-tour-id="dash-leaderboard">
-            <LeaderboardPanel leaderboard={data.leaderboard} />
-          </Box>
-        )}
-      </Stack>
-    </Box>
+      {/* Full width, under both columns, and that placement is doing real work. A
+          strip of seven portal addresses and three contacts is a ten row list in a
+          654px column and two scannable rows across the whole width. It is also what
+          lets the left column finish level with the right rail: the calendar and the
+          notices fill the gap the missing courses row left, and anything more inside
+          that column would overshoot the rail by as much as it used to fall short. */}
+      <AtAGlancePanel />
+    </Stack>
   );
 }

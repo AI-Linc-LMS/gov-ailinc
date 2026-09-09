@@ -8,10 +8,10 @@ import type { DashboardCourse } from "@/lib/types/dashboard";
 import { SectionHeader, daysLeft, fmtDate } from "./parts";
 
 const ACCENTS = [
-  { bar: "linear-gradient(90deg,#7c3aed,#a855f7)", btn: "linear-gradient(135deg,#7c3aed,#a855f7)" },
-  { bar: "linear-gradient(90deg,#6366f1,#3b82f6)", btn: "linear-gradient(135deg,#6366f1,#3b82f6)" },
-  { bar: "linear-gradient(90deg,#10b981,#22c55e)", btn: "linear-gradient(135deg,#10b981,#22c55e)" },
-  { bar: "linear-gradient(90deg,#f59e0b,#f97316)", btn: "linear-gradient(135deg,#f59e0b,#f97316)" },
+  { bar: "linear-gradient(90deg,#14406f,#1b4f8a)", btn: "linear-gradient(135deg,#14406f,#1b4f8a)" },
+  { bar: "linear-gradient(90deg,#1b4f8a,#4a7fbb)", btn: "linear-gradient(135deg,#1b4f8a,#4a7fbb)" },
+  { bar: "linear-gradient(90deg,#0e7a3c,#0e7a3c)", btn: "linear-gradient(135deg,#0e7a3c,#0e7a3c)" },
+  { bar: "linear-gradient(90deg,#b7791f,#b45309)", btn: "linear-gradient(135deg,#b7791f,#b45309)" },
 ];
 
 export function ContinueCoursesRow({ courses }: { courses: DashboardCourse[] }) {
@@ -61,16 +61,16 @@ export function ContinueCoursesRow({ courses }: { courses: DashboardCourse[] }) 
 
                   {c.due?.dueAt && (
                     <Stack direction="row" spacing={0.5} alignItems="center" sx={{ mt: 1.25 }}>
-                      <Icon icon={overdue ? "mdi:alarm" : "mdi:calendar-clock"} width={14} color={overdue ? "#dc2626" : soon ? "#b45309" : "#15803d"} />
-                      <Typography sx={{ fontSize: "0.76rem", fontWeight: 700, color: overdue ? "#dc2626" : soon ? "#b45309" : "#15803d" }}>
+                      <Icon icon={overdue ? "mdi:alarm" : "mdi:calendar-clock"} width={14} color={overdue ? "#991b1b" : soon ? "#8a5a12" : "#0b6232"} />
+                      <Typography sx={{ fontSize: "0.76rem", fontWeight: 700, color: overdue ? "#991b1b" : soon ? "#8a5a12" : "#0b6232" }}>
                         Due {fmtDate(c.due.dueAt)}{dl != null && dl >= 0 ? ` · ${dl} day${dl === 1 ? "" : "s"} left` : overdue ? " · overdue" : ""}
                       </Typography>
                     </Stack>
                   )}
                   {c.due?.penaltyNote && (
                     <Stack direction="row" spacing={0.5} alignItems="flex-start" sx={{ mt: 0.5 }}>
-                      <Icon icon="mdi:alert" width={13} color={overdue || soon ? "#dc2626" : "#94a3b8"} style={{ flexShrink: 0, marginTop: 2 }} />
-                      <Typography sx={{ fontSize: "0.72rem", color: overdue || soon ? "#dc2626" : "#94a3b8", lineHeight: 1.4 }}>{c.due.penaltyNote}</Typography>
+                      <Icon icon="mdi:alert" width={13} color={overdue || soon ? "#991b1b" : "#94a3b8"} style={{ flexShrink: 0, marginTop: 2 }} />
+                      <Typography sx={{ fontSize: "0.72rem", color: overdue || soon ? "#991b1b" : "#94a3b8", lineHeight: 1.4 }}>{c.due.penaltyNote}</Typography>
                     </Stack>
                   )}
 

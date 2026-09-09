@@ -1,5 +1,11 @@
 import apiClient from "./api";
 import { config } from "../config";
+import type {
+  DashboardAtAGlance,
+  MissionNotice,
+  RecruitmentCalendar,
+  RecruitmentCalendarMonth,
+} from "../types/dashboard";
 
 interface RawDailyLeaderboardEntry {
   user?: { id?: number; user_name?: string; profile_pic_url?: string };
@@ -264,6 +270,74 @@ export const dashboardService = {
       return validatedData;
     } catch {
       return [];
+    }
+  },
+
+  /* -------------------------------------------------------------------------
+   * The government panels in the learner dashboard's left column.
+   *
+   * Each one degrades to an empty payload rather than throwing, the way every
+   * other reader in this file does, because the panels above them on that
+   * column are the product's own dashboard and must not go down with a
+   * calendar. An empty payload is the panel's signal to render nothing at all,
+   * which is the correct outcome: a heading over no rows tells an officer the
+   * platform is broken, and a missing panel tells them nothing.
+   * ---------------------------------------------------------------------- */
+
+  getRecruitmentCalendar: async (): Promise<RecruitmentCalendar> => {
+    try {
+      const response = await apiClient.get(
+        `/api/clients/${config.clientId}/student/recruitment-calendar/`
+      );
+      const data = response.data ?? {};
+      const months: RecruitmentCalendarMonth[] = Array.isArray(data.months)
+        ? data.months.filter(
+            (month: RecruitmentCalendarMonth) =>
+              month && Array.isArray(month.entries) && month.entries.length > 0
+          )
+        : [];
+      return {
+        months,
+        openCount: Number(data.openCount) || 0,
+        closingSoonCount: Number(data.closingSoonCount) || 0,
+      };
+    } catch {
+      return { months: [], openCount: 0, closingSoonCount: 0 };
+    }
+  },
+
+  getMissionNotices: async (): Promise<MissionNotice[]> => {
+    try {
+      const response = await apiClient.get(
+        `/api/clients/${config.clientId}/student/mission-notices/`
+      );
+      const data = response.data ?? {};
+      const notices = Array.isArray(data) ? data : data.notices;
+      return Array.isArray(notices)
+        ? (notices as MissionNotice[]).filter((notice) => notice && notice.title)
+        : [];
+    } catch {
+      return [];
+    }
+  },
+
+  getAtAGlance: async (): Promise<DashboardAtAGlance> => {
+    try {
+      const response = await apiClient.get(
+        `/api/clients/${config.clientId}/student/at-a-glance/`
+      );
+      const data = response.data ?? {};
+      return {
+        portals: Array.isArray(data.portals)
+          ? data.portals.filter(
+              (portal: { url?: string }) =>
+                typeof portal?.url === "string" && portal.url.startsWith("https://")
+            )
+          : [],
+        contacts: Array.isArray(data.contacts) ? data.contacts : [],
+      };
+    } catch {
+      return { portals: [], contacts: [] };
     }
   },
 };

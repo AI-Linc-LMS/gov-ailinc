@@ -39,7 +39,7 @@ function useGatedPanels(): ReactNode[] {
 function SectionLabel() {
   return (
     <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 0.5, mt: 0.5 }}>
-      <Icon icon="mdi:compass-outline" width={17} color="#7c3aed" />
+      <Icon icon="mdi:compass-outline" width={17} color="#14406f" />
       <Typography sx={{ fontWeight: 800, fontSize: "0.95rem", color: "#0f172a" }}>
         What&apos;s next for you
       </Typography>
@@ -66,7 +66,7 @@ export function DashboardModulesRow() {
   return (
     <Box sx={{ mt: 2.5 }}>
       <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5 }}>
-        <Icon icon="mdi:compass-outline" width={18} color="#7c3aed" />
+        <Icon icon="mdi:compass-outline" width={18} color="#14406f" />
         <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", color: "#0f172a" }}>
           What&apos;s next for you
         </Typography>

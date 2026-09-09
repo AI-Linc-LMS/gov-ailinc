@@ -35,7 +35,7 @@ export function ModuleHeader({
         {title}
       </Typography>
       {onViewAll && (
-        <ButtonBase onClick={onViewAll} sx={{ fontSize: "0.74rem", fontWeight: 700, color: "#7c3aed", gap: 0.25, flexShrink: 0 }}>
+        <ButtonBase onClick={onViewAll} sx={{ fontSize: "0.74rem", fontWeight: 700, color: "#14406f", gap: 0.25, flexShrink: 0 }}>
           {viewAllLabel}
           <Icon icon="mdi:arrow-right" width={14} />
         </ButtonBase>

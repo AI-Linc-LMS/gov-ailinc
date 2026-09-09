@@ -47,12 +47,12 @@ export function ProfileCompletionPanel() {
         sx={{
           p: 1.5,
           borderRadius: 3,
-          bgcolor: "#f5f3ff",
-          border: "1px solid #ede9fe",
+          bgcolor: "#eef3fa",
+          border: "1px solid #eef3fa",
           textAlign: "center",
         }}
       >
-        <Typography sx={{ fontWeight: 900, fontSize: "2.2rem", color: "#6366f1", lineHeight: 1.1 }}>
+        <Typography sx={{ fontWeight: 900, fontSize: "2.2rem", color: "#1b4f8a", lineHeight: 1.1 }}>
           <CountUp value={percentage} suffix="%" />
         </Typography>
         <Typography sx={{ fontSize: "0.72rem", color: "#64748b", fontWeight: 700 }}>
@@ -70,7 +70,7 @@ export function ProfileCompletionPanel() {
             bgcolor: "#eef2f7",
             "& .MuiLinearProgress-bar": {
               borderRadius: 4,
-              background: "linear-gradient(90deg, #7c3aed, #ec4899)",
+              background: "linear-gradient(90deg, #14406f, #0f6b7a)",
             },
           }}
         />
@@ -82,7 +82,7 @@ export function ProfileCompletionPanel() {
             <Icon
               icon={f.filled ? "mdi:check-circle" : "mdi:circle-outline"}
               width={16}
-              style={{ color: f.filled ? "#10b981" : "#cbd5e1", flexShrink: 0 }}
+              style={{ color: f.filled ? "#0e7a3c" : "#cbd5e1", flexShrink: 0 }}
             />
             <Typography
               sx={{
@@ -109,7 +109,7 @@ export function ProfileCompletionPanel() {
           fontSize: "0.88rem",
           color: "white",
           gap: 0.5,
-          background: "linear-gradient(135deg, #7c3aed, #ec4899)",
+          background: "linear-gradient(135deg, #14406f, #0f6b7a)",
         }}
       >
         Complete profile <Icon icon="mdi:arrow-right" width={16} />

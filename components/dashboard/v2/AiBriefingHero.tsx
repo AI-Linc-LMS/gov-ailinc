@@ -28,7 +28,7 @@ function ActionCard({
         "&:hover": { borderColor: "rgba(255,255,255,0.35)", bgcolor: "rgba(0,0,0,0.26)" },
       }}
     >
-      <Box sx={{ width: 38, height: 38, borderRadius: 2.5, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #a855f7, #ec4899)" }}>
+      <Box sx={{ width: 38, height: 38, borderRadius: 2.5, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a, #0f6b7a)" }}>
         <Icon icon={icon} width={20} />
       </Box>
       <Box sx={{ minWidth: 0 }}>
@@ -49,7 +49,7 @@ export function AiBriefingHero({
 
   return (
     <Reveal>
-      <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: "radial-gradient(110% 130% at 12% 112%, rgba(192,38,211,0.45) 0%, rgba(124,58,237,0.30) 30%, rgba(15,10,40,0) 60%), linear-gradient(150deg, #271a5c 0%, #181040 55%, #100a2c 100%)", boxShadow: "0 24px 60px -30px rgba(76,29,149,0.7)" }}>
+      <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: "radial-gradient(110% 130% at 12% 112%, rgba(192,38,211,0.45) 0%, rgba(20, 64, 111,0.30) 30%, rgba(15,10,40,0) 60%), linear-gradient(150deg, #271a5c 0%, #181040 55%, #100a2c 100%)", boxShadow: "0 24px 60px -30px rgba(76,29,149,0.7)" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2} sx={{ mb: 1 }}>
           <Stack direction="row" spacing={0.75} alignItems="center">
             <Box sx={{ px: 1, py: 0.4, borderRadius: 999, fontSize: "0.66rem", fontWeight: 800, letterSpacing: 0.5, color: "white", bgcolor: "rgba(255,255,255,0.18)", display: "inline-flex", alignItems: "center", gap: 0.4 }}>
@@ -67,12 +67,12 @@ export function AiBriefingHero({
                   <Typography sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.65)" }}>due {fmtDate(profile.weekDueAt)}</Typography>
                 )}
                 <Box sx={{ width: 72, height: 6, borderRadius: 999, bgcolor: "rgba(255,255,255,0.18)", overflow: "hidden" }}>
-                  <Box sx={{ width: `${Math.min(100, profile.weekProgressPct)}%`, height: "100%", borderRadius: 999, background: "linear-gradient(90deg, #a855f7, #ec4899)" }} />
+                  <Box sx={{ width: `${Math.min(100, profile.weekProgressPct)}%`, height: "100%", borderRadius: 999, background: "linear-gradient(90deg, #1b4f8a, #0f6b7a)" }} />
                 </Box>
               </Stack>
             )}
             <Box sx={{ px: 1, py: 0.5, borderRadius: 2.5, bgcolor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.12)", fontSize: "0.82rem", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: 0.4 }}>
-              <Icon icon="mdi:fire" width={15} color="#fb923c" /> {profile.streakDays}
+              <Icon icon="mdi:fire" width={15} color="#c07033" /> {profile.streakDays}
             </Box>
           </Stack>
         </Stack>
@@ -97,7 +97,7 @@ export function AiBriefingHero({
             <Box component="span" sx={{ fontWeight: 800, color: "#fff" }}>{briefing.weakestSkill.skill}</Box>{" "}
             in <Box component="span" sx={{ fontWeight: 800, color: "#fff" }}>{briefing.weakestSkill.course}</Box>.{" "}
             {briefing.weakestSkill.fixSuggestion}{" "}
-            <Box component="span" onClick={() => go(briefing.weakestSkill?.route)} sx={{ fontWeight: 800, color: "#fde68a", cursor: "pointer", whiteSpace: "nowrap" }}>
+            <Box component="span" onClick={() => go(briefing.weakestSkill?.route)} sx={{ fontWeight: 800, color: "#f0ddb8", cursor: "pointer", whiteSpace: "nowrap" }}>
               Fix it →
             </Box>
           </Typography>
@@ -122,7 +122,7 @@ export function AiBriefingHero({
 
         <ButtonBase
           onClick={() => go(briefing.focusRoute)}
-          sx={{ mt: 2.5, px: 3, py: 1.25, borderRadius: 999, fontWeight: 800, fontSize: "0.95rem", color: "white", background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)", gap: 0.75, boxShadow: "0 14px 34px -12px rgba(192,38,211,0.7)", "&:hover": { filter: "brightness(1.06)" } }}
+          sx={{ mt: 2.5, px: 3, py: 1.25, borderRadius: 999, fontWeight: 800, fontSize: "0.95rem", color: "white", background: "linear-gradient(135deg, #1b4f8a 0%, #0f6b7a 100%)", gap: 0.75, boxShadow: "0 14px 34px -12px rgba(192,38,211,0.7)", "&:hover": { filter: "brightness(1.06)" } }}
         >
           <Icon icon="mdi:timer-outline" width={18} /> Start this week&apos;s focus →
         </ButtonBase>

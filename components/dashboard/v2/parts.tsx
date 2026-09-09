@@ -8,9 +8,9 @@ import type { ReadinessBand } from "@/lib/types/dashboard";
 // --- band → color (single source) ---
 export const BAND_STYLE: Record<ReadinessBand, { color: string; bg: string; label: string; bar: string }> = {
   "not-started": { color: "#94a3b8", bg: "#f1f5f9", label: "Not started", bar: "#cbd5e1" },
-  "needs-work": { color: "#b91c1c", bg: "#fef2f2", label: "Needs work", bar: "#ef4444" },
-  building: { color: "#b45309", bg: "#fffbeb", label: "Building", bar: "#f59e0b" },
-  strong: { color: "#15803d", bg: "#f0fdf4", label: "Strong", bar: "#22c55e" },
+  "needs-work": { color: "#8f1919", bg: "#fdf5f5", label: "Needs work", bar: "#b32020" },
+  building: { color: "#8a5a12", bg: "#fdf9f0", label: "Building", bar: "#b7791f" },
+  strong: { color: "#0b6232", bg: "#f0fdf4", label: "Strong", bar: "#0e7a3c" },
 };
 
 export function fmtDate(iso: string | null | undefined): string {
@@ -30,9 +30,9 @@ export function daysLeft(iso: string | null | undefined): number | null {
 }
 
 // --- leaderboard helpers (mirror JourneySidePanels) ---
-export const RANK_BG: Record<number, string> = { 1: "#fef3c7", 2: "#f1f5f9", 3: "#fde7d3" };
-export const RANK_FG: Record<number, string> = { 1: "#b45309", 2: "#475569", 3: "#9a3412" };
-const AV_COLORS = ["#6366f1", "#a855f7", "#ec4899", "#0ea5e9", "#14b8a6", "#f59e0b"];
+export const RANK_BG: Record<number, string> = { 1: "#fdf3e2", 2: "#f1f5f9", 3: "#fde7d3" };
+export const RANK_FG: Record<number, string> = { 1: "#8a5a12", 2: "#475569", 3: "#9a3412" };
+const AV_COLORS = ["#1b4f8a", "#1b4f8a", "#0f6b7a", "#1b4f8a", "#0f6b7a", "#b7791f"];
 export function avatarColor(name: string): string {
   let h = 0;
   for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
@@ -73,7 +73,7 @@ export function PanelCard({
 }
 
 export function SectionHeader({
-  icon, title, subtitle, gradient = "linear-gradient(135deg, #6366f1, #a855f7)", action,
+  icon, title, subtitle, gradient = "linear-gradient(135deg, #1b4f8a, #1b4f8a)", action,
 }: {
   icon: string; title: string; subtitle?: string; gradient?: string; action?: ReactNode;
 }) {
@@ -92,7 +92,7 @@ export function SectionHeader({
 }
 
 export function StatBox({
-  label, value, sub, subColor = "#94a3b8", icon, accent = "#7c3aed", info,
+  label, value, sub, subColor = "#94a3b8", icon, accent = "#14406f", info,
 }: {
   label: string; value: ReactNode; sub?: ReactNode; subColor?: string; icon?: string; accent?: string; info?: ReactNode;
 }) {

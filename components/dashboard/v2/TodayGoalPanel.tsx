@@ -28,7 +28,7 @@ export function TodayGoalPanel({ goal }: { goal: TodayGoal }) {
         color: "#fff",
         backgroundColor: "#110b2e",
         backgroundImage: "linear-gradient(160deg, #1a1442 0%, #110b2e 100%)",
-        border: "1px solid rgba(168,85,247,0.18)",
+        border: "1px solid rgba(27, 79, 138,0.18)",
         boxShadow: "0 18px 40px -24px rgba(76,29,149,0.6)",
       }}
     >
@@ -43,8 +43,8 @@ export function TodayGoalPanel({ goal }: { goal: TodayGoal }) {
             value={percent}
             size={104}
             strokeWidth={9}
-            color="#34d399"
-            colorEnd="#22c55e"
+            color="#2f9159"
+            colorEnd="#0e7a3c"
             trackColor="rgba(255,255,255,0.1)"
             showValue={false}
           />
@@ -65,7 +65,7 @@ export function TodayGoalPanel({ goal }: { goal: TodayGoal }) {
                 <Icon
                   icon={g.done ? "mdi:check-circle" : "mdi:circle-outline"}
                   width={20}
-                  color={g.done ? "#34d399" : "rgba(255,255,255,0.28)"}
+                  color={g.done ? "#2f9159" : "rgba(255,255,255,0.28)"}
                   style={{ flexShrink: 0 }}
                 />
                 <Box sx={{ minWidth: 0 }}>
@@ -105,19 +105,19 @@ export function TodayGoalPanel({ goal }: { goal: TodayGoal }) {
                   placeItems: "center",
                   mb: 0.6,
                   ...(active
-                    ? { background: "linear-gradient(135deg, #fb923c 0%, #ec4899 100%)", boxShadow: "0 8px 18px -10px rgba(236,72,153,0.6)" }
+                    ? { background: "linear-gradient(135deg, #c07033 0%, #0f6b7a 100%)", boxShadow: "0 8px 18px -10px rgba(15, 107, 122,0.6)" }
                     : d.isToday
-                      ? { border: "1.5px dashed rgba(168,85,247,0.6)", bgcolor: "rgba(255,255,255,0.03)" }
+                      ? { border: "1.5px dashed rgba(27, 79, 138,0.6)", bgcolor: "rgba(255,255,255,0.03)" }
                       : { bgcolor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.06)" }),
                 }}
               >
                 {active ? (
                   <Icon icon="mdi:fire" width={24} color="#fff" />
                 ) : (
-                  <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: d.isToday ? "#a855f7" : "rgba(255,255,255,0.25)" }} />
+                  <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: d.isToday ? "#1b4f8a" : "rgba(255,255,255,0.25)" }} />
                 )}
               </Box>
-              <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.06em", color: d.isToday ? "#c4b5fd" : "rgba(255,255,255,0.45)" }}>
+              <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.06em", color: d.isToday ? "#b6cde8" : "rgba(255,255,255,0.45)" }}>
                 {d.label}
               </Typography>
             </Box>

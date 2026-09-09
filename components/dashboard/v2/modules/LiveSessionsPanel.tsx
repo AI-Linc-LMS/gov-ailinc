@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react";
 import { studentLiveSessionsService, type StudentLiveSession } from "@/lib/services/live-sessions";
 import { ModuleEmpty, ModuleHeader, ModulePanel, ModuleRowsSkeleton, Pill, fmtDateTime, timeUntil } from "./shared";
 
-const GRADIENT = "linear-gradient(135deg, #06b6d4, #3b82f6)";
+const GRADIENT = "linear-gradient(135deg, #0f6b7a, #4a7fbb)";
 
 function joinUrl(s: StudentLiveSession): string | null {
   return (s.is_google_meet ? s.join_link : s.zoom_join_url) ?? null;
@@ -60,19 +60,19 @@ export function LiveSessionsPanel() {
               <ButtonBase
                 key={s.id}
                 onClick={() => router.push("/live-sessions")}
-                sx={{ width: "100%", justifyContent: "flex-start", textAlign: "left", p: 1, borderRadius: 2.5, border: "1px solid", borderColor: live ? "#a5f3fc" : "#eef2f7", bgcolor: live ? "#ecfeff" : "transparent", "&:hover": { bgcolor: live ? "#cffafe" : "#f0f9ff" } }}
+                sx={{ width: "100%", justifyContent: "flex-start", textAlign: "left", p: 1, borderRadius: 2.5, border: "1px solid", borderColor: live ? "#b6d7db" : "#eef2f7", bgcolor: live ? "#eef5f6" : "transparent", "&:hover": { bgcolor: live ? "#dcecee" : "#f0f9ff" } }}
               >
                 <Stack direction="row" spacing={1.25} alignItems="center" sx={{ width: "100%", minWidth: 0 }}>
-                  <Box sx={{ width: 38, height: 38, borderRadius: 2, flexShrink: 0, display: "grid", placeItems: "center", color: "#0891b2", bgcolor: "#cffafe" }}>
+                  <Box sx={{ width: 38, height: 38, borderRadius: 2, flexShrink: 0, display: "grid", placeItems: "center", color: "#0b5260", bgcolor: "#dcecee" }}>
                     <Icon icon={s.is_google_meet ? "mdi:google" : "mdi:video"} width={19} />
                   </Box>
                   <Box sx={{ flex: 1, minWidth: 0 }}>
                     <Typography noWrap sx={{ fontWeight: 700, fontSize: "0.86rem", color: "#0f172a" }}>{s.topic_name || s.name || "Live session"}</Typography>
                     <Stack direction="row" spacing={0.75} alignItems="center" sx={{ mt: 0.4 }}>
                       {live ? (
-                        <Pill icon="mdi:circle" color="#dc2626" bg="#fef2f2">LIVE NOW</Pill>
+                        <Pill icon="mdi:circle" color="#991b1b" bg="#fdf5f5">LIVE NOW</Pill>
                       ) : (
-                        <Pill icon="mdi:calendar-clock" color="#0e7490" bg="#ecfeff">{t?.text ?? fmtDateTime(s.class_datetime)}</Pill>
+                        <Pill icon="mdi:calendar-clock" color="#0b5260" bg="#eef5f6">{t?.text ?? fmtDateTime(s.class_datetime)}</Pill>
                       )}
                       {s.course_detail?.title && (
                         <Typography noWrap sx={{ fontSize: "0.68rem", color: "#94a3b8", fontWeight: 600, maxWidth: 120 }}>{s.course_detail.title}</Typography>
@@ -86,7 +86,7 @@ export function LiveSessionsPanel() {
                       tabIndex={0}
                       onClick={(e) => { e.stopPropagation(); window.open(url, "_blank", "noopener,noreferrer"); }}
                       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.stopPropagation(); window.open(url, "_blank", "noopener,noreferrer"); } }}
-                      sx={{ flexShrink: 0, px: 1.5, py: 0.6, borderRadius: 999, fontSize: "0.72rem", fontWeight: 800, color: "#fff", background: "linear-gradient(135deg, #06b6d4, #2563eb)", cursor: "pointer", "&:hover": { filter: "brightness(1.05)" } }}
+                      sx={{ flexShrink: 0, px: 1.5, py: 0.6, borderRadius: 999, fontSize: "0.72rem", fontWeight: 800, color: "#fff", background: "linear-gradient(135deg, #0f6b7a, #1b4f8a)", cursor: "pointer", "&:hover": { filter: "brightness(1.05)" } }}
                     >
                       Join
                     </Box>

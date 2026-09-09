@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react";
 import { jobsV2Service, type JobV2 } from "@/lib/services/jobs-v2.service";
 import { ModuleEmpty, ModuleHeader, ModulePanel, ModuleRowsSkeleton, Pill, timeUntil } from "./shared";
 
-const GRADIENT = "linear-gradient(135deg, #10b981, #0d9488)";
+const GRADIENT = "linear-gradient(135deg, #0e7a3c, #0b5260)";
 const SOON_MS = 14 * 86_400_000;
 
 function isOpen(j: JobV2): boolean {
@@ -72,7 +72,7 @@ export function JobOpeningsPanel() {
                 sx={{ width: "100%", justifyContent: "flex-start", textAlign: "left", p: 1, borderRadius: 2.5, border: "1px solid #eef2f7", "&:hover": { bgcolor: "#f0fdf9", borderColor: "#a7f3d0" } }}
               >
                 <Stack direction="row" spacing={1.25} alignItems="center" sx={{ width: "100%", minWidth: 0 }}>
-                  <Box sx={{ width: 38, height: 38, borderRadius: 2, flexShrink: 0, display: "grid", placeItems: "center", color: "#047857", bgcolor: "#d1fae5", fontWeight: 800, fontSize: "1rem" }}>
+                  <Box sx={{ width: 38, height: 38, borderRadius: 2, flexShrink: 0, display: "grid", placeItems: "center", color: "#0B6232", bgcolor: "#dff0e6", fontWeight: 800, fontSize: "1rem" }}>
                     {(j.company_name || "?").charAt(0).toUpperCase()}
                   </Box>
                   <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -82,9 +82,9 @@ export function JobOpeningsPanel() {
                         {j.company_name}{j.location ? ` · ${j.location}` : ""}
                       </Typography>
                       {applied ? (
-                        <Pill icon="mdi:check" color="#15803d" bg="#f0fdf4">Applied</Pill>
+                        <Pill icon="mdi:check" color="#0b6232" bg="#f0fdf4">Applied</Pill>
                       ) : dl ? (
-                        <Pill icon="mdi:timer-sand" color={dl.soon ? "#b91c1c" : "#475569"} bg={dl.soon ? "#fef2f2" : "#f1f5f9"}>Closes {dl.text}</Pill>
+                        <Pill icon="mdi:timer-sand" color={dl.soon ? "#8f1919" : "#475569"} bg={dl.soon ? "#fdf5f5" : "#f1f5f9"}>Closes {dl.text}</Pill>
                       ) : null}
                     </Stack>
                   </Box>

@@ -19,7 +19,18 @@
 
 import { defineRoutes } from "../router";
 import type { DemoRequest } from "../types";
-import type { LearnerDashboard } from "@/lib/types/dashboard";
+import type {
+  AtAGlanceContact,
+  AtAGlancePortal,
+  DashboardAtAGlance,
+  LearnerDashboard,
+  MissionNotice,
+  MissionNoticeCategory,
+  RecruitmentCalendar,
+  RecruitmentCalendarEntry,
+  RecruitmentCalendarMonth,
+  RecruitmentStage,
+} from "@/lib/types/dashboard";
 import {
   dashboardCourse,
   enrolledCourses,
@@ -48,7 +59,10 @@ import {
   midProgrammeScore,
 } from "./admin";
 import { STUDENT_PERSONA, personByEmail, rankedLearners } from "../../db/people";
-import { currentMonth, daysInMonth, iso, isoDaysAgo, nowMs, ymd, daysAgo } from "../../clock";
+import { allJobs, type JobRecord } from "../../db/jobs";
+import { allAssessments } from "./assessment-admin";
+import { DEMO_TENANT } from "../../config";
+import { currentMonth, daysAhead, daysInMonth, iso, isoDaysAgo, nowMs, todayStart, ymd, daysAgo } from "../../clock";
 import { seededInt, seededPick } from "../../random";
 
 const MODULE = "dashboard";
@@ -467,8 +481,462 @@ function learnerDashboard(auth: DemoRequest["auth"]): LearnerDashboard {
   };
 }
 
+/* ===========================================================================
+ * The government surfaces on the aspirant's dashboard
+ *
+ * The dashboard's left column used to end at the course readiness card. The
+ * row below it is gated on the legacy `course` feature flag, which is
+ * deliberately off for this tenant (see `db/tenant.ts`), so the column stopped
+ * while the right rail carried on for another thirteen hundred pixels. What
+ * belongs in that space is not more of the learning product. It is the two
+ * things an aspirant checks before anything else, the recruitment calendar and
+ * the mission's circulars, plus the addresses they look up constantly.
+ *
+ * Every fact below is derived from a record another screen already reads: the
+ * job board in `db/jobs.ts`, the paper catalogue in `assessment-admin.ts`, the
+ * batch roster in `admin.ts`. That is the whole reason it is safe to put a
+ * calendar on the dashboard at all. A calendar assembled from its own literals
+ * would disagree with the job board the moment either was edited, and the first
+ * thing an officer does with two dates for the same recruitment is stop
+ * believing both.
+ *
+ * No date here is written down. Each one is `daysAhead` of the demo clock off
+ * an offset held in the seed, so the calendar is permanently current and can
+ * never be read as this year's recruitment calendar. The panel prints its own
+ * line saying so, and the rows that show a stage with no fixed date say that in
+ * words rather than implying one.
+ * ======================================================================== */
+
+const DAY_MS = 86_400_000;
+
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+] as const;
+const WEEKDAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
+
+/**
+ * How far ahead the calendar looks, and how many rows it will print.
+ *
+ * Four months is the window a candidate plans in: far enough to hold the
+ * examination that follows a window closing this week, short enough that the
+ * dates at the bottom still mean something. The cap exists because the panel
+ * sits in a column, not on a page of its own.
+ */
+const CALENDAR_HORIZON_DAYS = 120;
+const CALENDAR_MAX_ENTRIES = 14;
+/** Inside a week is what "closing soon" means to somebody still gathering documents. */
+const CLOSING_SOON_DAYS = 7;
+
+/** Whole days from today to a `YYYY-MM-DD` date. Negative for one already past. */
+function dayOffsetOf(dateOnly: string): number {
+  const at = Date.parse(`${dateOnly}T00:00:00.000Z`);
+  if (Number.isNaN(at)) return Number.NaN;
+  return Math.round((at - todayStart().getTime()) / DAY_MS);
+}
+
+/** Whole days from today to an instant, counted in whole calendar days. */
+function dayOffsetOfDate(at: Date): number {
+  const day = Date.UTC(at.getUTCFullYear(), at.getUTCMonth(), at.getUTCDate());
+  return Math.round((day - todayStart().getTime()) / DAY_MS);
+}
+
+/**
+ * Date labels, formatted here rather than in the browser.
+ *
+ * `toLocaleDateString` formats in the VIEWER's zone, and every date in this
+ * calendar is built at 10 AM tenant time, which is 4:30 AM UTC. A viewer west of
+ * UTC would have been shown the previous day for every row. Reading the UTC
+ * components of a date built that way gives the day the seed meant, everywhere.
+ */
+function dateLabelOf(at: Date): string {
+  return `${WEEKDAY_NAMES[at.getUTCDay()]}, ${at.getUTCDate()} ${MONTH_NAMES[at.getUTCMonth()].slice(0, 3)}`;
+}
+
+/** "21 Sep", for a line that already says what the date is for. */
+function shortDateOf(at: Date): string {
+  return `${at.getUTCDate()} ${MONTH_NAMES[at.getUTCMonth()].slice(0, 3)}`;
+}
+
+/**
+ * A posting is a recruitment notification when it carries the body's own portal.
+ *
+ * That is the same test the job board uses to decide between sending a candidate
+ * to the government portal and running the in-app apply wizard, so the calendar
+ * holds exactly the postings the board treats as recruitments. The vocational
+ * openings are jobs, not recruitments, and a closing date for a garment unit's
+ * vacancy has no business on a recruitment calendar.
+ */
+function recruitmentNotifications(): JobRecord[] {
+  return allJobs().filter((job) => job.is_published && job.apply_link.trim() !== "");
+}
+
+/**
+ * The stages that follow a window closing.
+ *
+ * Written per recruitment rather than generated, because the stages are not
+ * interchangeable: Group-II is a single written examination of four papers with
+ * no preliminary, SSC CGL sits Tier-I first, and IBPS runs a preliminary. A
+ * generated "exam" row would have printed the wrong stage name for at least two
+ * of the three, and the stage name is the part a candidate is reading for.
+ *
+ * `afterClose` is days after that recruitment's own closing date, so these move
+ * with the posting rather than with a second calendar of their own. Every one of
+ * them is marked `projected`: in a real recruitment the examination date is not
+ * fixed when the notification is published, and a calendar that pretends
+ * otherwise is teaching a candidate to trust a date nobody has announced.
+ */
+interface DownstreamStage {
+  jobId: number;
+  stage: RecruitmentStage;
+  label: string;
+  afterClose: number;
+}
+
+const DOWNSTREAM_STAGES: readonly DownstreamStage[] = [
+  // The SSC window on this board has already shut, so the next thing that
+  // candidate does is download the admit card and sit Tier-I. Without these two
+  // rows the calendar is nothing but closing dates and answers "what do I sit
+  // next" with silence.
+  { jobId: 605, stage: "hall-ticket", label: "Tier-I admit card released", afterClose: 20 },
+  { jobId: 605, stage: "exam", label: "Tier-I computer based examination", afterClose: 34 },
+  // The two papers this aspirant is actually enrolled against.
+  { jobId: 607, stage: "exam", label: "Preliminary examination", afterClose: 42 },
+  { jobId: 601, stage: "exam", label: "Written examination, Papers I to IV", afterClose: 62 },
+];
+
+/** The three pre-formatted date fields every entry carries. */
+function dateFieldsOf(at: Date) {
+  return {
+    dateLabel: dateLabelOf(at),
+    weekdayLabel: WEEKDAY_NAMES[at.getUTCDay()],
+    dayLabel: String(at.getUTCDate()),
+  };
+}
+
+function calendarEntry(
+  id: string,
+  offsetDays: number,
+  fields: Omit<RecruitmentCalendarEntry, "id" | "date" | "dateLabel" | "weekdayLabel" | "dayLabel">,
+): RecruitmentCalendarEntry {
+  // 10 AM tenant time: an office hour, and far enough from midnight either way
+  // that the calendar day is the same in UTC as it is in Telangana.
+  const at = daysAhead(offsetDays, 10, 0);
+  return { id, date: iso(at), ...dateFieldsOf(at), ...fields };
+}
+
+/** Every dated thing in the horizon, soonest first. */
+function calendarEntries(): RecruitmentCalendarEntry[] {
+  const notifications = recruitmentNotifications();
+  const out: RecruitmentCalendarEntry[] = [];
+
+  for (const job of notifications) {
+    if (job.status !== "active" || !job.application_deadline) continue;
+    const offset = dayOffsetOf(job.application_deadline);
+    if (!Number.isFinite(offset) || offset < 0 || offset > CALENDAR_HORIZON_DAYS) continue;
+    out.push(
+      calendarEntry(`close-${job.id}`, offset, {
+        body: job.company_name,
+        title: job.job_title,
+        stage: "closing",
+        stageLabel: "Application window closes",
+        projected: false,
+        href: `/jobs-v2/${job.id}`,
+        portalUrl: job.apply_link || null,
+      }),
+    );
+  }
+
+  for (const plan of DOWNSTREAM_STAGES) {
+    const job = notifications.find((candidate) => candidate.id === plan.jobId);
+    if (!job?.application_deadline) continue;
+    const offset = dayOffsetOf(job.application_deadline) + plan.afterClose;
+    if (!Number.isFinite(offset) || offset < 0 || offset > CALENDAR_HORIZON_DAYS) continue;
+    out.push(
+      calendarEntry(`stage-${job.id}-${plan.stage}-${plan.afterClose}`, offset, {
+        body: job.company_name,
+        title: job.job_title,
+        stage: plan.stage,
+        stageLabel: plan.label,
+        projected: true,
+        href: `/jobs-v2/${job.id}`,
+        portalUrl: job.apply_link || null,
+      }),
+    );
+  }
+
+  // The mission's own scheduled papers. A mock with no start time is open now
+  // and belongs on the assessment hub, not on a calendar of fixed sittings.
+  for (const spec of allAssessments()) {
+    if (spec.isDraft || !spec.isActive || !spec.startTime) continue;
+    const at = new Date(spec.startTime);
+    const offset = dayOffsetOfDate(at);
+    if (!Number.isFinite(offset) || offset < 0 || offset > CALENDAR_HORIZON_DAYS) continue;
+    out.push({
+      id: `mock-${spec.id}`,
+      date: spec.startTime,
+      ...dateFieldsOf(at),
+      body: `${DEMO_TENANT.shortName} mock test`,
+      title: spec.title,
+      stage: "mock",
+      stageLabel: "Mission mock test window opens",
+      projected: false,
+      href: `/assessments/${spec.slug}`,
+      portalUrl: null,
+    });
+  }
+
+  return out
+    .sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
+    .slice(0, CALENDAR_MAX_ENTRIES);
+}
+
+/** The same entries, grouped the way a wall calendar groups them. */
+function recruitmentCalendar(): RecruitmentCalendar {
+  const entries = calendarEntries();
+  const months: RecruitmentCalendarMonth[] = [];
+
+  for (const entry of entries) {
+    const at = new Date(entry.date);
+    const key = `${at.getUTCFullYear()}-${String(at.getUTCMonth() + 1).padStart(2, "0")}`;
+    const last = months[months.length - 1];
+    if (last?.key === key) last.entries.push(entry);
+    else months.push({ key, label: `${MONTH_NAMES[at.getUTCMonth()]} ${at.getUTCFullYear()}`, entries: [entry] });
+  }
+
+  const openWindows = recruitmentNotifications()
+    .filter((job) => job.status === "active" && job.application_deadline)
+    .map((job) => dayOffsetOf(job.application_deadline as string))
+    .filter((offset) => Number.isFinite(offset) && offset >= 0);
+
+  return {
+    months,
+    openCount: openWindows.length,
+    closingSoonCount: openWindows.filter((offset) => offset <= CLOSING_SOON_DAYS).length,
+  };
+}
+
+/**
+ * The circulars a state mission actually issues.
+ *
+ * Six, which is what a district notice board carries at any one time: a batch
+ * opening, a verification camp, a scheme window, a holiday, a timetable change
+ * and certificates waiting to be collected. Nothing here quotes a rate, a fee or
+ * an amount of assistance, because those are fixed by a sanctioning order and a
+ * figure invented for a demo would be read as the scale of the scheme.
+ *
+ * The reference serial comes from the seeded PRNG and the year from the demo
+ * clock, exactly as the notification numbers on the job board do, so a circular
+ * reference is stable across a reload and cannot be looked up as a real file.
+ */
+interface NoticeSeed {
+  key: string;
+  /** The wing of the mission that files it, which is what a real Rc.No. carries. */
+  wing: "SKD" | "PLC" | "EST" | "ACD" | "CRT";
+  category: MissionNoticeCategory;
+  categoryLabel: string;
+  title: string;
+  summary: string;
+  centre: string | null;
+  issuedDaysAgo: number;
+  /** Days from today the notice asks for something by, or null. */
+  actionInDays: number | null;
+  /** "Apply by", "Report by", "Collect by". */
+  actionVerb: string | null;
+}
+
+const NOTICE_SEEDS: readonly NoticeSeed[] = [
+  {
+    key: "admissions",
+    wing: "SKD",
+    category: "admissions",
+    categoryLabel: "Batch admissions",
+    title: "Admissions open for the Solar PV Installer batch, Khammam centre",
+    summary:
+      "Thirty seats in the next intake, open to candidates who have passed the tenth standard and are between 18 and 35 years of age. Apply at the centre with your marks memo and two photographs.",
+    centre: "Khammam centre",
+    issuedDaysAgo: 3,
+    actionInDays: 12,
+    actionVerb: "Apply by",
+  },
+  {
+    key: "verification",
+    wing: "PLC",
+    category: "verification",
+    categoryLabel: "Document verification",
+    title: "Document verification camp for placement shortlists, Warangal centre",
+    summary:
+      "Report at the centre with the originals and one self attested set: proof of date of birth, the qualification certificate, and the trade certificate issued by the mission.",
+    centre: "Warangal centre",
+    issuedDaysAgo: 6,
+    actionInDays: 5,
+    actionVerb: "Report by",
+  },
+  {
+    key: "scheme",
+    wing: "SKD",
+    category: "scheme",
+    categoryLabel: "Scheme window",
+    title: "Application window open under the self employment support scheme",
+    summary:
+      "Trainees certified in the last two intakes may apply through their centre for tool kit and working capital support. The scale of assistance is fixed by the sanctioning order.",
+    centre: null,
+    issuedDaysAgo: 9,
+    actionInDays: 21,
+    actionVerb: "Apply by",
+  },
+  {
+    key: "timetable",
+    wing: "ACD",
+    category: "timetable",
+    categoryLabel: "Revised timetable",
+    title: "Revised timetable for the Group-II morning batch, Warangal centre",
+    summary:
+      "General studies moves to the first hour and the Telangana movement session to the second, so the doubt clearing hour sits at the end of the morning. Evening revision is unchanged.",
+    centre: "Warangal centre",
+    issuedDaysAgo: 4,
+    actionInDays: null,
+    actionVerb: null,
+  },
+  {
+    key: "certificate",
+    wing: "CRT",
+    category: "certificate",
+    categoryLabel: "Certificates",
+    title: "Certificates ready for collection, Group-II Batch 2025, Warangal",
+    summary:
+      "Completion certificates for the batch that has finished are ready at the centre. Collect in person with a photo identity, or authorise someone in writing to collect them.",
+    centre: "Warangal centre",
+    issuedDaysAgo: 11,
+    actionInDays: 8,
+    actionVerb: "Collect by",
+  },
+  {
+    key: "holiday",
+    wing: "EST",
+    category: "holiday",
+    categoryLabel: "Centre holiday",
+    title: "Skill centres closed on the second Saturday of the month",
+    summary:
+      "All district skill centres remain closed on the second Saturday. Classes scheduled that day move to the following Sunday morning at the same hour.",
+    centre: null,
+    issuedDaysAgo: 2,
+    actionInDays: null,
+    actionVerb: null,
+  },
+];
+
+function missionNotices(): MissionNotice[] {
+  const year = currentMonth().year;
+
+  return NOTICE_SEEDS.map((seed) => {
+    const issuedAt = daysAgo(seed.issuedDaysAgo, 11, 0);
+    const actionAt = seed.actionInDays == null ? null : daysAhead(seed.actionInDays, 17, 0);
+
+    return {
+      id: `notice-${seed.key}`,
+      reference: `Rc.No. ${seededInt(`notice:${seed.key}`, 104, 986)}/TSEM/${seed.wing}/${year}`,
+      title: seed.title,
+      summary: seed.summary,
+      category: seed.category,
+      categoryLabel: seed.categoryLabel,
+      issuedAt: iso(issuedAt),
+      issuedLabel: shortDateOf(issuedAt),
+      centre: seed.centre,
+      actionLabel: actionAt && seed.actionVerb ? `${seed.actionVerb} ${shortDateOf(actionAt)}` : null,
+      actionAt: actionAt ? iso(actionAt) : null,
+    };
+  }).sort((a, b) => Date.parse(b.issuedAt) - Date.parse(a.issuedAt));
+}
+
+/**
+ * The bodies whose portals an aspirant opens week after week.
+ *
+ * The address is read off the job board's own `apply_link` wherever that body
+ * has a posting, which is the same link the apply flow sends the candidate to.
+ * Two addresses for one commission, one on the dashboard and one on the posting,
+ * is the sort of thing that gets a portal link mistrusted. The literal is the
+ * fallback for when a posting has been deleted through the admin screens, since
+ * the board is editable and the strip must not lose a portal because of it.
+ */
+const PORTAL_BODIES = [
+  { shortName: "TGPSC", body: "Telangana Public Service Commission", match: "TGPSC", fallback: "https://www.tgpsc.gov.in/" },
+  { shortName: "TGLPRB", body: "Telangana Police Recruitment Board", match: "TGLPRB", fallback: "https://www.tglprb.in/" },
+  { shortName: "SSC", body: "Staff Selection Commission", match: "Staff Selection Commission", fallback: "https://ssc.gov.in/" },
+  // "RRB" rather than "RRB Secunderabad": seven tiles across the strip leaves
+  // about 145px each, and the longer label truncated to "RRB Secundera...". The
+  // zone is on the address underneath it and in the tile's own title attribute.
+  { shortName: "RRB", body: "Railway Recruitment Board, Secunderabad", match: "Railway Recruitment Board", fallback: "https://rrbsecunderabad.gov.in/" },
+  { shortName: "IBPS", body: "Institute of Banking Personnel Selection", match: "IBPS", fallback: "https://www.ibps.in/" },
+  { shortName: "SBI", body: "State Bank of India", match: "State Bank of India", fallback: "https://sbi.co.in/web/careers" },
+  { shortName: "RBI", body: "Reserve Bank of India", match: "Reserve Bank of India", fallback: "https://www.rbi.org.in/" },
+] as const;
+
+/** Bare host for the line under the short name. Falls back to the raw address. */
+function hostOf(url: string): string {
+  try {
+    return new URL(url).host.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
+function atAGlance(): DashboardAtAGlance {
+  const jobs = allJobs();
+  const batch = COHORTS.find((cohort) => cohort.id === STUDENT_BATCH_ID);
+
+  const portals: AtAGlancePortal[] = PORTAL_BODIES.map((entry) => {
+    const posting = jobs.find(
+      (job) => job.company_name.includes(entry.match) && job.apply_link.trim() !== "",
+    );
+    const url = posting?.apply_link ?? entry.fallback;
+    return { shortName: entry.shortName, body: entry.body, url, host: hostOf(url) };
+  });
+
+  const contacts: AtAGlanceContact[] = [
+    {
+      kind: "helpline",
+      label: "Mission helpline",
+      // Seeded, like every other invented figure in this demo, and the panel says
+      // in as many words that it is a demo number. A number typed in here would
+      // be dialled by somebody, and it would ring in somebody's house.
+      value: `1800 ${seededInt("tsem:helpline:block", 200, 599)} ${seededInt("tsem:helpline:line", 1000, 9999)}`,
+      sub: "Monday to Saturday, 10 AM to 6 PM",
+    },
+    {
+      kind: "centre",
+      label: "Your skill centre",
+      value: batch?.centre ?? "Not assigned to a centre",
+      // The batch name already carries the district, so printing both read as
+      // "Batch 2026, Warangal, Warangal district".
+      sub: batch ? batch.name : "Ask the mission to map you to a batch",
+    },
+    {
+      kind: "email",
+      label: "Mission support",
+      value: DEMO_TENANT.supportEmail,
+      sub: "For anything your centre cannot settle",
+    },
+  ];
+
+  return { portals, contacts };
+}
+
 defineRoutes(MODULE, {
   "GET /adaptive-journey/api/learner/dashboard/": (req) => learnerDashboard(req.auth),
+
+  /**
+   * The three government panels in the dashboard's left column.
+   *
+   * Three endpoints rather than three more keys on the learner dashboard, and
+   * that is the point: each panel fetches its own, so a failure hides one panel
+   * instead of blanking the briefing, the stats and the readiness card with it.
+   */
+  "GET /api/clients/:clientId/student/recruitment-calendar/": () => recruitmentCalendar(),
+
+  "GET /api/clients/:clientId/student/mission-notices/": () => ({ notices: missionNotices() }),
+
+  "GET /api/clients/:clientId/student/at-a-glance/": () => atAGlance(),
 
   "GET /adaptive-journey/api/learner/points-total/": () => ({ total: totalPoints() }),
 

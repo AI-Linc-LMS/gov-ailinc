@@ -38,9 +38,9 @@ export function StatCards({
       label="Total points"
       value={<TotalPointsValue total={a.totalPoints} />}
       sub={a.pointsThisWeek ? `+${a.pointsThisWeek} this week` : "Start earning"}
-      subColor={a.pointsThisWeek ? "#7c3aed" : "#94a3b8"}
+      subColor={a.pointsThisWeek ? "#14406f" : "#94a3b8"}
       icon="mdi:star-four-points"
-      accent="#7c3aed"
+      accent="#14406f"
       info={<PointsInfo size={13} />}
     />,
     <StatBox
@@ -50,7 +50,7 @@ export function StatCards({
       sub={`best ${a.streak.best}`}
       subColor="#94a3b8"
       icon="mdi:fire"
-      accent="#ef4444"
+      accent="#b32020"
       info={<StreakInfo size={13} />}
     />,
   ];
@@ -62,9 +62,9 @@ export function StatCards({
         label="Cohort rank"
         value={`#${a.cohortRank.bestRank}`}
         sub={rankDelta > 0 ? `▲ +${rankDelta} this week` : rankDelta < 0 ? `▼ ${rankDelta} this week` : "holding steady"}
-        subColor={rankDelta > 0 ? "#15803d" : rankDelta < 0 ? "#b91c1c" : "#94a3b8"}
+        subColor={rankDelta > 0 ? "#0b6232" : rankDelta < 0 ? "#8f1919" : "#94a3b8"}
         icon="mdi:trophy"
-        accent="#3b82f6"
+        accent="#4a7fbb"
       />,
     );
   }
@@ -76,7 +76,7 @@ export function StatCards({
       value={<CountUp value={a.momentum} />}
       sub="of 100"
       icon="mdi:chart-line-variant"
-      accent="#f59e0b"
+      accent="#b7791f"
       info={<MomentumInfo info={a.momentumInfo} size={13} />}
     />,
     <StatBox
@@ -84,9 +84,9 @@ export function StatCards({
       label="On-time rate"
       value={a.onTimeRate == null ? "-" : `${Math.round(a.onTimeRate * 100)}%`}
       sub={a.onTimeRate === 1 ? "no penalties" : a.onTimeRate == null ? "no data yet" : "keep it up"}
-      subColor={a.onTimeRate === 1 ? "#15803d" : "#94a3b8"}
+      subColor={a.onTimeRate === 1 ? "#0b6232" : "#94a3b8"}
       icon="mdi:check-circle-outline"
-      accent="#22c55e"
+      accent="#0e7a3c"
     />,
   );
 

@@ -8,7 +8,7 @@ import { communityService, type Thread } from "@/lib/services/community.service"
 import { avatarColor } from "../parts";
 import { ModuleEmpty, ModuleHeader, ModulePanel, ModuleRowsSkeleton } from "./shared";
 
-const GRADIENT = "linear-gradient(135deg, #a855f7, #ec4899)";
+const GRADIENT = "linear-gradient(135deg, #1b4f8a, #0f6b7a)";
 
 function netScore(t: Thread): number {
   return (t.upvotes ?? 0) - (t.downvotes ?? 0);
@@ -66,8 +66,8 @@ export function CommunityHighlightsPanel() {
                     <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 0.4 }}>
                       <Typography noWrap sx={{ fontSize: "0.68rem", color: "#94a3b8", fontWeight: 600, maxWidth: 96 }}>{name}</Typography>
                       <Stack direction="row" spacing={0.3} alignItems="center">
-                        <Icon icon="mdi:arrow-up-bold" width={13} color="#a855f7" />
-                        <Typography sx={{ fontSize: "0.7rem", fontWeight: 800, color: "#7c3aed" }}>{netScore(t)}</Typography>
+                        <Icon icon="mdi:arrow-up-bold" width={13} color="#1b4f8a" />
+                        <Typography sx={{ fontSize: "0.7rem", fontWeight: 800, color: "#14406f" }}>{netScore(t)}</Typography>
                       </Stack>
                       <Stack direction="row" spacing={0.3} alignItems="center">
                         <Icon icon="mdi:comment-outline" width={12} color="#94a3b8" />

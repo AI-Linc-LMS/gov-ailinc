@@ -7,10 +7,10 @@ import type { CrossCourseUpNext } from "@/lib/types/dashboard";
 import { PanelCard, SectionHeader } from "./parts";
 
 const KIND: Record<string, { icon: string; color: string; bg: string }> = {
-  topic: { icon: "mdi:book-open-page-variant", color: "#6366f1", bg: "#eef2ff" },
-  checkpoint: { icon: "mdi:shield-check", color: "#a855f7", bg: "#f5f3ff" },
-  week_final: { icon: "mdi:flag-checkered", color: "#f59e0b", bg: "#fff7ed" },
-  interview: { icon: "mdi:account-voice", color: "#ec4899", bg: "#fdf2f8" },
+  topic: { icon: "mdi:book-open-page-variant", color: "#1b4f8a", bg: "#eef3fa" },
+  checkpoint: { icon: "mdi:shield-check", color: "#1b4f8a", bg: "#eef3fa" },
+  week_final: { icon: "mdi:flag-checkered", color: "#b7791f", bg: "#fff7ed" },
+  interview: { icon: "mdi:account-voice", color: "#0f6b7a", bg: "#eef5f6" },
 };
 
 export function UpNextPanel({ items }: { items: CrossCourseUpNext[] }) {
@@ -48,7 +48,7 @@ export function UpNextPanel({ items }: { items: CrossCourseUpNext[] }) {
                 <Typography sx={{ fontWeight: 700, fontSize: "0.86rem", color: "#0f172a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{it.title}</Typography>
                 <Box component="span" sx={{ display: "inline-block", mt: 0.25, px: 0.75, py: 0.1, borderRadius: 999, fontSize: "0.64rem", fontWeight: 700, color: "#475569", bgcolor: "#f1f5f9" }}>{it.courseTitle}</Box>
               </Box>
-              {it.points ? <Typography sx={{ fontWeight: 800, fontSize: "0.82rem", color: "#7c3aed", flexShrink: 0 }}>+{it.points}</Typography> : null}
+              {it.points ? <Typography sx={{ fontWeight: 800, fontSize: "0.82rem", color: "#14406f", flexShrink: 0 }}>+{it.points}</Typography> : null}
             </ButtonBase>
           );
         })}

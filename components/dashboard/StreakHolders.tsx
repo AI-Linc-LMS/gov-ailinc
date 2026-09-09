@@ -110,7 +110,7 @@ export const StreakHolders = () => {
     if (index === 0) return "#FFD700"; // Gold
     if (index === 1) return "#C0C0C0"; // Silver
     if (index === 2) return "#CD7F32"; // Bronze
-    return "#F59E0B"; // Orange for others
+    return "#B7791F"; // Orange for others
   };
 
   return (

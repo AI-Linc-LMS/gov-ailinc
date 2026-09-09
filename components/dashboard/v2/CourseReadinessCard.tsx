@@ -34,7 +34,7 @@ export function CourseReadinessCard({
       {/* Header */}
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 1.75 }}>
         <Stack direction="row" spacing={1.25} alignItems="center">
-          <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1, #a855f7)" }}>
+          <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b4f8a, #1b4f8a)" }}>
             <Icon icon="mdi:target-variant" width={18} />
           </Box>
           <Typography sx={{ fontWeight: 800, fontSize: "1.15rem" }}>Course readiness</Typography>
@@ -73,7 +73,7 @@ export function CourseReadinessCard({
         <Box sx={{ flexShrink: 0, textAlign: "center" }}>
           {/* Overlay confined to the ring box (150x150) so the % sits at the ring's centre */}
           <Box sx={{ position: "relative", width: 150, height: 150, mx: "auto" }}>
-            <AnimatedRing value={overall.percent ?? 0} size={150} strokeWidth={12} color="#a855f7" colorEnd="#6366f1" trackColor="rgba(255,255,255,0.12)" showValue={false} />
+            <AnimatedRing value={overall.percent ?? 0} size={150} strokeWidth={12} color="#1b4f8a" colorEnd="#1b4f8a" trackColor="rgba(255,255,255,0.12)" showValue={false} />
             <Box sx={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
               {overall.percent == null ? (
                 <>
@@ -107,15 +107,15 @@ export function CourseReadinessCard({
       {(strongest || weakest) && (
         <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ sm: "center" }} justifyContent="space-between" sx={{ mt: 1.5, p: 1.75, borderRadius: 3, bgcolor: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
           <Stack direction="row" spacing={0.75} alignItems="flex-start" sx={{ minWidth: 0 }}>
-            <Icon icon="mdi:star-four-points" width={16} color="#fde68a" style={{ flexShrink: 0, marginTop: 2 }} />
+            <Icon icon="mdi:star-four-points" width={16} color="#f0ddb8" style={{ flexShrink: 0, marginTop: 2 }} />
             <Typography sx={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.5 }}>
               In <b style={{ color: "#fff" }}>{active.title}</b> you&apos;re strongest at{" "}
-              {strongest && <Box component="span" sx={{ color: "#86efac", fontWeight: 700 }}>{strongest.skill} ({strongest.percent}%)</Box>}
+              {strongest && <Box component="span" sx={{ color: "#a8d6bb", fontWeight: 700 }}>{strongest.skill} ({strongest.percent}%)</Box>}
               {strongest && weakest && " and weakest at "}
               {weakest && <Box component="span" sx={{ color: "#f0abfc", fontWeight: 700 }}>{weakest.skill} ({weakest.percent}%)</Box>}. {active.skillProfile.aiTip}
             </Typography>
           </Stack>
-          <ButtonBase onClick={() => router.push(fixRoute)} sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 999, fontWeight: 800, fontSize: "0.85rem", color: "white", gap: 0.5, background: "linear-gradient(135deg, #a855f7, #ec4899)" }}>
+          <ButtonBase onClick={() => router.push(fixRoute)} sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 999, fontWeight: 800, fontSize: "0.85rem", color: "white", gap: 0.5, background: "linear-gradient(135deg, #1b4f8a, #0f6b7a)" }}>
             Fix it <Icon icon="mdi:arrow-right" width={16} />
           </ButtonBase>
         </Stack>

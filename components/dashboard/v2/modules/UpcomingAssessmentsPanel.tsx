@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react";
 import { assessmentService, type Assessment } from "@/lib/services/assessment.service";
 import { ModuleEmpty, ModuleHeader, ModulePanel, ModuleRowsSkeleton, Pill, fmtDateTime, timeUntil } from "./shared";
 
-const GRADIENT = "linear-gradient(135deg, #6366f1, #8b5cf6)";
+const GRADIENT = "linear-gradient(135deg, #1b4f8a, #4a7fbb)";
 
 function isSubmitted(a: Assessment): boolean {
   return a.status === "submitted" || a.status === "completed" || a.status === "finalized";
@@ -35,17 +35,17 @@ function selectUpcoming(list: Assessment[]): Assessment[] {
 
 function TimingChip({ a }: { a: Assessment }) {
   if (a.status === "in_progress") {
-    return <Pill icon="mdi:progress-clock" color="#b45309" bg="#fffbeb">In progress</Pill>;
+    return <Pill icon="mdi:progress-clock" color="#8a5a12" bg="#fdf9f0">In progress</Pill>;
   }
   if (startsInFuture(a)) {
     const t = timeUntil(a.start_time);
-    return <Pill icon="mdi:calendar-clock" color="#4338ca" bg="#eef2ff">Starts {t?.text ?? fmtDateTime(a.start_time)}</Pill>;
+    return <Pill icon="mdi:calendar-clock" color="#0e2a4b" bg="#eef3fa">Starts {t?.text ?? fmtDateTime(a.start_time)}</Pill>;
   }
   const due = timeUntil(a.end_time);
   if (due) {
-    return <Pill icon="mdi:timer-sand" color={due.soon ? "#b91c1c" : "#475569"} bg={due.soon ? "#fef2f2" : "#f1f5f9"}>Due {due.text}</Pill>;
+    return <Pill icon="mdi:timer-sand" color={due.soon ? "#8f1919" : "#475569"} bg={due.soon ? "#fdf5f5" : "#f1f5f9"}>Due {due.text}</Pill>;
   }
-  return <Pill icon="mdi:play-circle-outline" color="#15803d" bg="#f0fdf4">Available now</Pill>;
+  return <Pill icon="mdi:play-circle-outline" color="#0b6232" bg="#f0fdf4">Available now</Pill>;
 }
 
 export function UpcomingAssessmentsPanel() {
@@ -77,10 +77,10 @@ export function UpcomingAssessmentsPanel() {
             <ButtonBase
               key={a.id}
               onClick={() => router.push(`/assessments/${a.slug}`)}
-              sx={{ width: "100%", justifyContent: "flex-start", textAlign: "left", p: 1, borderRadius: 2.5, border: "1px solid #eef2f7", "&:hover": { bgcolor: "#faf9ff", borderColor: "#e9d5ff" } }}
+              sx={{ width: "100%", justifyContent: "flex-start", textAlign: "left", p: 1, borderRadius: 2.5, border: "1px solid #eef2f7", "&:hover": { bgcolor: "#faf9ff", borderColor: "#d9e6f4" } }}
             >
               <Stack direction="row" spacing={1.25} alignItems="center" sx={{ width: "100%", minWidth: 0 }}>
-                <Box sx={{ width: 38, height: 38, borderRadius: 2, flexShrink: 0, display: "grid", placeItems: "center", color: "#6366f1", bgcolor: "#eef2ff" }}>
+                <Box sx={{ width: 38, height: 38, borderRadius: 2, flexShrink: 0, display: "grid", placeItems: "center", color: "#1b4f8a", bgcolor: "#eef3fa" }}>
                   <Icon icon="mdi:file-document-check-outline" width={19} />
                 </Box>
                 <Box sx={{ flex: 1, minWidth: 0 }}>
