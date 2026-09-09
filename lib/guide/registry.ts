@@ -32,7 +32,7 @@ export interface PageGuideContent {
 }
 
 /**
- * Anchored spotlight tour of the STUDENT DASHBOARD - each step highlights a real
+ * Anchored spotlight tour of the CANDIDATE DASHBOARD - each step highlights a real
  * component on /dashboard (via its data-tour-id, added in DashboardV2). Used both
  * as the dashboard's own tour and as the platform tour (the top-nav Guide starts it
  * on /dashboard). Steps whose target isn't rendered (e.g. leaderboard hidden for a
@@ -95,7 +95,7 @@ export const DASHBOARD_TOUR: TourStep[] = [
     targetId: "dash-leaderboard",
     title: "Leaderboard",
     narration:
-      "See how you stack up against your cohort this week. A little friendly competition to keep you going.",
+      "See how you stack up against your batch this week. A little friendly competition to keep you going.",
     placement: "left",
     icon: "mdi:trophy-outline",
     color: "#fbbf24",
@@ -112,9 +112,9 @@ export const DASHBOARD_TOUR: TourStep[] = [
 /**
  * The platform-wide guide, opened from the "Guide" button in the top nav - a
  * bird's-eye overview of what the platform offers and where to find each area, plus an
- * anchored tour of the student dashboard (the Guide starts it on /dashboard).
+ * anchored tour of the candidate dashboard (the Guide starts it on /dashboard).
  *
- * `{brand}` is replaced at render time with the tenant's own name, so an Agileology learner is
+ * `{brand}` is replaced at render time with the tenant's own name, so an Agileology candidate is
  * welcomed to Agileology rather than to AI Linc. See `PageGuide`.
  */
 export const PLATFORM_GUIDE: PageGuideContent = {
@@ -137,7 +137,7 @@ export const PLATFORM_GUIDE: PageGuideContent = {
     {
       icon: "mdi:account-voice",
       color: "#a78bfa",
-      title: "Practice mock interviews",
+      title: "Practice practice interviews",
       text: "Run AI-driven interviews and get instant, rubric-based feedback to sharpen your answers.",
     },
     {
@@ -150,7 +150,7 @@ export const PLATFORM_GUIDE: PageGuideContent = {
       icon: "mdi:forum",
       color: "#ec4899",
       title: "Connect in the community",
-      text: "Ask questions, share resources, join live rooms, and earn IP with your cohort.",
+      text: "Ask questions, share resources, join live rooms, and earn IP with your batch.",
     },
     {
       icon: "mdi:briefcase-outline",
@@ -180,7 +180,7 @@ const COMMUNITY_TOUR_STEPS: TourStep[] = [
   {
     title: "Welcome to the Community",
     narration:
-      "This is your community hub - ask questions, share resources, vote on polls, and join live rooms with other learners. Let me show you around.",
+      "This is your community hub - ask questions, share resources, vote on polls, and join live rooms with other candidates. Let me show you around.",
     icon: "mdi:hand-wave-outline",
     color: "#a78bfa",
   },
@@ -415,14 +415,14 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "adaptive-courses-list",
         title: "Your course library",
-        narration: "Each card is a generated course - open it to edit the module tree, toggle publish so learners can see it, or delete it. The metrics show modules, quizzes, articles and more at a glance.",
+        narration: "Each card is a generated course - open it to edit the module tree, toggle publish so candidates can see it, or delete it. The metrics show modules, quizzes, articles and more at a glance.",
         placement: "top",
         icon: "mdi:cards-outline",
         color: "#ec4899",
       },
       {
         title: "You're all set",
-        narration: "That's the Course Builder. Describe a course, let the engine assemble it, then publish it to your learners when it's ready.",
+        narration: "That's the Course Builder. Describe a course, let the engine assemble it, then publish it to your candidates when it's ready.",
         icon: "mdi:check-circle-outline",
         color: "#22c55e",
       },
@@ -452,7 +452,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:cloud-upload-outline",
         color: "#22c55e",
         title: "Publish or unpublish",
-        text: "Toggle each course between draft and published so learners only ever see the ones you've marked ready.",
+        text: "Toggle each course between draft and published so candidates only ever see the ones you've marked ready.",
       },
       {
         icon: "mdi:folder-open-outline",
@@ -470,7 +470,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:trash-can-outline",
         color: "#ef4444",
         title: "Delete safely",
-        text: "Remove a course from the library while learner attempts on its quizzes stay fully intact.",
+        text: "Remove a course from the library while candidate attempts on its quizzes stay fully intact.",
       },
     ],
     tip: "You can leave this page while a course is generating - the build keeps running on the server, and its live progress bar picks right back up the moment you return.",
@@ -479,8 +479,8 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
     tourSteps: [
       {
         targetId: "page-header",
-        title: "Mock Interview overview",
-        narration: "Welcome to the AI mock interview admin console. From here you can review interview activity, drill into individual students, and inspect topic performance across your courses.",
+        title: "Interview Practice overview",
+        narration: "Welcome to the interview practice admin console. From here you can review interview activity, drill into individual candidates, and inspect topic performance across your courses.",
         placement: "bottom",
         icon: "mdi:account-voice",
         color: "#ec4899",
@@ -488,7 +488,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "mock-interview-tabs",
         title: "Switch between views",
-        narration: "Use these tabs to move between the Overview dashboard, the full Interviews log, per-Student breakdowns, and Topic analytics. Each view refreshes its own data as you open it.",
+        narration: "Use these tabs to move between the Overview dashboard, the full Interviews log, per-Candidate breakdowns, and Topic analytics. Each view refreshes its own data as you open it.",
         placement: "bottom",
         icon: "mdi:view-dashboard",
         color: "#6366f1",
@@ -496,7 +496,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "mock-interview-published",
         title: "Published interviews",
-        narration: "Jump to your interview templates to manage the published mock interviews students can take. This is where you configure the questions behind every session.",
+        narration: "Jump to your interview templates to manage the published practice interviews candidates can take. This is where you configure the questions behind every session.",
         placement: "bottom",
         icon: "mdi:book-open-variant",
         color: "#a78bfa",
@@ -504,7 +504,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "mock-interview-course",
         title: "Filter by course",
-        narration: "Scope every tab to a single course with this dropdown. Pick a course to focus the dashboard, interviews, students, and topics on just that cohort, or leave it on all courses.",
+        narration: "Scope every tab to a single course with this dropdown. Pick a course to focus the dashboard, interviews, candidates, and topics on just that batch, or leave it on all courses.",
         placement: "bottom",
         icon: "mdi:filter-variant",
         color: "#0ea5e9",
@@ -519,43 +519,43 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
       {
         title: "You're all set",
-        narration: "That's the tour. Start on the Overview for a health check, then dive into Interviews, Students, or Topics whenever you need the details.",
+        narration: "That's the tour. Start on the Overview for a health check, then dive into Interviews, Candidates, or Topics whenever you need the details.",
         icon: "mdi:check-circle",
         color: "#22c55e",
       },
     ],
-    headerTitle: "What you can do with AI mock interviews",
-    headerSubtitle: "Track how students perform on AI mock interviews across your courses - from overall trends down to a single answer.",
+    headerTitle: "What you can do with interview practice",
+    headerSubtitle: "Track how candidates perform on interview practice across your courses - from overall trends down to a single answer.",
     features: [
       {
         icon: "mdi:view-dashboard",
         color: "#6366f1",
         title: "Performance overview",
-        text: "See total interviews, unique students, completion rate and average score alongside a daily created-vs-completed trend, difficulty split and top-performer leaderboard for your chosen time range.",
+        text: "See total interviews, unique candidates, completion rate and average score alongside a daily created-vs-completed trend, difficulty split and top-performer leaderboard for your chosen time range.",
       },
       {
         icon: "mdi:filter-variant",
         color: "#0ea5e9",
         title: "Filter & search interviews",
-        text: "Narrow the interview log by search text, status, difficulty, topic and date range, then sort by created date, duration, student, difficulty or status.",
+        text: "Narrow the interview log by search text, status, difficulty, topic and date range, then sort by created date, duration, candidate, difficulty or status.",
       },
       {
         icon: "mdi:file-document-outline",
         color: "#a78bfa",
         title: "Open a full report",
-        text: "Click View on any interview to drill into its detailed scorecard and question-by-question performance for that student.",
+        text: "Click View on any interview to drill into its detailed scorecard and question-by-question performance for that candidate.",
       },
       {
         icon: "mdi:account-group",
         color: "#ec4899",
-        title: "Track each student",
-        text: "Review every student's completed count, average and highest score, completion rate, topics attempted and last-interview date, then open their individual report.",
+        title: "Track each candidate",
+        text: "Review every candidate’s completed count, average and highest score, completion rate, topics attempted and last-interview date, then open their individual report.",
       },
       {
         icon: "mdi:book-open-variant",
         color: "#22c55e",
         title: "Topic analytics",
-        text: "Break interviews down by topic and subtopic to compare attempts, unique students, average scores and the mix of Easy, Medium and Hard difficulty.",
+        text: "Break interviews down by topic and subtopic to compare attempts, unique candidates, average scores and the mix of Easy, Medium and Hard difficulty.",
       },
       {
         icon: "mdi:download",
@@ -567,10 +567,10 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:playlist-check",
         color: "#fbbf24",
         title: "Published interviews",
-        text: "Jump to Published interviews to view and manage the interview templates students can take.",
+        text: "Jump to Published interviews to view and manage the interview templates candidates can take.",
       },
     ],
-    tip: "Set the course filter at the top first - it carries across the Overview, Interviews, Students and Topics tabs, so every metric and CSV export reflects just that course.",
+    tip: "Set the course filter at the top first - it carries across the Overview, Interviews, Candidates and Topics tabs, so every metric and CSV export reflects just that course.",
   },
   "/admin/certificates": {
     tourSteps: [
@@ -584,7 +584,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
       {
         title: "Assessment certificates",
-        narration: "This left panel lists every assessment you can attach a certificate to. Click any row to open its upload page and manage the certificate students receive on completion.",
+        narration: "This left panel lists every assessment you can attach a certificate to. Click any row to open its upload page and manage the certificate candidates receive on completion.",
         icon: "mdi:clipboard-text-outline",
         color: "#6366f1",
       },
@@ -598,7 +598,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
       {
         title: "Course certificates",
-        narration: "The right panel does the same for your courses. Pick a course to upload or update the certificate learners earn when they finish it.",
+        narration: "The right panel does the same for your courses. Pick a course to upload or update the certificate candidates earn when they finish it.",
         icon: "mdi:school-outline",
         color: "#22c55e",
       },
@@ -610,7 +610,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
     ],
     headerTitle: "What you can do on Certificate Uploads",
-    headerSubtitle: "Pick an assessment or course, then upload and manage the completion certificates your learners receive.",
+    headerSubtitle: "Pick an assessment or course, then upload and manage the completion certificates your candidates receive.",
     features: [
       {
         icon: "mdi:certificate-outline",
@@ -622,7 +622,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:school-outline",
         color: "#22c55e",
         title: "Course certificates",
-        text: "Pick any course to manage the certificates learners earn when they finish it.",
+        text: "Pick any course to manage the certificates candidates earn when they finish it.",
       },
       {
         icon: "mdi:magnify",
@@ -647,7 +647,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
   },
   "/admin/certificates/assessment": {
     headerTitle: "Uploading assessment certificates",
-    headerSubtitle: "Attach Participation and Excellence certificate files to this assessment so learners receive them on completion.",
+    headerSubtitle: "Attach Participation and Excellence certificate files to this assessment so candidates receive them on completion.",
     features: [
       {
         icon: "mdi:certificate-outline",
@@ -677,7 +677,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:upload",
         color: "#22c55e",
         title: "Upload and publish",
-        text: "Click Upload to attach the file to the selected assessment and tier for learners to receive.",
+        text: "Click Upload to attach the file to the selected assessment and tier for candidates to receive.",
       },
       {
         icon: "mdi:arrow-left",
@@ -729,14 +729,14 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         text: "Use Certificate uploads in the header to return to the hub and manage assets for other courses and assessments.",
       },
     ],
-    tip: "Double-check the course title on the Upload destination card before you hit Upload - the file is tied to this exact Course ID, so uploading under the wrong course means the intended students won't see it.",
+    tip: "Double-check the course title on the Upload destination card before you hit Upload - the file is tied to this exact Course ID, so uploading under the wrong course means the intended candidates won't see it.",
   },
   "/admin/cohorts": {
     tourSteps: [
       {
         targetId: "page-header",
-        title: "Cohorts overview",
-        narration: "Welcome to Cohorts. This is where you group students into batches and manage their whole journey - from here you can spin up a new cohort with the button in the header.",
+        title: "Batches overview",
+        narration: "Welcome to Batches. This is where you group candidates into batches and manage their whole journey - from here you can spin up a new batch with the button in the header.",
         placement: "bottom",
         icon: "mdi:account-group",
         color: "#a78bfa",
@@ -744,7 +744,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "cohorts-stats",
         title: "At-a-glance stats",
-        narration: "This strip gives you the pulse of your program: how many cohorts you have, how many are active, total members, and assignments mapped across them all.",
+        narration: "This strip gives you the pulse of your program: how many batches you have, how many are active, total members, and assignments mapped across them all.",
         placement: "bottom",
         icon: "mdi:chart-box-outline",
         color: "#6366f1",
@@ -752,40 +752,40 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "cohorts-tabs",
         title: "Filter by status",
-        narration: "Use these tabs to slice cohorts by lifecycle stage - All, Active, Scheduled, Drafts, Completed, or Archived - with live counts so you can jump straight to what you need.",
+        narration: "Use these tabs to slice batches by lifecycle stage - All, Active, Scheduled, Drafts, Completed, or Archived - with live counts so you can jump straight to what you need.",
         placement: "bottom",
         icon: "mdi:filter-variant",
         color: "#0ea5e9",
       },
       {
         targetId: "cohorts-list",
-        title: "Your cohorts",
-        narration: "Every cohort lives here as a card. Click any one to open it and enroll students or map assessments, interviews, courses, and live sessions - or use the toggle to switch to a compact list view.",
+        title: "Your batches",
+        narration: "Every batch lives here as a card. Click any one to open it and enroll candidates or map assessments, interviews, courses, and live sessions - or use the toggle to switch to a compact list view.",
         placement: "top",
         icon: "mdi:view-grid-outline",
         color: "#ec4899",
       },
       {
         title: "You're all set",
-        narration: "That's the tour. Create a cohort, filter to the stage you care about, and open a card to manage everyone inside. Your batches are just a click away.",
+        narration: "That's the tour. Create a batch, filter to the stage you care about, and open a card to manage everyone inside. Your batches are just a click away.",
         icon: "mdi:check-circle-outline",
         color: "#22c55e",
       },
     ],
-    headerTitle: "What you can do on Cohorts",
-    headerSubtitle: "Group students into batches and run their assessments, interviews, courses and live sessions together.",
+    headerTitle: "What you can do on Batches",
+    headerSubtitle: "Group candidates into batches and run their assessments, interviews, courses and live sessions together.",
     features: [
       {
         icon: "mdi:plus-circle-outline",
         color: "#6366f1",
-        title: "Create a cohort",
-        text: "Click New cohort to spin up a batch with a name, optional code, status and start/end dates.",
+        title: "Create a batch",
+        text: "Click New batch to spin up a batch with a name, optional code, status and start/end dates.",
       },
       {
         icon: "mdi:chart-box-outline",
         color: "#22c55e",
         title: "See totals at a glance",
-        text: "The stat strip totals your cohorts, active batches, enrolled members and mapped assignments across the page.",
+        text: "The stat strip totals your batches, active batches, enrolled members and mapped assignments across the page.",
       },
       {
         icon: "mdi:filter-variant",
@@ -796,35 +796,35 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         icon: "mdi:magnify",
         color: "#f59e0b",
-        title: "Search cohorts",
+        title: "Search batches",
         text: "Type in the search bar to find a batch by its name or code.",
       },
       {
         icon: "mdi:account-group",
         color: "#a78bfa",
-        title: "Open a cohort to manage it",
-        text: "Click any card or row to enroll students and map assessments, interviews, courses and live sessions to that batch.",
+        title: "Open a batch to manage it",
+        text: "Click any card or row to enroll candidates and map assessments, interviews, courses and live sessions to that batch.",
       },
       {
         icon: "mdi:view-grid-outline",
         color: "#ec4899",
         title: "Cards or list view",
-        text: "Use the view toggle to see cohorts as rich cards or a compact list of rows.",
+        text: "Use the view toggle to see batches as rich cards or a compact list of rows.",
       },
       {
         icon: "mdi:archive-outline",
         color: "#ef4444",
-        title: "Archive a cohort",
+        title: "Archive a batch",
         text: "Archive a batch to remove it from the working set while keeping its member and assignment history.",
       },
     ],
-    tip: "Give each cohort a stable Code like DS-2025-JAN when you create it - it makes the batch easy to find by search later and keeps your integrations mapped reliably.",
+    tip: "Give each batch a stable Code like DS-2025-JAN when you create it - it makes the batch easy to find by search later and keeps your integrations mapped reliably.",
   },
   "/admin/dashboard": {
     tourSteps: [
       {
         title: "Admin Dashboard overview",
-        narration: "Welcome to your Admin Dashboard. This is your command center for platform activity, engagement, and the key metrics that tell you how your learners are doing at a glance.",
+        narration: "Welcome to your Admin Dashboard. This is your command center for platform activity, engagement, and the key metrics that tell you how your candidates are doing at a glance.",
         icon: "mdi:view-dashboard",
         color: "#6366f1",
       },
@@ -839,7 +839,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "dashboard-metrics",
         title: "Key metrics",
-        narration: "These four cards give you the headline numbers: total students, active students, time spent, and average daily logins. Hover any card for a plain-language explanation of what it counts.",
+        narration: "These four cards give you the headline numbers: total candidates, active candidates, time spent, and average daily logins. Hover any card for a plain-language explanation of what it counts.",
         placement: "bottom",
         icon: "mdi:card-multiple-outline",
         color: "#22c55e",
@@ -847,7 +847,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "dashboard-engagement",
         title: "Engagement and leaderboard",
-        narration: "Track how much time your students spend over the selected period on the left, and see your top-ranked learners on the leaderboard to the right.",
+        narration: "Track how much time your candidates spend over the selected period on the left, and see your top-ranked candidates on the leaderboard to the right.",
         placement: "top",
         icon: "mdi:chart-line",
         color: "#a78bfa",
@@ -868,13 +868,13 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
     ],
     headerTitle: "What you can do on the Admin Dashboard",
-    headerSubtitle: "Track platform activity, engagement, and student performance from one overview.",
+    headerSubtitle: "Track platform activity, engagement, and candidate performance from one overview.",
     features: [
       {
         icon: "mdi:chart-box-outline",
         color: "#6366f1",
         title: "Key metrics at a glance",
-        text: "See total students, active students, time spent, and average daily logins in four summary cards.",
+        text: "See total candidates, active candidates, time spent, and average daily logins in four summary cards.",
       },
       {
         icon: "mdi:filter-variant",
@@ -891,8 +891,8 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         icon: "mdi:trophy-outline",
         color: "#fbbf24",
-        title: "Student leaderboard",
-        text: "Review your top-ranked students by activity and points in the ranking card beside the charts.",
+        title: "Candidate leaderboard",
+        text: "Review your top-ranked candidates by activity and points in the ranking card beside the charts.",
       },
       {
         icon: "mdi:chart-line",
@@ -920,7 +920,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "page-header",
         title: "Emails overview",
-        narration: "Welcome to your Emails hub. From here you can track every notification and reminder your platform has sent to students and cohorts, and jump straight to assessments to compose new ones.",
+        narration: "Welcome to your Emails hub. From here you can track every notification and reminder your platform has sent to candidates and batches, and jump straight to assessments to compose new ones.",
         placement: "bottom",
         icon: "mdi:email-multiple",
         color: "#0ea5e9",
@@ -965,7 +965,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
     ],
     headerTitle: "Track every email your platform sends",
-    headerSubtitle: "Monitor delivery of your student and assessment emails, spot failures at a glance, and re-send in one click.",
+    headerSubtitle: "Monitor delivery of your candidate and assessment emails, spot failures at a glance, and re-send in one click.",
     features: [
       {
         icon: "mdi:email-multiple-outline",
@@ -1016,8 +1016,8 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
     tourSteps: [
       {
         targetId: "page-header",
-        title: "Instructors overview",
-        narration: "Welcome to the Instructors console. This is where you review instructor applications, approve or reject them, assign courses, and promote your team.",
+        title: "Faculty overview",
+        narration: "Welcome to the Faculty console. This is where you review faculty member applications, approve or reject them, assign courses, and promote your team.",
         placement: "bottom",
         icon: "mdi:account-tie",
         color: "#6366f1",
@@ -1025,7 +1025,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "instructors-stats",
         title: "Status at a glance",
-        narration: "These cards show how many instructors are pending, approved, or rejected. Click any card to jump straight to that group.",
+        narration: "These cards show how many faculty are pending, approved, or rejected. Click any card to jump straight to that group.",
         placement: "bottom",
         icon: "mdi:chart-box-outline",
         color: "#f59e0b",
@@ -1033,7 +1033,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "instructors-tabs",
         title: "Switch between queues",
-        narration: "Use these tabs to move between Pending, Approved, and Rejected instructors. The badge on each tab keeps a live count so you always know what needs attention.",
+        narration: "Use these tabs to move between Pending, Approved, and Rejected faculty. The badge on each tab keeps a live count so you always know what needs attention.",
         placement: "bottom",
         icon: "mdi:tab",
         color: "#a78bfa",
@@ -1048,21 +1048,21 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
       {
         targetId: "instructors-table",
-        title: "The instructor table",
-        narration: "Every instructor in the selected queue appears here with their contact details, CV, and assigned courses. Use the row actions to approve, reject, assign courses, or promote.",
+        title: "The faculty member table",
+        narration: "Every faculty member in the selected queue appears here with their contact details, CV, and assigned courses. Use the row actions to approve, reject, assign courses, or promote.",
         placement: "top",
         icon: "mdi:table-account",
         color: "#22c55e",
       },
       {
         title: "You're all set",
-        narration: "That's the Instructors workflow end to end. Start in Pending to clear new applications, then manage access from the Approved queue.",
+        narration: "That's the Faculty workflow end to end. Start in Pending to clear new applications, then manage access from the Approved queue.",
         icon: "mdi:check-circle",
         color: "#fbbf24",
       },
     ],
-    headerTitle: "Managing your instructors",
-    headerSubtitle: "Review instructor applications, then approve, assign courses, and set access for your teaching team.",
+    headerTitle: "Managing your faculty",
+    headerSubtitle: "Review faculty member applications, then approve, assign courses, and set access for your teaching team.",
     features: [
       {
         icon: "mdi:account-clock-outline",
@@ -1080,19 +1080,19 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:file-pdf-box",
         color: "#0ea5e9",
         title: "Open applicant CVs",
-        text: "Open each instructor's uploaded CV in a new tab to vet their background before you decide.",
+        text: "Open each faculty member’s uploaded CV in a new tab to vet their background before you decide.",
       },
       {
         icon: "mdi:book-plus-multiple-outline",
         color: "#22c55e",
         title: "Assign courses",
-        text: "Give approved instructors one or more courses through a searchable, multi-select picker with select-all.",
+        text: "Give approved faculty one or more courses through a searchable, multi-select picker with select-all.",
       },
       {
         icon: "mdi:shield-account-outline",
         color: "#a78bfa",
         title: "Promote to a role",
-        text: "Elevate an approved instructor to Course Manager or Admin from their row menu.",
+        text: "Elevate an approved faculty member to Course Manager or Admin from their row menu.",
       },
       {
         icon: "mdi:refresh",
@@ -1103,7 +1103,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         icon: "mdi:magnify",
         color: "#fbbf24",
-        title: "Search instructors",
+        title: "Search faculty",
         text: "Filter the current tab by name or email as you type to find someone fast.",
       },
     ],
@@ -1114,7 +1114,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "page-header",
         title: "Jobs overview",
-        narration: "Welcome to Jobs. This is your hub for posting openings and curating opportunities for students. Let's walk through the key controls.",
+        narration: "Welcome to Jobs. This is your hub for posting openings and curating opportunities for candidates. Let's walk through the key controls.",
         placement: "bottom",
         icon: "mdi:briefcase-search",
         color: "#0ea5e9",
@@ -1151,7 +1151,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
     ],
     headerTitle: "What you can do on Jobs",
-    headerSubtitle: "Post roles, curate them for your students, and track who applies.",
+    headerSubtitle: "Post roles, curate them for your candidates, and track who applies.",
     features: [
       {
         icon: "mdi:briefcase-plus-outline",
@@ -1175,7 +1175,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:eye-outline",
         color: "#22c55e",
         title: "Publish or keep as draft",
-        text: "Each job shows a Published or Draft badge so you control exactly when it becomes visible to students.",
+        text: "Each job shows a Published or Draft badge so you control exactly when it becomes visible to candidates.",
       },
       {
         icon: "mdi:checkbox-multiple-marked-outline",
@@ -1196,7 +1196,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         text: "Jump to the Reports view for a broader look at hiring activity across your jobs.",
       },
     ],
-    tip: "Jobs closing within 7 days show a \"days left\" badge on their closing date - publish drafts well before then so students have time to apply.",
+    tip: "Jobs closing within 7 days show a \"days left\" badge on their closing date - publish drafts well before then so candidates have time to apply.",
   },
   "/admin/live-sessions": {
     tourSteps: [
@@ -1298,15 +1298,15 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
   "/admin/manage-students": {
     tourSteps: [
       {
-        title: "Manage Students overview",
-        narration: "Welcome to your student directory. From here you can search, filter, and act on every learner in your organisation, plus track bulk-enrolment jobs.",
+        title: "Manage Candidates overview",
+        narration: "Welcome to your candidate directory. From here you can search, filter, and act on every candidate in your organisation, plus track bulk-enrolment jobs.",
         icon: "mdi:account-group",
         color: "#6366f1",
       },
       {
         targetId: "students-filters",
         title: "Search & filter",
-        narration: "Start here to narrow the roster. Search by name or email, scope to specific courses, and filter by active status or whether a student has a saved resume.",
+        narration: "Start here to narrow the roster. Search by name or email, scope to specific courses, and filter by active status or whether a candidate has a saved resume.",
         placement: "bottom",
         icon: "mdi:filter-variant",
         color: "#0ea5e9",
@@ -1314,14 +1314,14 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "students-segments",
         title: "Health segments",
-        narration: "Tap a segment chip to instantly surface at-risk, inactive, low-completion, or high-performing students. Use the info icon to see exactly how each segment is calculated.",
+        narration: "Tap a segment chip to instantly surface at-risk, inactive, low-completion, or high-performing candidates. Use the info icon to see exactly how each segment is calculated.",
         placement: "bottom",
         icon: "mdi:heart-pulse",
         color: "#ec4899",
       },
       {
         targetId: "students-table",
-        title: "Student directory",
+        title: "Candidate directory",
         narration: "This is your main roster. Sort by marks, streak, completion, or attendance, page through results, and select rows to run bulk course actions.",
         placement: "top",
         icon: "mdi:table-account",
@@ -1330,26 +1330,26 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "students-enrollment-jobs",
         title: "Enrolment job history",
-        narration: "After a bulk enrolment, track its progress here. Each job shows its status so you can confirm students were added successfully.",
+        narration: "After a bulk enrolment, track its progress here. Each job shows its status so you can confirm candidates were added successfully.",
         placement: "top",
         icon: "mdi:clipboard-flow-outline",
         color: "#f59e0b",
       },
       {
         title: "You're all set",
-        narration: "That's the Manage Students page. Filter down to the learners you care about, watch the health segments, and enrol students in a few clicks.",
+        narration: "That's the Manage Candidates page. Filter down to the candidates you care about, watch the health segments, and enrol candidates in a few clicks.",
         icon: "mdi:check-circle-outline",
         color: "#22c55e",
       },
     ],
-    headerTitle: "Your student roster, all in one place",
-    headerSubtitle: "Find, filter, enroll, and track every learner in your workspace - then act on many at once.",
+    headerTitle: "Your candidate roster, all in one place",
+    headerSubtitle: "Find, filter, enroll, and track every candidate in your workspace - then act on many at once.",
     features: [
       {
         icon: "mdi:account-plus",
         color: "#22c55e",
-        title: "Add a student",
-        text: "Use Add student to create a learner by name, email, and phone and enroll them into courses right away.",
+        title: "Add a candidate",
+        text: "Use Add candidate to create a candidate by name, email, and phone and enroll them into courses right away.",
       },
       {
         icon: "mdi:filter-variant",
@@ -1361,41 +1361,41 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:heart-pulse",
         color: "#f59e0b",
         title: "Engagement segments",
-        text: "Tap At risk, Inactive 30d, Low completion, or High performers to surface the students who need attention.",
+        text: "Tap At risk, Inactive 30d, Low completion, or High performers to surface the candidates who need attention.",
       },
       {
         icon: "mdi:sort",
         color: "#a78bfa",
         title: "Sort the directory",
-        text: "Sort the table by marks, last activity, time spent, streak, completion %, or attendance % to rank learners any way you need.",
+        text: "Sort the table by marks, last activity, time spent, streak, completion %, or attendance % to rank candidates any way you need.",
       },
       {
         icon: "mdi:checkbox-multiple-marked-outline",
         color: "#0ea5e9",
-        title: "Bulk manage students",
+        title: "Bulk manage candidates",
         text: "Select multiple rows to enroll or unenroll them from courses, activate, deactivate, or reset progress in one action.",
       },
       {
         icon: "mdi:history",
         color: "#ec4899",
         title: "Enrollment job history",
-        text: "Watch background bulk-enrollment jobs run and expand any job to review its per-student results.",
+        text: "Watch background bulk-enrollment jobs run and expand any job to review its per-candidate results.",
       },
       {
         icon: "mdi:file-export-outline",
         color: "#fbbf24",
         title: "Export to CSV",
-        text: "Export your selected students to a CSV with their name, email, status, and enrollment counts.",
+        text: "Export your selected candidates to a CSV with their name, email, status, and enrollment counts.",
       },
     ],
-    tip: "Your filters, sort, and page are saved right in the URL - copy the address bar to hand a teammate the exact same filtered view, and hitting Back from a student keeps your list exactly where it was.",
+    tip: "Your filters, sort, and page are saved right in the URL - copy the address bar to hand a teammate the exact same filtered view, and hitting Back from a candidate keeps your list exactly where it was.",
   },
   "/admin/notifications": {
     tourSteps: [
       {
         targetId: "page-header",
         title: "Notifications overview",
-        narration: "This is where you compose and send in-app notifications to your learners. Walk through it once and you'll be broadcasting messages in seconds.",
+        narration: "This is where you compose and send in-app notifications to your candidates. Walk through it once and you'll be broadcasting messages in seconds.",
         placement: "bottom",
         icon: "mdi:bell-badge",
         color: "#0ea5e9",
@@ -1403,7 +1403,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "notifications-recipients",
         title: "Choose your recipients",
-        narration: "Start here by picking who receives the notification: a handful of individual students, everyone enrolled in a course, or every learner in your client.",
+        narration: "Start here by picking who receives the notification: a handful of individual candidates, everyone enrolled in a course, or every candidate in your client.",
         placement: "bottom",
         icon: "mdi:account-group",
         color: "#6366f1",
@@ -1419,7 +1419,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "notifications-content",
         title: "Write your message",
-        narration: "Give your notification a title and body, add an optional action URL, and use the quick-link chips to point learners straight at a course, jobs, or their dashboard.",
+        narration: "Give your notification a title and body, add an optional action URL, and use the quick-link chips to point candidates straight at a course, jobs, or their dashboard.",
         placement: "top",
         icon: "mdi:message-text",
         color: "#ec4899",
@@ -1434,25 +1434,25 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
       {
         title: "You're all set",
-        narration: "That's the full flow: choose recipients, confirm the audience, craft your message, and send. Come back anytime you need to reach your learners.",
+        narration: "That's the full flow: choose recipients, confirm the audience, craft your message, and send. Come back anytime you need to reach your candidates.",
         icon: "mdi:check-circle",
         color: "#fbbf24",
       },
     ],
-    headerTitle: "Reach your students with in-app notifications",
-    headerSubtitle: "Compose a notification and push it to specific students, a whole course, or everyone in your client.",
+    headerTitle: "Reach your candidates with in-app notifications",
+    headerSubtitle: "Compose a notification and push it to specific candidates, a whole course, or everyone in your client.",
     features: [
       {
         icon: "mdi:account-group",
         color: "#6366f1",
         title: "Choose your recipients",
-        text: "Toggle between sending to individual students, everyone in a course, or all students in your client.",
+        text: "Toggle between sending to individual candidates, everyone in a course, or all candidates in your client.",
       },
       {
         icon: "mdi:format-list-checks",
         color: "#a78bfa",
-        title: "Pick specific students",
-        text: "Search the student list and tick individuals, or use Select all to reach everyone at once.",
+        title: "Pick specific candidates",
+        text: "Search the candidate list and tick individuals, or use Select all to reach everyone at once.",
       },
       {
         icon: "mdi:message-text-outline",
@@ -1470,7 +1470,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:eye-outline",
         color: "#22c55e",
         title: "Preview before you send",
-        text: "See exactly how the title and message will appear to students in a live preview card.",
+        text: "See exactly how the title and message will appear to candidates in a live preview card.",
       },
       {
         icon: "mdi:send",
@@ -1479,14 +1479,14 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         text: "The recipient chip confirms who will receive it, then Send Notification delivers it instantly.",
       },
     ],
-    tip: "Tap a quick-link chip (Dashboard, Courses, Jobs, and more) to fill the Action URL instantly, so students land exactly where you want when they click the notification.",
+    tip: "Tap a quick-link chip (Dashboard, Courses, Jobs, and more) to fill the Action URL instantly, so candidates land exactly where you want when they click the notification.",
   },
   "/admin/scorecard": {
     tourSteps: [
       {
         targetId: "page-header",
         title: "Scorecard overview",
-        narration: "Welcome to the Scorecard workspace. From here you can review any student's performance and readiness in one place, and tailor what appears on their scorecard.",
+        narration: "Welcome to the Scorecard workspace. From here you can review any candidate’s performance and readiness in one place, and tailor what appears on their scorecard.",
         placement: "bottom",
         icon: "mdi:chart-box-outline",
         color: "#22c55e",
@@ -1494,7 +1494,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "scorecard-stats",
         title: "At-a-glance stats",
-        narration: "This rail keeps you oriented: how many students you can pull up, how many scorecard sections exist, and how many modules are currently visible to students.",
+        narration: "This rail keeps you oriented: how many candidates you can pull up, how many scorecard sections exist, and how many modules are currently visible to candidates.",
         placement: "bottom",
         icon: "mdi:view-dashboard-outline",
         color: "#6366f1",
@@ -1502,40 +1502,40 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "scorecard-tabs",
         title: "Switch views",
-        narration: "Toggle between the Scorecard view for inspecting a student and the Config view where you choose which sections show. Your current tab is highlighted here.",
+        narration: "Toggle between the Scorecard view for inspecting a candidate and the Config view where you choose which sections show. Your current tab is highlighted here.",
         placement: "bottom",
         icon: "mdi:tab",
         color: "#0ea5e9",
       },
       {
         targetId: "scorecard-search",
-        title: "Find a student",
-        narration: "Search by name or email to pull up any student's full scorecard. Once selected, their overview, trends, skills, and more render right below.",
+        title: "Find a candidate",
+        narration: "Search by name or email to pull up any candidate’s full scorecard. Once selected, their overview, trends, skills, and more render right below.",
         placement: "top",
         icon: "mdi:account-search",
         color: "#a78bfa",
       },
       {
         title: "You're all set",
-        narration: "That's the tour. Pick a student to explore their scorecard, or head to Config to control which sections everyone sees.",
+        narration: "That's the tour. Pick a candidate to explore their scorecard, or head to Config to control which sections everyone sees.",
         icon: "mdi:check-circle",
         color: "#fbbf24",
       },
     ],
     headerTitle: "What you can do on the Scorecard",
-    headerSubtitle: "Search any student and open a full readiness scorecard - skills, assessments, activity, and next steps - then tune which sections show.",
+    headerSubtitle: "Search any candidate and open a full readiness scorecard - skills, assessments, activity, and next steps - then tune which sections show.",
     features: [
       {
         icon: "mdi:account-search",
         color: "#6366f1",
-        title: "Find a student",
-        text: "Search by name or email to pull up any student's readiness scorecard.",
+        title: "Find a candidate",
+        text: "Search by name or email to pull up any candidate’s readiness scorecard.",
       },
       {
         icon: "mdi:chart-box-outline",
         color: "#22c55e",
         title: "Full readiness scorecard",
-        text: "Open a student to read their overview, achievements, and a recommended action panel in one scroll.",
+        text: "Open a candidate to read their overview, achievements, and a recommended action panel in one scroll.",
       },
       {
         icon: "mdi:bullseye-arrow",
@@ -1546,8 +1546,8 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         icon: "mdi:clipboard-check-outline",
         color: "#0ea5e9",
-        title: "Assessment and mock interview",
-        text: "Track assessment scores and mock-interview performance trends for the selected student.",
+        title: "Assessment and practice interview",
+        text: "Track assessment scores and practice-interview performance trends for the selected candidate.",
       },
       {
         icon: "mdi:calendar-heart",
@@ -1559,7 +1559,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:chart-line",
         color: "#ec4899",
         title: "Comparative insights",
-        text: "Benchmark a student against their cohort with performance-trend and comparative-insight sections.",
+        text: "Benchmark a candidate against their batch with performance-trend and comparative-insight sections.",
       },
       {
         icon: "mdi:eye-settings-outline",
@@ -1568,14 +1568,14 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         text: "Switch to the Configuration tab to toggle sections on or off and drag to reorder them across every scorecard.",
       },
     ],
-    tip: "Your Configuration-tab choices apply to every student's scorecard - drag the sections that matter most to the top so they read first, then hit Save Module Settings.",
+    tip: "Your Configuration-tab choices apply to every candidate’s scorecard - drag the sections that matter most to the top so they read first, then hit Save Module Settings.",
   },
   "/admin/scorecard/badges": {
     tourSteps: [
       {
         targetId: "page-header",
         title: "Achievement Badges overview",
-        narration: "Welcome to the Achievement Badges workspace. Here you author badges with the criteria DSL, and learners auto-earn them through post-save signals throttled to every five minutes. Use New badge in the top right to start one from scratch.",
+        narration: "Welcome to the Achievement Badges workspace. Here you author badges with the criteria DSL, and candidates auto-earn them through post-save signals throttled to every five minutes. Use New badge in the top right to start one from scratch.",
         placement: "bottom",
         icon: "mdi:trophy-award",
         color: "#f59e0b",
@@ -1599,20 +1599,20 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "badges-list",
         title: "Your badge catalog",
-        narration: "Every badge lives in this table with its criteria summary, point value, and how many learners have earned it. Use the row actions to edit a badge or deactivate it while keeping the earned history intact.",
+        narration: "Every badge lives in this table with its criteria summary, point value, and how many candidates have earned it. Use the row actions to edit a badge or deactivate it while keeping the earned history intact.",
         placement: "top",
         icon: "mdi:medal-outline",
         color: "#a78bfa",
       },
       {
         title: "You're all set",
-        narration: "That's the badges workspace. Create a new badge, tune its criteria, and let the automatic signals reward your learners as they hit each milestone.",
+        narration: "That's the badges workspace. Create a new badge, tune its criteria, and let the automatic signals reward your candidates as they hit each milestone.",
         icon: "mdi:check-decagram",
         color: "#fbbf24",
       },
     ],
     headerTitle: "Design and award achievement badges",
-    headerSubtitle: "Author badge rules, set their points, and let learners earn them automatically as they hit milestones.",
+    headerSubtitle: "Author badge rules, set their points, and let candidates earn them automatically as they hit milestones.",
     features: [
       {
         icon: "mdi:plus-circle-outline",
@@ -1624,19 +1624,19 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:target-variant",
         color: "#6366f1",
         title: "Set the award criteria",
-        text: "Pick from seven rule types - active-day streak, assessments completed, mock interviews, skill proficiency, course completion, first submission, or overall score - and fill in its thresholds.",
+        text: "Pick from seven rule types - active-day streak, assessments completed, practice interviews, skill proficiency, course completion, first submission, or overall score - and fill in its thresholds.",
       },
       {
         icon: "mdi:medal-outline",
         color: "#a78bfa",
         title: "Choose an icon and points",
-        text: "Paste any MDI/Iconify slug for the badge glyph and set how many points earning it awards the learner.",
+        text: "Paste any MDI/Iconify slug for the badge glyph and set how many points earning it awards the candidate.",
       },
       {
         icon: "mdi:lightning-bolt-outline",
         color: "#0ea5e9",
-        title: "Auto-awards to learners",
-        text: "Saved badges fire on post-save signals so qualifying learners earn them automatically, throttled to every 5 minutes.",
+        title: "Auto-awards to candidates",
+        text: "Saved badges fire on post-save signals so qualifying candidates earn them automatically, throttled to every 5 minutes.",
       },
       {
         icon: "mdi:chart-box-outline",
@@ -1648,7 +1648,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:counter",
         color: "#fbbf24",
         title: "See awards per badge",
-        text: "The roster table shows each badge's criteria summary and how many learners have earned it so far.",
+        text: "The roster table shows each badge's criteria summary and how many candidates have earned it so far.",
       },
       {
         icon: "mdi:archive-outline",
@@ -1657,14 +1657,14 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         text: "Update a badge's rule anytime, or deactivate it while keeping every already-earned award intact.",
       },
     ],
-    tip: "Awards run on a throttled signal roughly every 5 minutes, so a brand-new badge won't appear on learner scorecards instantly - give it a few minutes before assuming the rule isn't matching. For skill or course rules, grab the exact Skill ID or Course ID from those admin pages before you save.",
+    tip: "Awards run on a throttled signal roughly every 5 minutes, so a brand-new badge won't appear on candidate scorecards instantly - give it a few minutes before assuming the rule isn't matching. For skill or course rules, grab the exact Skill ID or Course ID from those admin pages before you save.",
   },
   "/admin/scorecard/skills": {
     tourSteps: [
       {
         targetId: "page-header",
         title: "Skill Catalog overview",
-        narration: "Welcome to the Skill Catalog. This is where you manage every skill and tag content across the platform so it can feed each learner's Scorecard, Weak Areas, and Action Panel. Use the header buttons to tag content or spin up a brand-new skill.",
+        narration: "Welcome to the Skill Catalog. This is where you manage every skill and tag content across the platform so it can feed each candidate’s Scorecard, Weak Areas, and Action Panel. Use the header buttons to tag content or spin up a brand-new skill.",
         placement: "bottom",
         icon: "mdi:label-multiple-outline",
         color: "#6366f1",
@@ -1695,13 +1695,13 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
       {
         title: "You're all set",
-        narration: "That's the Skill Catalog. Create skills, tag content to them, and keep an eye on the untagged count to make sure every learner's scorecard stays rich and accurate.",
+        narration: "That's the Skill Catalog. Create skills, tag content to them, and keep an eye on the untagged count to make sure every candidate’s scorecard stays rich and accurate.",
         icon: "mdi:check-decagram",
         color: "#fbbf24",
       },
     ],
     headerTitle: "Managing your Skill Catalog",
-    headerSubtitle: "Create skills, tag content to them, and see everything that feeds each learner's Scorecard.",
+    headerSubtitle: "Create skills, tag content to them, and see everything that feeds each candidate’s Scorecard.",
     features: [
       {
         icon: "mdi:plus-circle-outline",
@@ -1737,23 +1737,23 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:archive-outline",
         color: "#ef4444",
         title: "Archive safely",
-        text: "Soft-delete a skill to hide it from learners and admins while keeping its existing mappings and history.",
+        text: "Soft-delete a skill to hide it from candidates and admins while keeping its existing mappings and history.",
       },
       {
         icon: "mdi:gauge",
         color: "#fbbf24",
         title: "Powers the Scorecard",
-        text: "Everything you tag here feeds the Skill Scorecard, Weak Areas, and Action Panel that every learner sees.",
+        text: "Everything you tag here feeds the Skill Scorecard, Weak Areas, and Action Panel that every candidate sees.",
       },
     ],
-    tip: "Watch the Untagged stat: a skill with zero mappings contributes nothing to any learner's Scorecard, so use Tag content to attach it to real MCQs, problems, videos, or assessments.",
+    tip: "Watch the Untagged stat: a skill with zero mappings contributes nothing to any candidate’s Scorecard, so use Tag content to attach it to real MCQs, problems, videos, or assessments.",
   },
   "/admin/settings": {
     tourSteps: [
       {
         targetId: "page-header",
         title: "Settings overview",
-        narration: "Welcome to your workspace Settings. From here you shape how your app looks to learners and admins, then use the Save changes button in this header to apply everything at once.",
+        narration: "Welcome to your workspace Settings. From here you shape how your app looks to candidates and admins, then use the Save changes button in this header to apply everything at once.",
         placement: "bottom",
         icon: "mdi:cog-outline",
         color: "#6366f1",
@@ -1772,14 +1772,14 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
       {
         title: "Login page text",
-        narration: "Write the tagline that sits beside your logo on the sign-in screen. Keep it short and welcoming to greet learners as they arrive.",
+        narration: "Write the tagline that sits beside your logo on the sign-in screen. Keep it short and welcoming to greet candidates as they arrive.",
         icon: "mdi:text-box-outline",
         color: "#ec4899",
       },
       {
         targetId: "settings-preview",
         title: "Live preview",
-        narration: "Watch your branding come together in real time here. As you type, this panel mirrors the browser tab and login screen so you know exactly what learners will see.",
+        narration: "Watch your branding come together in real time here. As you type, this panel mirrors the browser tab and login screen so you know exactly what candidates will see.",
         placement: "left",
         icon: "mdi:eye-outline",
         color: "#0ea5e9",
@@ -1792,7 +1792,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
     ],
     headerTitle: "Make the app look like yours",
-    headerSubtitle: "Set your logo, favicon, and login tagline, preview them live, and control what students see - all for this tenant.",
+    headerSubtitle: "Set your logo, favicon, and login tagline, preview them live, and control what candidates see - all for this tenant.",
     features: [
       {
         icon: "mdi:image-outline",
@@ -1821,8 +1821,8 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         icon: "mdi:eye-off-outline",
         color: "#ec4899",
-        title: "Student course visibility",
-        text: "Toggle whether students see the Available Courses tab or only their enrolled courses, applied to every student in this tenant.",
+        title: "Candidate course visibility",
+        text: "Toggle whether candidates see the Available Courses tab or only their enrolled courses, applied to every candidate in this tenant.",
       },
       {
         icon: "mdi:content-save-outline",
@@ -1838,7 +1838,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "page-header",
         title: "Ticket Management overview",
-        narration: "Welcome to your support desk. This is where you triage and resolve every student ticket, and if you're an org admin the Assignees button up here lets you choose which mailboxes get notified.",
+        narration: "Welcome to your support desk. This is where you triage and resolve every candidate ticket, and if you're an org admin the Assignees button up here lets you choose which mailboxes get notified.",
         placement: "bottom",
         icon: "mdi:ticket-confirmation-outline",
         color: "#f59e0b",
@@ -1854,7 +1854,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "tickets-filters",
         title: "Search and filter",
-        narration: "Narrow things down here: search by subject, description, or student email, filter by status or category, and flip the Reopened-only toggle to surface tickets that were reopened.",
+        narration: "Narrow things down here: search by subject, description, or candidate email, filter by status or category, and flip the Reopened-only toggle to surface tickets that were reopened.",
         placement: "bottom",
         icon: "mdi:filter-variant",
         color: "#0ea5e9",
@@ -1869,13 +1869,13 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
       {
         title: "You're all set",
-        narration: "That's the ticket dashboard end to end. Pick a status tile, search for what you need, and dive into any ticket to keep your students unblocked.",
+        narration: "That's the ticket dashboard end to end. Pick a status tile, search for what you need, and dive into any ticket to keep your candidates unblocked.",
         icon: "mdi:check-circle-outline",
         color: "#22c55e",
       },
     ],
     headerTitle: "Working the support ticket queue",
-    headerSubtitle: "Triage, filter, and resolve the support tickets your students raise, all from one dashboard.",
+    headerSubtitle: "Triage, filter, and resolve the support tickets your candidates raise, all from one dashboard.",
     features: [
       {
         icon: "mdi:ticket-confirmation-outline",
@@ -1887,7 +1887,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:magnify",
         color: "#0ea5e9",
         title: "Search any ticket",
-        text: "Find a ticket fast by typing part of its subject, description, or the student's email address.",
+        text: "Find a ticket fast by typing part of its subject, description, or the candidate’s email address.",
       },
       {
         icon: "mdi:filter-variant",
@@ -1899,7 +1899,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:lock-reset",
         color: "#ef4444",
         title: "Catch reopened tickets",
-        text: "Toggle the Reopened only chip to surface tickets a student has reopened so nothing slips through.",
+        text: "Toggle the Reopened only chip to surface tickets a candidate has reopened so nothing slips through.",
       },
       {
         icon: "mdi:open-in-app",
@@ -1911,7 +1911,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         icon: "mdi:account-group",
         color: "#22c55e",
         title: "Manage assignees",
-        text: "Add or remove the email addresses that get notified every time a student raises a new ticket.",
+        text: "Add or remove the email addresses that get notified every time a candidate raises a new ticket.",
       },
     ],
     tip: "Add a shared inbox like support@yourcompany.com under Assignees so every new ticket reaches your whole team, not just one person.",
@@ -2019,7 +2019,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         text: "A days-left countdown and red \"Due soon\" flags warn you before an open assessment expires.",
       },
     ],
-    tip: "Finished a manually-graded assessment? It stays under \"Under review\" until your instructor publishes the score - then it moves to Completed with your full results and feedback.",
+    tip: "Finished a manually-graded assessment? It stays under \"Under review\" until your faculty member publishes the score - then it moves to Completed with your full results and feedback.",
   },
   "/courses": {
     tourSteps: [
@@ -2311,7 +2311,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "page-header",
         title: "Interview overview",
-        narration: "Welcome to your AI-driven mock interview hub. Practice realistic interviews and get instant, rubric-based feedback to sharpen every answer.",
+        narration: "Welcome to your AI-driven practice interview hub. Practice realistic interviews and get instant, rubric-based feedback to sharpen every answer.",
         placement: "bottom",
         icon: "mdi:account-voice",
         color: "#ec4899",
@@ -2335,7 +2335,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "mock-modes",
         title: "Pick an interview mode",
-        narration: "Choose how you want to practice here - select a mode to launch a fresh mock interview tailored to what you want to work on.",
+        narration: "Choose how you want to practice here - select a mode to launch a fresh practice interview tailored to what you want to work on.",
         placement: "top",
         icon: "mdi:play-circle-outline",
         color: "#a78bfa",
@@ -2347,8 +2347,8 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
         color: "#f59e0b",
       },
     ],
-    headerTitle: "What you can do with Mock Interviews",
-    headerSubtitle: "Practice AI-driven mock interviews and get instant, rubric-based feedback to sharpen your answers.",
+    headerTitle: "What you can do with Interview Practice",
+    headerSubtitle: "Practice practice interviews and get instant, rubric-based feedback to sharpen your answers.",
     features: [
       {
         icon: "mdi:lightning-bolt",

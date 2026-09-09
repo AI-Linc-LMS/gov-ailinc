@@ -23,7 +23,20 @@ interface NavigationItem {
   featureNamesAny?: string[];
 }
 
-// Regular (non-admin) navigation items
+/**
+ * The phone nav.
+ *
+ * Labels are the tenant's vocabulary, not the product's: candidates rather than
+ * students, faculty rather than instructors, job notifications rather than jobs.
+ * They are kept in step with `nav.*` in locales/en/common.json by hand, because
+ * most rows here carry no `labelKey`; edit one and edit the other.
+ *
+ * These labels are laid out with `flex: 1` and one line of `nowrap`, so on a
+ * narrow phone with six rows anything past about eight characters is ellipsed:
+ * "Live Sessions" already was, before this tenant existed. "Job Notifications"
+ * is spelled out in full anyway rather than shortened to "Notifications", which
+ * would read as the bell, and the icon carries the meaning at that width.
+ */
 const regularNavigationItems: NavigationItem[] = [
   {
     label: "Dashboard",
@@ -36,7 +49,7 @@ const regularNavigationItems: NavigationItem[] = [
     //
     // This used to be /courses behind `course`, the legacy module. That flag is
     // off for tenants where adaptive IS the course product, and this entry then
-    // vanished from the mobile nav entirely — leaving a phone user with no way
+    // vanished from the mobile nav entirely - leaving a phone user with no way
     // to reach their courses at all while the desktop sidebar still showed them.
     label: "Courses",
     path: "/adaptive-courses",
@@ -50,7 +63,7 @@ const regularNavigationItems: NavigationItem[] = [
     featureName: "assessment",
   },
   {
-    label: "Jobs",
+    label: "Job Notifications",
     path: "/jobs-v2",
     icon: "mdi:briefcase-search",
     featureName: "jobs_v2",
@@ -78,13 +91,13 @@ const adminNavigationItems: NavigationItem[] = [
     featureName: "admin_dashboard",
   },
   {
-    label: "Manage Students",
+    label: "Manage Candidates",
     path: "/admin/manage-students",
     icon: "mdi:account-group",
     featureName: "admin_manage_students",
   },
   {
-    label: "Pending instructors",
+    label: "Pending Faculty",
     path: "/admin/pending-instructors",
     icon: "mdi:account-clock",
     featureName: "admin_manage_students",
@@ -106,7 +119,7 @@ const adminNavigationItems: NavigationItem[] = [
     labelKey: "nav.certificateUploads",
   },
   {
-    label: "Mock Interview",
+    label: "Interview Practice",
     path: "/admin/admin-mock-interview",
     icon: "mdi:account-voice",
     featureName: "admin_mock_interview",

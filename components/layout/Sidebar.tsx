@@ -50,10 +50,22 @@ const DRAWER_WIDTH = 264;
 const DRAWER_WIDTH_COLLAPSED = 64;
 
 /**
- * Student sidebar is grouped into collapsible sections (an accordion). Items are
- * matched into a section by `featureName`; a couple stay standalone (Dashboard on
- * top, My Tickets at the bottom). Anything that matches no section still renders
+ * The candidate sidebar is grouped into collapsible sections (an accordion). Items
+ * are matched into a section by `featureName`; a couple stay standalone (Dashboard
+ * on top, My Tickets at the bottom). Anything that matches no section still renders
  * as a standalone row, so a newly-added nav item can never silently disappear.
+ *
+ * GROUP LABELS ARE THE TENANT'S WORDS, NOT THE PRODUCT'S.
+ *
+ * `label` here is only the fallback: the real string is `labelKey` resolved from
+ * locales/en/common.json (`navSection.*`), so both have to be edited together or
+ * a missing translation silently reverts the label to the software vocabulary.
+ *
+ * Learn, Career, People, Content, Assessments and Communications all survived the
+ * re-content: an officer reads them the same way a bootcamp learner does. The two
+ * that did not were "Engage" and "Engagement", which are marketing verbs for a
+ * group that actually holds live classes, a forum, interview practice and
+ * recruitment notifications. They now say what is inside them.
  */
 interface NavSection {
   id: string;
@@ -81,7 +93,7 @@ const STUDENT_SECTIONS: NavSection[] = [
   {
     id: "engage",
     labelKey: "navSection.engage",
-    label: "Engage",
+    label: "Classes & Forum",
     icon: "mdi:account-group-outline",
     itemFeatures: ["live_sessions", "community_forum"],
   },
@@ -118,7 +130,7 @@ const ADMIN_SECTIONS: NavSection[] = [
   {
     id: "admin_engagement",
     labelKey: "navSection.engagement",
-    label: "Engagement",
+    label: "Classes & Careers",
     icon: "mdi:calendar-star",
     itemFeatures: ["admin_live_sessions", "admin_mock_interview", "admin_jobs_v2"],
   },
@@ -359,19 +371,21 @@ interface NavigationItem {
   descKey?: string;
   /**
    * Which profile-gated module this is ("resume" | "jobs" | "interview"), if any.
-   * Compared against the server's `locked_modules` — never a hard-coded client list, so the
+   * Compared against the server's `locked_modules` - never a hard-coded client list, so the
    * backend can change what it gates without a frontend release.
    */
   gateKey?: string;
 }
 
-// Instructors get a DEDICATED nav — never the student or admin nav. Static (no i18n/feature gating);
-// scoped to what they teach.
+// Faculty get a DEDICATED nav, never the candidate or officer nav. Static (no i18n /
+// feature gating); scoped to what they teach. The labels are deliberately the ones a
+// faculty member or skill-centre trainer uses: batches, not cohorts, and candidates,
+// not students.
 const INSTRUCTOR_NAVIGATION_ITEMS: NavigationItem[] = [
   { label: "Dashboard", labelKey: "instructorNav.dashboard", path: "/instructor/dashboard", icon: "mdi:view-dashboard", featureName: "instructor" },
   { label: "My Batches", labelKey: "instructorNav.cohorts", path: "/instructor/cohorts", icon: "mdi:account-group", featureName: "instructor" },
   { label: "Course Content", labelKey: "instructorNav.courses", path: "/instructor/courses", icon: "mdi:book-education", featureName: "instructor" },
-  { label: "Students", labelKey: "instructorNav.students", path: "/instructor/students", icon: "mdi:account-school", featureName: "instructor" },
+  { label: "Candidates", labelKey: "instructorNav.students", path: "/instructor/students", icon: "mdi:account-school", featureName: "instructor" },
   { label: "Gradebook", labelKey: "instructorNav.gradebook", path: "/instructor/assessments", icon: "mdi:clipboard-check-outline", featureName: "instructor" },
   { label: "Live Sessions", labelKey: "instructorNav.live", path: "/instructor/live-sessions", icon: "mdi:video-outline", featureName: "instructor" },
   { label: "Analytics", labelKey: "instructorNav.analytics", path: "/instructor/analytics", icon: "mdi:chart-box-outline", featureName: "instructor" },
@@ -420,7 +434,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const rtl = isRtl(i18n.language || "en");
 
   const role = user?.role;
-  // Instructors no longer toggle into student/admin views — only org admins keep the toggle.
+  // Instructors no longer toggle into student/admin views - only org admins keep the toggle.
   const canToggleAdminMode = isClientOrgAdminRole(role);
   const limitedAdmin = isAdminOnlyRole(role);
   /** Limited admins always use admin navigation; full admins follow toggle */
@@ -464,7 +478,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       descKey: "navDesc.assessments",
     },
     {
-      label: "Mock Interview",
+      label: "Interview Practice",
       labelKey: "nav.mockInterview",
       path: "/mock-interview",
       icon: "mdi:video-plus",
@@ -473,7 +487,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       gateKey: "interview",
     },
     {
-      label: "Jobs",
+      label: "Job Notifications",
       labelKey: "nav.jobsV2",
       path: "/jobs-v2",
       icon: "mdi:briefcase-search",
@@ -532,7 +546,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       orgAdminOnly: true,
     },
     {
-      label: "Manage Students",
+      label: "Manage Candidates",
       labelKey: "nav.manageStudents",
       path: "/admin/manage-students",
       icon: "mdi:account-group",
@@ -540,7 +554,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       descKey: "navDesc.admin_manage_students",
     },
     {
-      label: "Instructors",
+      label: "Faculty",
       labelKey: "nav.instructors",
       path: "/admin/instructors",
       icon: "mdi:account-tie",
@@ -551,7 +565,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     // "Settings" (admin logo / favicon / login-page text) now lives in the
     // profile menu (AppBar), not the sidebar.
     {
-      label: "Cohorts",
+      label: "Batches",
       labelKey: "nav.adminCohorts",
       path: "/admin/cohorts",
       icon: "mdi:account-group",
@@ -585,7 +599,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       descKey: "navDesc.admin_emails",
     },
     {
-      label: "Notifications",
+      label: "Announcements",
       labelKey: "nav.notifications",
       path: "/admin/notifications",
       icon: "mdi:bell-badge",
@@ -622,7 +636,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       descKey: "navDesc.admin_live_sessions",
     },
     {
-      label: "Mock Interview",
+      label: "Interview Practice",
       labelKey: "nav.adminMockInterview",
       path: "/admin/admin-mock-interview",
       icon: "mdi:account-voice",
@@ -663,7 +677,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
    
     {
-      label: "Jobs",
+      label: "Job Notifications",
       labelKey: "nav.adminJobsV2",
       path: "/admin/jobs-v2",
       icon: "mdi:briefcase-search",
@@ -1176,7 +1190,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </Typography>
                   {/* The role reads as a label, not as an award.
                       It carried a filled accent background, a matching border, a crown icon,
-                      uppercase and letter-spacing all at once — five emphases on one 11px word,
+                      uppercase and letter-spacing all at once - five emphases on one 11px word,
                       directly above a mode button wearing the same crown. It also introduced a
                       fixed hue into the one surface that is entirely tenant-branded.
                       This follows the platform's pill convention (dashboard `BandPill`): colour
